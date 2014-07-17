@@ -1,0 +1,4 @@
+The certificate wildcard.adhocracy.lan certificate and private key found in
+this directory serve to enable developers to easily test SSL issues locally.
+
+They are issued to *.localhost, *.adhocracy and *.adhocracy.lan.

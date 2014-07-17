@@ -1,0 +1,71 @@
+#
+# WARNING: Please make you changes in *.ini.in file and then run buildout to
+# install it.
+#
+
+# NOTE: This is just an example. You want to configure further.
+# TODO: Document chosen options.
+
+
+server {
+    listen ${parts.ports.nginx_ssl} default;
+
+    server_name ${parts.domains.main};
+
+    ssl on;
+    ssl_certificate ${parts.buildout.directory}/etc/ssl/wildcard.adhocracy.lan.crt;
+    ssl_certificate_key ${parts.buildout.directory}/etc/ssl/wildcard.adhocracy.lan.key;
+
+    keepalive_timeout 20;
+
+    location / {
+        proxy_pass http://127.0.0.1:6541;
+        proxy_set_header Host $$http_host;
+        proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
+        proxy_read_timeout 1800s;
+    }
+
+    client_max_body_size 10m;
+    send_timeout 1800s;
+}
+
+map $$http_upgrade $$connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+
+# wss server
+server {
+    listen ${parts.ports.ws_ssl} ssl;
+
+    server_name ${parts.domains.main};
+
+    ssl on;
+    ssl_certificate /home/nico/src/a3/etc/ssl/wildcard.adhocracy.lan.crt;
+    ssl_certificate_key /home/nico/src/a3/etc/ssl/wildcard.adhocracy.lan.key;
+
+    location / {
+        access_log off;
+        proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $$http_upgrade;
+        proxy_set_header Connection "Upgrade";
+    }
+}
+
+
+# ws server
+server {
+    listen ${parts.ports.ws};
+
+    server_name ${parts.domains.main};
+
+    location / {
+        access_log off;
+        proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $$http_upgrade;
+        proxy_set_header Connection "Upgrade";
+    }
+}
