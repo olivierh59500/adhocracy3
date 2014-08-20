@@ -234,7 +234,7 @@ def zeo(request) -> bool:
 
 
 @fixture(scope='class')
-def websocket(request, zeo, ws_settings) -> bool:
+def websocket(request, ws_settings) -> bool:
     """Start websocket server."""
     is_running = os.path.isfile(ws_settings['pid_file'])
     if is_running:

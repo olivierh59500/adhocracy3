@@ -4,6 +4,7 @@ import json
 import logging
 import time
 
+from pyramid.traversal import resource_path
 from websocket import ABNF
 from websocket import create_connection
 from websocket import WebSocketException
@@ -11,6 +12,7 @@ from websocket import WebSocketConnectionClosedException
 from websocket import WebSocketTimeoutException
 
 from adhocracy.interfaces import IResource
+from adhocracy.interfaces import IItemVersion
 from adhocracy.utils import exception_to_str
 from adhocracy.websockets.schemas import Notification
 
@@ -30,6 +32,7 @@ class Client:
         self._ws_url = ws_url
         self._created_resources = set()
         self._modified_resources = set()
+        self._new_version_resources = set()
         self._ws_connection = None
         self._is_running = False
         self._is_stopped = False
@@ -138,9 +141,17 @@ class Client:
                 handled_resources.add(resource)
                 self.send_resource_event(resource, 'modified')
 
+        while self._new_version_resources:
+            resource = self._new_version_resources.pop()
+            if resource not in handled_resources:
+                handled_resources.add(resource)
+                self.send_resource_event(resource, 'new_version')
+
+
     def send_resource_event(self, resource: IResource, event_type: str):
         schema = Notification().bind(context=resource)
-        message = schema.serialize({'event': event_type, 'resource': resource})
+        path = resource_path(resource)
+        message = schema.serialize({'event': event_type, 'resource': path})
         message_text = json.dumps(message)
         logger.debug('Sending message to Websocket server: %s', message_text)
         self._ws_connection.send(message_text)
@@ -152,6 +163,10 @@ class Client:
     def add_message_resource_modified(self, resource: IResource):
         """Notify the WS server of a modified resource."""
         self._modified_resources.add(resource)
+
+    def add_message_new_version_created(self, resource: IResource):
+        """Notify the WS server of a new created version resource."""
+        self._new_version_resources.add(resource)
 
     def stop(self):
         self._is_stopped = True
@@ -178,8 +193,11 @@ def send_messages_after_commit_hook(success, registry):
         for metadata in changelog.values():
             if metadata.modified:
                 ws_client.add_message_resource_modified(metadata.resource)
-            if metadata.created:
+            is_item_version = IItemVersion.providedBy(metadata.resource)
+            if metadata.created and not is_item_version:
                 ws_client.add_message_resource_created(metadata.resource)
+            if metadata.created and is_item_version:
+                ws_client.add_message_new_version_created(metadata.resource)
         ws_client.send_messages()
 
 

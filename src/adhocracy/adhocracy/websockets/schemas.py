@@ -17,7 +17,7 @@ class ClientRequestSchema(colander.MappingSchema):
     """Data structure for client requests."""
 
     action = Action()
-    resource = colander.SchemaNode(ResourceObject())
+    resource = colander.SchemaNode(colander.String())
 
 
 class Status(colander.SchemaNode):
@@ -56,18 +56,18 @@ class Notification(colander.MappingSchema):
     """Notification sent to a client if a resource has changed."""
 
     event = Event()
-    resource = colander.SchemaNode(ResourceObject())
+    resource = colander.SchemaNode(colander.String())
 
 
 class ChildNotification(Notification):
 
     """Notification involving a child resource."""
 
-    child = colander.SchemaNode(ResourceObject())
+    child = colander.SchemaNode(colander.String())
 
 
 class VersionNotification(Notification):
 
     """Notification involving a version."""
 
-    version = colander.SchemaNode(ResourceObject())
+    version = colander.SchemaNode(colander.String())
