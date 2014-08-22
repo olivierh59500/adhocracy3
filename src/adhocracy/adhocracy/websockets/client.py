@@ -11,7 +11,6 @@ from websocket import WebSocketException
 from websocket import WebSocketConnectionClosedException
 from websocket import WebSocketTimeoutException
 
-from adhocracy.interfaces import IResource
 from adhocracy.interfaces import IItemVersion
 from adhocracy.utils import exception_to_str
 from adhocracy.websockets.schemas import Notification
@@ -29,10 +28,11 @@ class Client:
         :param ws_url: the URL of the websocket server to connect to;
                if None, no connection will be set up (useful for testing)
         """
+        self.changelog_metadata_messages_to_send = set()
+        """Set with :class:`adhocracy.resources.subscriber.ChangelogMetadata`
+        that will be send to the websocket server with
+        :func:`Client.send_messages`."""
         self._ws_url = ws_url
-        self._created_resources = set()
-        self._modified_resources = set()
-        self._new_version_resources = set()
         self._ws_connection = None
         self._is_running = False
         self._is_stopped = False
@@ -109,17 +109,19 @@ class Client:
             self._ws_connection.close()
             self._is_running = False
 
-    def send_messages(self):
-        """Send all added messages to the server.
+    def send_messages(self, changelog_metadata=[]):
+        """Send all changelog messages to the websocket server.
+
+        :param changelog_metadata: list of :class:'ChangelogMetadata',
+                                   metadata.resource == None is ignored.
 
         All websocket exceptions are catched, hoping the problems
         will be solved when you run this method again.
-
         """
         if not self._is_running:
             return
         try:
-            self._send_messages()
+            self._send_messages(changelog_metadata)
         except WebSocketTimeoutException:  # pragma: no cover
             logger.warning('Could not send message, connection timeout,'
                            ' try again later')
@@ -127,44 +129,27 @@ class Client:
             logger.warning('Could not send message, connection is broken,'
                            ' try again later')
 
-    def _send_messages(self):
-        handled_resources = set()
+    def _send_messages(self, changelog_metadata: list):
+        self.changelog_metadata_messages_to_send.update(changelog_metadata)
+        while self.changelog_metadata_messages_to_send:
+            meta = self.changelog_metadata_messages_to_send.pop()
+            # FIXME: if an exception is raised, the current changelog is lost.
+            if meta.resource is None:
+                continue
+            elif meta.created and IItemVersion.providedBy(meta.resource):
+                self._send_resource_event(meta, 'new_version')
+            elif meta.created:
+                self._send_resource_event(meta, 'created')
+            elif meta.modified:
+                self._send_resource_event(meta, 'modified')
 
-        while self._created_resources:
-            resource = self._created_resources.pop()
-            handled_resources.add(resource)
-            self.send_resource_event(resource, 'created')
-
-        while self._modified_resources:
-            resource = self._modified_resources.pop()
-            if resource not in handled_resources:
-                handled_resources.add(resource)
-                self.send_resource_event(resource, 'modified')
-
-        while self._new_version_resources:
-            resource = self._new_version_resources.pop()
-            handled_resources.add(resource)
-            self.send_resource_event(resource, 'new_version')
-
-    def send_resource_event(self, resource: IResource, event_type: str):
-        schema = Notification().bind(context=resource)
-        path = resource_path(resource)
+    def _send_resource_event(self, changelog_meta, event_type: str):
+        schema = Notification()
+        path = resource_path(changelog_meta.resource)
         message = schema.serialize({'event': event_type, 'resource': path})
         message_text = json.dumps(message)
         logger.debug('Sending message to Websocket server: %s', message_text)
         self._ws_connection.send(message_text)
-
-    def add_message_resource_created(self, resource: IResource):
-        """Notify the WS server of a newly created resource."""
-        self._created_resources.add(resource)
-
-    def add_message_resource_modified(self, resource: IResource):
-        """Notify the WS server of a modified resource."""
-        self._modified_resources.add(resource)
-
-    def add_message_new_version_created(self, resource: IResource):
-        """Notify the WS server of a new created version resource."""
-        self._new_version_resources.add(resource)
 
     def stop(self):
         self._is_stopped = True
@@ -187,16 +172,8 @@ def send_messages_after_commit_hook(success, registry):
     """Send transaction changelog messages to the websocket client."""
     ws_client = get_ws_client(registry)
     if success and ws_client is not None:
-        changelog = registry._transaction_changelog
-        for metadata in changelog.values():
-            if metadata.modified:
-                ws_client.add_message_resource_modified(metadata.resource)
-            is_item_version = IItemVersion.providedBy(metadata.resource)
-            if metadata.created and not is_item_version:
-                ws_client.add_message_resource_created(metadata.resource)
-            if metadata.created and is_item_version:
-                ws_client.add_message_new_version_created(metadata.resource)
-        ws_client.send_messages()
+        changelog_metadata = registry._transaction_changelog.values()
+        ws_client.send_messages(changelog_metadata)
 
 
 def includeme(config):
