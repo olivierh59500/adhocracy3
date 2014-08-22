@@ -8,11 +8,8 @@ import logging
 
 from autobahn.asyncio.websocket import WebSocketServerProtocol
 from autobahn.websocket.protocol import ConnectionRequest
-from pyramid.traversal import resource_path
 import colander
 
-from adhocracy.interfaces import IResource
-from adhocracy.interfaces import IItemVersion
 from adhocracy.websockets import WebSocketError
 from adhocracy.websockets.schemas import ClientRequestSchema
 from adhocracy.websockets.schemas import Notification
@@ -146,7 +143,7 @@ class ClientCommunicator(WebSocketServerProtocol):
 
         :return: True if the message is a valid event notification from our
                  Pyramid app and has been handled; False otherwise
-         """
+        """
         if (self._client_may_send_notifications and
                 self._looks_like_event_notification(json_object)):
             notification = self._parse_json_via_schema(json_object,

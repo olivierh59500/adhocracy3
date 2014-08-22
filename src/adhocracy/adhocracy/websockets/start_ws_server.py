@@ -9,7 +9,6 @@ import os
 import sys
 
 from autobahn.asyncio.websocket import WebSocketServerFactory
-from ZODB import DB
 from adhocracy.websockets.server import ClientCommunicator
 import asyncio
 

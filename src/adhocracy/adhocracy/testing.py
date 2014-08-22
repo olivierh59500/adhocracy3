@@ -257,7 +257,7 @@ def _kill_pid_in_file(path_to_pid_file):
 
 
 @fixture(scope='class')
-def app(zeo, settings, websocket):
+def app(websocket, zeo, settings):
     """Return the adhocracy wsgi application."""
     import adhocracy
     configurator = Configurator(settings=settings,
