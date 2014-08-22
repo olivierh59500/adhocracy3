@@ -16,6 +16,9 @@ class DummyClient():
     def add_message_resource_created(self, resource):
         self.message_created_added = True
 
+    def add_message_new_version_created(self, resource):
+        self.message_new_version_created_added = True
+
     def send_messages(self):
         self.messages_sent = True
 
@@ -88,6 +91,16 @@ class SendMessageAfterCommitUnitTests(unittest.TestCase):
                                               resource=DummyResource())
         send_messages_after_commit_hook(success=True, registry=self._registry)
         assert self._client.message_created_added
+
+    def test_send_messages_after_commit_hook_success_and_created_item_version_in_changelog(self):
+        from pyramid.testing import DummyResource
+        from adhocracy.interfaces import IItemVersion
+        from adhocracy.websockets.client import send_messages_after_commit_hook
+        self._registry._transaction_changelog['/'] = \
+            self._changelog_metadata._replace(created=True,
+                                              resource=DummyResource(__provides__=IItemVersion))
+        send_messages_after_commit_hook(success=True, registry=self._registry)
+        assert self._client.message_new_version_created_added
 
 
 class ClientUnitTests(unittest.TestCase):
@@ -193,6 +206,16 @@ class ClientUnitTests(unittest.TestCase):
         assert len(self._dummy_connection.queue) == 1
         assert 'created' in self._dummy_connection.queue[0]
 
+    def test_send_messages_created_new_version(self):
+        client = self._make_one(None)
+        client._is_running = True
+        child = self._make_resource()
+        client.add_message_new_version_created(child)
+        client.send_messages()
+        assert self._dummy_connection.nothing_sent is False
+        assert len(self._dummy_connection.queue) == 1
+        assert 'new_version' in self._dummy_connection.queue[0]
+
     def test_send_messages_two_resources(self):
         client = self._make_one(None)
         client._is_running = True
@@ -247,3 +270,21 @@ class TestFunctionalClient:
         settings['adhocracy.ws_url'] = 'ws://localhost:8080'
         includeme(config)
         assert isinstance(config.registry.ws_client, Client)
+
+
+def test_get_ws_client_with_none():
+    from adhocracy.websockets.client import get_ws_client
+    assert get_ws_client(None) is None
+
+
+def test_get_ws_client_with_registry():
+    from adhocracy.websockets.client import get_ws_client
+    assert get_ws_client(None) is None
+
+
+def test_get_ws_client_with_registry_and_ws_client(context):
+    context.ws_client = object()
+    from adhocracy.websockets.client import get_ws_client
+    assert get_ws_client(context) == context.ws_client
+
+

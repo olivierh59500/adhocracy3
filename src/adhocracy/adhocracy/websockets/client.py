@@ -57,12 +57,12 @@ class Client:
                 logger.warning('Problem connecting to Websocket server: %s',
                                exception_to_str(err))
                 self._is_running = False
-                time.sleep(2)
+                time.sleep(1)
             except WebSocketException as err:  # pragma: no cover
                 logger.warning(
                     'Problem communicating with Websocket server: %s',
                     exception_to_str(err))
-                time.sleep(2)
+                time.sleep(1)
 
     def _wait_a_bit_until_connected(self):
         """Wait until the connection has been set up, but at most 2.5 secs."""
@@ -143,10 +143,8 @@ class Client:
 
         while self._new_version_resources:
             resource = self._new_version_resources.pop()
-            if resource not in handled_resources:
-                handled_resources.add(resource)
-                self.send_resource_event(resource, 'new_version')
-
+            handled_resources.add(resource)
+            self.send_resource_event(resource, 'new_version')
 
     def send_resource_event(self, resource: IResource, event_type: str):
         schema = Notification().bind(context=resource)

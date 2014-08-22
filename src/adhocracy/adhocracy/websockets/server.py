@@ -159,19 +159,16 @@ class ClientCommunicator(WebSocketServerProtocol):
     def _parse_json_via_schema(self, json_object, schema:
                                colander.MappingSchema) -> dict:
         try:
-            schema_with_context = schema()
-            return schema_with_context.deserialize(json_object)
+            return schema().deserialize(json_object)
         except colander.Invalid as err:
+            # FIXME: why do we need this special error "unknown action"?
+            # The normal json error gives your more detailed error information
             self._raise_if_unknown_field_value('action', err, json_object)
-            self._raise_if_unknown_field_value('resource', err, json_object)
             self._raise_invalid_json_from_colander_invalid(err)
-        except Exception as err:
-            self._raise_invalid_json_from_exception(err)
 
     def _handle_client_request_and_send_response(self, request: dict):
         action = request['action']
         resource = request['resource']
-        self._raise_if_forbidden_request(action, resource)
         update_was_necessary = self._update_resource_subscription(action,
                                                                   resource)
         self._send_status_confirmation(update_was_necessary, action, resource)
@@ -224,15 +221,6 @@ class ClientCommunicator(WebSocketServerProtocol):
         details = ' / '.join(sorted(errlist))
         raise WebSocketError('invalid_json', details)
 
-    def _raise_invalid_json_from_exception(self, err: Exception):
-        raise WebSocketError('invalid_json', str(err))
-
-    def _raise_if_forbidden_request(self, action: str, resource: IResource):
-        """Raise an error if a client tries to subscribe to an ItemVersion."""
-        #if action == 'subscribe' and IItemVersion.providedBy(resource):
-        #    raise WebSocketError('subscribe_not_supported',
-        #                         resource_path(resource))
-
     def _update_resource_subscription(self, action: str,
                                       path: str) -> bool:
         """(Un)subscribe this instance to/from a resource.
@@ -264,11 +252,14 @@ class ClientCommunicator(WebSocketServerProtocol):
         self._notify_new_child(parent_path, path)
 
     def _dispatch_new_version_event(self, path: str):
+        # FIXME: we assume here the parent of the item version is
+        # the item this version belongs to. This works but now but may change
+        # in the future.
         parent_path = self._get_parent_path(path)
         self._notify_new_version(parent_path, path)
 
     def _get_parent_path(self, path):
-        parent_parts = path.split('/')[-1]
+        parent_parts = path.split('/')[:-1]
         parent_path = '/'.join(parent_parts)
         return parent_path
 
@@ -279,9 +270,9 @@ class ClientCommunicator(WebSocketServerProtocol):
 
     def _dispatch_deleted_event(self, path: str):
         # FIXME Should we also notify subscribers of the deleted resource?
-        # That's currently not part of the API.
-        #self._notify_removed_child(resource.__parent__, resource)
-        pass
+        # Deleting is currently not part of the API, so we can remove this.
+        parent = self._get_parent_path(path)
+        self._notify_removed_child(parent, path)
 
     def _notify_new_version(self, parent: str, new_version: str):
         """Notify subscribers if a new version has been added to an item."""
