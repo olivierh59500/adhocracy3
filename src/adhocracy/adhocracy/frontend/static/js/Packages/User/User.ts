@@ -63,20 +63,36 @@ export class User {
         private adhHttp : AdhHttp.Service<any>,
         private $q : ng.IQService,
         private $http : ng.IHttpService,
+        private $rootScope : ng.IScope,
         private $window : Window,
-        private Modernizr
+        private angular : ng.IAngularStatic,
+        private Modernizr,
+        private _
     ) {
         var _self : User = this;
 
-        if (_self.Modernizr.localstorage) {
-            if (_self.$window.localStorage.getItem("user-token") !== null &&
-                    _self.$window.localStorage.getItem("user-path") !== null) {
-                _self.enableToken(
-                    _self.$window.localStorage.getItem("user-token"),
-                    _self.$window.localStorage.getItem("user-path")
-                );
+        var updateTokenFromStorage = () => {
+            if (_self.Modernizr.localstorage) {
+                if (_self.$window.localStorage.getItem("user-token") !== null &&
+                        _self.$window.localStorage.getItem("user-path") !== null) {
+                    _self.enableToken(
+                        _self.$window.localStorage.getItem("user-token"),
+                        _self.$window.localStorage.getItem("user-path")
+                    );
+                } else if (_self.$window.localStorage.getItem("user-token") === null &&
+                        _self.$window.localStorage.getItem("user-path") === null) {
+                    // For some reason, $apply is necessary here to trigger a UI update
+                    _.defer(() => _self.$rootScope.$apply(() => {
+                        _self.deleteToken();
+                    }));
+                }
             }
-        }
+        };
+
+        var win = _self.angular.element(_self.$window);
+        win.on("storage", updateTokenFromStorage);
+
+        updateTokenFromStorage();
     }
 
     private enableToken(token : string, userPath : string) : ng.IPromise<void> {
@@ -189,7 +205,7 @@ export class User {
 }
 
 
-export var loginDirective = (adhConfig : AdhConfig.Type) => {
+export var loginDirective = (adhConfig : AdhConfig.Type, $location : ng.ILocationService) => {
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/Login.html",
@@ -208,16 +224,15 @@ export var loginDirective = (adhConfig : AdhConfig.Type) => {
             };
 
             $scope.logIn = () => {
-                var promise = adhUser.logIn(
+                return adhUser.logIn(
                     $scope.credentials.nameOrEmail,
                     $scope.credentials.password
                 ).then(() => {
-                    $scope.errors = [];
+                    $location.path("/");
                 }, (errors) => {
                     bindServerErrors($scope, errors);
+                    $scope.credentials.password = "";
                 });
-                $scope.resetCredentials();
-                return promise;
             };
         }]
     };
@@ -244,7 +259,7 @@ export var registerDirective = (adhConfig : AdhConfig.Type, $location : ng.ILoca
                     .then((response) => {
                         $scope.errors = [];
                         return adhUser.logIn($scope.input.username, $scope.input.password).then(
-                            () => { $location.path("/frontend_static/root.html"); },
+                            () => { $location.path("/"); },
                             (errors) => bindServerErrors($scope, errors)
                         );
                     }, (errors) => bindServerErrors($scope, errors));
@@ -287,7 +302,7 @@ export var metaDirective = (adhConfig : AdhConfig.Type) => {
                     });
             } else {
                 $scope.userBasic = {
-                    name: "anonymous",
+                    name: "guest",
                 };
                 $scope.isAnonymous = true;
             }
