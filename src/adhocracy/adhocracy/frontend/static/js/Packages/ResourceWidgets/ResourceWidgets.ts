@@ -228,7 +228,7 @@ export class ResourceWidget<R extends ResourcesBase.Resource, S extends IResourc
         };
 
         var setModeID = wrapper.eventHandler.on("setMode", (mode : Mode) => self.setMode(instance, mode));
-        var submitID = wrapper.eventHandler.on("submit", () => self.provide(instance)
+        var submitID = wrapper.eventHandler.on("submit", () => self.provide(instance, post_pool)
             .then((resources) => instance.deferred.resolve(resources)));
 
         var cancelID = wrapper.eventHandler.on("cancel", () => {
@@ -316,9 +316,9 @@ export class ResourceWidget<R extends ResourcesBase.Resource, S extends IResourc
      *
      * Calls _create/_edit if scope.path is preliminary/not preliminary.
      */
-    public provide(instance : IResourceWidgetInstance<R, S>) : ng.IPromise<R[]> {
+    public provide(instance : IResourceWidgetInstance<R, S>, post_pool : string) : ng.IPromise<R[]> {
         if (this.adhPreliminaryNames.isPreliminary(instance.scope.path)) {
-            return this._create(instance);
+            return this._create(instance, post_pool);
         } else {
             return this.adhHttp.get(instance.scope.path).then((old) => {
                 return this._edit(instance, old);
@@ -329,7 +329,7 @@ export class ResourceWidget<R extends ResourcesBase.Resource, S extends IResourc
     /**
      * Initially create resource(s) from scope.
      */
-    public _create(instance : IResourceWidgetInstance<R, S>) : ng.IPromise<R[]> {
+    public _create(instance : IResourceWidgetInstance<R, S>, post_pool : string) : ng.IPromise<R[]> {
         throw "not implemented";
     }
 
