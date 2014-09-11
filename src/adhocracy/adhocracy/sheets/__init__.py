@@ -222,3 +222,4 @@ def includeme(config):  # pragma: no cover
     config.include('.tags')
     config.include('.user')
     config.include('.metadata')
+    config.include('.rating')
