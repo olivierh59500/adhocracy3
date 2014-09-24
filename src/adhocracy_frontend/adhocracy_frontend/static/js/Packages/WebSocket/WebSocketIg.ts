@@ -16,6 +16,7 @@ export var register = (angular, config : Config.Type, meta_api) => {
 
         it("handles basic subscription to /adhocracy nicely.", (done) => {
             ws.registerErrorHandler((msg) => {
+                console.log(msg);
                 expect(JSON.stringify(msg, null, 2)).toEqual(false);
                 done();
             });
