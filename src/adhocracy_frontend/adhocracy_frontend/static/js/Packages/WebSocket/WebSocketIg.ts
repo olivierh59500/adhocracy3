@@ -18,7 +18,6 @@ export var register = (angular, config : Config.Type, meta_api) => {
         var metaApi : MetaApi.MetaApiQuery;
         var http : Http.Service<any>;
         var ws : WebSocket.IService;
-        var resource : RIProposal;
 
         beforeEach(() => {
             preliminaryNames = new PreliminaryNames;
@@ -36,10 +35,6 @@ export var register = (angular, config : Config.Type, meta_api) => {
                 return angular.injector(["ng"]).invoke(factory);
             })();
             ws = WebSocket.factory(<any>modernizr, config);
-            resource = new RIProposal({
-                preliminaryNames : preliminaryNames,
-                name : "Against_Curtains_" + Math.random()
-            });
         });
 
         it("handles basic subscription to /adhocracy and update response nicely.", (done) => {
@@ -53,14 +48,30 @@ export var register = (angular, config : Config.Type, meta_api) => {
                 done();
             });
 
-            http.post(config.rest_url + "/adhocracy/", resource)
-                .then(
-                    (response) => {
-                        console.log("resource posted successfully.");
-                    },
-                    (msg) => {
-                        expect(msg).toBe(false);
-                    });
+            // keep posting indefinitely until we get a change
+            // notification from the web socket.  (to rule out race
+            // conditions between registration and post.)  (FIXME:
+            // there should not be any race conditions.  but in order
+            // to guarantee that, WebSocket needs to be changed
+            // considerably.)
+            var loop = () => {
+                var resource = new RIProposal({
+                    preliminaryNames : preliminaryNames,
+                    name : "Against_Curtains_" + Math.random()
+                });
+
+                http.post(config.rest_url + "/adhocracy/", resource)
+                    .then(
+                        (response) => {
+                            console.log("resource posted successfully.");
+                            loop();
+                        },
+                        (msg) => {
+                            expect(msg).toBe(false);
+                        });
+            };
+
+            loop();
         });
     });
 };
