@@ -17,6 +17,28 @@ var pkgLocation = "/WebSocket";
  * This module provides a callback-based API to the consumer modules
  * for keeping up to date with relevant changes on the server side.
  * The network protocol is specified in ./docs/source/websockets.rst.
+ *
+ * FIXME: race condition register vs. post: register returns
+ * immediately, but the backend only responds a while later.  so it is
+ * possible that the following order of events occurs:
+ *
+ *    1. the frontend requests registration of resource X
+ *    2. the frontend gets resource X
+ *    3. somebody else posts/puts an update over X
+ *    4. the backend processes registration of resource X by frontend
+ *       the frontend will not be notified of the update and keep the
+ *       stale copy of X.
+ *
+ * possible solution: when the backend responds with "registration
+ * successul", fetch a current copy of the resource in question.  if
+ * it is a pool, also fetch its children.
+ *
+ * FIXME: the current implementation handles connection collapse very
+ * poorly.  what we *should* do is quite simple: re-open the
+ * connection, go through the list of registered resources,
+ * re-register them, re-fetch them (if the above FIXME has been
+ * implemented, the latter happens implicitly).
+ *
  */
 
 
