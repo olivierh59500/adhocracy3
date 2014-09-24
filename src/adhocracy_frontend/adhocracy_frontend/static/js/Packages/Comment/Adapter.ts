@@ -65,7 +65,7 @@ export class CommentAdapter extends ListingCommentableAdapter implements AdhComm
             });
         });
 
-        resource.data["adhocracy.sheets.versions.IVersionable"] =
+        resource.data[SIVersionable.nick] =
             new SIVersionable.AdhocracySheetsVersionsIVersionable({follows: [oldVersion.path]});
 
         return resource;
@@ -75,10 +75,10 @@ export class CommentAdapter extends ListingCommentableAdapter implements AdhComm
     content(resource : RICommentVersion, value : string) : RICommentVersion;
     content(resource, value?) {
         if (typeof value !== "undefined") {
-            resource.data["adhocracy_sample.sheets.comment.IComment"].content = value;
+            resource.data[SIComment.nick].content = value;
             return resource;
         } else {
-            return resource.data["adhocracy_sample.sheets.comment.IComment"].content;
+            return resource.data[SIComment.nick].content;
         }
     }
 
@@ -86,10 +86,10 @@ export class CommentAdapter extends ListingCommentableAdapter implements AdhComm
     refersTo(resource : RICommentVersion, value : string) : RICommentVersion;
     refersTo(resource, value?) {
         if (typeof value !== "undefined") {
-            resource.data["adhocracy_sample.sheets.comment.IComment"].refers_to = value;
+            resource.data[SIComment.nick].refers_to = value;
             return resource;
         } else {
-            return resource.data["adhocracy_sample.sheets.comment.IComment"].refers_to;
+            return resource.data[SIComment.nick].refers_to;
         }
     }
 
@@ -106,6 +106,6 @@ export class CommentAdapter extends ListingCommentableAdapter implements AdhComm
     }
 
     commentCount(resource : RICommentVersion) : number {
-        return Util.latestVersionsOnly(resource.data["adhocracy_sample.sheets.comment.ICommentable"].comments).length;
+        return Util.latestVersionsOnly(resource.data[SICommentable.nick].comments).length;
     }
 }

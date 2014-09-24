@@ -6,7 +6,7 @@ import PreliminaryNames = require("../PreliminaryNames/PreliminaryNames");
 import RIRate = require("../../Resources_/adhocracy/resources/rate/IRate");
 import RIRateVersion = require("../../Resources_/adhocracy/resources/rate/IRateVersion");
 // import SICanRate = require("../../Resources_/adhocracy/sheets/rate/ICanRate");
-// import SIRateable = require("../../Resources_/adhocracy/sheets/rate/IRateable");
+import SIRateable = require("../../Resources_/adhocracy/sheets/rate/IRateable");
 import SIRate = require("../../Resources_/adhocracy/sheets/rate/IRate");
 import SIVersionable = require("../../Resources_/adhocracy/sheets/versions/IVersionable");
 
@@ -32,10 +32,10 @@ export class RateAdapter implements AdhRate.IRateAdapter<RIRateVersion> {
             args.rate = 0;
         }
 
-        resource.data["adhocracy.sheets.rate.IRate"] =
+        resource.data[SIRate.nick] =
             new SIRate.AdhocracySheetsRateIRate({subject: args.subject, object: args.object, rate: args.rate });
 
-        resource.data["adhocracy.sheets.versions.IVersionable"] =
+        resource.data[SIVersionable.nick] =
             new SIVersionable.AdhocracySheetsVersionsIVersionable({follows: [args.follows]});
 
         return resource;
@@ -57,7 +57,7 @@ export class RateAdapter implements AdhRate.IRateAdapter<RIRateVersion> {
             });
         });
 
-        resource.data["adhocracy.sheets.versions.IVersionable"] =
+        resource.data[SIVersionable.nick] =
             new SIVersionable.AdhocracySheetsVersionsIVersionable({follows: [oldVersion.path]});
 
         return resource;
@@ -68,21 +68,21 @@ export class RateAdapter implements AdhRate.IRateAdapter<RIRateVersion> {
     }
 
     isRateable(resource : ResourcesBase.Resource) : boolean {
-        return resource.data.hasOwnProperty("adhocracy.sheets.rate.IRateable");
+        return resource.data.hasOwnProperty(SIRateable.nick);
     }
 
     rateablePostPoolPath(resource : ResourcesBase.Resource) : string {
-        return resource.data["adhocracy.sheets.rate.IRateable"].post_pool;
+        return resource.data[SIRateable.nick].post_pool;
     }
 
     subject(resource : RIRateVersion) : string;
     subject(resource : RIRateVersion, value : string) : RIRateVersion;
     subject(resource, value?) {
         if (typeof value !== "undefined") {
-            resource.data["adhocracy.sheets.rate.IRate"].subject = value;
+            resource.data[SIRate.nick].subject = value;
             return resource;
         } else {
-            return resource.data["adhocracy.sheets.rate.IRate"].subject;
+            return resource.data[SIRate.nick].subject;
         }
     }
 
@@ -90,17 +90,17 @@ export class RateAdapter implements AdhRate.IRateAdapter<RIRateVersion> {
     object(resource : RIRateVersion, value : string) : RIRateVersion;
     object(resource, value?) {
         if (typeof value !== "undefined") {
-            resource.data["adhocracy.sheets.rate.IRate"].object = value;
+            resource.data[SIRate.nick].object = value;
             return resource;
         } else {
-            return resource.data["adhocracy.sheets.rate.IRate"].object;
+            return resource.data[SIRate.nick].object;
         }
     }
 
     rate(resource : RIRateVersion) : number;
     rate(resource : RIRateVersion, value : number) : RIRateVersion;
     rate(resource, value?) {
-        var sheet : { rate: number } = resource.data["adhocracy.sheets.rate.IRate"];
+        var sheet : { rate: number } = resource.data[SIRate.nick];
         if (typeof value !== "undefined") {
             sheet.rate = value;
             return resource;
