@@ -41,6 +41,14 @@ export interface IService {
      * Roughly equivalent to $.off() (see comment above).
      */
     unregister : (path : string, id : string) => void;
+
+    /**
+     * Register error handlers.  If callback is not given, delete old
+     * error handler.  Independently of whether an error handler is
+     * registered or not, backend error messages will trigger an
+     * asynchronous exception.
+     */
+    registerErrorHandler : (callback ?: (error : ResponseError) => void) => void;
 }
 
 /**
@@ -89,7 +97,7 @@ interface ResponseOk {
     resource? : string;
 }
 
-interface ResponseError {
+export interface ResponseError {
     error? : string;
     details? : string;
 }
@@ -302,6 +310,7 @@ export var factoryIService = (
 
     var register : (path : string, callback : (event : IServerEvent) => void) => string;
     var unregister : (path : string, id : string) => void;
+    var registerErrorHandler : (callback ?: (error : ResponseError) => void) => void;
     var sendRequest : (req : Request) => void;
     var handleResponseMessage : (msg : ServerMessage) => void;
 
@@ -309,6 +318,9 @@ export var factoryIService = (
     var onerror : (event : any) => void;
     var onopen : (event : any) => void;
     var onclose : (event : any) => void;
+
+    var errorHandler : (msg : ResponseError) => void;
+    var wsThrow : (msg : any) => void;
 
     var open : () => any;
 
@@ -327,7 +339,7 @@ export var factoryIService = (
         path : string,
         callback : (event : IServerEvent) => void
     ) : string => {
-        console.log("register", path);
+        // console.log("register", path);
         if (_ws.readyState === _ws.OPEN) {
             return _subscriptions.add(path, callback, null, () => sendRequest({action: "subscribe", resource: path}));
         } else {
@@ -342,9 +354,9 @@ export var factoryIService = (
         path : string,
         id : string
     ) : void => {
-        console.log("unregister", path);
+        // console.log("unregister", path);
         if (!(_subscriptions.alive(path, id) || _pendingSubscriptions.alive(path, id))) {
-            throw "WebSocket: unsubscribe: no subscription for " + JSON.stringify(path) + "!";
+            wsThrow("WebSocket: unsubscribe: no subscription for " + JSON.stringify(path) + "!");
         } else {
             _subscriptions.del(path, id, () => {
                 if (_ws.readyState === _ws.OPEN) {
@@ -358,6 +370,13 @@ export var factoryIService = (
     };
 
     /**
+     * (see interface for documentation)
+     */
+    registerErrorHandler = (callback ?: (error : ResponseError) => void) : void => {
+        errorHandler = callback;
+    };
+
+    /**
      * Send Request object (subscribe or unsubscribe); push it to
      * _requests; do some exception handling and logging.
      */
@@ -365,10 +384,10 @@ export var factoryIService = (
         req : Request
     ) : void => {
         var reqString : string = JSON.stringify(req);
-        console.log("WebSocket: sending " + JSON.stringify(req, null, 2));  // FIXME: introduce a log service for this stuff.
+        // console.log("WebSocket: sending " + JSON.stringify(req, null, 2));  // FIXME: introduce a log service for this stuff.
 
         if (_ws.readyState !== _ws.OPEN) {
-            throw "WebSocket: attempt to write to non-OPEN websocket!";
+            wsThrow("WebSocket: attempt to write to non-OPEN websocket!");
         } else {
             _ws.send(reqString);
             _requests.push(req);
@@ -389,14 +408,14 @@ export var factoryIService = (
         if (msg.hasOwnProperty("status")) {
             var checkCompare = (req : Request, resp : ResponseOk) => {
                 if (req.action !== resp.action || req.resource !== resp.resource) {
-                    throw ("WebSocket: onmessage: response does not match request!\n"
+                    wsThrow ("WebSocket: onmessage: response does not match request!\n"
                            + req.action + " " + req.resource + "\n"
                            + resp.action + " " + resp.resource);
                 }
             };
 
             var checkRedundant = (resp : ResponseOk) => {
-                throw ("WebSocket: onmessage: received 'redundant' response.  this should not happen!\n"
+                wsThrow ("WebSocket: onmessage: received 'redundant' response.  this should not happen!\n"
                        + resp.toString());
             };
 
@@ -415,29 +434,29 @@ export var factoryIService = (
         // ResponseError: request failed!
         if (msg.hasOwnProperty("error")) {
             switch (msg.error) {
-            case "unknown_action":
-            case "unknown_resource":
-            case "malformed_message":
-            case "invalid_json":
-            case "subscribe_not_supported":
-            case "internal_error":
-                throw ("WebSocket: onmessage: received error message.\n"
-                       + msg.error + "\n"
-                       + req.toString() + "\n"
-                       + msg.toString());
+                case "unknown_action":
+                case "unknown_resource":
+                case "malformed_message":
+                case "invalid_json":
+                case "subscribe_not_supported":
+                case "internal_error":
+                    wsThrow ("WebSocket: onmessage: received error message.\n"
+                           + msg.error + "\n"
+                           + req.toString() + "\n"
+                           + msg.toString());
 
-            default:
-                throw ("WebSocket: onmessage: received **unknown** error message.  this should not happen!\n"
-                       + msg.error + "\n"
-                       + req.toString() + "\n"
-                       + msg.toString());
+                default:
+                    wsThrow ("WebSocket: onmessage: received **unknown** error message.  this should not happen!\n"
+                           + msg.error + "\n"
+                           + req.toString() + "\n"
+                           + msg.toString());
             }
         }
     };
 
     onmessage = (event : {data : string}) : void => {
         var msg : ServerMessage = JSON.parse(event.data);
-        console.log("WebSocket: onmessage:"); console.log(JSON.stringify(msg, null, 2));  // FIXME: introduce a log service for this stuff.
+        // console.log("WebSocket: onmessage:"); console.log(JSON.stringify(msg, null, 2));
 
         // ServerEvent: something happened to the backend data!
         if (msg.hasOwnProperty("event")) {
@@ -448,9 +467,9 @@ export var factoryIService = (
     };
 
     onerror = (event) => {
-        console.log("WebSocket: error!");
-        console.log(JSON.stringify(event, null, 2));
-        throw "WebSocket: error!";
+        // console.log("WebSocket: error!");
+        // console.log(JSON.stringify(event, null, 2));
+        wsThrow("WebSocket: error!");
     };
 
     onopen = (event) => {
@@ -463,8 +482,8 @@ export var factoryIService = (
     onclose = (event) => {
         // _ws = open();
 
-        console.log("WebSocket: close!  (see source code for things to fix here.)");
-        console.log(JSON.stringify(event, null, 2));
+        // console.log("WebSocket: close!  (see source code for things to fix here.)");
+        // console.log(JSON.stringify(event, null, 2));
 
         // FIXME: this is bad because it invalidates all previous
         // subscriptions, but adhWebSocket is not aware of that.
@@ -474,7 +493,7 @@ export var factoryIService = (
         // and _pendingSubscriptions and just assumes the server has
         // unsusbcribed everything already.
 
-        throw "WebSocket: close!";
+        wsThrow("WebSocket: close!");
     };
 
     open = () => {
@@ -496,6 +515,14 @@ export var factoryIService = (
         return _ws;
     };
 
+    wsThrow = (msg : any) : void => {
+        if (typeof errorHandler !== "undefined") {
+            errorHandler(msg);
+        } else {
+            throw msg;
+        }
+    };
+
     /**
      * (main)
      */
@@ -503,7 +530,8 @@ export var factoryIService = (
 
     return {
         register: register,
-        unregister: unregister
+        unregister: unregister,
+        registerErrorHandler: registerErrorHandler
     };
 };
 
