@@ -8,11 +8,11 @@ import ResourcesBase = require("../../ResourcesBase");
 
 import RIRate = require("../../Resources_/adhocracy_core/resources/rate/IRate");
 import RIRateVersion = require("../../Resources_/adhocracy_core/resources/rate/IRateVersion");
-// import SICanRate = require("../../Resources_/adhocracy_core/sheets/rate/ICanRate");
-// import SIRate = require("../../Resources_/adhocracy_core/sheets/rate/IRate");
-// import SIRateable = require("../../Resources_/adhocracy_core/sheets/rate/IRateable");
+import SIRate = require("../../Resources_/adhocracy_core/sheets/rate/IRate");
 import SIPool = require("../../Resources_/adhocracy_core/sheets/pool/IPool");
 import SIUserBasic = require("../../Resources_/adhocracy_core/sheets/user/IUserBasic");
+// import SICanRate = require("../../Resources_/adhocracy_core/sheets/rate/ICanRate");
+// import SIRateable = require("../../Resources_/adhocracy_core/sheets/rate/IRateable");
 
 var pkgLocation = "/Rate";
 
@@ -102,13 +102,86 @@ export var resetRates = ($scope : IRateScope) : void => {
 
 
 /**
- * Take the rateable in $scope.refersTo and collect all ratings that
- * rate this resource from its post pool.  Promise an array of latest
- * rating versions.
- *
- * FIXME: make better use of the query filter api.
+ * Take the rateable in $scope.refersTo and collect aggregate
+ * information on all ratings that rate this resource from its post
+ * pool.  Promise an object that contains the user's own rating
+ * version and the total of all pros, contras, and neutrals,
+ * respectively.
  */
-export var fetchAllRates = (
+export var fetchAggregateRates = (
+    adapter : IRateAdapter<any>,
+    $scope : IRateScope,
+    $q : ng.IQService,
+    adhHttp : AdhHttp.Service<any>,
+    adhUser : AdhUser.User
+) : ng.IPromise<RIRateVersion[]> => {
+    return adhHttp
+        .get($scope.refersTo).then((rateable : ResourcesBase.Resource) => {
+            $scope.postPoolPath = adapter.rateablePostPoolPath(rateable);
+            return $scope.postPoolPath;
+        })
+
+        // get only current user
+        .then(() => {
+            var query : any = {};
+            query.content_type = RIRateVersion.content_type;
+            query.depth = 2;
+            query.tag = 'last';
+            query[SIRate.nick + ":subject"] = adhUser.userPath;
+
+            console.log($scope.postPoolPath);
+            console.log(JSON.stringify(query, null, 2));
+
+            return adhHttp.get($scope.postPoolPath, query);
+        })
+        .then((resp) => {
+            console.log(JSON.stringify(resp, null, 2));
+            debugger;
+        })
+
+/*
+        // get sums of props, cons, neutrals, resp.
+        .then(() => {
+            var query : any = {};
+            query.content_type = RIRateVersion.content_type;
+            query.depth = 2;
+            query.tag = 'last';
+
+            return adhHttp.get($scope.postPoolPath, query);
+        })
+        .then((resp) => {
+            console.log(JSON.stringify(resp, null, 2));
+            debugger;
+        })
+*/
+
+
+        .then(() => adhHttp.get($scope.postPoolPath, {
+            content_type: "adhocracy_core.resources.rate.IRate"
+        }))
+        .then((postPool) => {
+            var ratePromises : ng.IPromise<ResourcesBase.Resource>[] =
+                postPool.data[SIPool.nick].elements
+                    .map((path : string, index : number) =>
+                        adhHttp
+                           .getNewestVersionPathNoFork(path)
+                           .then((path) => adhHttp.get(path)));
+
+            var hasMatchingRefersTo = (rate) =>
+                adapter.object(rate) === $scope.refersTo;
+
+            return $q.all(ratePromises)
+                .then((rates) => _.filter(rates, hasMatchingRefersTo));
+        });
+};
+
+
+/**
+ * Take ...  [FIXME] and promise a list of all rating actions on a
+ * particular resource in the form of an audit trail (i.e., an audit
+ * item array).
+ */
+export var fetchRateDetails = (
     adapter : IRateAdapter<any>,
     $scope : IRateScope,
     $q : ng.IQService,
@@ -186,7 +259,7 @@ export var updateRates = (
         });
     };
 
-    return fetchAllRates(adapter, $scope, $q, adhHttp)
+    return fetchAggregateRates(adapter, $scope, $q, adhHttp, adhUser)
         .then((rates : RIRateVersion[]) => {
             resetRates($scope);
             $scope.allRateResources = rates;
