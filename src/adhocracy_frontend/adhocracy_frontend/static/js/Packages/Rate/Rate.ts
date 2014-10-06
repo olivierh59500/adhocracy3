@@ -195,7 +195,7 @@ export var fetchRateDetails = (
             var auditTrail : { subject: string; rate: number }[];
 
             adhHttp.withTransaction((transaction) : ng.IPromise<void> => {
-                var gets : ITransactionResult[] = ratePaths.map(transaction.get);
+                var gets : AdhHttp.ITransactionResult[] = ratePaths.map((path) => transaction.get(path));
 
                 return transaction.commit()
                     .then((responses) => {
@@ -205,7 +205,7 @@ export var fetchRateDetails = (
                     });
             }).then(() => {
                 return adhHttp.withTransaction((transaction) : ng.IPromise<void> => {
-                    var gets : ITransactionResult[] = rates.map((rate) => transaction.get(adapter.subject(rate)));
+                    var gets : AdhHttp.ITransactionResult[] = rates.map((rate) => transaction.get(adapter.subject(rate)));
 
                     return transaction.commit()
                         .then((responses) => {
