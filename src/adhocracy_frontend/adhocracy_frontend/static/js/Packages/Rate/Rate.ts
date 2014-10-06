@@ -322,9 +322,9 @@ export var rateController = (
             return adhHttp
                 .postNewVersionNoFork($scope.thisUsersRate.path, $scope.thisUsersRate)
                 .then((response : { value: RIRate }) => {
+                    $scope.auditTrailVisible = false;
                     return fetchPostPool(adapter, $scope, adhHttp)
                         .then(() => fetchAggregateRates(adapter, $scope, $q, adhHttp, adhUser));
-                    $scope.auditTrailVisible = false;
                 });
         }
     };
