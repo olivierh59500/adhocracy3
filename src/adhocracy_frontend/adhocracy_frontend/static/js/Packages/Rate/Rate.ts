@@ -126,34 +126,38 @@ export var fetchAggregateRates = (
             var query : any = {};
             query.content_type = RIRateVersion.content_type;
             query.depth = 2;
-            query.tag = 'last';
+            query.tag = "LAST";
             query[SIRate.nick + ":subject"] = adhUser.userPath;
-
-            console.log($scope.postPoolPath);
-            console.log(JSON.stringify(query, null, 2));
-
             return adhHttp.get($scope.postPoolPath, query);
         })
-        .then((resp) => {
-            console.log(JSON.stringify(resp, null, 2));
-            debugger;
+        .then((poolRsp) => {
+            adhHttp.get(poolRsp.data[SIPool.nick].elements[0]).then((rateRsp) => {
+                $scope.thisUsersRate = rateRsp;
+
+                console.log(JSON.stringify($scope.thisUsersRate, null, 2));  // FIXME: remove this line once this function has been cleaned up.
+            });
         })
 
-/*
         // get sums of props, cons, neutrals, resp.
         .then(() => {
             var query : any = {};
             query.content_type = RIRateVersion.content_type;
             query.depth = 2;
-            query.tag = 'last';
+            query.tag = "LAST";
+            query.count = "true";
+            query.aggregateby = "rate";
 
             return adhHttp.get($scope.postPoolPath, query);
         })
-        .then((resp) => {
-            console.log(JSON.stringify(resp, null, 2));
-            debugger;
+        .then((poolRsp) => {
+            var rates = poolRsp.data[SIPool.nick].aggregateby.rate;
+            $scope.rates.pro = rates["1"] || 0;
+            $scope.rates.contra = rates["-1"] || 0;
+            $scope.rates.neutral = rates["0"] || 0;
+
+            console.log(JSON.stringify($scope.rates, null, 2));  // FIXME: remove this line once this function has been cleaned up.
         })
-*/
+
 
 
         .then(() => adhHttp.get($scope.postPoolPath, {
