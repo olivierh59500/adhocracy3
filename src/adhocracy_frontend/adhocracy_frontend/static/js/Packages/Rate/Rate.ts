@@ -11,7 +11,7 @@ import RIRate = require("../../Resources_/adhocracy_core/resources/rate/IRate");
 import RIRateVersion = require("../../Resources_/adhocracy_core/resources/rate/IRateVersion");
 // import SICanRate = require("../../Resources_/adhocracy_core/sheets/rate/ICanRate");
 import SIPool = require("../../Resources_/adhocracy_core/sheets/pool/IPool");
-// import SIRateable = require("../../Resources_/adhocracy_core/sheets/rate/IRateable");
+import SIRateable = require("../../Resources_/adhocracy_core/sheets/rate/IRateable");
 import SIRate = require("../../Resources_/adhocracy_core/sheets/rate/IRate");
 import SIUserBasic = require("../../Resources_/adhocracy_core/sheets/user/IUserBasic");
 
@@ -141,7 +141,7 @@ export var fetchAggregateRates = (
 
         return adhHttp.get($scope.postPoolPath, query)
             .then((poolRsp) => {
-                adhHttp.get(poolRsp.data[SIPool.nick].elements[0]).then((rateRsp) => {
+                return adhHttp.get(poolRsp.data[SIPool.nick].elements[0]).then((rateRsp) => {
                     $scope.thisUsersRate = rateRsp;
                 });
             });
@@ -190,9 +190,9 @@ export var fetchRateDetails = (
     return adhHttp.get($scope.postPoolPath, query)
         .then((poolRsp) => {
             var ratePaths : string[] = poolRsp.data[SIPool.nick].elements;
-            var rates : RIRateVersion[];
-            var users : RIUser[];
-            var auditTrail : { subject: string; rate: number }[];
+            var rates : RIRateVersion[] = [];
+            var users : RIUser[] = [];
+            var auditTrail : { subject: string; rate: number }[] = [];
 
             adhHttp.withTransaction((transaction) : ng.IPromise<void> => {
                 var gets : AdhHttp.ITransactionResult[] = ratePaths.map((path) => transaction.get(path));
@@ -215,10 +215,7 @@ export var fetchRateDetails = (
                         });
                 });
             }).then(() => {
-                _.forOwn(ratePaths, (ix, ratePath) => {
-                    console.log(ix);
-                    debugger;
-
+                _.forOwn(ratePaths, (ratePath, ix) => {
                     auditTrail[ix] = {
                         subject: users[ix].data[SIUserBasic.nick].name,  // (use adapter for user, too?)
                         rate: adapter.rate(rates[ix])
@@ -256,12 +253,12 @@ export var rateController = (
             $scope.auditTrailVisible = false;
             delete $scope.auditTrail;
         } else {
-            $q.all([
-                fetchRateDetails(adapter, $scope, $q, adhHttp),
-                fetchAggregateRates(adapter, $scope, $q, adhHttp, adhUser)
-            ]).then(() => {
-                $scope.auditTrailVisible = true;
-            });
+            fetchPostPool(adapter, $scope, adhHttp)
+                .then(() => fetchAggregateRates(adapter, $scope, $q, adhHttp, adhUser))
+                .then(() => fetchRateDetails(adapter, $scope, $q, adhHttp))
+                .then(() => {
+                    $scope.auditTrailVisible = true;
+                });
         }
     };
 
@@ -325,20 +322,17 @@ export var rateController = (
             return adhHttp
                 .postNewVersionNoFork($scope.thisUsersRate.path, $scope.thisUsersRate)
                 .then((response : { value: RIRate }) => {
-                    return $q.all([
-                        fetchRateDetails(adapter, $scope, $q, adhHttp),
-                        fetchAggregateRates(adapter, $scope, $q, adhHttp, adhUser)
-                    ]).then(() => null);
+                    return fetchPostPool(adapter, $scope, adhHttp)
+                        .then(() => fetchAggregateRates(adapter, $scope, $q, adhHttp, adhUser));
+                    $scope.auditTrailVisible = false;
                 });
         }
     };
 
     resetRates($scope);
     $scope.auditTrailVisible = false;
-    return $q.all([
-        fetchRateDetails(adapter, $scope, $q, adhHttp),
-        fetchAggregateRates(adapter, $scope, $q, adhHttp, adhUser)
-    ]).then(() => null);
+    return fetchPostPool(adapter, $scope, adhHttp)
+        .then(() => fetchAggregateRates(adapter, $scope, $q, adhHttp, adhUser));
 };
 
 
