@@ -6,13 +6,14 @@ import AdhUser = require("../User/User");
 
 import ResourcesBase = require("../../ResourcesBase");
 
+import RIUser = require("../../Resources_/adhocracy_core/resources/principal/IUser");
 import RIRate = require("../../Resources_/adhocracy_core/resources/rate/IRate");
 import RIRateVersion = require("../../Resources_/adhocracy_core/resources/rate/IRateVersion");
-import SIRate = require("../../Resources_/adhocracy_core/sheets/rate/IRate");
-import SIPool = require("../../Resources_/adhocracy_core/sheets/pool/IPool");
-import SIUserBasic = require("../../Resources_/adhocracy_core/sheets/user/IUserBasic");
 // import SICanRate = require("../../Resources_/adhocracy_core/sheets/rate/ICanRate");
+import SIPool = require("../../Resources_/adhocracy_core/sheets/pool/IPool");
 // import SIRateable = require("../../Resources_/adhocracy_core/sheets/rate/IRateable");
+import SIRate = require("../../Resources_/adhocracy_core/sheets/rate/IRate");
+import SIUserBasic = require("../../Resources_/adhocracy_core/sheets/user/IUserBasic");
 
 var pkgLocation = "/Rate";
 
@@ -180,55 +181,52 @@ export var fetchRateDetails = (
     adhHttp : AdhHttp.Service<any>
 ) : ng.IPromise<void> => {
 
+    var query : any = {};
+    query.content_type = RIRateVersion.content_type;
+    query.depth = 2;
+    query.tag = "LAST";
+    query[SIRate.nick + ":object"] = $scope.refersTo;
 
-    throw "fetchRateDetails is not up to date.";
+    return adhHttp.get($scope.postPoolPath, query)
+        .then((poolRsp) => {
+            var ratePaths : string[] = poolRsp.data[SIPool.nick].elements;
+            var rates : RIRateVersion[];
+            var users : RIUser[];
+            var auditTrail : { subject: string; rate: number }[];
 
-/*
+            adhHttp.withTransaction((transaction) : ng.IPromise<void> => {
+                var gets : ITransactionResult[] = ratePaths.map(transaction.get);
 
-    var updateAuditTrail = (rates : RIRateVersion[]) : ng.IPromise<void> => {
-        var auditTrailPromises : ng.IPromise<{ subject : string; rate : number }>[] = rates.map((rate) =>
-            adhHttp.get(adapter.subject(rate)).then((user) => {
-                return {
-                    subject: user.data[SIUserBasic.nick].name,  // (use adapter for user, too?)
-                    rate: adapter.rate(rate)
-                };
-            }));
+                return transaction.commit()
+                    .then((responses) => {
+                        gets.map((transactionResult) => {
+                            rates.push(responses[transactionResult.index]);
+                        });
+                    });
+            }).then(() => {
+                return adhHttp.withTransaction((transaction) : ng.IPromise<void> => {
+                    var gets : ITransactionResult[] = rates.map((rate) => transaction.get(adapter.subject(rate)));
 
-        return $q.all(auditTrailPromises).then((auditTrail) => {
-            $scope.auditTrail = auditTrail;
+                    return transaction.commit()
+                        .then((responses) => {
+                            gets.map((transactionResult) => {
+                                users.push(responses[transactionResult.index]);
+                            });
+                        });
+                });
+            }).then(() => {
+                _.forOwn(ratePaths, (ix, ratePath) => {
+                    console.log(ix);
+                    debugger;
+
+                    auditTrail[ix] = {
+                        subject: users[ix].data[SIUserBasic.nick].name,  // (use adapter for user, too?)
+                        rate: adapter.rate(rates[ix])
+                    };
+                });
+                $scope.auditTrail = auditTrail;
+            });
         });
-    };
-
-*/
-
-
-    return adhHttp
-        .get($scope.refersTo).then((rateable : ResourcesBase.Resource) => {
-            $scope.postPoolPath = adapter.rateablePostPoolPath(rateable);
-            return $scope.postPoolPath;
-        })
-        .then((postPoolPath) => adhHttp.get(postPoolPath, {
-            content_type: "adhocracy_core.resources.rate.IRate"
-        }))
-        .then((postPool) => {
-            var ratePromises : ng.IPromise<ResourcesBase.Resource>[] =
-                postPool.data[SIPool.nick].elements
-                    .map((path : string, index : number) =>
-                        adhHttp
-                           .getNewestVersionPathNoFork(path)
-                           .then((path) => adhHttp.get(path)));
-
-            var hasMatchingRefersTo = (rate) =>
-                adapter.object(rate) === $scope.refersTo;
-
-            return $q.all(ratePromises)
-                .then((rates) => _.filter(rates, hasMatchingRefersTo))
-                .then(() => null);
-        });
-
-
-// auditTrail : { subject: string; rate: number }[];
-
 };
 
 
