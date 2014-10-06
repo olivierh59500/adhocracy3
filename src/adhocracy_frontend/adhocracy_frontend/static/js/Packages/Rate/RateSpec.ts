@@ -160,7 +160,7 @@ export var register = () => {
 
                 var adapter = new AdhRateAdapter.RateAdapter();
 
-                AdhRate.updateRates(adapter, scopeMock, q, httpMock, userMock).then(
+                AdhRate.fetchAggregateRates(adapter, scopeMock, q, httpMock, userMock).then(
                     () => {
                         expect(scopeMock.rates.pro).toBe(2);
                         expect(scopeMock.rates.contra).toBe(1);
