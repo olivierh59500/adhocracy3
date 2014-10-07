@@ -1,14 +1,15 @@
 import AdhConfig = require("../Config/Config");
 import AdhPreliminaryNames = require("../PreliminaryNames/PreliminaryNames");
 import AdhHttp = require("../Http/Http");
+import AdhPermissions = require("../Permissions/Permissions");
 import AdhResource = require("../../Resources");
 import AdhUser = require("../User/User");
 
 import ResourcesBase = require("../../ResourcesBase");
 
-import RIUser = require("../../Resources_/adhocracy_core/resources/principal/IUser");
 import RIRate = require("../../Resources_/adhocracy_core/resources/rate/IRate");
 import RIRateVersion = require("../../Resources_/adhocracy_core/resources/rate/IRateVersion");
+import RIUser = require("../../Resources_/adhocracy_core/resources/principal/IUser");
 // import SICanRate = require("../../Resources_/adhocracy_core/sheets/rate/ICanRate");
 import SIPool = require("../../Resources_/adhocracy_core/sheets/pool/IPool");
 // import SIRateable = require("../../Resources_/adhocracy_core/sheets/rate/IRateable");
@@ -63,6 +64,7 @@ export interface IRateScope extends ng.IScope {
     cast(value : number) : void;
     assureUserRateExists() : ng.IPromise<void>;
     postUpdate() : ng.IPromise<void>;
+    optionsPostPool : AdhHttp.IOptions;
 }
 
 
@@ -237,6 +239,7 @@ export var rateController = (
     $scope : IRateScope,
     $q : ng.IQService,
     adhHttp : AdhHttp.Service<any>,
+    adhPermissions : AdhPermissions.Service,
     adhUser : AdhUser.User,
     adhPreliminaryNames : AdhPreliminaryNames
 ) : ng.IPromise<void> => {
@@ -263,8 +266,9 @@ export var rateController = (
     };
 
     $scope.cast = (rate : number) : void => {
-        if (!adhUser.userPath) {
-            // if user is not logged in, rating silently refuses to work.
+        if (!$scope.optionsPostPool.POST) {
+            // if POST is not allowed on the Rateable's post_pool,
+            // rating silently refuses to work.
             return;
         }
 
@@ -331,6 +335,7 @@ export var rateController = (
     resetRates($scope);
     $scope.auditTrailVisible = false;
     return fetchPostPoolPath(adapter, $scope, adhHttp)
+        .then(() => adhPermissions.bindScope($scope, $scope.postPoolPath, "optionsPostPool"))
         .then(() => fetchAggregatedRates(adapter, $scope, $q, adhHttp, adhUser));
 };
 
@@ -347,7 +352,9 @@ export var createDirective = (
             postPoolSheet : "@",
             postPoolField : "@"
         },
-        controller: ["$scope", "$q", "adhHttp", "adhUser", "adhPreliminaryNames", ($scope, $q, adhHttp, adhUser, adhPreliminaryNames) =>
-            rateController(adapter, $scope, $q, adhHttp, adhUser, adhPreliminaryNames)]
+        controller:
+            ["$scope", "$q", "adhHttp", "adhPermissions", "adhUser", "adhPreliminaryNames",
+                ($scope, $q, adhHttp, adhPermissions, adhUser, adhPreliminaryNames) =>
+                    rateController(adapter, $scope, $q, adhHttp, adhPermissions, adhUser, adhPreliminaryNames)]
     };
 };
