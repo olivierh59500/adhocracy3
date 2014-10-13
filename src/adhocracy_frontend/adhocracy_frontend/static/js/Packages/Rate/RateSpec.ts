@@ -308,10 +308,10 @@ export var register = () => {
                 // in particular, it responds with 'undefined' to the
                 // request for the rateable in fetchPostPoolPath.
                 //
-                //AdhRate.rateController(adapterMock, scopeMock, q, httpMock, adhPermissionsMock, userMock, adhPreliminaryNamesMock)
-                //    .then(done, (reason) => {
-                //        expect(reason).toBe(undefined);
-                //    });
+                // AdhRate.rateController(adapterMock, scopeMock, q, httpMock, adhPermissionsMock, userMock, adhPreliminaryNamesMock)
+                //     .then(done, (reason) => {
+                //         expect(reason).toBe(undefined);
+                //     });
             });
 
             afterEach(() => {
