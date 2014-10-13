@@ -2,6 +2,7 @@
 from collections import Sequence
 from collections import OrderedDict
 from datetime import datetime
+import decimal
 
 from pyramid.path import DottedNameResolver
 from pyramid.traversal import find_resource
@@ -9,6 +10,7 @@ from pyramid.traversal import resource_path
 from pytz import UTC
 from pyramid.traversal import find_interface
 from substanced.util import get_dotted_name
+from substanced.util import find_service
 from zope.interface.interfaces import IInterface
 import colander
 import pytz
@@ -248,6 +250,20 @@ def deferred_content_type_default(node: colander.MappingSchema,
     return get_iresource(context) or IResource
 
 
+class Boolean(AdhocracySchemaNode):
+
+    """SchemaNode for boolean values.
+
+    Example value: false
+    """
+
+    def schema_type(self) -> colander.SchemaType:
+        return colander.Boolean(true_choices=('true', '1'))
+
+    default = False
+    missing = False
+
+
 class ContentType(AdhocracySchemaNode):
 
     schema_type = Interface
@@ -265,6 +281,37 @@ def get_sheet_cstructs(context: IResource, request) -> dict:
         name = sheet.meta.isheet.__identifier__
         cstructs[name] = cstruct
     return cstructs
+
+
+class CurrencyAmount(AdhocracySchemaNode):
+
+    """SchemaNode for currency amounts.
+
+    Values are stored precisely with 2 fractional digits.
+    The used currency (e.g. EUR, USD) is *not* stored as part of the value,
+    it is assumed to be known or to be stored in a different field.
+
+    Example value: 1.99
+    """
+
+    def schema_type(self) -> colander.SchemaType:
+        return colander.Decimal(quant='.01')
+
+    default = decimal.Decimal(0)
+    missing = colander.drop
+
+
+class ISOCountryCode(AdhocracySchemaNode):
+
+    """An ISO 3166-1 alpha-2 country code (two uppercase ASCII letters).
+
+    Example value: US
+    """
+
+    schema_type = colander.String
+    default = 'DE'
+    missing = colander.drop
+    validator = colander.Regex(r'^[A-Z][A-Z]$')
 
 
 class ResourceObject(colander.SchemaType):
@@ -302,7 +349,7 @@ class ResourceObject(colander.SchemaType):
         :param value: the resource to serialize
         :return: the url or path of that resource
         """
-        if value in (colander.null, ''):
+        if value in (colander.null, '', None):
             return ''
         try:
             raise_attribute_error_if_not_location_aware(value)
@@ -540,7 +587,7 @@ def _get_post_pool(context: IPool, iresource_or_service_name) -> IResource:
     if IInterface.providedBy(iresource_or_service_name):
         return find_interface(context, iresource_or_service_name)
     else:
-        return context.find_service(iresource_or_service_name)
+        return find_service(context, iresource_or_service_name)
 
 
 @colander.deferred
@@ -589,11 +636,15 @@ def deferred_validate_references_post_pool(node: colander.SchemaNode,
                                            kw: dict) -> callable:
     """Validate the :term:`post_pool` for all reference children of `node`."""
     context = kw.get('context')
+    request = kw.get('request', None)
+    if request is None:
+        return None
     reference_nodes = _get_reference_childs(node)
     validators = []
+    registry = request.registry
     for child in reference_nodes:
         _add_post_pool_validator(node, child, context, validators)
-        _add_referenced_post_pool_validator(node, child, validators)
+        _add_referenced_post_pool_validator(node, child, validators, registry)
     return colander.All(*validators)
 
 
@@ -617,14 +668,14 @@ def _add_post_pool_validator(node, child, context, validators):
         validators.append(validate_node)
 
 
-def _add_referenced_post_pool_validator(node, child, validators):
+def _add_referenced_post_pool_validator(node, child, validators, registry):
     referenced_isheet = child.reftype.getTaggedValue('target_isheet')
 
     def validate_node(node, value):
         references = node.get_value(value, child.name)
         references = normalize_to_tuple(references)
         for reference in references:
-            sheet = get_sheet(reference, referenced_isheet)
+            sheet = get_sheet(reference, referenced_isheet, registry=registry)
             post_pool = _get_post_pool_from_node(sheet.schema, reference)
             _validate_post_pool(child, (reference,), post_pool)
 

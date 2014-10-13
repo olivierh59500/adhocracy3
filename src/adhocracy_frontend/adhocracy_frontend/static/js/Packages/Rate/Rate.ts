@@ -65,6 +65,7 @@ export interface IRateScope extends ng.IScope {
     assureUserRateExists() : ng.IPromise<void>;
     postUpdate() : ng.IPromise<void>;
     optionsPostPool : AdhHttp.IOptions;
+    ready : boolean;
 }
 
 

@@ -14,6 +14,7 @@ from zope.interface.interfaces import IObjectEvent
 from substanced.interfaces import IPropertySheet
 from substanced.interfaces import ReferenceClass
 from substanced.interfaces import IUserLocator
+from substanced.interfaces import IService
 
 
 class ISheet(Interface):
@@ -260,7 +261,7 @@ class IPool(IResource):  # pragma: no cover
         """
 
 
-class IServicePool(IPool):
+class IServicePool(IPool, IService):
 
     """Pool serving as a :term:`service`."""
 
@@ -338,6 +339,8 @@ class IResourceSheetModified(IObjectEvent):
     object = Attribute('The modified resource')
     isheet = Attribute('The modified sheet interface of the resource')
     registry = Attribute('The pyramid registry')
+    old_appstruct = Attribute('The old :term:`appstruct` data')
+    new_appstruct = Attribute('The new :term:`appstruct` data')
 
 
 class IResourceCreatedAndAdded(IObjectEvent):
