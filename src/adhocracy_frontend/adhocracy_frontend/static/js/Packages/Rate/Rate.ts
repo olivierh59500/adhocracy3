@@ -14,7 +14,7 @@ import RIUser = require("../../Resources_/adhocracy_core/resources/principal/IUs
 import SIPool = require("../../Resources_/adhocracy_core/sheets/pool/IPool");
 // import SIRateable = require("../../Resources_/adhocracy_core/sheets/rate/IRateable");
 import SIRate = require("../../Resources_/adhocracy_core/sheets/rate/IRate");
-import SIUserBasic = require("../../Resources_/adhocracy_core/sheets/user/IUserBasic");
+import SIUserBasic = require("../../Resources_/adhocracy_core/sheets/principal/IUserBasic");
 
 var pkgLocation = "/Rate";
 
