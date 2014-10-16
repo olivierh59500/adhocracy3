@@ -12,6 +12,7 @@ from adhocracy_core.schema import Email
 from adhocracy_core.schema import ISOCountryCode
 from adhocracy_core.schema import SingleLine
 from adhocracy_core.schema import Text
+from adhocracy_core.utils import get_sheet
 
 
 class IUserInfo(ISheet, ISheetReferenceAutoUpdateMarker):
@@ -151,6 +152,18 @@ details_meta = sheet_metadata_defaults._replace(isheet=IDetails,
                                                 schema_class=DetailsSchema)
 
 
+def index_location(resource, default):
+    """Return values of the "location_is_..." fields."""
+    # FIXME?: can we pass the registry to get_sheet here?
+    sheet = get_sheet(resource, IDetails)
+    locations = []
+    appstruct = sheet.get()
+    for value in ('city', 'country', 'town', 'online', 'linked_to_ruhr'):
+        if appstruct['location_is_' + value]:
+            locations.append(value)
+    return locations if locations else default
+
+
 class MotivationSchema(colander.MappingSchema):
 
     """Data structure for the motivation behind the proposal."""
@@ -171,8 +184,6 @@ class FinanceSchema(colander.MappingSchema):
 
     budget = CurrencyAmount(missing=colander.required)
     requested_funding = CurrencyAmount(missing=colander.required)
-    granted = Boolean()
-    # financial_plan = AssetPath()  # (2 Mb. max.)
 
 
 finance_meta = sheet_metadata_defaults._replace(isheet=IFinance,
@@ -184,7 +195,6 @@ class ExtrasSchema(colander.MappingSchema):
     """Data structure for additional fields."""
 
     # media = list of AssetPath()
-    # categories = list of enum???
     experience = Text()
     heard_from_colleague = Boolean()
     heard_from_website = Boolean()
@@ -208,3 +218,7 @@ def includeme(config):
     add_sheet_to_registry(motivation_meta, config.registry)
     add_sheet_to_registry(finance_meta, config.registry)
     add_sheet_to_registry(extras_meta, config.registry)
+    config.add_indexview(index_location,
+                         catalog_name='adhocracy',
+                         index_name='mercator_location',
+                         context=IDetails)

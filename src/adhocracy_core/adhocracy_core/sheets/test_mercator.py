@@ -1,56 +1,57 @@
 from pyramid import testing
+from pytest import mark
 from pytest import fixture
 from pytest import raises
 
 
+@fixture()
+def integration(config):
+        config.include('adhocracy_core.catalog')
+        config.include('adhocracy_core.sheets.mercator')
+
+
+@mark.usefixtures('integration')
 class TestIncludeme:
 
     def test_includeme_register_userinfo_sheet(self, config):
         from adhocracy_core.sheets.mercator import IUserInfo
         from adhocracy_core.utils import get_sheet
-        config.include('adhocracy_core.sheets.mercator')
         context = testing.DummyResource(__provides__=IUserInfo)
         assert get_sheet(context, IUserInfo)
 
     def test_includeme_register_organizationinfo_sheet(self, config):
         from adhocracy_core.sheets.mercator import IOrganizationInfo
         from adhocracy_core.utils import get_sheet
-        config.include('adhocracy_core.sheets.mercator')
         context = testing.DummyResource(__provides__=IOrganizationInfo)
         assert get_sheet(context, IOrganizationInfo)
 
     def test_includeme_register_introduction_sheet(self, config):
         from adhocracy_core.sheets.mercator import IIntroduction
         from adhocracy_core.utils import get_sheet
-        config.include('adhocracy_core.sheets.mercator')
         context = testing.DummyResource(__provides__=IIntroduction)
         assert get_sheet(context, IIntroduction)
 
     def test_includeme_register_details_sheet(self, config):
         from adhocracy_core.sheets.mercator import IDetails
         from adhocracy_core.utils import get_sheet
-        config.include('adhocracy_core.sheets.mercator')
         context = testing.DummyResource(__provides__=IDetails)
         assert get_sheet(context, IDetails)
 
     def test_includeme_register_motivation_sheet(self, config):
         from adhocracy_core.sheets.mercator import IMotivation
         from adhocracy_core.utils import get_sheet
-        config.include('adhocracy_core.sheets.mercator')
         context = testing.DummyResource(__provides__=IMotivation)
         assert get_sheet(context, IMotivation)
 
     def test_includeme_register_finance_sheet(self, config):
         from adhocracy_core.sheets.mercator import IFinance
         from adhocracy_core.utils import get_sheet
-        config.include('adhocracy_core.sheets.mercator')
         context = testing.DummyResource(__provides__=IFinance)
         assert get_sheet(context, IFinance)
 
     def test_includeme_register_extras_sheet(self, config):
         from adhocracy_core.sheets.mercator import IExtras
         from adhocracy_core.utils import get_sheet
-        config.include('adhocracy_core.sheets.mercator')
         context = testing.DummyResource(__provides__=IExtras)
         assert get_sheet(context, IExtras)
 
@@ -222,6 +223,11 @@ class TestDetailsSheet:
         from adhocracy_core.interfaces import IItem
         return testing.DummyResource(__provides__=IItem)
 
+    @fixture
+    def resource(self):
+        from adhocracy_core.sheets.mercator import IDetails
+        return testing.DummyResource(__provides__=IDetails)
+
     def test_create_valid(self, meta, context):
         from zope.interface.verify import verifyObject
         from adhocracy_core.interfaces import IResourceSheet
@@ -243,6 +249,35 @@ class TestDetailsSheet:
                   'location_is_town': False,
                   'story': ''}
         assert inst.get() == wanted
+
+    @mark.usefixtures('integration')
+    def test_index_location_default(self, resource):
+        from adhocracy_core.sheets.mercator import index_location
+        result = index_location(resource, 'default')
+        assert result == 'default'
+
+    @mark.usefixtures('integration')
+    def test_index_location_is_linked_to_ruhr(self, resource):
+        from adhocracy_core.sheets.mercator import IDetails
+        from adhocracy_core.sheets.mercator import index_location
+        from adhocracy_core.utils import get_sheet
+        sheet = get_sheet(resource, IDetails)
+        sheet.set({'location_is_linked_to_ruhr': True})
+        result = index_location(resource, 'default')
+        assert result == ['linked_to_ruhr']
+
+    @mark.usefixtures('integration')
+    def test_index_location_is_online_and_linked_to_ruhr(self, resource):
+        from adhocracy_core.sheets.mercator import IDetails
+        from adhocracy_core.sheets.mercator import index_location
+        from adhocracy_core.utils import get_sheet
+        sheet = get_sheet(resource, IDetails)
+        sheet.set({
+            'location_is_online': True,
+            'location_is_linked_to_ruhr': True,
+        })
+        result = index_location(resource, 'default')
+        assert set(result) == set(['online', 'linked_to_ruhr'])
 
 
 class TestMotivationSheet:
@@ -301,7 +336,6 @@ class TestFinanceSheet:
         from decimal import Decimal
         inst = meta.sheet_class(meta, context)
         wanted = {'budget': Decimal(0),
-                  'granted': False,
                   'requested_funding': Decimal(0)}
         assert inst.get() == wanted
 
