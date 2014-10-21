@@ -1,4 +1,4 @@
-"""adhocracy core setuptools config."""
+"""Adhocracy core backend package."""
 import os
 import sys
 
@@ -51,7 +51,7 @@ debug_requires = [
 
 setup(name='adhocracy_core',
       version='0.0',
-      description='adhocracy_core',
+      description='Adhocracy core backend package.',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
           "Programming Language :: Python",
