@@ -136,10 +136,11 @@ export class ProposalVersionDetail {
 
                 $scope.showComments = () => {
                     adhTopLevelState.setContent2Url($scope.content.path);
+                    adhTopLevelState.setFocus(2);
                 };
 
                 $scope.hideComments = () => {
-                    console.log("foo");
+                    adhTopLevelState.setFocus(1);
                 };
             }]
         };
