@@ -1,5 +1,3 @@
-import AdhEventHandler = require("../EventHandler/EventHandler");
-
 /**
  * TopLevelState service for managing top level state.
  *
@@ -17,11 +15,13 @@ import AdhEventHandler = require("../EventHandler/EventHandler");
  * implemented.
  */
 
+import AdhEventHandler = require("../EventHandler/EventHandler");
+
 // FIXME focus should be the first column. Since the first column (column
 // 0) might be removed, column 1 is default focus.
 var DEFAULT_FOCUS : number = 1;
 
-export class TopLevelState {
+export class Service {
     private eventHandler : AdhEventHandler.EventHandler;
     private focus : number;
 
@@ -123,7 +123,7 @@ var move = (column : number, element : JQuery) => {
 };
 
 export var movingColumns = (
-    topLevelState : TopLevelState
+    topLevelState : Service
 ) => {
 
     return {
@@ -146,7 +146,7 @@ export var movingColumns = (
 /**
  * A simple focus switcher that can be used until we have a proper widget for this.
  */
-export var adhFocusSwitch = (topLevelState : TopLevelState) => {
+export var adhFocusSwitch = (topLevelState : Service) => {
     return {
         restrict: "E",
         template: "<a href=\"\" ng-click=\"switchFocus()\">X</a>",
