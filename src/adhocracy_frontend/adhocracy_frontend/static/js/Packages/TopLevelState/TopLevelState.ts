@@ -17,8 +17,6 @@
 
 import AdhEventHandler = require("../EventHandler/EventHandler");
 
-// FIXME focus should be the first column. Since the first column (column
-// 0) might be removed, column 1 is default focus.
 export class ColumnState {
     static SHOW : string = "show";
     static HIDE : string = "hidden";
