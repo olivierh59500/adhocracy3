@@ -11,14 +11,10 @@ Requirements:
 
 create virtual machine and login:
 
-    (LINUX:)    wget https://raw.githubusercontent.com/liqd/adhocracy3/master/Vagrantfile 
+    (LINUX:)    wget https://raw.githubusercontent.com/liqd/adhocracy3/master/Vagrantfile
     (OSX:)      curl "https://raw.githubusercontent.com/liqd/adhocracy3/master/Vagrantfile"
     vagrant up
     vagrant ssh
-    cd /home/vagrant/
-
-proceed with installing the server
-TODO: make the automatic setup work (vagrant shell provisioner or salt)
 
 
 Installation (backend)
