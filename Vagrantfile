@@ -33,9 +33,10 @@ then
   cd python
   python ./bootstrap.py
   bin/buildout
+  bin/install-links
+  cd ..
 
   echo "install adhocracy"
-  cd ..
   bin/python3.4 ./bootstrap.py
   bin/buildout
 fi
