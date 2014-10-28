@@ -20,7 +20,7 @@ then
   echo "install adhocracy 3 dependencies"
   apt-get update
   apt-get dist-upgrade -y
-  apt-get -y install python python-setuptools vim git build-essential libbz2-dev libyaml-dev python3-dev libncurses5-dev python-virtualenv python-setuptools graphviz ruby-dev
+  apt-get -y install python python-setuptools vim git build-essential libbz2-dev libyaml-dev python3-dev libncurses5-dev python-virtualenv python-setuptools graphviz ruby-dev libreadline6-dev zlib1g-dev libbz2-dev libssl-dev libjpeg62-dev
 
   # echo "checkout source code"
   # su vagrant
