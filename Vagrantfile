@@ -46,6 +46,7 @@ then
   cd parts/opt/bin
   ln -s python3.4m python3.4
   cd -
+  bin/buildout
 
   yes | bin/install-links
   cd ..
