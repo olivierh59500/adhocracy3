@@ -58,6 +58,10 @@ eos
 
   config.vm.network "private_network", ip: "192.168.22.22"
 
+  config.vm.network :forwarded_port, guest: 6541, host: 6541
+  config.vm.network :forwarded_port, guest: 6551, host: 6551
+  config.vm.network :forwarded_port, guest: 8080, host: 8080
+
   config.vm.synced_folder ".", "/home/vagrant/adhocracy3"
 
 end
