@@ -26,7 +26,7 @@ then
   # su vagrant
   cd /home/vagrant
   # git clone https://github.com/liqd/adhocracy
-  # cd adhocracy-3
+  cd adhocracy3
   git submodule update --init
 
   echo "compile python"
