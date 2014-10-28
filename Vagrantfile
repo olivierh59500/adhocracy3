@@ -33,6 +33,20 @@ then
   cd python
   python ./bootstrap.py
   bin/buildout
+
+  # WORKAROUND: We're manually creating a softlink and run buildout again,
+  # because:
+  #
+  # 1. Hard links aren't working in VirtualBox shared folders
+  # https://www.virtualbox.org/ticket/818
+  #
+  # 2. Python distutils requires hard links
+  # http://bugs.python.org/issue8876
+
+  cd parts/opt/bin
+  ln -s python3.4m python3.4
+  cd -
+
   yes | bin/install-links
   cd ..
 
