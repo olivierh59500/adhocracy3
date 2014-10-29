@@ -61,13 +61,6 @@ class TestIncludeme:
         context = testing.DummyResource(__provides__=IValue)
         assert get_sheet(context, IValue)
 
-    def test_includeme_register_story_sheet(self, config):
-        from adhocracy_mercator.sheets.mercator import IStory
-        from adhocracy_core.utils import get_sheet
-        config.include('adhocracy_mercator.sheets.mercator')
-        context = testing.DummyResource(__provides__=IStory)
-        assert get_sheet(context, IStory)
-
     def test_includeme_register_finance_sheet(self, config):
         from adhocracy_mercator.sheets.mercator import IFinance
         from adhocracy_core.utils import get_sheet
@@ -181,7 +174,6 @@ class TestOrganizationInfoSchema:
     def test_deserialize_with_required(self, inst, cstruct_required):
         wanted = cstruct_required   # cstruct and appstruct are the same here
         assert inst.deserialize(cstruct_required) == wanted
-
 
     def test_deserialize_with_status_other_and_no_description(self, inst,
                                                               cstruct_required):
@@ -356,4 +348,3 @@ class TestExperienceSheet:
         wanted = {'experience': '',
                   }
         assert inst.get() == wanted
-
