@@ -330,6 +330,7 @@ mercator_proposal_version_meta = itemversion_metadata._replace(
     content_name='MercatorProposalVersion',
     iresource=IMercatorProposalVersion,
     extended_sheets=[adhocracy_mercator.sheets.mercator.IUserInfo,
+                     adhocracy_mercator.sheets.mercator.IHeardFrom,
                      adhocracy_mercator.sheets.mercator.IMercatorSubResources,
                      ICommentable,
                      IRateable],
