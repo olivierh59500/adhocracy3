@@ -333,8 +333,9 @@ class ExperienceSchema(colander.MappingSchema):
     experience = Text()
 
 
-experience_meta = sheet_metadata_defaults._replace(isheet=IExperience,
-                                               schema_class=ExperienceSchema)
+experience_meta = sheet_metadata_defaults._replace(
+    isheet=IExperience,
+    schema_class=ExperienceSchema)
 
 
 class HeardFromSchema(colander.MappingSchema):
