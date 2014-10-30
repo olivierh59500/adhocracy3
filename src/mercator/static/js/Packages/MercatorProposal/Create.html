@@ -21,7 +21,8 @@
         <input type="text" data-ng-model="data.basic.user.name" name="basic-user-name" placeholder="{{ 'Name' | translate }}" required="required" />
         <input type="text" data-ng-model="data.basic.user.lastname" name="basic-user-lastname" placeholder="{{ 'Lastname' | translate }}" required="required" />
         <input type="email" data-ng-model="data.basic.user.email" name="basic-user-email" placeholder="{{ 'Email' | translate }}" required="required" />
-        xx{{data.countries}}yy 
+        <country-select data-ng-model="data.basic.user.country"></country-select>
+        <!--<country-select data-ng-model="data.basic.user.country"></country-select>-->
         <!-- select data-ng-model="data.basic.user.country" name="basic-user-country" required="required" ng-options="data.countries.name for data.countries.code in data.countries"></select -->
 
         <h3>{{ "Organisation Info:" | translate }}</h3>
