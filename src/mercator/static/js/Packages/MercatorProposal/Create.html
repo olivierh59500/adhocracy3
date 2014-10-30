@@ -17,11 +17,12 @@
     <ng-form name="mercatorProposalBasicForm">
         <h2 id="mercator-proposal-basic">{{ "1. Basic" | translate }}</h2>
 
-        <h3>{{ "User Info:" | translate }}</h3>
+        <h3>{{ "User Info:" | translate }}</h3>  
         <input type="text" data-ng-model="data.basic.user.name" name="basic-user-name" placeholder="{{ 'Name' | translate }}" required="required" />
         <input type="text" data-ng-model="data.basic.user.lastname" name="basic-user-lastname" placeholder="{{ 'Lastname' | translate }}" required="required" />
         <input type="email" data-ng-model="data.basic.user.email" name="basic-user-email" placeholder="{{ 'Email' | translate }}" required="required" />
-        <select data-ng-model="data.basic.user.country" name="basic-user-country" required="required" ng-options="data.countries.name for data.countries.code in data.countries"></select>xx
+        xx{{data.countries}}yy 
+        <!-- select data-ng-model="data.basic.user.country" name="basic-user-country" required="required" ng-options="data.countries.name for data.countries.code in data.countries"></select -->
 
         <h3>{{ "Organisation Info:" | translate }}</h3>
         <label>
@@ -29,7 +30,7 @@
             {{ "We’re a registered non-profit, e.g. NGO" | translate }}
         </label>
         <input type="text" data-ng-model="data.basic.organisation.name" name="basic-organisation-name" placeholder="{{ 'Name of organisation *' | translate }}" required="required" />
-        <select data-ng-model="data.basic.organisation.country" name="basic-organisation-country" required="required" ng-options="data.countries.name for data.countries.code in data.countries"></select>
+        <!-- select data-ng-model="data.basic.organisation.country" name="basic-organisation-country" required="required" ng-options="data.countries.name for data.countries.code in data.countries"></select -->
         
         <input type="email" data-ng-model="data.basic.organisation.email" name="basic-organisation-email" placeholder="{{ 'Email' | translate }}" required="required" />
         <input type="text" data-ng-model="data.basic.organisation.address" name="basic-organisation-address" placeholder="{{ 'Address' | translate }}" required="required" />
