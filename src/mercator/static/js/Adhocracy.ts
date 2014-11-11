@@ -39,7 +39,7 @@ import AdhResourceWidgets = require("./Packages/ResourceWidgets/ResourceWidgets"
 import AdhTopLevelState = require("./Packages/TopLevelState/TopLevelState");
 import AdhUser = require("./Packages/User/User");
 import AdhWebSocket = require("./Packages/WebSocket/WebSocket");
-import Sticky = require("./Packages/Sticky/Sticky")
+import AdhSticky = require("./Packages/Sticky/Sticky");
 
 
 var loadComplete = () : void => {
@@ -71,7 +71,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
         AdhMercatorWorkbench.moduleName,
         AdhResourceArea.moduleName,
         AdhProposal.moduleName,
-        Sticky.moduleName
+        AdhSticky.moduleName
     ]);
 
     app.config(["adhTopLevelStateProvider", "$translateProvider", "$locationProvider", (
@@ -137,7 +137,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
     AdhTopLevelState.register(angular);
     AdhUser.register(angular);
     AdhWebSocket.register(angular);
-    Sticky.register(angular);
+    AdhSticky.register(angular);
 
     // force-load some services
     var injector = angular.bootstrap(document, ["a3Mercator"]);
