@@ -21,7 +21,7 @@ require.config({
         q: "../lib/q/q",
         modernizr: "../lib2/modernizr/modernizr-2.8.3.min",
         moment: "../lib/moment/min/moment-with-locales",
-        sticky: "../lib2/sticky/sticky.min"
+        sticky: "../lib2/sticky/sticky"
     },
     shim: {
         jquery: {
