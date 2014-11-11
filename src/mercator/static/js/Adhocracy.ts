@@ -14,7 +14,6 @@ import angularElastic = require("angularElastic");  if (angularElastic) { ; };
 
 import modernizr = require("modernizr");
 import moment = require("moment");
-import sticky = require("sticky");
 
 import AdhConfig = require("./Packages/Config/Config");
 import AdhComment = require("./Packages/Comment/Comment");
