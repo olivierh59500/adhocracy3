@@ -48,8 +48,5 @@ require.config({
         modernizr: {
             exports: "Modernizr"
         },
-        sticky: {
-            exports: "Sticky"
-        },
     }
 });
