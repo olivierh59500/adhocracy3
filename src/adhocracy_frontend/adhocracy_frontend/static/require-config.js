@@ -3,7 +3,7 @@ require.config({
     config: {
         text: {
             useXhr: function (url, protocol, hostname, port) {
-                // we have CORS header1s set for all text resources we load
+                // we have CORS headers set for all text resources we load
                 // through require.
                 return true;
             }
