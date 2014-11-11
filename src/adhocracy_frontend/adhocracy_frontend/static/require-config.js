@@ -3,7 +3,7 @@ require.config({
     config: {
         text: {
             useXhr: function (url, protocol, hostname, port) {
-                // we have CORS headers set for all text resources we load
+                // we have CORS header1s set for all text resources we load
                 // through require.
                 return true;
             }
@@ -20,7 +20,8 @@ require.config({
         lodash: "../lib/lodash/dist/lodash",
         q: "../lib/q/q",
         modernizr: "../lib2/modernizr/modernizr-2.8.3.min",
-        moment: "../lib/moment/min/moment-with-locales"
+        moment: "../lib/moment/min/moment-with-locales",
+        sticky: "../lib2/sticky/sticky.min"
     },
     shim: {
         jquery: {
@@ -46,6 +47,9 @@ require.config({
         },
         modernizr: {
             exports: "Modernizr"
-        }
+        },
+        sticky: {
+            exports: "Sticky"
+        },
     }
 });

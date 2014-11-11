@@ -14,6 +14,7 @@ import angularElastic = require("angularElastic");  if (angularElastic) { ; };
 
 import modernizr = require("modernizr");
 import moment = require("moment");
+import sticky = require("sticky");
 
 import AdhConfig = require("./Packages/Config/Config");
 import AdhComment = require("./Packages/Comment/Comment");
@@ -38,6 +39,7 @@ import AdhResourceWidgets = require("./Packages/ResourceWidgets/ResourceWidgets"
 import AdhTopLevelState = require("./Packages/TopLevelState/TopLevelState");
 import AdhUser = require("./Packages/User/User");
 import AdhWebSocket = require("./Packages/WebSocket/WebSocket");
+import Sticky = require("./Packages/Sticky/Sticky")
 
 
 var loadComplete = () : void => {
@@ -68,7 +70,8 @@ export var init = (config : AdhConfig.IService, meta_api) => {
         AdhMercatorProposal.moduleName,
         AdhMercatorWorkbench.moduleName,
         AdhResourceArea.moduleName,
-        AdhProposal.moduleName
+        AdhProposal.moduleName,
+        Sticky.moduleName
     ]);
 
     app.config(["adhTopLevelStateProvider", "$translateProvider", "$locationProvider", (
@@ -134,6 +137,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
     AdhTopLevelState.register(angular);
     AdhUser.register(angular);
     AdhWebSocket.register(angular);
+    Sticky.register(angular);
 
     // force-load some services
     var injector = angular.bootstrap(document, ["a3Mercator"]);
