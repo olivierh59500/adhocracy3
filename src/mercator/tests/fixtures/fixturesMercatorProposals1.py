@@ -7,7 +7,7 @@ import os
 import json
 import requests
 
-root_uri = 'http://localhost:6541'
+root_uri = 'http://localhost:6542'
 verbose = True
 
 # for more javascript-ish json representation:
