@@ -3,10 +3,13 @@ import _ = require("lodash");
 import AdhConfig = require("../Config/Config");
 import AdhHttp = require("../Http/Http");
 import AdhTopLevelState = require("../TopLevelState/TopLevelState");
+import AdhUtil = require("../Util/Util");
 
 import RIMercatorProposalVersion = require("../../Resources_/adhocracy_mercator/resources/mercator/IMercatorProposalVersion");
+import RICommentVersion = require("../../Resources_/adhocracy_core/resources/comment/ICommentVersion");
 
 import SIMercatorSubResources = require("../../Resources_/adhocracy_mercator/sheets/mercator/IMercatorSubResources");
+import SIComment = require("../../Resources_/adhocracy_core/sheets/comment/IComment");
 
 
 export interface Dict {
@@ -89,6 +92,21 @@ export class Service implements AdhTopLevelState.IAreaInput {
                                 data["commentableUrl"] = resource.path;
                             }
                         }
+                    } else if (resource.content_type === RICommentVersion.content_type) {
+                        data["commentUrl"] = resourceUrl;
+                        data["commentableUrl"] = resource.data[SIComment.nick].refers_to;
+
+                        return self.adhHttp.get(data["commentableUrl"]).then((commentable) => {
+                            if (commentable.content_type === RIMercatorProposalVersion) {
+                                data["proposalUrl"] = data["commentableUrl"];
+                            } else {
+                                var subResourceUrl = AdhUtil.parentPath(data["commentableUrl"]);
+                                var proposalItemUrl = AdhUtil.parentPath(subResourceUrl);
+                                return self.adhHttp.getNewestVersionPathNoFork(proposalItemUrl).then((proposalUrl) => {
+                                    data["proposalUrl"] = proposalUrl;
+                                });
+                            }
+                        });
                     }
                 } else {
                     if (segs.length > 2) {
@@ -116,7 +134,9 @@ export class Service implements AdhTopLevelState.IAreaInput {
         var path : string;
 
         if (data["platform"] === "mercator") {
-            if (typeof data["proposalUrl"] !== "undefined") {
+            if (typeof data["commentUrl"] !== "undefined") {
+                path = data["commentUrl"].replace(this.adhConfig.rest_url, "");
+            } else if (typeof data["proposalUrl"] !== "undefined") {
                 path = data["proposalUrl"].replace(this.adhConfig.rest_url, "");
             } else {
                 path = "/" + data["platform"];
