@@ -7,11 +7,13 @@
     <div data-ng-switch="transclusionId">
         <adh-resource-wrapper
             data-ng-switch-when="element-id">
+            <ul class="mercator-proposal-list">
             <adh-mercator-proposal
                  data-ng-if="element"
                  data-path="{{element}}"
                  data-mode="display">
             </adh-mercator-proposal>
+            </ul>
         </adh-resource-wrapper>
     </div>
 </adh-listing>
