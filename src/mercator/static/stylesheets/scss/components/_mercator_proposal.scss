@@ -77,11 +77,12 @@
     .proposal-image {
         @include span(3 of 12 first);
     }
+
     .proposal-image + .proposal-body {
         @include span(9 of 12 last);
     }
 }
 
 .filter-set-horizontal {
-    display: inline-block;
+    @include inline-block;
 }
