@@ -68,40 +68,42 @@ export class Service implements AdhTopLevelState.IAreaInput {
             view = segs.pop().replace(/^@/, "");
         }
 
+        var data : Dict = {};
         var resourceUrl : string = this.adhConfig.rest_url + segs.join("/");
 
-        return this.adhHttp.get(resourceUrl).then((resource) => {
-            var data = self.provider.get(resource.content_type, view);
+        return this.adhHttp.get(resourceUrl)
+            .then((resource) => {
+                data = self.provider.get(resource.content_type, view);
 
-            data["platform"] = segs[1];
-            data["view"] = view;
+                data["platform"] = segs[1];
+                data["view"] = view;
 
-            if (data["platform"] === "mercator") {
-                if (resource.content_type === RIMercatorProposalVersion.content_type) {
-                    data["proposalUrl"] = resourceUrl;
+                if (data["platform"] === "mercator") {
+                    if (resource.content_type === RIMercatorProposalVersion.content_type) {
+                        data["proposalUrl"] = resourceUrl;
 
-                    if (view === "comments") {
-                        if (typeof search["section"] !== "undefined") {
-                            data["commentableUrl"] = resource.data[SIMercatorSubResources.nick][search["section"]];
-                        } else {
-                            data["commentableUrl"] = resource.path;
+                        if (view === "comments") {
+                            if (typeof search["section"] !== "undefined") {
+                                data["commentableUrl"] = resource.data[SIMercatorSubResources.nick][search["section"]];
+                            } else {
+                                data["commentableUrl"] = resource.path;
+                            }
                         }
                     }
+                } else {
+                    if (segs.length > 2) {
+                        data["content2Url"] = resourceUrl;
+                    }
                 }
-            } else {
-                if (segs.length > 2) {
-                    data["content2Url"] = resourceUrl;
+            })
+            .then(() => {
+                for (var key in search) {
+                    if (search.hasOwnProperty(key)) {
+                        data[key] = search[key];
+                    }
                 }
-            }
-
-            for (var key in search) {
-                if (search.hasOwnProperty(key)) {
-                    data[key] = search[key];
-                }
-            }
-
-            return data;
-        });
+                return data;
+            });
     }
 
     public reverse(data : Dict) : { path : string; search : Dict; } {
