@@ -17,6 +17,14 @@
                 <div data-ng-switch-default="">
                     <div class="moving-column-menu placeholder">
                         <a href="" data-ng-click="proposalListingData.showFacets = !proposalListingData.showFacets">{{ "filters" | translate }}</a>
+                        <!-- FIXME: Dummy functionality -->
+                        <div class="filter-set-horizontal">
+                            {{ "Sort by..." | translate }}
+                            <a>{{ "budget" | translate }}</a>
+                            <a>{{ "newest" | translate }}</a>
+                            <a>{{ "most active" | translate }}</a>
+                            <a>{{ "favourites" | translate }}</a>
+                        </div>
                     </div>
                     <div
                         class="moving-column-sidebar"
