@@ -4,6 +4,10 @@ import AdhConfig = require("../Config/Config");
 import AdhHttp = require("../Http/Http");
 import AdhTopLevelState = require("../TopLevelState/TopLevelState");
 
+import RIMercatorProposalVersion = require("../../Resources_/adhocracy_mercator/resources/mercator/IMercatorProposalVersion");
+
+import SIMercatorSubResources = require("../../Resources_/adhocracy_mercator/sheets/mercator/IMercatorSubResources");
+
 
 export interface Dict {
     [key : string]: string;
@@ -72,8 +76,22 @@ export class Service implements AdhTopLevelState.IAreaInput {
             data["platform"] = segs[1];
             data["view"] = view;
 
-            if (segs.length > 2) {
-                data["content2Url"] = resourceUrl;
+            if (data["platform"] === "mercator") {
+                if (resource.content_type === RIMercatorProposalVersion.content_type) {
+                    data["proposalUrl"] = resourceUrl;
+
+                    if (view === "comments") {
+                        if (typeof search["section"] !== "undefined") {
+                            data["commentableUrl"] = resource.data[SIMercatorSubResources.nick][search["section"]];
+                        } else {
+                            data["commentableUrl"] = resource.path;
+                        }
+                    }
+                }
+            } else {
+                if (segs.length > 2) {
+                    data["content2Url"] = resourceUrl;
+                }
             }
 
             for (var key in search) {
@@ -89,15 +107,24 @@ export class Service implements AdhTopLevelState.IAreaInput {
     public reverse(data : Dict) : { path : string; search : Dict; } {
         var defaults = {
             space: "content",
-            movingColumns: "is-show-show-hide"
+            movingColumns: "is-show-show-hide",
+            section: undefined
         };
 
         var path : string;
 
-        if (data["content2Url"]) {
-            path = data["content2Url"].replace(this.adhConfig.rest_url, "");
+        if (data["platform"] === "mercator") {
+            if (typeof data["proposalUrl"] !== "undefined") {
+                path = data["proposalUrl"].replace(this.adhConfig.rest_url, "");
+            } else {
+                path = "/" + data["platform"];
+            }
         } else {
-            path = "/" + data["platform"];
+            if (data["content2Url"]) {
+                path = data["content2Url"].replace(this.adhConfig.rest_url, "");
+            } else {
+                path = "/" + data["platform"];
+            }
         }
 
         if (data["view"]) {
