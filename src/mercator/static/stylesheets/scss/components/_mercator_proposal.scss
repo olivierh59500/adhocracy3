@@ -37,15 +37,17 @@
     .proposal-meta-column {
         @include gallery(2 of 12);
     }
+}
 
-    //has 4 columns.
-    .proposal-meta-column:first-child:nth-last-child(4),
-    .proposal-meta-column:first-child:nth-last-child(4) ~ li {
+.mercator-propsal-detail-meta {
+    @extend .proposal-meta;
+
+    .mercator-propsal-detail-meta-column {
         @include gallery(3 of 12);
     }
 }
 
-.mercator-proposal-cover {
+.mercator-proposal-detail-cover {
     @include span(full);
     border-bottom: 1px solid $color-structure-border;
 }
