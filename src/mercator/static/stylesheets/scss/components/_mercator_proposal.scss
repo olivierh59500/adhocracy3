@@ -1,16 +1,7 @@
-$gutter: 3%;
-$columns: 6;
-
-@function column-width($n) {
-    @return (100% - $gutter) / $columns * $n - $gutter;
-}
-
 .mercator-proposal-form {
+    @include span(last 10 of 12);
     position: relative;
-    width: 100%;
     background: white;
-    padding-left: column-width(1) + 2 * $gutter;
-    padding-right: $gutter;
     border: 1px solid $color-structure-border;
     border-left: 0;
 
@@ -25,33 +16,37 @@ $columns: 6;
 }
 
 .mercator-proposal-form-nav {
-    position: absolute;
-    width: column-width(1);
-    border: 1px solid $color-structure-border;
-    padding: 0 1em;
-    left: $gutter;
-    top: 0.5em;
-    z-index: 1;
+    @include span(first 2 of 12);
+    @extend .jump-navigation;
+}
 
-    a {
-        &.active {
-            font-weight: bold;
-        }
-    }
+.mercator-proposal-detail-view {
+    @include container;
 }
 
 .mercator-proposal-cover {
-    @include clearfix;
+    @include span(full);
     border-bottom: 1px solid $color-structure-border;
 
     .proposal-meta {
-        padding-bottom: $gutter1;
-        padding-left: 0;
+        // reset ul default styling
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include container;
+        margin-bottom: gutter(12);
 
         .proposal-meta-column {
-            list-style-type: none;
-            float: left;
-            padding-right: $gutter/2;
+            @include span(2 of 12);
+
+            &:first-child {
+                @include span(first 2 of 12);
+            }
+
+            &:last-child {
+                @include span(last 2 of 12);
+            }
         }
     }
 }
@@ -61,13 +56,10 @@ $columns: 6;
 }
 
 .mercator-proposal-detail-nav {
-    float: left;
-    width: column-width(2);
+    @include span(first 2 of 12);
+    @extend .jump-navigation;
 }
 
 .mercator-proposal-chapters {
-    border-left: 1px solid $color-structure-border;
-    float: left;
-    padding-left: $gutter;
-    width: column-width(4);
+    @include span(last 10 of 12);
 }

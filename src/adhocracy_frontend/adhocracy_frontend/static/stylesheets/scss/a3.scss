@@ -1,5 +1,7 @@
 @import "susy";
 
+@import "grid";
+
 @import "compass/css3";
 @import "compass/css3/inline-block";
 @import "compass/utilities/general/clearfix";
@@ -25,6 +27,7 @@
 @import "components/annotated_section";
 @import "components/commentable_section";
 @import "components/chapter";
+@import "components/jump_navigation";
 
 // Debug (these should not be importet in productive setups
 @import "debug/placeholder";

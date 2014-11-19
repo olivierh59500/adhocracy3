@@ -1,8 +1,11 @@
+import fustyFlowFactory = require("fustyFlowFactory");
+
 import AdhConfig = require("../Config/Config");
 import AdhHttp = require("../Http/Http");
 import AdhInject = require("../Inject/Inject");
 import AdhPreliminaryNames = require("../PreliminaryNames/PreliminaryNames");
 import AdhResourceArea = require("../ResourceArea/ResourceArea");
+import AdhResourceUtil = require("../Util/ResourceUtil");
 import AdhResourceWidgets = require("../ResourceWidgets/ResourceWidgets");
 import AdhTopLevelState = require("../TopLevelState/TopLevelState");
 import AdhUtil = require("../Util/Util");
@@ -52,9 +55,9 @@ var pkgLocation = "/MercatorProposal";
 
 
 export interface IScope extends AdhResourceWidgets.IResourceWidgetScope {
+    showDetails : () => void;
     poolPath : string;
-    showDetails() : void;
-    mercatorProposalForm?;
+    mercatorProposalForm? : any;
     data : {
         countries : any;
         // 1. basic
@@ -77,6 +80,7 @@ export interface IScope extends AdhResourceWidgets.IResourceWidgetScope {
         introduction : {
             title : string;
             teaser : string;
+            imageUpload : Flow;
         };
 
         // 3. in detail
@@ -118,13 +122,49 @@ export interface IScope extends AdhResourceWidgets.IResourceWidgetScope {
 
         accept_disclaimer : string;
     };
-
 }
+
+export interface IControllerScope extends IScope {
+    showError : (fieldName : string, errorType : string) => boolean;
+    showHeardFromError : () => boolean;
+    showDetailsLocationError : () => boolean;
+    submitIfValid : () => void;
+    mercatorProposalExtraForm? : any;
+    mercatorProposalDetailForm? : any;
+}
+
+
+/**
+ * upload mercator proposal image file.  this function can potentially
+ * be more flexible; for now it just handles the Flow object and
+ * promises the path of the image resource as a string.
+ *
+ * FIXME: implement this function!
+ */
+export var uploadImageFile = (
+    adhConfig : AdhConfig.IService,
+    adhHttp : AdhHttp.Service<any>,
+    $q : ng.IQService,
+    flow : Flow
+) : ng.IPromise<string> => {
+
+    console.log("uploadImageFile: not fully implemented, but we already collect the file meta data locally in the browser:");
+
+    flow.opts.target = adhConfig.rest_url + adhConfig.custom["mercator_platform_path"];
+
+    console.log(JSON.stringify(flow.opts, null, 2));
+    _.forOwn(flow.files, (value, key) => {
+        console.log(JSON.stringify(value.file, null, 2));
+    });
+
+    flow.resume();
+    return (<any>$q.reject("blöp"));
+};
 
 
 export class Widget<R extends ResourcesBase.Resource> extends AdhResourceWidgets.ResourceWidget<R, IScope> {
     constructor(
-        adhConfig : AdhConfig.IService,
+        public adhConfig : AdhConfig.IService,
         adhHttp : AdhHttp.Service<any>,
         adhPreliminaryNames : AdhPreliminaryNames.Service,
         private adhTopLevelState : AdhTopLevelState.Service,
@@ -291,212 +331,182 @@ export class Widget<R extends ResourcesBase.Resource> extends AdhResourceWidgets
         return this.$q.when();
     }
 
+    private fill(data, resource) : void {
+        switch (resource.content_type) {
+            case RIMercatorOrganizationInfoVersion.content_type:
+                resource.data[SIMercatorOrganizationInfo.nick] = new SIMercatorOrganizationInfo.Sheet({
+                    status: data.organization_info.status_enum,
+                    name: data.organization_info.name,
+                    country: data.organization_info.country,
+                    website: data.organization_info.website,
+                    planned_date: data.organization_info.date_of_foreseen_registration,
+                    help_request: data.organization_info.how_can_we_help_you,
+                    status_other: data.organization_info.status_other
+                });
+                break;
+            case RIMercatorIntroductionVersion.content_type:
+                resource.data[SIMercatorIntroduction.nick] = new SIMercatorIntroduction.Sheet({
+                    title: data.introduction.title,
+                    teaser: data.introduction.teaser
+                });
+                break;
+            case RIMercatorDetailsVersion.content_type:
+                resource.data[SIMercatorDetails.nick] = new SIMercatorDetails.Sheet({
+                    description: data.details.description,
+                    location_is_specific: data.details.location_is_specific,
+                    location_specific_1: data.details.location_specific_1,
+                    location_specific_2: data.details.location_specific_2,
+                    location_specific_3: data.details.location_specific_3,
+                    location_is_online: data.details.location_is_online,
+                    location_is_linked_to_ruhr: data.details.location_is_linked_to_ruhr
+                });
+                break;
+            case RIMercatorStoryVersion.content_type:
+                resource.data[SIMercatorStory.nick] = new SIMercatorStory.Sheet({
+                    story: data.story
+                });
+                break;
+            case RIMercatorOutcomeVersion.content_type:
+                resource.data[SIMercatorOutcome.nick] = new SIMercatorOutcome.Sheet({
+                    outcome: data.outcome
+                });
+                break;
+            case RIMercatorStepsVersion.content_type:
+                resource.data[SIMercatorSteps.nick] = new SIMercatorSteps.Sheet({
+                    steps: data.steps
+                });
+                break;
+            case RIMercatorValueVersion.content_type:
+                resource.data[SIMercatorValue.nick] = new SIMercatorValue.Sheet({
+                    value: data.value
+                });
+                break;
+            case RIMercatorPartnersVersion.content_type:
+                resource.data[SIMercatorPartners.nick] = new SIMercatorPartners.Sheet({
+                    partners: data.partners
+                });
+                break;
+            case RIMercatorFinanceVersion.content_type:
+                resource.data[SIMercatorFinance.nick] = new SIMercatorFinance.Sheet({
+                    budget: data.finance.budget,
+                    requested_funding: data.finance.requested_funding,
+                    other_sources: data.finance.other_sources,
+                    granted: data.finance.granted
+                });
+                break;
+            case RIMercatorExperienceVersion.content_type:
+                resource.data[SIMercatorExperience.nick] = new SIMercatorExperience.Sheet({
+                    experience: data.experience
+                });
+                break;
+            case RIMercatorProposalVersion.content_type:
+                resource.data[SIMercatorUserInfo.nick] = new SIMercatorUserInfo.Sheet({
+                    personal_name: data.user_info.first_name,
+                    family_name: data.user_info.last_name,
+                    country: data.user_info.country
+                });
+                resource.data[SIMercatorHeardFrom.nick] = new SIMercatorHeardFrom.Sheet({
+                    heard_from_colleague: data.heard_from.colleague,
+                    heard_from_website: data.heard_from.website,
+                    heard_from_newsletter: data.heard_from.newsletter,
+                    heard_from_facebook: data.heard_from.facebook,
+                    heard_elsewhere: (data.heard_from.other ? data.heard_from.other_specify : "")
+                });
+                resource.data[SIMercatorSubResources.nick] = new SIMercatorSubResources.Sheet(<any>{});
+                break;
+        }
+    }
+
     // NOTE: see _update.
     public _create(instance : AdhResourceWidgets.IResourceWidgetInstance<R, IScope>) : ng.IPromise<R[]> {
         var data = this.initializeScope(instance.scope);
+        var imagePathPromise = uploadImageFile(this.adhConfig, this.adhHttp, this.$q, data.introduction.imageUpload);
 
-        var subResOrganizationInfo = new RIMercatorOrganizationInfo({preliminaryNames : this.adhPreliminaryNames});
-        subResOrganizationInfo.data[SIName.nick] = new SIName.Sheet({ name : "OrganizationInfo" });
-        var subResOrganizationInfoV = new RIMercatorOrganizationInfoVersion({preliminaryNames : this.adhPreliminaryNames});
-        subResOrganizationInfoV.data[SIVersionable.nick] = new SIVersionable.Sheet({
-            follows: [subResOrganizationInfo.first_version_path]
-        });
-        subResOrganizationInfoV.data[SIMercatorOrganizationInfo.nick] = new SIMercatorOrganizationInfo.Sheet({
-            status: data.organization_info.status_enum,
-            name: data.organization_info.name,
-            country: data.organization_info.country,
-            website: data.organization_info.website,
-            planned_date: data.organization_info.date_of_foreseen_registration,
-            help_request: data.organization_info.how_can_we_help_you,
-            status_other: data.organization_info.status_other
-        });
-
-        var subResIntroduction = new RIMercatorIntroduction({preliminaryNames : this.adhPreliminaryNames});
-        subResIntroduction.data[SIName.nick] = new SIName.Sheet({ name : "Introduction" });
-        var subResIntroductionV = new RIMercatorIntroductionVersion({preliminaryNames : this.adhPreliminaryNames});
-        subResIntroductionV.data[SIVersionable.nick] = new SIVersionable.Sheet({
-            follows: [subResIntroduction.first_version_path]
-        });
-        subResIntroductionV.data[SIMercatorIntroduction.nick] = new SIMercatorIntroduction.Sheet({
-            title: data.introduction.title,
-            teaser: data.introduction.teaser
-        });
-
-        var subResDetails = new RIMercatorDetails({preliminaryNames : this.adhPreliminaryNames});
-        subResDetails.data[SIName.nick] = new SIName.Sheet({ name : "Details" });
-        var subResDetailsV = new RIMercatorDetailsVersion({preliminaryNames : this.adhPreliminaryNames});
-        subResDetailsV.data[SIVersionable.nick] = new SIVersionable.Sheet({
-            follows: [subResDetails.first_version_path]
-        });
-        subResDetailsV.data[SIMercatorDetails.nick] = new SIMercatorDetails.Sheet({
-            description: data.details.description,
-            location_is_specific: data.details.location_is_specific,
-            location_specific_1: data.details.location_specific_1,
-            location_specific_2: data.details.location_specific_2,
-            location_specific_3: data.details.location_specific_3,
-            location_is_online: data.details.location_is_online,
-            location_is_linked_to_ruhr: data.details.location_is_linked_to_ruhr
-        });
-
-        var subResStory = new RIMercatorStory({preliminaryNames : this.adhPreliminaryNames});
-        subResStory.data[SIName.nick] = new SIName.Sheet({ name : "Story" });
-        var subResStoryV = new RIMercatorStoryVersion({preliminaryNames : this.adhPreliminaryNames});
-        subResStoryV.data[SIVersionable.nick] = new SIVersionable.Sheet({
-            follows: [subResStory.first_version_path]
-        });
-        subResStoryV.data[SIMercatorStory.nick] = new SIMercatorStory.Sheet({
-            story: data.story
-        });
-
-        var subResOutcome = new RIMercatorOutcome({preliminaryNames : this.adhPreliminaryNames});
-        subResOutcome.data[SIName.nick] = new SIName.Sheet({ name : "Outcome" });
-        var subResOutcomeV = new RIMercatorOutcomeVersion({preliminaryNames : this.adhPreliminaryNames});
-        subResOutcomeV.data[SIVersionable.nick] = new SIVersionable.Sheet({
-            follows: [subResOutcome.first_version_path]
-        });
-        subResOutcomeV.data[SIMercatorOutcome.nick] = new SIMercatorOutcome.Sheet({
-            outcome: data.outcome
-        });
-
-        var subResSteps = new RIMercatorSteps({preliminaryNames : this.adhPreliminaryNames});
-        subResSteps.data[SIName.nick] = new SIName.Sheet({ name : "Steps" });
-        var subResStepsV = new RIMercatorStepsVersion({preliminaryNames : this.adhPreliminaryNames});
-        subResStepsV.data[SIVersionable.nick] = new SIVersionable.Sheet({
-            follows: [subResSteps.first_version_path]
-        });
-        subResStepsV.data[SIMercatorSteps.nick] = new SIMercatorSteps.Sheet({
-            steps: data.steps
-        });
-
-        var subResValue = new RIMercatorValue({preliminaryNames : this.adhPreliminaryNames});
-        subResValue.data[SIName.nick] = new SIName.Sheet({ name : "Value" });
-        var subResValueV = new RIMercatorValueVersion({preliminaryNames : this.adhPreliminaryNames});
-        subResValueV.data[SIVersionable.nick] = new SIVersionable.Sheet({
-            follows: [subResValue.first_version_path]
-        });
-        subResValueV.data[SIMercatorValue.nick] = new SIMercatorValue.Sheet({
-            value: data.value
-        });
-
-        var subResPartners = new RIMercatorPartners({preliminaryNames : this.adhPreliminaryNames});
-        subResPartners.data[SIName.nick] = new SIName.Sheet({ name : "Partners" });
-        var subResPartnersV = new RIMercatorPartnersVersion({preliminaryNames : this.adhPreliminaryNames});
-        subResPartnersV.data[SIVersionable.nick] = new SIVersionable.Sheet({
-            follows: [subResPartners.first_version_path]
-        });
-        subResPartnersV.data[SIMercatorPartners.nick] = new SIMercatorPartners.Sheet({
-            partners: data.partners
-        });
-
-        var subResFinance = new RIMercatorFinance({preliminaryNames : this.adhPreliminaryNames});
-        subResFinance.data[SIName.nick] = new SIName.Sheet({ name : "Finance" });
-        var subResFinanceV = new RIMercatorFinanceVersion({preliminaryNames : this.adhPreliminaryNames});
-        subResFinanceV.data[SIVersionable.nick] = new SIVersionable.Sheet({
-            follows: [subResFinance.first_version_path]
-        });
-        subResFinanceV.data[SIMercatorFinance.nick] = new SIMercatorFinance.Sheet({
-            budget: data.finance.budget,
-            requested_funding: data.finance.requested_funding,
-            other_sources: data.finance.other_sources,
-            granted: data.finance.granted
-        });
-
-        var subResExperience = new RIMercatorExperience({preliminaryNames : this.adhPreliminaryNames});
-        subResExperience.data[SIName.nick] = new SIName.Sheet({ name : "Experience" });
-        var subResExperienceV = new RIMercatorExperienceVersion({preliminaryNames : this.adhPreliminaryNames});
-        subResExperienceV.data[SIVersionable.nick] = new SIVersionable.Sheet({
-            follows: [subResExperience.first_version_path]
-        });
-        subResExperienceV.data[SIMercatorExperience.nick] = new SIMercatorExperience.Sheet({
-            experience: data.experience
-        });
+        // FIXME: attach imagePath to proposal intro resource.  (need to wait for backend.)
+        // FIXME: handle file upload in _update.
+        // FIXME: We need to wait for this promise with everything
+        // else. Otherwise, the upload could be interrupted by a hard
+        // redirect or similar.
+        imagePathPromise.then(
+            (path) => {
+                console.log("upload successful:");
+                console.log(path);
+            },
+            () => {
+                console.log("upload error:");
+                console.log(arguments);
+            });
 
         var mercatorProposal = new RIMercatorProposal({preliminaryNames : this.adhPreliminaryNames});
+        mercatorProposal.parent = instance.scope.poolPath;
         mercatorProposal.data[SIName.nick] = new SIName.Sheet({
             name: AdhUtil.normalizeName(data.introduction.title)
         });
 
         var mercatorProposalVersion = new RIMercatorProposalVersion({preliminaryNames : this.adhPreliminaryNames});
+        mercatorProposalVersion.parent = mercatorProposal.path;
         mercatorProposalVersion.data[SIVersionable.nick] = new SIVersionable.Sheet({
             follows: [mercatorProposal.first_version_path]
         });
-        mercatorProposalVersion.data[SIMercatorUserInfo.nick] = new SIMercatorUserInfo.Sheet({
-            personal_name: data.user_info.first_name,
-            family_name: data.user_info.last_name,
-            country: data.user_info.country
-        });
-        mercatorProposalVersion.data[SIMercatorHeardFrom.nick] = new SIMercatorHeardFrom.Sheet({
-            heard_from_colleague: data.heard_from.colleague,
-            heard_from_website: data.heard_from.website,
-            heard_from_newsletter: data.heard_from.newsletter,
-            heard_from_facebook: data.heard_from.facebook,
-            heard_elsewhere: (data.heard_from.other ? data.heard_from.other_specify : "")
-        });
-        mercatorProposalVersion.data[SIMercatorSubResources.nick] = new SIMercatorSubResources.Sheet({
-            organization_info: subResOrganizationInfoV.path,
-            introduction: subResIntroductionV.path,
-            details: subResDetailsV.path,
-            story: subResStoryV.path,
-            outcome: subResOutcomeV.path,
-            steps: subResStepsV.path,
-            value: subResValueV.path,
-            partners: subResPartnersV.path,
-            finance: subResFinanceV.path,
-            experience: subResExperienceV.path
+
+        this.fill(data, mercatorProposalVersion);
+
+        var subresources = _.map([
+            [RIMercatorOrganizationInfo, RIMercatorOrganizationInfoVersion, "organization_info"],
+            [RIMercatorIntroduction, RIMercatorIntroductionVersion, "introduction"],
+            [RIMercatorDetails, RIMercatorDetailsVersion, "details"],
+            [RIMercatorStory, RIMercatorStoryVersion, "story"],
+            [RIMercatorOutcome, RIMercatorOutcomeVersion, "outcome"],
+            [RIMercatorSteps, RIMercatorStepsVersion, "steps"],
+            [RIMercatorValue, RIMercatorValueVersion, "value"],
+            [RIMercatorPartners, RIMercatorPartnersVersion, "partners"],
+            [RIMercatorFinance, RIMercatorFinanceVersion, "finance"],
+            [RIMercatorExperience, RIMercatorExperienceVersion, "experience"]
+        ], (stuff) => {
+            var itemClass = <any>stuff[0];
+            var versionClass = <any>stuff[1];
+            var subresourceKey = <string>stuff[2];
+
+            var item = new itemClass({preliminaryNames: this.adhPreliminaryNames});
+            item.parent = mercatorProposal.path;
+            item.data[SIName.nick] = new SIName.Sheet({
+                name: AdhUtil.normalizeName(subresourceKey)
+            });
+
+            var version = new versionClass({preliminaryNames: this.adhPreliminaryNames});
+            version.parent = item.path;
+            version.data[SIVersionable.nick] = new SIVersionable.Sheet({
+                follows: [item.first_version_path]
+            });
+
+            this.fill(data, version);
+            mercatorProposalVersion.data[SIMercatorSubResources.nick][subresourceKey] = version.path;
+
+            return [item, version];
         });
 
-        mercatorProposal.parent = instance.scope.poolPath;
-        mercatorProposalVersion.parent = mercatorProposal.path;
-
-        subResOrganizationInfo.parent = mercatorProposal.path;
-        subResOrganizationInfoV.parent = subResOrganizationInfo.path;
-        subResIntroduction.parent = mercatorProposal.path;
-        subResIntroductionV.parent = subResIntroduction.path;
-        subResDetails.parent = mercatorProposal.path;
-        subResDetailsV.parent = subResDetails.path;
-        subResStory.parent = mercatorProposal.path;
-        subResStoryV.parent = subResStory.path;
-        subResOutcome.parent = mercatorProposal.path;
-        subResOutcomeV.parent = subResOutcome.path;
-        subResSteps.parent = mercatorProposal.path;
-        subResStepsV.parent = subResSteps.path;
-        subResValue.parent = mercatorProposal.path;
-        subResValueV.parent = subResValue.path;
-        subResPartners.parent = mercatorProposal.path;
-        subResPartnersV.parent = subResPartners.path;
-        subResFinance.parent = mercatorProposal.path;
-        subResFinanceV.parent = subResFinance.path;
-        subResExperience.parent = mercatorProposal.path;
-        subResExperienceV.parent = subResExperience.path;
-
-        return this.$q.when([
-            mercatorProposal,
-            mercatorProposalVersion,
-            subResOrganizationInfo,
-            subResIntroduction,
-            subResDetails,
-            subResStory,
-            subResOutcome,
-            subResSteps,
-            subResValue,
-            subResPartners,
-            subResFinance,
-            subResExperience,
-            subResOrganizationInfoV,
-            subResIntroductionV,
-            subResDetailsV,
-            subResStoryV,
-            subResOutcomeV,
-            subResStepsV,
-            subResValueV,
-            subResPartnersV,
-            subResFinanceV,
-            subResExperienceV
-        ]);
+        return this.$q.when(_.flatten([mercatorProposal, mercatorProposalVersion, subresources]));
     }
 
     public _edit(instance : AdhResourceWidgets.IResourceWidgetInstance<R, IScope>, old : R) : ng.IPromise<R[]> {
-        return this.$q.when([]);
+        var self : Widget<R> = this;
+        var data = this.initializeScope(instance.scope);
+
+        var mercatorProposalVersion = AdhResourceUtil.derive(old, {preliminaryNames : this.adhPreliminaryNames});
+        mercatorProposalVersion.parent = AdhUtil.parentPath(old.path);
+        this.fill(data, mercatorProposalVersion);
+
+        return this.$q
+            .all(_.map(old.data[SIMercatorSubResources.nick], (path : string, key : string) => {
+                return self.adhHttp.get(path).then((oldSubresource) => {
+                    var subresource = AdhResourceUtil.derive(oldSubresource, {preliminaryNames : self.adhPreliminaryNames});
+                    subresource.parent = AdhUtil.parentPath(oldSubresource.path);
+                    self.fill(data, subresource);
+                    mercatorProposalVersion.data[SIMercatorSubResources.nick][key] = subresource.path;
+                    return subresource;
+                });
+            }))
+            .then((subresources) => _.flatten([mercatorProposalVersion, subresources]));
     }
 
     public _clear(instance : AdhResourceWidgets.IResourceWidgetInstance<R, IScope>) : void {
@@ -853,11 +863,13 @@ export var countrySelect = () => {
     };
 };
 
+
 export var moduleName = "adhMercatorProposal";
 
 export var register = (angular) => {
     angular
         .module(moduleName, [
+            "duScroll",
             AdhHttp.moduleName,
             AdhInject.moduleName,
             AdhPreliminaryNames.moduleName,
@@ -874,7 +886,26 @@ export var register = (angular) => {
                 .when(RIMercatorProposalVersion.content_type, {
                      space: "content",
                      movingColumns: "is-show-show-hide"
+                })
+                .whenView(RIMercatorProposalVersion.content_type, "edit", {
+                     movingColumns: "is-collapse-show-hide"
                 });
+        }])
+        .config(["flowFactoryProvider", (flowFactoryProvider) => {
+            if (typeof flowFactoryProvider.defaults === "undefined") {
+                flowFactoryProvider.defaults = {};
+            }
+
+            flowFactoryProvider.factory = fustyFlowFactory;
+            flowFactoryProvider.defaults.singleFile = true;
+            flowFactoryProvider.defaults.maxChunkRetries = 1;
+            flowFactoryProvider.defaults.chunkRetryInterval = 5000;
+            flowFactoryProvider.defaults.simultaneousUploads = 4;
+            flowFactoryProvider.defaults.permanentErrors = [404, 500, 501, 502, 503];
+
+            flowFactoryProvider.on("catchAll", () => {
+                console.log(arguments);
+            });
         }])
         .directive("adhMercatorProposal", ["adhConfig", "adhHttp", "adhPreliminaryNames", "adhTopLevelState", "$q",
             (adhConfig, adhHttp, adhPreliminaryNames, adhTopLevelState, $q) => {
@@ -895,7 +926,7 @@ export var register = (angular) => {
         // FIXME: These should both be moved to ..core ?
         .directive("countrySelect", ["adhConfig", countrySelect])
         .directive("adhLastVersion", ["$compile", "adhHttp", lastVersion])
-        .controller("mercatorProposalFormController", ["$scope", ($scope) => {
+        .controller("mercatorProposalFormController", ["$scope", "$element", ($scope : IControllerScope, $element) => {
             var heardFromCheckboxes = [
                 "heard-from-colleague",
                 "heard-from-website",
@@ -944,9 +975,19 @@ export var register = (angular) => {
             };
 
             $scope.submitIfValid = () => {
+                var container = $element.parents("[data-du-scroll-container]");
+
                 if ($scope.mercatorProposalForm.$valid) {
-                    $scope.submit();
-                };
+                    // pluck flow object from file upload scope, and
+                    // attach it to where ResourceWidgets can find it.
+                    $scope.data.introduction.imageUpload = angular.element($("[name=introduction-picture-upload]")).scope().$flow;
+                    $scope.submit().catch(() => {
+                        container.scrollTopAnimated(0);
+                    });
+                } else {
+                    var element = $element.find(".ng-invalid");
+                    container.scrollToElementAnimated(element);
+                }
             };
         }]);
 };
