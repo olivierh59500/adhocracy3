@@ -33,18 +33,15 @@
 
     @include container;
     margin-bottom: gutter(12);
-
-    //default is 6 columns
-    .mercator-propsal-detail-meta-item {
-        @include gallery(2 of 12);
-    }
 }
 
+.mercator-propsal-detail-meta-item {
+    @include gallery(2 of 12);
+}
 
 .mercator-propsal-list-item-meta-item {
     @include gallery(3 of 12);
 }
-
 
 .mercator-proposal-detail-cover {
     @include span(full);
