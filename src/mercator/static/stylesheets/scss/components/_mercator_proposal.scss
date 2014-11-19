@@ -67,15 +67,11 @@
     @include container;
     border-bottom: 1px solid $color-structure-border;
 
-    .proposal-image {
+    .mercator-proposal-list-item-image {
         @include span(3 of 12 first);
     }
 
-    .proposal-image + .proposal-body {
+    .mercator-proposal-list-item-image + .mercator-proposal-list-item-body {
         @include span(9 of 12 last);
     }
-}
-
-.filter-set-horizontal {
-    @include inline-block;
 }

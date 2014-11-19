@@ -1,7 +1,7 @@
 <div class="mercator-proposal-list-item" >
     <!-- FIXME: ng-if refers to non-existant 'image' object -->
-    <div class="proposal-image" ng-if="image"><img src="" alt="" /></div>
-    <div class="proposal-body">
+    <div class="mercator-proposal-list-item-image" ng-if="image"><img src="" alt="" /></div>
+    <div class="mercator-proposal-list-item-body">
         <h3><a href="" data-ng-click="showDetails()">{{ data.introduction.title }}</a></h3>
         <p class="proposal-username"><a href="#FIXME: link to user profile">{{ data.user_info.first_name }} {{ data.user_info.last_name }}</a>, {{data.organization_info.name}}</p>
         <ul class="proposal-meta">
