@@ -4,18 +4,18 @@
     <div class="mercator-proposal-list-item-body">
         <h3><a href="" data-ng-click="showDetails()">{{ data.introduction.title }}</a></h3>
         <p class="proposal-username"><a href="#FIXME: link to user profile">{{ data.user_info.first_name }} {{ data.user_info.last_name }}</a>, {{data.organization_info.name}}</p>
-        <ul class="mercator-propsal-detail-meta">
-            <li class="mercator-propsal-detail-meta-column">
+        <ul class="mercator-propsal-list-item-meta">
+            <li class="mercator-propsal-list-item-meta-item">
                 <!-- FIXME: Doesn't seem to work -->
                 {{ data.basic.createtime }}
             </li>
-            <li class="mercator-propsal-detail-meta-column">
+            <li class="mercator-propsal-list-item-meta-item">
                 {{ data.finance.budget }} &euro;
             </li>
-            <li class="mercator-propsal-detail-meta-column">
+            <li class="mercator-propsal-list-item-meta-item">
             <!-- FIXME: Dummy data -->12
             {{ "votes" | translate }}</li>
-            <li class="mercator-propsal-detail-meta-column">
+            <li class="mercator-propsal-list-item-meta-item">
             <!-- FIXME: Dummy data -->33
              {{ "comments" | translate }}</li>
         </ul>
