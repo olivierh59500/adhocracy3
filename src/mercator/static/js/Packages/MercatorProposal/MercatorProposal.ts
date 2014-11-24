@@ -35,6 +35,7 @@ import RIMercatorStory = require("../../Resources_/adhocracy_mercator/resources/
 import RIMercatorStoryVersion = require("../../Resources_/adhocracy_mercator/resources/mercator/IStoryVersion");
 import RIMercatorValue = require("../../Resources_/adhocracy_mercator/resources/mercator/IValue");
 import RIMercatorValueVersion = require("../../Resources_/adhocracy_mercator/resources/mercator/IValueVersion");
+import SICommentable = require("../../Resources_/adhocracy_core/sheets/comment/ICommentable");
 import SIMercatorDetails = require("../../Resources_/adhocracy_mercator/sheets/mercator/IDetails");
 import SIMercatorExperience = require("../../Resources_/adhocracy_mercator/sheets/mercator/IExperience");
 import SIMercatorFinance = require("../../Resources_/adhocracy_mercator/sheets/mercator/IFinance");
@@ -56,6 +57,9 @@ var pkgLocation = "/MercatorProposal";
 
 
 export interface IScopeData {
+    commentCount : number;
+    commentCountTotal : number;
+
     // 1. basic
     user_info : {
         first_name : string;
@@ -63,6 +67,7 @@ export interface IScopeData {
         country : number;
         createtime : Date;
         path : string;
+        comment_count : number;
     };
     organization_info : {
         status_enum : string;  // (allowed values: 'registered_nonprofit', 'planned_nonprofit', 'support_needed', 'other')
@@ -72,6 +77,7 @@ export interface IScopeData {
         date_of_foreseen_registration : Date;
         how_can_we_help_you : string;
         status_other : string;
+        comment_count : number;
     };
 
     // 2. introduction
@@ -79,6 +85,7 @@ export interface IScopeData {
         title : string;
         teaser : string;
         imageUpload : Flow;
+        comment_count : number;
     };
 
     // 3. in detail
@@ -90,14 +97,20 @@ export interface IScopeData {
         location_specific_3 : string;
         location_is_online : boolean;
         location_is_linked_to_ruhr : boolean;
+        comment_count : number;
     };
     story : string;
+    storyCommentCount : number;
 
     // 4. motivation
     outcome : string;
+    outcomeCommentCount : number;
     steps : string;
+    stepsCommentCount : number;
     value : string;
+    valueCommentCount : number;
     partners : string;
+    partnersCommentCount : number;
 
     // 5. financial planning
     finance : {
@@ -105,6 +118,7 @@ export interface IScopeData {
         requested_funding : number;
         other_sources : string;
         granted : boolean;
+        comment_count : number;
     };
 
     // 6. extra
@@ -115,7 +129,8 @@ export interface IScopeData {
         newsletter : boolean;
         facebook : boolean;
         other : boolean;
-        other_specify : string
+        other_specify : string;
+        comment_count : number;
     };
     accept_disclaimer : string;
 }
@@ -227,6 +242,8 @@ export class Widget<R extends ResourcesBase.Resource> extends AdhResourceWidgets
         data.heard_from.other = mercatorProposalVersion.data[SIMercatorHeardFrom.nick].heard_elsewhere !== "";
         data.heard_from.other_specify = mercatorProposalVersion.data[SIMercatorHeardFrom.nick].heard_elsewhere;
 
+        data.commentCount = mercatorProposalVersion.data[SICommentable.nick].comments.length;
+
         var subResourcePaths : SIMercatorSubResources.Sheet = mercatorProposalVersion.data[SIMercatorSubResources.nick];
         var subResourcePromises : ng.IPromise<ResourcesBase.Resource[]> = this.$q.all([
             this.adhHttp.get(subResourcePaths.organization_info),
@@ -240,7 +257,7 @@ export class Widget<R extends ResourcesBase.Resource> extends AdhResourceWidgets
             this.adhHttp.get(subResourcePaths.finance),
             this.adhHttp.get(subResourcePaths.experience)]);
 
-        subResourcePromises.then((subResources : ResourcesBase.Resource[]) => {
+        return subResourcePromises.then((subResources : ResourcesBase.Resource[]) => {
             subResources.forEach((subResource : ResourcesBase.Resource) => {
                 switch (subResource.content_type) {
                     case RIMercatorOrganizationInfoVersion.content_type: (() => {
@@ -254,6 +271,7 @@ export class Widget<R extends ResourcesBase.Resource> extends AdhResourceWidgets
                         scope.date_of_foreseen_registration = res.planned_date;
                         scope.how_can_we_help_you = res.help_request;
                         scope.status_other = res.status_other;
+                        scope.commentCount = subResource.data[SICommentable.nick].comments.length;
                     })();
                     break;
                     case RIMercatorIntroductionVersion.content_type: (() => {
@@ -262,6 +280,7 @@ export class Widget<R extends ResourcesBase.Resource> extends AdhResourceWidgets
 
                         scope.title = res.title;
                         scope.teaser = res.teaser;
+                        scope.commentCount = subResource.data[SICommentable.nick].comments.length;
                     })();
                     break;
                     case RIMercatorDetailsVersion.content_type: (() => {
@@ -275,31 +294,37 @@ export class Widget<R extends ResourcesBase.Resource> extends AdhResourceWidgets
                         scope.location_specific_3 = res.location_specific_3;
                         scope.location_is_online = res.location_is_online === "true";
                         scope.location_is_linked_to_ruhr = res.location_is_linked_to_ruhr === "true";
+                        scope.commentCount = subResource.data[SICommentable.nick].comments.length;
                     })();
                     break;
                     case RIMercatorStoryVersion.content_type: (() => {
                         var res : SIMercatorStory.Sheet = subResource.data[SIMercatorStory.nick];
                         data.story = res.story;
+                        data.storyCommentCount = subResource.data[SICommentable.nick].comments.length;
                     })();
                     break;
                     case RIMercatorOutcomeVersion.content_type: (() => {
                         var res : SIMercatorOutcome.Sheet = subResource.data[SIMercatorOutcome.nick];
                         data.outcome = res.outcome;
+                        data.outcomeCommentCount = subResource.data[SICommentable.nick].comments.length;
                     })();
                     break;
                     case RIMercatorStepsVersion.content_type: (() => {
                         var res : SIMercatorSteps.Sheet = subResource.data[SIMercatorSteps.nick];
                         data.steps = res.steps;
+                        data.stepsCommentCount = subResource.data[SICommentable.nick].comments.length;
                     })();
                     break;
                     case RIMercatorValueVersion.content_type: (() => {
                         var res : SIMercatorValue.Sheet = subResource.data[SIMercatorValue.nick];
                         data.value = res.value;
+                        data.valueCommentCount = subResource.data[SICommentable.nick].comments.length;
                     })();
                     break;
                     case RIMercatorPartnersVersion.content_type: (() => {
                         var res : SIMercatorPartners.Sheet = subResource.data[SIMercatorPartners.nick];
                         data.partners = res.partners;
+                        data.partnersCommentCount = subResource.data[SICommentable.nick].comments.length;
                     })();
                     break;
                     case RIMercatorFinanceVersion.content_type: (() => {
@@ -310,11 +335,13 @@ export class Widget<R extends ResourcesBase.Resource> extends AdhResourceWidgets
                         scope.requested_funding = parseInt(res.requested_funding, 10);
                         scope.other_sources = res.other_sources;
                         scope.granted = res.granted === "True";
+                        scope.commentCount = subResource.data[SICommentable.nick].comments.length;
                     })();
                     break;
                     case RIMercatorExperienceVersion.content_type: (() => {
                         var res : SIMercatorExperience.Sheet = subResource.data[SIMercatorExperience.nick];
                         data.experience = res.experience;
+                        data.experienceCommentCount = subResource.data[SICommentable.nick].comments.length;
                     })();
                     break;
                     default: {
@@ -322,9 +349,20 @@ export class Widget<R extends ResourcesBase.Resource> extends AdhResourceWidgets
                     }
                 }
             });
-        });
 
-        return this.$q.when();
+            data.commentCountTotal =
+                data.commentCount +
+                data.introduction.commentCount +
+                data.details.commentCount +
+                data.finance.commentCount +
+                data.organization_info.commentCount +
+                data.details.commentCount +
+                data.outcomeCommentCount +
+                data.stepsCommentCount +
+                data.valueCommentCount +
+                data.partnersCommentCount +
+                data.experienceCommentCount;
+        });
     }
 
     private fill(data, resource) : void {
