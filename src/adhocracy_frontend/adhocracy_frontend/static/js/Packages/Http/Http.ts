@@ -127,6 +127,7 @@ export class Service<Content extends ResourcesBase.Resource> {
             throw "attempt to http-put preliminary path: " + path;
         }
         path = this.formatUrl(path);
+        this.invalidate(path);
         return this.$http
             .put(path, obj);
     }
@@ -146,6 +147,7 @@ export class Service<Content extends ResourcesBase.Resource> {
         }
         path = this.formatUrl(path);
 
+        this.invalidate(path);
         if (typeof FormData !== "undefined" && FormData.prototype.isPrototypeOf(obj)) {
             return _self.$http({
                 method: "POST",
@@ -392,6 +394,26 @@ export class Service<Content extends ResourcesBase.Resource> {
      */
     public withTransaction<Result>(callback : (httpTrans : AdhTransaction.Transaction) => ng.IPromise<Result>) : ng.IPromise<Result> {
         return callback(new AdhTransaction.Transaction(this, this.adhMetaApi, this.adhPreliminaryNames, this.adhConfig));
+    }
+
+    /**
+     * invalidate cache on $http.  if argument is undefined, the
+     * entire cache is cleared.  otherwise, the resp. path is removed.
+     *
+     * (the name is chosen to make sense in the context of an http
+     * service, as opposed to more specialized cache service.  in the
+     * latter case, `remove` is entirely reasonable, but on http,
+     * `remove` would not be as easy to understand.)
+     */
+    public invalidate(path? : string) : void {
+        var cache = this.$http.defaults.cache;
+        if (cache) {
+            if (typeof path === "undefined") {
+                cache.removeAll();
+            } else {
+                cache.remove(path);
+            }
+        }
     }
 }
 
