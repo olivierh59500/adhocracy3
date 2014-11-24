@@ -67,7 +67,7 @@ export interface IScopeData {
         country : number;
         createtime : Date;
         path : string;
-        comment_count : number;
+        commentCount : number;
     };
     organization_info : {
         status_enum : string;  // (allowed values: 'registered_nonprofit', 'planned_nonprofit', 'support_needed', 'other')
@@ -77,7 +77,7 @@ export interface IScopeData {
         date_of_foreseen_registration : Date;
         how_can_we_help_you : string;
         status_other : string;
-        comment_count : number;
+        commentCount : number;
     };
 
     // 2. introduction
@@ -85,7 +85,7 @@ export interface IScopeData {
         title : string;
         teaser : string;
         imageUpload : Flow;
-        comment_count : number;
+        commentCount : number;
     };
 
     // 3. in detail
@@ -97,7 +97,7 @@ export interface IScopeData {
         location_specific_3 : string;
         location_is_online : boolean;
         location_is_linked_to_ruhr : boolean;
-        comment_count : number;
+        commentCount : number;
     };
     story : string;
     storyCommentCount : number;
@@ -118,11 +118,12 @@ export interface IScopeData {
         requested_funding : number;
         other_sources : string;
         granted : boolean;
-        comment_count : number;
+        commentCount : number;
     };
 
     // 6. extra
     experience : string;
+    experienceCommentCount : number;
     heard_from : {
         colleague : boolean;
         website : boolean;
@@ -130,7 +131,7 @@ export interface IScopeData {
         facebook : boolean;
         other : boolean;
         other_specify : string;
-        comment_count : number;
+        commentCount : number;
     };
     accept_disclaimer : string;
 }
