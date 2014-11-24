@@ -19,19 +19,19 @@ import AdhHttp = require("./Http");
 import AdhMetaApi = require("./MetaApi");
 
 var mkAdhHttp = (angular, config, meta_api) => {
-    var factory = ($http, $q, $timeout) => {
+    var factory = ($http, $cacheFactory, $q, $timeout) => {
         $http.defaults.headers.common["X-User-Token"] = "SECRET_GOD";
         $http.defaults.headers.common["X-User-Path"] = "/principals/users/0000000";
 
         var preliminaryNames = new AdhPreliminaryNames.Service();
         return (new AdhHttp.Service(
-            $http, $q, $timeout,
+            $http, $cacheFactory, $q, $timeout,
             new AdhMetaApi.MetaApiQuery(meta_api),
             preliminaryNames,
             config
         ));
     };
-    factory.$inject = ["$http", "$q", "$timeout"];
+    factory.$inject = ["$http", "$cacheFactory", "$q", "$timeout"];
     return angular.injector(["ng"]).invoke(factory);
 };
 

@@ -59,12 +59,17 @@ export var emptyOptions : IOptions = {
 export class Service<Content extends ResourcesBase.Resource> {
     constructor(
         private $http : ng.IHttpService,
+        private $cacheFactory : ng.ICacheFactoryService,
         private $q : ng.IQService,
         private $timeout : ng.ITimeoutService,
         private adhMetaApi : AdhMetaApi.MetaApiQuery,
         private adhPreliminaryNames : AdhPreliminaryNames.Service,
         private adhConfig : AdhConfig.IService
-    ) {}
+    ) {
+        if (typeof $http.defaults.cache === "string") {
+            $http.defaults.cache = $cacheFactory($http.defaults.cache);
+        }
+    }
 
     private formatUrl(path) {
         if (!path) {
@@ -398,7 +403,15 @@ export var register = (angular, metaApi) => {
         .module(moduleName, [
             AdhPreliminaryNames.moduleName
         ])
-        .service("adhHttp", ["$http", "$q", "$timeout", "adhMetaApi", "adhPreliminaryNames", "adhConfig", Service])
+        .config(["$httpProvider", ($httpProvider) => {
+            // we can't use the $cacheFactory service here yet,
+            // because we are in the config phase.  but we can set the
+            // cache to the Id string of the cache object, and
+            // initialize it in the service constructor.  to disable
+            // caching altogether, set to `false`.
+            $httpProvider.defaults.cache = "AdhHttpCacheId";
+        }])
+        .service("adhHttp", ["$http", "$cacheFactory", "$q", "$timeout", "adhMetaApi", "adhPreliminaryNames", "adhConfig", Service])
         .factory("adhMetaApi", () => new AdhMetaApi.MetaApiQuery(metaApi))
         .filter("adhFormatError", () => AdhError.formatError);
 };
