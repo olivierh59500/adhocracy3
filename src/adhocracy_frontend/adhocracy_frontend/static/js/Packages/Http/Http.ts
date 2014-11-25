@@ -441,6 +441,13 @@ export var register = (angular, metaApi) => {
             // initialize it in the service constructor.  to disable
             // caching altogether, set to `false`.
             $httpProvider.defaults.cache = false;  // FIXME: should be "AdhHttpCacheId", but then tests fail.
+
+            // FIXME: i have no reason to assume that this works.
+            // traditionally, the server sets this header field to
+            // tell the browser cache when to drop a response, and i
+            // was just hoping that the client magically could do the
+            // same thing.  NOT TESTED.  MAY NEED REPLACEMENT BY A
+            // BETTER IDEA.
             $httpProvider.defaults.headers.common["Cache-Control"] = "max-age=" + cacheTimeoutSeconds.toString();
         }])
         .service("adhHttp", ["$http", "$cacheFactory", "$q", "$timeout", "adhMetaApi", "adhPreliminaryNames", "adhConfig", Service])
