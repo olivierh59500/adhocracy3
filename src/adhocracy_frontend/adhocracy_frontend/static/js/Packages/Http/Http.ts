@@ -27,6 +27,15 @@ export interface IBackendErrorItem extends AdhError.IBackendErrorItem {};
 export var logBackendError : (response : ng.IHttpPromiseCallbackArg<IBackendError>) => void = AdhError.logBackendError;
 
 
+/**
+ * resources can only live in the cache for a certain number of
+ * seconds, then they have to be re-requested from the server.  this
+ * is a work-around for the fact that web-sockets reliability is not
+ * very high yet, and is not supported at all on some browsers.
+ */
+var cacheTimeoutSeconds : number = 8 * 60;
+
+
 export interface IOptions {
     OPTIONS : boolean;
     PUT : boolean;
@@ -432,6 +441,7 @@ export var register = (angular, metaApi) => {
             // initialize it in the service constructor.  to disable
             // caching altogether, set to `false`.
             $httpProvider.defaults.cache = "AdhHttpCacheId";
+            $httpProvider.defaults.headers.common["Cache-Control"] = "max-age=" + cacheTimeoutSeconds.toString();
         }])
         .service("adhHttp", ["$http", "$cacheFactory", "$q", "$timeout", "adhMetaApi", "adhPreliminaryNames", "adhConfig", Service])
         .factory("adhMetaApi", () => new AdhMetaApi.MetaApiQuery(metaApi))
