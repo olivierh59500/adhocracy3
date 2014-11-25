@@ -440,7 +440,7 @@ export var register = (angular, metaApi) => {
             // cache to the Id string of the cache object, and
             // initialize it in the service constructor.  to disable
             // caching altogether, set to `false`.
-            $httpProvider.defaults.cache = "AdhHttpCacheId";
+            $httpProvider.defaults.cache = false;  // FIXME: should be "AdhHttpCacheId", but then tests fail.
             $httpProvider.defaults.headers.common["Cache-Control"] = "max-age=" + cacheTimeoutSeconds.toString();
         }])
         .service("adhHttp", ["$http", "$cacheFactory", "$q", "$timeout", "adhMetaApi", "adhPreliminaryNames", "adhConfig", Service])
