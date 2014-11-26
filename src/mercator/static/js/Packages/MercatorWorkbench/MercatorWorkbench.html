@@ -84,36 +84,27 @@
         </div>
         <div class="moving-column moving-column-content">
             <div class="moving-column-menu placeholder"></div>
-            <div class="moving-column-body" data-du-scroll-container="" adh-user-profile>
-                <section
-                    data-adh-user-profile=""
-                    data-itemscope=""
-                    data-itemtype="http://schema.org/Person"
-                    class="mercator-user-profile">
-                        <h1 data-itemprop="name">{{user.data.name}}</h1>
-                        <a href="mailto:{{user.data.email}}" data-itemprop="email">{{user.data.email}}</a>
-                    <section
-                        data-itemscope=""
-                        data-itemtype="http://schema.org/Organization"
-                        data-itemprop="organization"
-                        class="user-profile-org-details">
-                            <h2 data-itemprop="name">FIXME: ORGANIZATION NAME</h2>
-                            <a href="mailto:FIXME" data-itemprop="email">FIXME: @FIX.ME</a><br/>
-                            <a href="FIXME" data-itemprop="url">www.fix.me</a><br/>
-                            <span data-itemprop="location">FIXME: LOCATION</span>
+            <div class="moving-column-body" data-du-scroll-container="">
+                <adh-recompile-on-change
+                    data-key="userUrl"
+                    data-value="{{userUrl}}">
+                    <adh-user-profile
+                        data-path="{{userUrl}}">
+                    </adh-user-profile>
+                    <section class="mercator-user-profile-proposal-list">
+
+                        <h3>{{userBasic.name}}{{ "'s" | translate }} {{ "proposals" | translate }}</h3>
+                        <!-- FIXME: Filter only show selected users proposals -->
+                        <adh-mercator-proposal-listing
+                            data-path="{{path}}"
+                            data-content-type="{{contentType}}"
+                            data-update="proposalListingData.update"
+                            data-facets="proposalListingData.facets"
+                            data-sort="name"
+                        >
+                        </adh-mercator-proposal-listing>
                     </section>
-                </section><!-- /schema -->
-                <section class="mercator-user-profile-proposal-list">
-                    <h3>{{user.data.name}}{{ "'s" | translate }} {{ "proposals" | translate }}</h3>
-                    <adh-mercator-proposal-listing
-                        data-path="{{path}}"
-                        data-content-type="{{contentType}}"
-                        data-update="proposalListingData.update"
-                        data-facets="proposalListingData.facets"
-                        data-sort="proposalListingData.sort"
-                    >
-                    </adh-mercator-proposal-listing>
-                </section><!-- /.user-profile-proposal-list -->
+                </adh-recompile-on-change>
             </div>
         </div>
     </div>

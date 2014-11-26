@@ -12,6 +12,7 @@ import AdhUtil = require("../Util/Util");
 import RIBasicPool = require("../../Resources_/adhocracy_core/resources/pool/IBasicPool");
 import RICommentVersion = require("../../Resources_/adhocracy_core/resources/comment/ICommentVersion");
 import RIMercatorProposalVersion = require("../../Resources_/adhocracy_mercator/resources/mercator/IMercatorProposalVersion");
+import RIUser = require("../../Resources_/adhocracy_core/resources/principal/IUser");
 import SIComment = require("../../Resources_/adhocracy_core/sheets/comment/IComment");
 
 var pkgLocation = "/MercatorWorkbench";
@@ -92,7 +93,6 @@ export class MercatorWorkbench {
     }
 }
 
-
 export var moduleName = "adhMercatorWorkbench";
 
 export var register = (angular) => {
@@ -128,6 +128,12 @@ export var register = (angular) => {
                         })
                         .then(() => specifics);
                 }])
+                .specific(RIUser.content_type, "", () => (resource : RICommentVersion) => {
+                    var specifics = {};
+                    specifics["userUrl"] = resource.path;
+                    return specifics;
+
+                })
                 .default(RIBasicPool.content_type, "create_proposal", {
                     space: "content",
                     movingColumns: "is-show-hide-hide"
