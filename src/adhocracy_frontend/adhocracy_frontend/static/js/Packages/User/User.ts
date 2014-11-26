@@ -409,12 +409,14 @@ export var userProfileDirective = (adhConfig : AdhConfig.IService) => {
         scope: {
             path: "@"
         },
-        controller: ["adhHttp", "$scope", "$rootScope", (adhHttp : AdhHttp.Service<any>, $scope, $rootScope) => {
+        controller: ["adhHttp", "adhUser", "$scope", "$rootScope", (adhHttp : AdhHttp.Service<any>, adhUser, $scope, $rootScope) => {
             if ($scope.path) {
                 adhHttp.resolve($scope.path)
                     .then((res) => {
                         $scope.userBasic = $rootScope.userBasic = res.data[SIUserBasic.nick];
                     });
+            } else {
+                $scope.userBasic = $rootScope.userBasic = adhUser.data;
             }
         }]
     };
