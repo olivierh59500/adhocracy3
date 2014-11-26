@@ -34,6 +34,7 @@ a form for creating new elements. This form is then always visible.
 .listing-element {
     border-bottom: 1px solid $color-structure-border;
     padding: 10px;
+
     &.ng-enter {
         @include transition(all 3s);
         background: greenyellow;
