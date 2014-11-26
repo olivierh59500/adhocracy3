@@ -1,0 +1,33 @@
+<div class="mercator-list-users-cover">
+    ME
+    <button type="button" href="#FIXME">PROFILE</button>
+</div>
+<section
+    class="mercator-list-users"
+    data-ng-init="alphabet=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']">
+
+    <section
+        class="chapter"
+        data-ng-repeat="alpha in alphabet">
+        <h3>Letter {{alpha}}</h3>
+        <adh-listing
+            data-path="{{path}}"
+            data-content-type="{{contentType}}"
+            data-facets="facets"
+            data-sort="sort"
+            data-update="update"
+            data-no-create-form="true">
+            <div data-ng-switch="transclusionId">
+                <adh-resource-wrapper
+                    data-ng-switch-when="element-id">
+                    <adh-mercator-proposal
+                         data-ng-if="element"
+                         data-path="{{element}}"
+                         data-mode="display">
+                    </adh-mercator-proposal>
+                </adh-resource-wrapper>
+            </div>
+        </adh-listing>
+    </section>
+
+</section>

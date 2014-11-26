@@ -7,7 +7,6 @@ import AdhTopLevelState = require("../TopLevelState/TopLevelState");
 import SIPasswordAuthentication = require("../../Resources_/adhocracy_core/sheets/principal/IPasswordAuthentication");
 import SIUserBasic = require("../../Resources_/adhocracy_core/sheets/principal/IUserBasic");
 
-
 var pkgLocation = "/User";
 
 export interface IUserBasic {
@@ -378,6 +377,15 @@ export var metaDirective = (adhConfig : AdhConfig.IService) => {
     };
 };
 
+export var listUsersDirective = (adhConfig : AdhConfig.IService) => {
+    return {
+        restrict: "E",
+        templateUrl: adhConfig.pkg_path + pkgLocation + "/ListUsers.html"
+    };
+};
+
+
+
 
 export var moduleName = "adhUser";
 
@@ -417,6 +425,7 @@ export var register = (angular) => {
                 }]);
         }])
         .service("adhUser", ["adhHttp", "$q", "$http", "$rootScope", "$window", "angular", "Modernizr", Service])
+        .directive("adhListUsers", ["adhConfig", "$rootScope", listUsersDirective])
         .directive("adhLogin", ["adhConfig", loginDirective])
         .directive("adhRegister", ["adhConfig", registerDirective])
         .directive("adhUserIndicator", ["adhConfig", indicatorDirective])
