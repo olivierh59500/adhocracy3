@@ -1,38 +1,31 @@
 <div class="mercator-proposal-detail-view proposal" id="mercator-detail-view-top">
+    <ul class="mercator-proposal-detail-meta">
+        <li class="mercator-propsal-detail-meta-item">
+            <i class="icon-speech-bubbles"></i>
+            {{ data.commentCountTotal }} {{ "Total Comments" | translate }}
+        </li>
+        <li class="mercator-propsal-detail-meta-item">
+            <i class="icon-calendar"></i>
+            {{ data.user_info.createtime | date :'d/M/yyyy' }}
+        </li>
+        <li class="mercator-propsal-detail-meta-item">
+            <i class="icon-pig"></i>
+            <strong>{{data.finance.requested_funding | number}} &euro;</strong>
+        </li>
+        <li class="mercator-propsal-detail-meta-item">
+            +{{ data.supporterCount }}
+            <adh-like data-refers-to="{{path}}"
+                data-post-pool-sheet="adhocracy.sheets.rate.ILikeable"
+                data-post-pool-field="post_pool">
+            </adh-like>
+        </li>
+    </ul>
     <div class="mercator-proposal-detail-cover">
         <h2 class="chapter-header">{{ data.introduction.title }}
             <a class="mercator-proposal-cover-show-comments" href="{{ path | adhResourceUrl:'comments' }}">
                 <i class="icon-speachbubble-outline"></i> {{ data.commentCount }}
             </a>
         </h2>
-
-        <ul class="mercator-proposal-detail-meta">
-            <li class="mercator-propsal-detail-meta-item">
-                <strong>{{data.finance.requested_funding}} &euro;</strong> requested
-            </li>
-            <li class="mercator-propsal-detail-meta-item">
-                <adh-user-meta
-                    data-ng-if="data.user_info"
-                    data-path="{{data.user_info.path}}"
-                    data-name="{{data.user_info.first_name}} {{data.user_info.last_name}}">
-                </adh-user-meta>
-            </li>
-            <li class="mercator-propsal-detail-meta-item">
-                {{ data.user_info.createtime }} {{ "published" | translate }}
-            </li>
-            <li class="mercator-propsal-detail-meta-item">
-                <i class="icon-speachbubble-outline"></i> {{ data.commentCountTotal }}
-            </li>
-            <li class="mercator-propsal-detail-meta-item">
-                {{ data.supporterCount }} {{ "supporters" | translate }}
-            </li>
-            <li class="mercator-propsal-detail-meta-item">
-                <adh-like data-refers-to="{{path}}"
-                    data-post-pool-sheet="adhocracy.sheets.rate.ILikeable"
-                    data-post-pool-field="post_pool">
-                </adh-like>
-            </li>
-        </ul>
     </div><!-- /.cover -->
 
     <nav class="mercator-proposal-detail-nav" data-adh-sticky="">
