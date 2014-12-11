@@ -23,10 +23,12 @@
 [data-icon]:before { content: attr(data-icon); }
 
 [data-icon]:before,
+.icon-calendar:before,
 .icon-document:before,
 .icon-documents:before,
 .icon-list:before,
 .icon-minus:before,
+.icon-pig:before,
 .icon-pointy-rectangle-left:before,
 .icon-pointy-rectangle-right:before,
 .icon-speachbubble:before,
@@ -48,10 +50,12 @@
   font-smoothing: antialiased;
 }
 
+.icon-calendar:before { content: "\f10c"; }
 .icon-document:before { content: "\f105"; }
 .icon-documents:before { content: "\f103"; }
 .icon-list:before { content: "\f104"; }
 .icon-minus:before { content: "\f106"; }
+.icon-pig:before { content: "\f10d"; }
 .icon-pointy-rectangle-left:before { content: "\f10a"; }
 .icon-pointy-rectangle-right:before { content: "\f10b"; }
 .icon-speachbubble:before { content: "\f100"; }
