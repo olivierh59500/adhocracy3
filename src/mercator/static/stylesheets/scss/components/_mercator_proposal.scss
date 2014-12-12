@@ -85,7 +85,8 @@ selected. If no proposal is selected, no state is applied.
     border-bottom: 1px solid $color-structure-border;
     padding: 1.2em;
 
-    .chapter-heading {
+    .chapter-header {
+        margin: 0;
         font-size: $font-size-large;
     }
 }
@@ -106,7 +107,7 @@ selected. If no proposal is selected, no state is applied.
 .mercator-proposal-list-item {
     @include container;
     border-bottom: 0.1666em solid $color-secondary-introvert;
-    padding: 0 1.2em 1em;
+    padding: 1.2em;
 
     .mercator-proposal-list-item-image {
         @include span(3 of 12 first);
