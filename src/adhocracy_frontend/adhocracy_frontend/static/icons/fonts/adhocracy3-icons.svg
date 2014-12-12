@@ -1,11 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
 <!--
-2014-12-11: Created.
+2014-12-12: Created.
 -->
 <svg xmlns="http://www.w3.org/2000/svg">
 <metadata>
-Created by FontForge 20120731 at Thu Dec 11 18:20:10 2014
+Created by FontForge 20120731 at Fri Dec 12 14:08:39 2014
  By Caroline Clifford,,,
 Created by Caroline Clifford,,, with FontForge 2.0 (http://fontforge.sf.net)
 </metadata>
@@ -22,11 +22,13 @@ Created by Caroline Clifford,,, with FontForge 2.0 (http://fontforge.sf.net)
     bbox="-0.25 -64 512.25 448"
     underline-thickness="25.6"
     underline-position="-51.2"
-    unicode-range="U+F100-F10D"
+    unicode-range="U+F100-F10E"
   />
     <missing-glyph />
     <glyph glyph-name="uniF103" unicode="&#xf103;" horiz-adv-x="410" 
 d="M384 294v-230h-282v358h154v-102c0 -11 5 -27 26 -26h102zM358 38v-25h-307v358h26v-333h281zM333 -13v-25h-333v358h26v-333h307zM410 320h-103c-17 0 -25 10 -25 26v76z" />
+    <glyph glyph-name="uniF10E" unicode="&#xf10e;" horiz-adv-x="465" 
+d="M171 262c-92 0 -171 -62 -171 -140c0 -42 14 -82 47 -108l-16 -78l93 47h47c92 0 155 61 155 139s-63 140 -155 140zM465 355h-93c-10 0 -15 8 -15 15v78zM326 324h139v-233h-99c0 138 -57 206 -180 206v151h140v-124z" />
     <glyph glyph-name="uniF104" unicode="&#xf104;" horiz-adv-x="410" 
 d="M386 300v24h-266v-24h266zM410 349v-73h-314v73h314zM48 300v24h-24v-24h24zM72 349v-73h-72v73h72zM48 180v24h-24v-24h24zM72 228v-72h-72v72h72zM48 59v25h-24v-25h24zM72 108v-4v-69h-72v73h72zM386 59v25h-266v-25h266zM410 108v-73h-314v73h314zM386 180v24h-266
 v-24h266zM386 228h24v-72h-314v72h290z" />
