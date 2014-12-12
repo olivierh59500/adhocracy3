@@ -1,7 +1,7 @@
 {
   "checksum": {
-    "previous": "bb37be2471072fe0c40222f131d3db0d6d79be4e324d421312a2bcf013497aad",
-    "current": "bb37be2471072fe0c40222f131d3db0d6d79be4e324d421312a2bcf013497aad"
+    "previous": "da6a27472c9b293881ca22dcf482c06610f8ff2b8f2bcddf71056e96c139f022",
+    "current": "da6a27472c9b293881ca22dcf482c06610f8ff2b8f2bcddf71056e96c139f022"
   },
   "fonts": [
     "fonts/adhocracy3-icons.ttf",
@@ -50,10 +50,6 @@
       "codepoint": 61697,
       "source": "svg/speachbubble-outline.svg"
     },
-    "speech-bubbles": {
-      "codepoint": 61705,
-      "source": "svg/speech-bubbles.svg"
-    },
     "speech-document": {
       "codepoint": 61710,
       "source": "svg/speech-document.svg"
@@ -61,6 +57,10 @@
     "speechbubble-document": {
       "codepoint": 61711,
       "source": "svg/speechbubble-document.svg"
+    },
+    "speechbubbles": {
+      "codepoint": 61712,
+      "source": "svg/speechbubbles.svg"
     },
     "user": {
       "codepoint": 61698,
