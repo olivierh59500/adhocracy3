@@ -29,6 +29,7 @@ The button has the is-rate-button-active state.
     padding: 0 0.5em;
     line-height: 2;
     background-color: yellow;
+    text-decoration: none;
 
     &:before {
         content: "";
@@ -38,7 +39,7 @@ The button has the is-rate-button-active state.
         height: 0;
         border-top: 1em solid transparent;
         border-bottom: 1em solid transparent;
-        border-right: $arrow-width solid yellow;
+        border-right: $arrow-width solid $color-brand-accent2;
         border-left: 0;
     }
 
