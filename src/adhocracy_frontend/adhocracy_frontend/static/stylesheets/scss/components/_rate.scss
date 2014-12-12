@@ -28,7 +28,8 @@ The button has the is-rate-button-active state.
     margin-left: $arrow-width;
     padding: 0 0.5em;
     line-height: 2;
-    background-color: yellow;
+    background-color: $color-brand-accent2;
+    color: white;
     text-decoration: none;
 
     &:before {
@@ -43,11 +44,9 @@ The button has the is-rate-button-active state.
         border-left: 0;
     }
 
-    &.is-rate-button-active {
-        background-color: green;
-
-        &:before {
-            border-right-color: green;
-        }
+    &.is-rate-button-active,
+    &:hover {
+        @include opacity(0.6);
+        color: white;
     }
 }
