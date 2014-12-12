@@ -1,26 +1,28 @@
 <div class="mercator-proposal-detail-view proposal" id="mercator-detail-view-top">
-    <ul class="mercator-proposal-detail-meta">
-        <li class="mercator-propsal-detail-meta-item">
-            <i class="icon-speech-bubbles"></i>
-            {{ data.commentCountTotal }} {{ "Total Comments" | translate }}
-        </li>
-        <li class="mercator-propsal-detail-meta-item">
-            <i class="icon-calendar"></i>
-            {{ data.user_info.createtime | date :'d/M/yyyy' }}
-        </li>
-        <li class="mercator-propsal-detail-meta-item">
-            <i class="icon-pig"></i>
-            <strong>{{data.finance.requested_funding | number}} &euro;</strong>
-        </li>
-        <li class="mercator-propsal-detail-meta-item">
-            <!-- FIXME: Caroline not sure how this relates to next number{{ data.supporterCount }} -->
-            <adh-like data-refers-to="{{path}}"
-                data-post-pool-sheet="adhocracy.sheets.rate.ILikeable"
-                data-post-pool-field="post_pool">
-            </adh-like>
-        </li>
-    </ul>
+    <!-- FIXME: DUMMY IMG ! -->
+    <img class="mercator-proposal-detail-view-image" src="http://jasonlefkowitz.net/wp-content/uploads/2013/07/cats-16140154-1920-1080.jpg" style="width: 100%; height: 203px"/>
     <div class="mercator-proposal-detail-cover">
+        <ul class="mercator-proposal-detail-meta">
+            <li class="mercator-propsal-detail-meta-item">
+                <i class="icon-speech-bubbles"></i>
+                {{ data.commentCountTotal }} {{ "Total Comments" | translate }}
+            </li>
+            <li class="mercator-propsal-detail-meta-item">
+                <i class="icon-calendar"></i>
+                {{ data.user_info.createtime | date :'d/M/yyyy' }}
+            </li>
+            <li class="mercator-propsal-detail-meta-item">
+                <i class="icon-pig"></i>
+                <strong>{{data.finance.requested_funding | number}} &euro;</strong>
+            </li>
+            <li class="mercator-propsal-detail-meta-item">
+                <!-- FIXME: Caroline not sure how this relates to next number{{ data.supporterCount }} -->
+                <adh-like data-refers-to="{{path}}"
+                    data-post-pool-sheet="adhocracy.sheets.rate.ILikeable"
+                    data-post-pool-field="post_pool">
+                </adh-like>
+            </li>
+        </ul>
         <h2 class="chapter-header">{{ data.introduction.title }}
             <a class="mercator-proposal-cover-show-comments" href="{{ path | adhResourceUrl:'comments' }}">
                 <i class="icon-speachbubble-outline"></i> {{ data.commentCount }}
