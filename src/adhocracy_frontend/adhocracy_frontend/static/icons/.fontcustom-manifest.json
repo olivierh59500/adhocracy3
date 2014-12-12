@@ -1,7 +1,7 @@
 {
   "checksum": {
-    "previous": "04cb579dc7df4d02229330cbcea6ba184060b21d863901f30b65c9620265b4cd",
-    "current": "04cb579dc7df4d02229330cbcea6ba184060b21d863901f30b65c9620265b4cd"
+    "previous": "bb37be2471072fe0c40222f131d3db0d6d79be4e324d421312a2bcf013497aad",
+    "current": "bb37be2471072fe0c40222f131d3db0d6d79be4e324d421312a2bcf013497aad"
   },
   "fonts": [
     "fonts/adhocracy3-icons.ttf",
@@ -57,6 +57,10 @@
     "speech-document": {
       "codepoint": 61710,
       "source": "svg/speech-document.svg"
+    },
+    "speechbubble-document": {
+      "codepoint": 61711,
+      "source": "svg/speechbubble-document.svg"
     },
     "user": {
       "codepoint": 61698,
