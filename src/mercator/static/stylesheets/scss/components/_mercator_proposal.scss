@@ -98,6 +98,7 @@ selected. If no proposal is selected, no state is applied.
 }
 
 .mercator-proposal-cover-show-comments {
+    @include disguised-link;
     float: right;
 }
 
