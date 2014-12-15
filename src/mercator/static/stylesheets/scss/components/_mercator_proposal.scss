@@ -92,7 +92,9 @@ selected. If no proposal is selected, no state is applied.
 }
 
 .mercator-proposal-cover-show-comments {
+    color: $color-highlight-extrovert;
     float: right;
+    text-decoration: none;
 }
 
 .mercator-proposal-detail-nav {
