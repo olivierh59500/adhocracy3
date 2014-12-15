@@ -14,6 +14,10 @@
             <li class="mercator-propsal-detail-meta-item">
                 <i class="icon-pig"></i>
                 <strong>{{data.finance.requested_funding | number}} &euro;</strong>
+                <i class="icon-speechbubble-outline"></i> {{ data.commentCountTotal }}
+            </li>
+            <li class="mercator-propsal-detail-meta-item">
+                {{ data.supporterCount }} {{ "supporters" | translate }}
             </li>
             <li class="mercator-propsal-detail-meta-item">
                 <!-- FIXME: Caroline not sure how this relates to next number{{ data.supporterCount }} -->
@@ -47,7 +51,7 @@
                 <h3>{{ "Pitch (Teaser)" | translate }}</h3>
                 <p>{{ data.introduction.teaser }}</p>
                 <a class="commentable-section-show-comments" href="{{ path | adhResourceUrl:'comments:introduction'}}">
-                    <i class="icon-speachbubble-outline"></i> {{ data.introduction.commentCount }}
+                    <i class="icon-speechbubble-outline"></i> {{ data.introduction.commentCount }}
                 </a>
             </section><!-- /.commentable-section -->
 
@@ -61,7 +65,7 @@
                     <li data-ng-if="data.location.location_is_linked_to_ruhr">{{ "Ruhr Gebiet, Germany" | translate }}</li>
                 </ul>
                 <a class="commentable-section-show-comments" href="{{ path | adhResourceUrl:'comments:location'}}">
-                    <i class="icon-speachbubble-outline"></i> {{ data.location.commentCount }}
+                    <i class="icon-speechbubble-outline"></i> {{ data.location.commentCount }}
                 </a>
             </section><!-- /.commentable-section -->
 
@@ -76,7 +80,7 @@
                 <p class="functional-introvert">{{ data.finance.other_sources }}</p>
 
                 <a class="commentable-section-show-comments" href="{{ path | adhResourceUrl:'comments:finance'}}">
-                    <i class="icon-speachbubble-outline"></i> {{ data.finance.commentCount }}
+                    <i class="icon-speechbubble-outline"></i> {{ data.finance.commentCount }}
                 </a>
             </section><!-- /.commentable-section -->
 
@@ -158,7 +162,7 @@
                     </div>
                 </div>
                 <a class="commentable-section-show-comments" href="{{ path | adhResourceUrl:'comments:organization_info'}}">
-                    <i class="icon-speachbubble-outline"></i> {{ data.organization_info.commentCount }}
+                    <i class="icon-speechbubble-outline"></i> {{ data.organization_info.commentCount }}
                 </a>
             </section><!-- /.commentable-section -->
 
@@ -171,7 +175,7 @@
                 <h3>{{ "Description?" | translate }}</h3>
                 <p>{{ data.description.description }}</p>
                 <a class="commentable-section-show-comments" href="{{ path | adhResourceUrl:'comments:description'}}">
-                    <i class="icon-speachbubble-outline"></i> {{ data.description.commentCount }}
+                    <i class="icon-speechbubble-outline"></i> {{ data.description.commentCount }}
                 </a>
             </section><!-- /.commentable-section -->
 
@@ -179,7 +183,7 @@
                 <h3>{{ "Story behind the idea" | translate }}</h3>
                 <p>{{ data.story }}</p>
                 <a class="commentable-section-show-comments" href="{{ path | adhResourceUrl:'comments:story'}}">
-                    <i class="icon-speachbubble-outline"></i> {{ data.stepsCommentCount }}
+                    <i class="icon-speechbubble-outline"></i> {{ data.stepsCommentCount }}
                 </a>
             </section><!-- /.commentable-section -->
 
@@ -192,7 +196,7 @@
                 <h3>{{ "What would be a successful outcome of your project or initiative?" | translate }}</h3>
                 <p>{{ data.outcome }}</p>
                 <a class="commentable-section-show-comments" href="{{ path | adhResourceUrl:'comments:outcome'}}">
-                    <i class="icon-speachbubble-outline"></i> {{ data.outcomeCommentCount }}
+                    <i class="icon-speechbubble-outline"></i> {{ data.outcomeCommentCount }}
                 </a>
             </section><!-- /.commentable-section -->
 
@@ -200,7 +204,7 @@
                 <h3>{{ "How do you want to get there?" | translate }}</h3>
                 <p>{{ data.steps }}</p>
                 <a class="commentable-section-show-comments" href="{{ path | adhResourceUrl:'comments:steps'}}">
-                    <i class="icon-speachbubble-outline"></i> {{ data.stepsCommentCount }}
+                    <i class="icon-speechbubble-outline"></i> {{ data.stepsCommentCount }}
                 </a>
             </section><!-- /.commentable-section -->
 
@@ -208,7 +212,7 @@
                 <h3>{{ "Why does Europe need your idea?" | translate }}</h3>
                 <p>{{ data.value }}</p>
                 <a class="commentable-section-show-comments" href="{{ path | adhResourceUrl:'comments:value'}}">
-                    <i class="icon-speachbubble-outline"></i> {{ data.valueCommentCount }}
+                    <i class="icon-speechbubble-outline"></i> {{ data.valueCommentCount }}
                 </a>
             </section><!-- /.commentable-section -->
 
@@ -216,7 +220,7 @@
                 <h3>{{ "Partner organisations and members list" | translate }}</h3>
                 <p>{{ data.partners }}</p>
                 <a class="commentable-section-show-comments" href="{{ path | adhResourceUrl:'comments:partners'}}">
-                    <i class="icon-speachbubble-outline"></i> {{ data.partnersCommentCount }}
+                    <i class="icon-speechbubble-outline"></i> {{ data.partnersCommentCount }}
                 </a>
             </section><!-- /.commentable-section -->
 
@@ -240,7 +244,7 @@
                 </div><!-- /.if=data.heard_from -->
 
                 <a class="commentable-section-show-comments" href="{{ path | adhResourceUrl:'comments:experience'}}">
-                    <i class="icon-speachbubble-outline"></i> {{ data.experienceCommentCount }}
+                    <i class="icon-speechbubble-outline"></i> {{ data.experienceCommentCount }}
                 </a>
             </section><!-- /.commentable-section -->
         </section>

@@ -31,9 +31,9 @@
 .icon-pig:before,
 .icon-pointy-rectangle-left:before,
 .icon-pointy-rectangle-right:before,
-.icon-speachbubble:before,
-.icon-speachbubble-outline:before,
+.icon-speechbubble:before,
 .icon-speechbubble-document:before,
+.icon-speechbubble-outline:before,
 .icon-speechbubbles:before,
 .icon-user:before,
 .icon-x:before {
@@ -59,9 +59,9 @@
 .icon-pig:before { content: "\f10d"; }
 .icon-pointy-rectangle-left:before { content: "\f10a"; }
 .icon-pointy-rectangle-right:before { content: "\f10b"; }
-.icon-speachbubble:before { content: "\f100"; }
-.icon-speachbubble-outline:before { content: "\f101"; }
+.icon-speechbubble:before { content: "\f111"; }
 .icon-speechbubble-document:before { content: "\f10f"; }
+.icon-speechbubble-outline:before { content: "\f112"; }
 .icon-speechbubbles:before { content: "\f110"; }
 .icon-user:before { content: "\f102"; }
 .icon-x:before { content: "\f107"; }

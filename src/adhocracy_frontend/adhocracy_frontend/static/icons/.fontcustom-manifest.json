@@ -1,7 +1,7 @@
 {
   "checksum": {
-    "previous": "dfa3331be593d3f9f29ed4dfa7c57c2d6d72e6fec7783a9fe77946202a922df8",
-    "current": "dfa3331be593d3f9f29ed4dfa7c57c2d6d72e6fec7783a9fe77946202a922df8"
+    "previous": "4db91603b9ddefad74a76f47757c68b3c456b9f8c78566c2609ed92ef86130be",
+    "current": "4db91603b9ddefad74a76f47757c68b3c456b9f8c78566c2609ed92ef86130be"
   },
   "fonts": [
     "fonts/adhocracy3-icons.ttf",
@@ -42,17 +42,17 @@
       "codepoint": 61707,
       "source": "svg/pointy-rectangle-right.svg"
     },
-    "speachbubble": {
-      "codepoint": 61696,
-      "source": "svg/speachbubble.svg"
-    },
-    "speachbubble-outline": {
-      "codepoint": 61697,
-      "source": "svg/speachbubble-outline.svg"
+    "speechbubble": {
+      "codepoint": 61713,
+      "source": "svg/speechbubble.svg"
     },
     "speechbubble-document": {
       "codepoint": 61711,
       "source": "svg/speechbubble-document.svg"
+    },
+    "speechbubble-outline": {
+      "codepoint": 61714,
+      "source": "svg/speechbubble-outline.svg"
     },
     "speechbubbles": {
       "codepoint": 61712,
