@@ -1,7 +1,7 @@
 {
   "checksum": {
-    "previous": "4db91603b9ddefad74a76f47757c68b3c456b9f8c78566c2609ed92ef86130be",
-    "current": "4db91603b9ddefad74a76f47757c68b3c456b9f8c78566c2609ed92ef86130be"
+    "previous": "3c6245d8791ec6e75b8eb65b42bb54b54bf9f8b0b8d7ef61cf8a7859b75cfe1c",
+    "current": "3c6245d8791ec6e75b8eb65b42bb54b54bf9f8b0b8d7ef61cf8a7859b75cfe1c"
   },
   "fonts": [
     "fonts/adhocracy3-icons.ttf",
@@ -77,7 +77,7 @@
     "font_design_size": 16,
     "font_em": 512,
     "font_name": "adhocracy3-icons",
-    "force": false,
+    "force": true,
     "input": {
       "templates": "svg",
       "vectors": "svg"
