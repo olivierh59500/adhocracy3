@@ -37,6 +37,7 @@ import AdhPreliminaryNames = require("./Packages/PreliminaryNames/PreliminaryNam
 import AdhProposal = require("./Packages/Proposal/Proposal");
 import AdhRate = require("./Packages/Rate/Rate");
 import AdhAngularHelpers = require("./Packages/AngularHelpers/AngularHelpers");
+import AdhRemoteBrowserConsole = require("./Packages/RemoteBrowserConsole/RemoteBrowserConsole");
 import AdhResourceArea = require("./Packages/ResourceArea/ResourceArea");
 import AdhResourceWidgets = require("./Packages/ResourceWidgets/ResourceWidgets");
 import AdhSticky = require("./Packages/Sticky/Sticky");
@@ -75,6 +76,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
         AdhEmbed.moduleName,
         AdhMercatorProposal.moduleName,
         AdhMercatorWorkbench.moduleName,
+        AdhRemoteBrowserConsole.moduleName,
         AdhResourceArea.moduleName,
         AdhProposal.moduleName,
         AdhSticky.moduleName
@@ -150,6 +152,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
     AdhProposal.register(angular);
     AdhRate.register(angular);
     AdhAngularHelpers.register(angular);
+    AdhRemoteBrowserConsole.register(angular);
     AdhResourceArea.register(angular);
     AdhResourceWidgets.register(angular);
     AdhSticky.register(angular);
@@ -159,6 +162,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
 
     // force-load some services
     var injector = angular.bootstrap(document, ["a3Mercator"]);
+    // injector.get("adhRemoteBrowserConsole");
     injector.get("adhCrossWindowMessaging");
 
     loadComplete();
