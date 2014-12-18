@@ -86,20 +86,9 @@ parent: comment
 
 ```html_example
 <div class="comment-main">
-    <div class="comment-title">Willy Wonka</div>
     <div class="comment-content">
-        I like chocolate. I want more chocolate. Chocolate.
-    </div>
-    <div class="comment-meta">
-        5 minutes ago
-        <div class="comment-actions">
-            <a href="" class="comment-action">Delete</a>
-            <a href="" class="comment-action">Edit</a>
-            <a href="" class="comment-action m-comment-reply">Add Comment</a>
-            <span class="comment-count">
-                <i class="icon-speechbubble-outline"></i> 3
-            </span>
-        </div>
+        Nam commodo suscipit quam. Sed libero. Suspendisse potenti. Quisque id mi.
+        In auctor lobortis lacus.
     </div>
 </div>
 ```
@@ -118,25 +107,6 @@ parent: comment
 
 .comment-meta {
     @include clearfix;
-}
-
-.comment-action {
-    color: $color-secondary-extrovert;
-    font-weight: bold;
-    text-transform: lowercase;
-    text-decoration: none;
-
-    &:hover, &:focus, &:active {
-        color: darken($color-secondary-extrovert, 10%);
-    }
-
-    &.m-comment-reply {
-        text-transform: uppercase;
-
-        &:hover, &:focus, &:active {
-            color: $color-highlight-extrovert;
-        }
-    }
 }
 
 .comment-action,
@@ -160,15 +130,29 @@ about it.
 
 ```html_example
 <div class="discussion-header">
-    <span class="discussion-header-icon">
-        <i class="icon-speechbubble-outline"></i>
-    </span>
-    <div class="discussion-header-column2">
-        <i class="icon-speechbubble-outline"></i> 4
-    </div>
     <div class="discussion-header-column1">
-        <div class="discussion-header-creator">guest</div>
-        <div class="discussion-header-date">5 minutes ago</div>
+        <span class="discussion-header-creator">
+            <a href="#">Mr. User</a>
+        </span>
+        <span class="discussion-header-date">
+            5 minutes ago
+        </span>
+    </div>
+    <div class="discussion-header-column2">
+        <span class="discussion-header-links">
+            <a href="#"><i class="icon-reply"></i> Reply</a>
+            <a href="#">Bearbeiten</a>
+            <a href="#"><i class="icon-ban-circle"></i> Report</a>
+        </span>
+        <div class="rate">
+            <span class="rate-difference is-positive">
+                <a href="#">+1</a>
+            </span>
+            <a href="#" class="rate-pro is-rate-button-active">
+                <i class="icon-triangle-inverse-up" title="Vote up"></i>
+            </a>
+            <a href="#" class="rate-contra"><i class="icon-triangle-inverse-down" title="Vote down"></i></a>
+        </div>
     </div>
 </div>
 ```
@@ -230,6 +214,10 @@ about it.
     }
 }
 
+.comment-create-form {
+    @include clearfix;
+}
+
 .comment-create-form-text {
     margin-bottom: 0.45em;
 }
@@ -244,7 +232,7 @@ parent: comment
 ```html_example
 <form class="comment-create-form">
     <textarea></textarea>
-    <input type="submit" value="create" />
+    <input type="submit" value="create" class="comment-create-form-button-submit" />
     <a href="">Cancel</a>
 </form>
 ```
