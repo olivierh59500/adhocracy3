@@ -1,4 +1,4 @@
-import fustyFlowFactory = require("fustyFlowFactory");
+import FustyFlow = require("fustyFlow");
 
 import AdhAngularHelpers = require("../AngularHelpers/AngularHelpers");
 import AdhConfig = require("../Config/Config");
@@ -1105,7 +1105,14 @@ export var register = (angular) => {
             if (typeof flowFactoryProvider.defaults === "undefined") {
                 flowFactoryProvider.defaults = {};
             }
-            flowFactoryProvider.factory = fustyFlowFactory;
+            flowFactoryProvider.factory = (opts) => {
+                var flow = new Flow(opts);
+                if (flow.support) {
+                    return flow;
+                }
+                return new (<typeof Flow>FustyFlow)(opts);
+            };
+
             flowFactoryProvider.defaults = {
                 singleFile : true,
                 maxChunkRetries : 1,

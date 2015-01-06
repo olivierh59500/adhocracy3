@@ -59,6 +59,7 @@ declare module "q" {
  * FIXME: get into DefinitelyTyped, of course.
  */
 declare class Flow {
+    constructor(opts : {[key : string]: any});
     events : any;
     files : FlowFile[];
     opts : FlowOpts;
@@ -112,4 +113,3 @@ declare class FlowOpts {
 }
 
 declare module "fustyFlow" {}
-declare module "fustyFlowFactory" {}
