@@ -176,7 +176,8 @@ States:
 .moving-column-menu {
     @include clearfix;
     background: $color-secondary-introvert;
-    line-height: $moving-column-menu-height /1em;
+    line-height: $moving-column-menu-height / 1em;
+    height: $moving-column-menu-height;
     padding: 0 0 0 $padding-small;
 
     &, a {
@@ -186,19 +187,27 @@ States:
     a {
         @include inline-block;
         color: $color-secondary-extrovert;
+        font-size: $font-size-small;
+        font-weight: $font-weight-introvert;
         float: left;
+        line-height: $font-size-normal * $moving-column-menu-height / $font-size-small;
+        padding-left: 2.5em;
         text-decoration: none;
 
-        &:hover {
-            color: $color-prime-normal;
+        &:hover, &:focus, &:active {
+            font-weight: $font-weight-extrovert;
         }
+
+        &:active {
+            color: $color-highlight-normal;
+         }
     }
 }
 
 .moving-column-icon {
     float: left;
-    font-size: 150%;
-    line-height: 1.4;
+    font-size: 145.4%;
+    line-height: 1.25;
     margin-right: $padding-medium;
     vertical-align: middle;
 }
