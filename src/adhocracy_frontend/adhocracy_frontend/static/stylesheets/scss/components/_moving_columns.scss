@@ -176,13 +176,10 @@ States:
 .moving-column-menu {
     @include clearfix;
     background: $color-secondary-introvert;
+    font-size: $font-size-normal;
     line-height: $moving-column-menu-height / 1em;
     height: $moving-column-menu-height;
     padding: 0 0 0 $padding-small;
-
-    &, a {
-        height: $moving-column-menu-height;
-    }
 
     a {
         @include inline-block;
@@ -208,7 +205,6 @@ States:
     float: left;
     font-size: 145.4%;
     line-height: 1.25;
-    margin-right: $padding-medium;
     vertical-align: middle;
 }
 
@@ -217,6 +213,7 @@ States:
 
     a {
         @include inline-block;
+        font-weight: $font-weight-extrovert;
         min-width: 3.5em;
         padding: 0 0.5em;
         text-align: center;
@@ -226,8 +223,11 @@ States:
         background-color: $color-structure-surface;
 
         &:hover, &:focus {
-            color: $color-background;
-            background-color: darken($color-structure-surface, 10%);
+            color: $color-brand-accent1;
+        }
+
+        &:active {
+            color: #333;
         }
     }
 }
