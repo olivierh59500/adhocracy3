@@ -29,6 +29,7 @@ import AdhEventHandler = require("./Packages/EventHandler/EventHandler");
 import AdhHttp = require("./Packages/Http/Http");
 import AdhInject = require("./Packages/Inject/Inject");
 import AdhListing = require("./Packages/Listing/Listing");
+import AdhLocale = require("./Packages/Locale/Locale");
 import AdhMercatorProposal = require("./Packages/MercatorProposal/MercatorProposal");
 import AdhMercatorWorkbench = require("./Packages/MercatorWorkbench/MercatorWorkbench");
 import AdhMovingColumns = require("./Packages/MovingColumns/MovingColumns");
@@ -39,9 +40,11 @@ import AdhRate = require("./Packages/Rate/Rate");
 import AdhAngularHelpers = require("./Packages/AngularHelpers/AngularHelpers");
 import AdhResourceArea = require("./Packages/ResourceArea/ResourceArea");
 import AdhResourceWidgets = require("./Packages/ResourceWidgets/ResourceWidgets");
+import AdhSocialShare = require("./Packages/SocialShare/SocialShare");
 import AdhSticky = require("./Packages/Sticky/Sticky");
 import AdhTopLevelState = require("./Packages/TopLevelState/TopLevelState");
 import AdhUser = require("./Packages/User/User");
+import AdhUserViews = require("./Packages/User/Views");
 import AdhWebSocket = require("./Packages/WebSocket/WebSocket");
 
 
@@ -142,6 +145,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
     AdhHttp.register(angular, meta_api);
     AdhInject.register(angular);
     AdhListing.register(angular);
+    AdhLocale.register(angular);
     AdhMercatorProposal.register(angular);
     AdhMercatorWorkbench.register(angular);
     AdhMovingColumns.register(angular);
@@ -152,9 +156,11 @@ export var init = (config : AdhConfig.IService, meta_api) => {
     AdhAngularHelpers.register(angular);
     AdhResourceArea.register(angular);
     AdhResourceWidgets.register(angular);
+    AdhSocialShare.register(angular);
     AdhSticky.register(angular);
     AdhTopLevelState.register(angular);
     AdhUser.register(angular);
+    AdhUserViews.register(angular);
     AdhWebSocket.register(angular);
 
     // force-load some services
