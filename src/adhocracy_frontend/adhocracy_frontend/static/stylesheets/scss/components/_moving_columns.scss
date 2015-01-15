@@ -134,7 +134,7 @@ The menu should always have the same state as its columns.
 .moving-column-body {
     // layout
     position: absolute;
-    top: $moving-column-menu-height;
+    top: $moving-column-menu-height * ($font-size-small/$font-size-normal);
     bottom: 0;
     left: 0;
     width: 100%;
@@ -176,10 +176,13 @@ States:
 .moving-column-menu {
     @include clearfix;
     background: $color-secondary-introvert;
-    font-size: $font-size-normal;
-    line-height: $moving-column-menu-height / 1em;
+    font-size: $font-size-small;
     height: $moving-column-menu-height;
     padding: 0 0 0 $padding-small;
+
+    &, a {
+        line-height: $moving-column-menu-height;
+    }
 
     a {
         @include inline-block;
@@ -187,7 +190,6 @@ States:
         font-size: $font-size-small;
         font-weight: $font-weight-introvert;
         float: left;
-        line-height: $font-size-normal * $moving-column-menu-height / $font-size-small;
         padding-left: 2.5em;
         text-decoration: none;
 
@@ -203,8 +205,8 @@ States:
 
 .moving-column-icon {
     float: left;
-    font-size: 145.4%;
-    line-height: 1.25;
+    font-size: 166.5%;
+    line-height: 1.2;
     vertical-align: middle;
 }
 
@@ -228,6 +230,19 @@ States:
 
         &:active {
             color: #333;
+        }
+
+        .moving-column-menu-nav-icon {
+            font-size: 145%;
+            line-height: (2 * 0.145);
+        }
+
+        .moving-column-menu-nav-icon, .moving-column-menu-nav-icon:before {
+            @include inline-block;
+        }
+
+        .moving-column-menu-nav-icon:before {
+            line-height: 1.45;
         }
     }
 }
