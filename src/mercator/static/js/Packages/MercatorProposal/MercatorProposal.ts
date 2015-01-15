@@ -172,7 +172,6 @@ export interface IControllerScope extends IScope {
     mercatorProposalDetailForm? : any;
     mercatorProposalIntroductionForm? : any;
     $flow : any;
-    currentUpload : any;
 }
 
 
@@ -936,13 +935,17 @@ export var register = (angular) => {
             var imgUploadElement = $element.find("[name=introduction-picture-upload]");
 
             var imageExists = () => {
-                return ($scope.data.introduction && $scope.data.introduction.picture) || $scope.currentUpload.files.length > 0;
+                return ($scope.data.introduction && $scope.data.introduction.picture) || $scope.data.imageUpload.files.length > 0;
             };
 
             $scope.$watch(() => imgUploadElement.scope().$flow, (flow) => {
                 var imgUploadController = $scope.mercatorProposalIntroductionForm["introduction-picture-upload"];
 
-                $scope.currentUpload = flow;
+                flow.support = false;
+
+                // pluck flow object from file upload scope, and
+                // attach it to where ResourceWidgets can find it.
+                $scope.data.imageUpload = flow;
 
                 // validate image upload
                 flow.on("fileAdded", (file, event) => {
@@ -982,16 +985,12 @@ export var register = (angular) => {
             $scope.submitIfValid = () => {
                 var container = $element.parents("[data-du-scroll-container]");
 
-                if ($scope.currentUpload.support) {
+                if ($scope.data.imageUpload.support) {
                     var imgUploadController = $scope.mercatorProposalIntroductionForm["introduction-picture-upload"];
                     imgUploadController.$setValidity("required", imageExists());
                 }
 
                 if ($scope.mercatorProposalForm.$valid) {
-                    // pluck flow object from file upload scope, and
-                    // attach it to where ResourceWidgets can find it.
-                    $scope.data.imageUpload = imgUploadElement.scope().$flow;
-
                     // append a random number to the nick to allow duplicate titles
                     $scope.data.introduction.nickInstance = $scope.data.introduction.nickInstance  ||
                         Math.floor((Math.random() * 10000) + 1);
