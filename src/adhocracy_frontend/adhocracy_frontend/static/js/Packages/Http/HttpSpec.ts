@@ -98,7 +98,8 @@ export var register = () => {
                 $timeoutMock = mkTimeoutMock();
                 adhMetaApiMock = mkAdhMetaApiMock();
                 adhConfigMock = { rest_url: "" };
-                adhHttp = new AdhHttp.Service($httpMock, $cacheFactoryMock, <any>q, $timeoutMock, adhMetaApiMock, adhPreliminaryNames, adhConfigMock);
+                adhHttp = new AdhHttp.Service(
+                    $httpMock, $cacheFactoryMock, <any>q, $timeoutMock, adhMetaApiMock, adhPreliminaryNames, adhConfigMock);
             });
 
             describe("options", () => {
