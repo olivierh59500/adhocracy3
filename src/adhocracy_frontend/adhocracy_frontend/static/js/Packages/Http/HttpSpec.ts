@@ -23,6 +23,9 @@ var mkHttpMock = (adhPreliminaryNames : AdhPreliminaryNames.Service) => {
     (<any>mock).post = jasmine.createSpy("$httpMock.post").and.returnValue(q.when({ data: response }));
     (<any>mock).put = jasmine.createSpy("$httpMock.put").and.returnValue(q.when({ data: response }));
 
+    (<any>mock).defaults = {};
+    (<any>mock).invalidate = () => undefined;
+
     return mock;
 };
 
