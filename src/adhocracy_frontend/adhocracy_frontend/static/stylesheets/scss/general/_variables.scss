@@ -45,10 +45,12 @@ $font-weight-introvert: 400;
 $font-weight-normal: normal;
 $font-weight-introvert: 400;
 $font-weight-extrovert: 900;
+
 $font-size-small: 12px;
 $font-size-normal: 14px;
 $font-size-plus: 16px;
 $font-size-large: 21px;
+$font-size-larger: 25px;
 $font-size-huge: 40px;
 
 // em is relative to $font-size-normal
@@ -59,6 +61,10 @@ $annotation-width: 34%;
 
 $padding-small: 0.5em;
 $padding-medium: 1em;
+
+//Text mixins
+
+
 
 @mixin text($value) {
     @if $value == running {
