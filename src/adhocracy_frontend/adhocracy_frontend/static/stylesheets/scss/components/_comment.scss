@@ -146,7 +146,7 @@ parent: comment
 
 .comment-title,
 .comment-meta {
-    @include text(meta);
+    @include text-single;
 }
 
 .comment-title {
