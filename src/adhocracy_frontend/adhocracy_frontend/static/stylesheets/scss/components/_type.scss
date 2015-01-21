@@ -7,7 +7,7 @@ category: Type
 */
 
 body {
-    @include text(running);
+    @include text-body;
 }
 
 /*doc
