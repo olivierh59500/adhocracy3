@@ -64,7 +64,129 @@ $moving-column-border-width: 0.4166em;
 $l-header-height: 2.8571em;
 $annotation-width: 34%;
 
-//Text mixins
+// Text mixins
+@mixin text-title-proposal-list {
+    color: $color-text-normal;
+    font-size: $font-size-normal;
+    font-weight: $font-weight-normal;
+    line-height: $line-height-large;
+}
+
+@mixin text-link-proposal-list {
+    color: $color-text-highlight-normal;
+    font-size: $font-size-small;
+    font-weight: $font-weight-normal;
+    line-height: 1;
+}
+
+@mixin text-single {
+    color: $color-text-introvert;
+    font-size: $font-size-small;
+    font-weight: $font-weight-normal;
+    line-height: 1;
+}
+
+@mixin text-budget {
+    color: $color-text-introvert;
+    font-size: $font-size-plus;
+    font-weight: $font-weight-normal;
+    line-height: 1;
+}
+
+@mixin text-title-detail {
+    color: $color-text-normal;
+    font-size: $font-size-large;
+    font-weight: $font-weight-extrovert;
+    line-height: $line-height-normal;
+}
+
+@mixin text-cta {
+    color: $color-text-inverted;
+    font-size: $font-size-small;
+    font-weight: $font-weight-normal;
+    line-height: 1;
+}
+
+@mixin text-body {
+    color: $color-text-normal;
+    font-size: $font-size-normal;
+    font-weight: $font-weight-normal;
+    line-height: $line-height-normal;
+}
+
+@mixin text-h1 {
+    color: $color-text-introvert;
+    font-weight: $font-weight-extrovert;
+    font-size: $font-size-normal;
+    line-height: $line-height-normal;
+}
+
+@mixin text-h2 {
+    color: $color-text-introvert;
+    font-size: $font-size-normal;
+    font-variant: small-caps;
+    font-weight: $font-weight-extrovert;
+    line-height: $line-height-normal;
+}
+
+@mixin text-link {
+    color: $color-text-highlight-normal;
+    font-size: $font-size-normal;
+    font-weight: $font-weight-normal;
+    line-height: 1;
+    text-decoration: none;
+}
+
+@mixin text-button {
+    color: $color-text-inverted;
+    font-size: $font-size-normal;
+    font-weight: $font-weight-extrovert;
+    line-height: 1;
+}
+
+@mixin text-button-secondary {
+    color: $color-text-introvert;
+    font-size: $font-size-plus;
+    font-variant: small-caps;
+    font-weight: $font-weight-extrovert;
+    line-height: 1;
+}
+
+@mixin text-moving-column-menu {
+    color: $color-text-introvert;
+    font-size: $font-size-normal;
+    font-weight: $font-weight-normal;
+    line-height: 1;
+}
+
+@mixin text-input-field {
+    color: $color-text-introvert;
+    font-size: $font-size-normal;
+    font-weight: $font-weight-normal;
+    line-height: 1;
+}
+
+@mixin text-info-plus {
+    color: $color-text-introvert;
+    font-size: $font-size-large;
+    font-weight: $font-weight-normal;
+    line-height: 1;
+}
+
+@mixin text-profile-name {
+    color: $color-text-normal;
+    font-size: $font-size-huge;
+    font-weight: $font-weight-normal;
+    line-height: 1;
+}
+
+@mixin text-add-proposal {
+    color: $color-text-highlight-normal;
+    font-size: $font-size-large;
+    font-weight: $font-weight-normal;
+    line-height: 1;
+}
+
 
 @mixin text($value) {
     @if $value == running {
