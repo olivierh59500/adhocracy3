@@ -129,6 +129,13 @@ $annotation-width: 34%;
     line-height: $line-height-normal;
 }
 
+@mixin text-h3 {
+    color: $color-text-normal;
+    font-weight: $font-weight-normal;
+    font-size: $font-size-plus;
+    line-height: $line-height-large;
+}
+
 @mixin text-link {
     color: $color-text-highlight-normal;
     font-size: $font-size-normal;
