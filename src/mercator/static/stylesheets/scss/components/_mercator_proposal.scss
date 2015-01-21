@@ -191,7 +191,7 @@ $mercator-proposal-form-nav-width: 100% / 12 * 2;
 }
 
 .mercator-proposal-cover-header {
-    @include text(header);
+    @include text-title-detail;
     margin: 0;
 }
 

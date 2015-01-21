@@ -242,7 +242,7 @@ are available:
     </tr>
 </table>
 */
-.text-header {@include text(header);}
+.text-header {@include text-title-detail;}
 .text-introvert {@include text-single;}
 .text-functional {@include text-h3;}
 .text-functional-introvert {@include text-single;}
