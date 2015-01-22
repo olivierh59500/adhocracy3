@@ -71,7 +71,7 @@ export class CommentResource<R extends ResourcesBase.Resource> extends AdhResour
         private adapter : ICommentAdapter<R>,
         adhConfig : AdhConfig.IService,
         adhHttp : AdhHttp.Service<any>,
-        public adhPermissions : AdhPermissions.Service,
+        protected adhPermissions : AdhPermissions.Service,
         adhPreliminaryNames : AdhPreliminaryNames.Service,
         $q : ng.IQService
     ) {
@@ -195,7 +195,7 @@ export class CommentCreate<R extends ResourcesBase.Resource> extends CommentReso
         adapter : ICommentAdapter<R>,
         adhConfig : AdhConfig.IService,
         adhHttp : AdhHttp.Service<any>,
-        public adhPermissions : AdhPermissions.Service,
+        adhPermissions : AdhPermissions.Service,
         adhPreliminaryNames : AdhPreliminaryNames.Service,
         $q : ng.IQService
     ) {

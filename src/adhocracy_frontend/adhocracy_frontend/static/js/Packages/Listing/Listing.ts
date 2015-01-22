@@ -116,8 +116,8 @@ export class Listing<Container extends ResourcesBase.Resource> {
                 });
             },
             controller: ["$scope", "adhHttp", "adhPreliminaryNames", "adhPermissions", (
-                $scope: ListingScope<Container>,
-                adhHttp: AdhHttp.Service<Container>,
+                $scope : ListingScope<Container>,
+                adhHttp : AdhHttp.Service<Container>,
                 adhPreliminaryNames : AdhPreliminaryNames.Service,
                 adhPermissions : AdhPermissions.Service
             ) : void => {
