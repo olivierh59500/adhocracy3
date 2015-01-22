@@ -73,6 +73,7 @@ export class CommentResource<R extends ResourcesBase.Resource> extends AdhResour
         adhHttp : AdhHttp.Service<any>,
         protected adhPermissions : AdhPermissions.Service,
         adhPreliminaryNames : AdhPreliminaryNames.Service,
+        protected adhPathFilter : (paths : string[]) => ng.IPromise<string[]>,
         $q : ng.IQService
     ) {
         super(adhHttp, adhPreliminaryNames, $q);
@@ -140,19 +141,21 @@ export class CommentResource<R extends ResourcesBase.Resource> extends AdhResour
         return this.adhHttp.getNewestVersionPathNoFork(resource.path)
             .then((path) => this.adhHttp.get(path))
             .then((resource) => {
-                var scope : ICommentResourceScope = instance.scope;
-                scope.data = {
-                    path: resource.path,
-                    content: this.adapter.content(resource),
-                    creator: this.adapter.creator(resource),
-                    creationDate: this.adapter.creationDate(resource),
-                    modificationDate: this.adapter.modificationDate(resource),
-                    commentCount: this.adapter.commentCount(resource),
-                    comments: this.adapter.elemRefs(resource),
-                    replyPoolPath: this.adapter.poolPath(resource)
-                };
-                this.adhPermissions.bindScope(scope, scope.data.replyPoolPath, "poolOptions");
-                this.adhPermissions.bindScope(scope, AdhUtil.parentPath(scope.data.path), "commentItemOptions");
+                return this.adhPathFilter(this.adapter.elemRefs(resource)).then((comments) => {
+                    var scope : ICommentResourceScope = instance.scope;
+                    scope.data = {
+                        path: resource.path,
+                        content: this.adapter.content(resource),
+                        creator: this.adapter.creator(resource),
+                        creationDate: this.adapter.creationDate(resource),
+                        modificationDate: this.adapter.modificationDate(resource),
+                        commentCount: this.adapter.commentCount(resource),
+                        comments: comments,
+                        replyPoolPath: this.adapter.poolPath(resource)
+                    };
+                    this.adhPermissions.bindScope(scope, scope.data.replyPoolPath, "poolOptions");
+                    this.adhPermissions.bindScope(scope, AdhUtil.parentPath(scope.data.path), "commentItemOptions");
+                });
             });
     }
 
@@ -197,9 +200,10 @@ export class CommentCreate<R extends ResourcesBase.Resource> extends CommentReso
         adhHttp : AdhHttp.Service<any>,
         adhPermissions : AdhPermissions.Service,
         adhPreliminaryNames : AdhPreliminaryNames.Service,
+        adhPathFilter : (paths : string[]) => ng.IPromise<string[]>,
         $q : ng.IQService
     ) {
-        super(adapter, adhConfig, adhHttp, adhPermissions, adhPreliminaryNames, $q);
+        super(adapter, adhConfig, adhHttp, adhPermissions, adhPreliminaryNames, adhPathFilter, $q);
         this.templateUrl = adhConfig.pkg_path + pkgLocation + "/CommentCreate.html";
     }
 
@@ -317,16 +321,18 @@ export var register = (angular) => {
                 new AdhListing.Listing(new Adapter.ListingCommentableAdapter()).createDirective(adhConfig, adhWebSocket)])
         .directive("adhCommentListing", ["adhConfig", adhCommentListing])
         .directive("adhCreateOrShowCommentListing", ["adhConfig", adhCreateOrShowCommentListing])
-        .directive("adhCommentResource", ["adhConfig", "adhHttp", "adhPermissions", "adhPreliminaryNames", "adhRecursionHelper", "$q",
-            (adhConfig, adhHttp, adhPermissions, adhPreliminaryNames, adhRecursionHelper, $q) => {
+        .directive("adhCommentResource", [
+            "adhConfig", "adhHttp", "adhPermissions", "adhPreliminaryNames", "adhRecursionHelper", "adhPathFilter", "$q",
+            (adhConfig, adhHttp, adhPermissions, adhPreliminaryNames, adhRecursionHelper, adhPathFilter, $q) => {
                 var adapter = new Adapter.CommentAdapter();
-                var widget = new CommentResource(adapter, adhConfig, adhHttp, adhPermissions, adhPreliminaryNames, $q);
+                var widget = new CommentResource(adapter, adhConfig, adhHttp, adhPermissions, adhPreliminaryNames, adhPathFilter, $q);
                 return widget.createRecursionDirective(adhRecursionHelper);
             }])
-        .directive("adhCommentCreate", ["adhConfig", "adhHttp", "adhPermissions", "adhPreliminaryNames", "adhRecursionHelper", "$q",
-            (adhConfig, adhHttp, adhPermissions, adhPreliminaryNames, adhRecursionHelper, $q) => {
+        .directive("adhCommentCreate", [
+            "adhConfig", "adhHttp", "adhPermissions", "adhPreliminaryNames", "adhRecursionHelper", "adhPathFilter", "$q",
+            (adhConfig, adhHttp, adhPermissions, adhPreliminaryNames, adhRecursionHelper, adhPathFilter, $q) => {
                 var adapter = new Adapter.CommentAdapter();
-                var widget = new CommentCreate(adapter, adhConfig, adhHttp, adhPermissions, adhPreliminaryNames, $q);
+                var widget = new CommentCreate(adapter, adhConfig, adhHttp, adhPermissions, adhPreliminaryNames, adhPathFilter, $q);
                 return widget.createRecursionDirective(adhRecursionHelper);
             }]);
 };
