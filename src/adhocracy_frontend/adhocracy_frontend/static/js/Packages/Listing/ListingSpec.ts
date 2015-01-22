@@ -125,7 +125,7 @@ export var register = () => {
                         };
 
                         var controller = directive.controller[5];
-                        controller(scope, adhHttpMock, adhPreliminaryNamesMock, adhPermissionsMock);
+                        controller(scope, adhHttpMock, adhPreliminaryNamesMock, adhPermissionsMock, adhPathFilterMock);
                     });
 
                     it("watches scope.path", () => {

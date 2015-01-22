@@ -59,7 +59,7 @@ export var register = () => {
                 adhPermissionsMock = jasmine.createSpyObj("adhPermissions", ["bindScope"]);
                 adhPathFilterMock = jasmine.createSpy("adhPathFilter").and.callFake((p) => q.when(p));
                 widget = new AdhComment.CommentResource(
-                    adapterMock, adhConfigMock, adhHttpMock, adhPermissionsMock, adhPreliminaryNamesMock, adhPreliminaryNamesMock, <any>q);
+                    adapterMock, adhConfigMock, adhHttpMock, adhPermissionsMock, adhPreliminaryNamesMock, adhPathFilterMock, <any>q);
 
                 wrapperMock = {
                     eventHandler: jasmine.createSpyObj("eventHandler", ["on", "off", "trigger"])
