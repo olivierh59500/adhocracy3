@@ -8,6 +8,7 @@ category: Type
 
 body {
     @include text-body;
+    font-family: $font-family-normal;
 }
 
 /*doc
