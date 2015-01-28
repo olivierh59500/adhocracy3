@@ -184,8 +184,9 @@ class ClientCommunicator(WebSocketServerProtocol):
         logger.debug('Client connecting: %s', self._client)
 
     def _client_runs_on_localhost(self):
-        return any(self._client.startswith(prefix) for prefix in
-                   ('localhost:', '127.0.0.1:', '::1:'))
+        runs_on_localhost = any(self._client.startswith(prefix) for prefix in
+                                ('tcp:localhost:', 'tcp:127.0.0.1:', '::1:'))
+        return runs_on_localhost
 
     def onOpen(self):  # noqa
         logger.debug('WebSocket connection to %s open', self._client)
@@ -273,8 +274,8 @@ class ClientCommunicator(WebSocketServerProtocol):
             self._dispatch_modified_event(resource)
         elif event == 'removed':
             self._dispatch_removed_event(resource)
-        elif event == 'changed_descendant':
-            self._dispatch_changed_descendant_event(resource)
+        elif event == 'changed_descendants':
+            self._dispatch_changed_descendants_event(resource)
         else:
             details = 'unknown event: {}'.format(event)
             raise WebSocketError('invalid_json', details)
@@ -342,9 +343,9 @@ class ClientCommunicator(WebSocketServerProtocol):
         self._tracker.delete_subscriptions_to_resource(resource)
         self._notify_removed_child(resource.__parent__, resource)
 
-    def _dispatch_changed_descendant_event(self, resource: IResource):
+    def _dispatch_changed_descendants_event(self, resource: IResource):
         for client in self._tracker.iterate_subscribers(resource):
-            client.send_notification(resource, 'changed_descendant')
+            client.send_notification(resource, 'changed_descendants')
 
     def _notify_new_version(self, parent: IResource,
                             new_version: IItemVersion):

@@ -705,6 +705,7 @@ export class CreateWidget<R extends ResourcesBase.Resource> extends Widget<R> {
         adhHttp : AdhHttp.Service<any>,
         adhPreliminaryNames : AdhPreliminaryNames.Service,
         adhTopLevelState : AdhTopLevelState.Service,
+        private $timeout : ng.ITimeoutService,
         flowFactory,
         $q : ng.IQService
     ) {
@@ -715,6 +716,21 @@ export class CreateWidget<R extends ResourcesBase.Resource> extends Widget<R> {
     public link(scope, element, attrs, wrapper) {
         var instance = super.link(scope, element, attrs, wrapper);
         instance.scope.data = <any>{};
+        instance.scope.$watch("$viewContentLoaded", function() {
+            if (!Modernizr.inputtypes.number) {
+                element.find(":input[type='number']").updatePolyfill();
+                $(".has-input-buttons").removeClass( "has-input-buttons").css({"display" : "inline-block"});
+            }
+        });
+        // Fix for later, if we want to add a webshim datepicker
+        /*var _self = this;
+        instance.scope.$watch("data.organization_info.status_enum", function() {
+            if (!Modernizr.inputtypes.date) {
+                _self.$timeout(() => {
+                    element.find(":input[type='date']").updatePolyfill();
+                });
+            }
+        });*/
         return instance;
     }
 
@@ -772,6 +788,17 @@ export var userListing = (adhConfig : AdhConfig.IService) => {
                 creator: scope.path.replace(adhConfig.rest_url, "").replace(/\/+$/, ""),
                 depth: 2
             };
+        }
+    };
+};
+
+
+export var imageUriFilter = () => {
+    return (path? : string, format : string = "detail") : string => {
+        if (path) {
+            return path + "/" + format;
+        } else {
+            return "/static/fallback_" + format + ".jpg";
         }
     };
 };
@@ -881,14 +908,15 @@ export var register = (angular) => {
                 var widget = new DetailWidget(adhConfig, adhHttp, adhPreliminaryNames, adhTopLevelState, flowFactory, $q);
                 return widget.createDirective();
             }])
-        .directive("adhMercatorProposalCreate", ["adhConfig", "adhHttp", "adhPreliminaryNames", "adhTopLevelState", "flowFactory", "$q",
-            (adhConfig, adhHttp, adhPreliminaryNames, adhTopLevelState, flowFactory, $q) => {
-                var widget = new CreateWidget(adhConfig, adhHttp, adhPreliminaryNames, adhTopLevelState, flowFactory, $q);
+        .directive("adhMercatorProposalCreate",
+            ["adhConfig", "adhHttp", "adhPreliminaryNames", "adhTopLevelState", "$timeout", "flowFactory", "$q",
+            (adhConfig, adhHttp, adhPreliminaryNames, adhTopLevelState, $timeout, flowFactory, $q) => {
+                var widget = new CreateWidget(adhConfig, adhHttp, adhPreliminaryNames, adhTopLevelState, $timeout, flowFactory, $q);
                 return widget.createDirective();
             }])
         .directive("adhMercatorProposalListing", ["adhConfig", listing])
         .directive("adhMercatorUserProposalListing", ["adhConfig", userListing])
-        // FIXME: This should both be moved to ..core ?
+        .filter("adhImageUri", imageUriFilter)
         .controller("mercatorProposalFormController", ["$scope", "$element", "$window", ($scope : IControllerScope, $element, $window) => {
             var heardFromCheckboxes = [
                 "heard-from-colleague",
@@ -1006,8 +1034,15 @@ export var register = (angular) => {
                             }
                         });
                 } else {
-                    var element = $element.find(".ng-invalid");
-                    container.scrollToElementAnimated(element);
+                    var getErrorControllers = (ctrl) => _.flatten(_.values(ctrl.$error));
+
+                    var errorForms = getErrorControllers($scope.mercatorProposalForm);
+                    var errorControllers = _.flatten(_.map(errorForms, getErrorControllers));
+                    var names = _.unique(_.map(errorControllers, "$name"));
+                    var selector = _.map(names, (name) => "[name=\"" + name + "\"]").join(", ");
+
+                    var element = $element.find(selector).first();
+                    container.scrollToElementAnimated(element, 20);
                 }
             };
         }]);

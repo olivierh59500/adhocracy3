@@ -1,3 +1,5 @@
+/// <reference path="../../../lib/DefinitelyTyped/lodash/lodash.d.ts"/>
+
 import _ = require("lodash");
 
 import AdhPreliminaryNames = require("../PreliminaryNames/PreliminaryNames");
@@ -138,15 +140,12 @@ export var importContent = <Content extends ResourcesBase.Resource>(
  * far.
  */
 export var importBatchContent = <Content extends ResourcesBase.Resource>(
-    responses : { data : {body : Content}[] },
+    responses,
     metaApi : AdhMetaApi.MetaApiQuery,
     preliminaryNames : AdhPreliminaryNames.Service
 ) : Content[] => {
-    // FIXME: description files don't appear to support array-typed
-    // response bodies.  this might be a good thing (web security and
-    // all).  change rest batch spec to wrap array in trivial object?
 
-    return (<any>(responses.data)).map((response) => {
+    return responses.map((response) => {
         response.data = response.body;
         delete response.body;
         return importContent(response, metaApi, preliminaryNames);

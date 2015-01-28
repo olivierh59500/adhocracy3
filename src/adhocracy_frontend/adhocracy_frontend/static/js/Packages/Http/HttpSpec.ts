@@ -88,6 +88,7 @@ export var register = () => {
             var $timeoutMock;
             var adhMetaApiMock;
             var adhConfigMock;
+            var adhCacheMock;
             var adhHttp : AdhHttp.Service<any>;
 
             beforeEach(() => {
@@ -96,7 +97,14 @@ export var register = () => {
                 $timeoutMock = mkTimeoutMock();
                 adhMetaApiMock = mkAdhMetaApiMock();
                 adhConfigMock = { rest_url: "" };
-                adhHttp = new AdhHttp.Service($httpMock, <any>q, $timeoutMock, adhMetaApiMock, adhPreliminaryNames, adhConfigMock);
+                adhCacheMock = {
+                    invalidate: (path) => undefined,
+                    invalidateAll: () => undefined,
+                    invalidateUpdated: (updated, posted) => undefined,
+                    memoize: (path, subkey, closure) => closure()
+                };
+                adhHttp = new AdhHttp.Service(
+                    $httpMock, <any>q, $timeoutMock, adhMetaApiMock, adhPreliminaryNames, adhConfigMock, adhCacheMock);
             });
 
             describe("options", () => {
@@ -428,13 +436,21 @@ export var register = () => {
                 var _httpTrans;
 
                 beforeEach((done) => {
-                    $httpMock.post.and.returnValue(q.when({data: [
-                        {body: {content_type: RIParagraph.content_type, path: "get response"}},
-                        {body: {content_type: RIParagraph.content_type, path: "put response"}},
-                        {body: {content_type: RIParagraph.content_type, path: "post1 response"}},
-                        {body: {content_type: RIParagraph.content_type, path: "post2 response"}},
-                        {body: {content_type: RIParagraph.content_type, path: "get2 response"}}
-                    ]}));
+                    $httpMock.post.and.returnValue(q.when({data: {
+                        responses: [
+                            {body: {content_type: RIParagraph.content_type, path: "get response"}},
+                            {body: {content_type: RIParagraph.content_type, path: "put response"}},
+                            {body: {content_type: RIParagraph.content_type, path: "post1 response"}},
+                            {body: {content_type: RIParagraph.content_type, path: "post2 response"}},
+                            {body: {content_type: RIParagraph.content_type, path: "get2 response"}}
+                        ],
+                        updated_resources: {
+                            changed_descendants: [],
+                            created: [],
+                            modified: [],
+                            removed: []
+                        }
+                    }}));
 
                     adhHttp.withTransaction((httpTrans) => {
                         _httpTrans = httpTrans;
