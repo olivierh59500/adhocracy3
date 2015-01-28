@@ -2,6 +2,7 @@
 from unittest.mock import Mock
 from configparser import ConfigParser
 from shutil import rmtree
+from pytest import mark
 import json
 import os
 import subprocess
@@ -807,6 +808,7 @@ def app_god(app):
     return AppUser(app, base_path='/adhocracy', header=god_header)
 
 
+@mark.xfail(reason='issue #548')
 def test_get_users_without_authorization(app):
     infos = []
     i = 0
