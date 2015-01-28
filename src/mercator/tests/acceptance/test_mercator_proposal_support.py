@@ -16,7 +16,14 @@ class TestMercatorSupport:
         login_god(browser)
         select_proposal(browser)
         _support_proposal(browser)
-        _validate(browser)
+        _validate_support(browser)
+
+    def test_unsupport_proposal(self, browser_with_proposal):
+        browser = browser_with_proposal
+
+        select_proposal(browser)
+        _unsupport_proposal(browser)
+        _validate_unsupport(browser)
 
     def test_support_proposal_no_user(self, browser_with_proposal):
         browser = browser_with_proposal
@@ -31,7 +38,13 @@ class TestMercatorSupport:
         login(browser, user[0], user[1])
 
         _support_proposal(browser)
-        _validate(browser)
+        _validate_support(browser)
+
+    def test_unsupport_other_user(self, browser_with_proposal, user):
+        browser = browser_with_proposal
+
+        _unsupport_proposal(browser)
+        _validate_unsupport(browser)
 
 
 def _get_supporters(browser):
@@ -54,7 +67,7 @@ def _support_proposal(browser, expect_fail=False):
         expect_fail or support.has_class('is-rate-button-active'), 30)
 
 
-def _validate(browser):
+def _validate_support(browser):
     """Return to proposal list and check whether supporter is added to
     supporters count. """
     global supporters
@@ -65,6 +78,33 @@ def _validate(browser):
     browser.wait_for_condition(lambda browser:
         _get_supporters(browser) == supporters+1, 30)
     supporters += 1
+
+
+def _unsupport_proposal(browser, expect_fail=False):
+    """Click on the support button and wait for the button to be triggerd
+    'expect_fail' makes the test not to verify this triggering. """
+    global supporters
+    supporters = _get_supporters(browser)
+
+    support = browser.find_by_css('.like-button').first
+    assert support.has_class('is-rate-button-active')
+
+    support.click()
+    browser.wait_for_condition(lambda browser:
+        expect_fail or not support.has_class('is-rate-button-active'), 30)
+
+
+def _validate_unsupport(browser):
+    """Return to proposal list and check whether supporter is added to
+    supporters count. """
+    global supporters
+
+    browser.visit(browser.app_url + 'r/mercator/')
+    browser.wait_for_condition(lambda browser:
+        browser.find_by_css('.mercator-proposal-list-item-body'), 30)
+    browser.wait_for_condition(lambda browser:
+        _get_supporters(browser) == supporters-1, 30)
+    supporters -= 1
 
 
 def select_proposal(browser):
