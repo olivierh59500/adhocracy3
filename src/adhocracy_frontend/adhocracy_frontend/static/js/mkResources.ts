@@ -26,7 +26,7 @@ import MetaApi = require("./Packages/Http/MetaApi");
  * clashes are always avoided.  For example, if some module in some
  * package contains the line:
  *
- * | import RIPropsal = "...";
+ * | import RIProposal = "...";
  *
  * The name RIProposal never needs to change.
  *

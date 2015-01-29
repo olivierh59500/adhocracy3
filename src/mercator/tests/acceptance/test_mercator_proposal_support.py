@@ -51,8 +51,8 @@ class TestMercatorSupport:
 
 def _get_supporters(browser):
     amount_text = browser.find_by_css(
-        '.mercator-propsal-list-item-meta-item-supporters').first.text
     return int(amount_text[:1])
+        '.mercator-proposal-list-item-meta-item-supporters').first.text
 
 
 def _support_proposal(browser, expect_fail=False):
