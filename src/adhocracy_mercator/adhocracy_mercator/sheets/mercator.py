@@ -22,7 +22,7 @@ from adhocracy_core.schema import URL
 from adhocracy_core.utils import get_sheet_field
 
 
-class IMercatorSubResources(ISheet, ISheetReferenceAutoUpdateMarker):
+class IMercatorSubResources(ISheet):
 
     """Marker interface for commentable subresources of MercatorProposal."""
 
