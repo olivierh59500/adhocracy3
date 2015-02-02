@@ -295,6 +295,14 @@ class IItem(IPool):
     """Pool for any versionable objects (DAG), tags and related Pools. """
 
 
+class ISubItem(IItem):
+
+    """Pool for any versionable objects (DAG), tags and related Pools.
+
+    ISubItems always belong to a superordinate IItem.
+    """
+
+
 class ISimple(IResource):
 
     """Simple resource without versions and children."""

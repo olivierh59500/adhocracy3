@@ -141,6 +141,7 @@ itemversion_metadata = resource_metadata_defaults._replace(
     resource_metadata_defaults.after_creation,
     use_autonaming=True,
     autonaming_prefix='VERSION_',
+    permission_add='add_version',
 )
 
 

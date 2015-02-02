@@ -4,6 +4,7 @@ from copy import copy
 from adhocracy_core.interfaces import IItemVersion
 from adhocracy_core.interfaces import ITag
 from adhocracy_core.interfaces import IItem
+from adhocracy_core.interfaces import ISubItem
 from adhocracy_core.resources import add_resource_type_to_registry
 from adhocracy_core.resources.pool import pool_metadata
 import adhocracy_core.sheets.name
@@ -50,6 +51,13 @@ item_metadata = pool_metadata._replace(
 )
 
 
+subitem_metadata = item_metadata._replace(
+    content_name='SubItem',
+    iresource=ISubItem,
+    permission_add='add_resource',
+)
+
+
 item_basic_sheets_without_name_sheet = copy(item_metadata.basic_sheets)
 item_basic_sheets_without_name_sheet.remove(adhocracy_core.sheets.name.IName)
 
@@ -57,3 +65,4 @@ item_basic_sheets_without_name_sheet.remove(adhocracy_core.sheets.name.IName)
 def includeme(config):
     """Add resource type to registry."""
     add_resource_type_to_registry(item_metadata, config)
+    add_resource_type_to_registry(subitem_metadata, config)
