@@ -377,12 +377,11 @@ export var rateController = (
                         fetchAggregatedRates($scope, adhHttp, $scope.postPoolPath, $scope.refersTo)
                     ]);
                 })
-                .then(() => {
-                    $scope.locked = false;
-                }, () => {
+                .catch(() => {
                     console.log("Rate.postUpdate failed. Refetching.");
                     fetchMyRate($scope, adhHttp, $scope.postPoolPath, $scope.refersTo, adhUser.userPath);
                     fetchAggregatedRates($scope, adhHttp, $scope.postPoolPath, $scope.refersTo);
+                }).finally<void>(() => {
                     $scope.locked = false;
                 });
         }
