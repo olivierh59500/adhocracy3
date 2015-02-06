@@ -30,6 +30,7 @@ require.config({
         angularElastic: "../lib/angular-elastic/elastic",
         angularScroll: "../lib/angular-scroll/angular-scroll.min",
         angularFlow: "../lib/ng-flow/dist/ng-flow.min",
+        angularPiwik: "../lib/angular-piwik/angular-piwik",
         angularMessages: "../lib/angular-messages/angular-messages.min",
         flow: "../lib/flow.js/dist/flow.min",
         lodash: "../lib/lodash/lodash.min",
@@ -74,6 +75,9 @@ require.config({
         },
         angularFlow: {
             deps: ["angular", "flow"]
+        },
+        angularPiwik: {
+            deps: ["angular"]
         },
         modernizr: {
             exports: "Modernizr"

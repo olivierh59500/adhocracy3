@@ -77,6 +77,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
         "ngAria",
         "ngMessages",
         "angular-data.DSCacheFactory",
+        "piwik",
         AdhComment.moduleName,
         AdhDocumentWorkbench.moduleName,
         AdhDone.moduleName,

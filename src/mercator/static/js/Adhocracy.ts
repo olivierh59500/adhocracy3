@@ -16,6 +16,7 @@ import angularTranslateLoader = require("angularTranslateLoader");  if (angularT
 import angularElastic = require("angularElastic");  if (angularElastic) { ; };
 import angularScroll = require("angularScroll");  if (angularScroll) { ; };
 import angularFlow = require("angularFlow");  if (angularFlow) { ; };
+import angularPiwik = require("angularPiwik");  if (angularPiwik) { ; };
 
 import modernizr = require("modernizr");
 import moment = require("moment");
@@ -82,6 +83,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
         "duScroll",
         "flow",
         "angular-data.DSCacheFactory",
+        "piwik",
         AdhComment.moduleName,
         AdhDone.moduleName,
         AdhCrossWindowMessaging.moduleName,

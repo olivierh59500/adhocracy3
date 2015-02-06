@@ -36,6 +36,7 @@
                 });
             });
         </script>
+        <ngp-piwik ngp-set-js-url="https://stats.liqd.net/piwik.js" ngp-set-tracker-url="https://stats.liqd.net/piwik.php" ngp-set-site-id="16" ngp-disable-cookies="true"> </ngp-piwik>
         <!--<![endif]-->
     </body>
 </html>

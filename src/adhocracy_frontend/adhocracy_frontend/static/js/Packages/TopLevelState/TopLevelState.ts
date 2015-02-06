@@ -94,10 +94,10 @@ export class Provider {
         };
         this.spaceDefaults = {};
 
-        this.$get = ["adhEventManagerClass", "adhUser", "$location", "$rootScope", "$http", "$q", "$injector", "$templateRequest",
-            (adhEventManagerClass, adhUser, $location, $rootScope, $http, $q, $injector, $templateRequest) => {
+        this.$get = ["adhEventManagerClass", "adhUser", "$location", "$rootScope", "$http", "$q", "$injector", "$templateRequest", "Piwik",
+            (adhEventManagerClass, adhUser, $location, $rootScope, $http, $q, $injector, $templateRequest, Piwik) => {
                 return new Service(self, adhEventManagerClass, adhUser, $location, $rootScope, $http, $q, $injector,
-                                   $templateRequest);
+                                   $templateRequest, Piwik);
             }];
     }
 
@@ -150,7 +150,8 @@ export class Service {
         private $http : ng.IHttpService,
         private $q : ng.IQService,
         private $injector : ng.auto.IInjectorService,
-        private $templateRequest : ng.ITemplateRequestService
+        private $templateRequest : ng.ITemplateRequestService,
+        private Piwik
     ) {
         var self : Service = this;
 
@@ -162,6 +163,7 @@ export class Service {
         this.lock = false;
 
         this.$rootScope.$watch(() => self.$location.absUrl(), () => {
+            self.Piwik.trackPageView();
             self.locationHasChanged = true;
 
             if (!self.lock) {
@@ -542,7 +544,8 @@ export var register = (angular) => {
     angular
         .module(moduleName, [
             AdhEventManager.moduleName,
-            AdhUser.moduleName
+            AdhUser.moduleName,
+            "piwik"
         ])
         .provider("adhTopLevelState", Provider)
         .directive("adhPageWrapper", ["adhConfig", pageWrapperDirective])
