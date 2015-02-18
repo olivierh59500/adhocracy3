@@ -278,9 +278,11 @@ export var userProfileDirective = (
         },
         link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
             adhPermissions.bindScope(scope, adhConfig.rest_url + "/message_user", "messageOptions");
-
             scope.showMessaging = () => {
                 if (scope.messageOptions.POST) {
+                    if (adhUser.data.name === scope.userBasic.name) {
+                        column.alert("TR__MESSAGE_SELF", "warning");
+                    }
                     column.showOverlay("messaging");
                 } else if (!adhUser.loggedIn) {
                     adhTopLevelState.redirectToLogin();
