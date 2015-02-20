@@ -13,7 +13,7 @@ export interface ILocalEvent extends AdhWebSocket.IServerEvent {}
  * local client.  In many cases this is desired because we do not want the
  * UI to change all the time but we do want it to update on user interaction.
  *
- * FIXME: Currewntly, very few events are actually triggered.
+ * FIXME: Currently, very few events are actually triggered.
  */
 export class Service {
     "use strict";
