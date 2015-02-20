@@ -9,6 +9,10 @@ export class EventManager {
     private handlers : {[event : string]: {[id : number]: (arg : any) => void}} = {};
     private nextID : number = 0;
 
+    constructor(
+        private $q : ng.IQService
+    ) {}
+
     private getNextID() : number {
         return this.nextID++;
     }

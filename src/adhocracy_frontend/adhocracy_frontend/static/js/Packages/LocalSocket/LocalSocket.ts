@@ -20,8 +20,11 @@ export class Service {
 
     private messageEventManager : AdhEventManager.EventManager;
 
-    constructor(adhEventManagerClass : typeof AdhEventManager.EventManager) {
-        this.messageEventManager = new adhEventManagerClass();
+    constructor(
+        $q : ng.IQService,
+        adhEventManagerClass : typeof AdhEventManager.EventManager
+    ) {
+        this.messageEventManager = new adhEventManagerClass($q);
     }
 
     public register(path : string, callback : (msg : ILocalEvent) => void) : number {
@@ -110,5 +113,5 @@ export var register = (angular) => {
         .module(moduleName, [
             AdhEventManager.moduleName
         ])
-        .service("adhLocalSocket", ["adhEventManagerClass", Service]);
+        .service("adhLocalSocket", ["$q", "adhEventManagerClass", Service]);
 };
