@@ -30,10 +30,10 @@ def evolve1_add_ititle_sheet_to_proposals(root):  # pragma: no cover
         if introduction == '' or introduction is None:
             # FIXME: the default value for references should be None
             continue
-        alsoProvides(proposal, ITitle)
         if 'title' not in introduction._sheets[IIntroduction.__identifier__]:
             continue
         value = introduction._sheets[IIntroduction.__identifier__]['title']
+        alsoProvides(proposal, ITitle)
         title = registry.content.get_sheet(proposal, ITitle)
         title.set({'title': value})
         del introduction._sheets[IIntroduction.__identifier__]['title']
