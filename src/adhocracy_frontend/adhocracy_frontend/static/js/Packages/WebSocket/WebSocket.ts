@@ -104,14 +104,14 @@ export class Service {
         return this.connected;
     }
 
-    public register(path : string, callback : (msg : IServerEvent) => void) : number {
+    public register(path : string, callback : (msg : IServerEvent) => void, priority? : number) : number {
         if (!this.registrations[path]) {
             this.registrations[path] = 1;
             this.send("subscribe", path);
         } else {
             this.registrations[path] += 1;
         }
-        return this.messageEventManager.on(path, callback);
+        return this.messageEventManager.on(path, callback, priority);
     }
 
     public unregister(path : string, id : number) : void {
