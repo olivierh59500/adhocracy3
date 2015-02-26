@@ -198,7 +198,7 @@ export class Listing<Container extends ResourcesBase.Resource> {
                         // order to not miss any messages in between. But in
                         // order to subscribe we already need the resource. So
                         // that is not possible.
-                        $scope.update(true).then(() => {
+                        $scope.update().then(() => {
                             try {
                                 $scope.wsOff = adhWebSocket.register($scope.poolPath, () => $scope.update());
                             } catch (e) {
