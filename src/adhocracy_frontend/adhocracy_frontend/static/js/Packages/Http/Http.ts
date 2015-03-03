@@ -28,7 +28,7 @@ import AdhTransaction = require("./Transaction");
 export interface ITransactionResult extends AdhTransaction.ITransactionResult {};
 export interface IBackendError extends AdhError.IBackendError {};
 export interface IBackendErrorItem extends AdhError.IBackendErrorItem {};
-export var logBackendError : (response : ng.IHttpPromiseCallbackArg<IBackendError>) => void = AdhError.logBackendError;
+export var logBackendError : (response : angular.IHttpPromiseCallbackArg<IBackendError>) => void = AdhError.logBackendError;
 
 
 export interface IOptions {
@@ -80,9 +80,9 @@ export var nonResourcePaths : string[] = [
 export class Service<Content extends ResourcesBase.Resource> {
 
     constructor(
-        private $http : ng.IHttpService,
-        private $q : ng.IQService,
-        private $timeout : ng.ITimeoutService,
+        private $http : angular.IHttpService,
+        private $q : angular.IQService,
+        private $timeout : angular.ITimeoutService,
         private adhMetaApi : AdhMetaApi.MetaApiQuery,
         private adhPreliminaryNames : AdhPreliminaryNames.Service,
         private adhConfig : AdhConfig.IService,
@@ -117,7 +117,7 @@ export class Service<Content extends ResourcesBase.Resource> {
         };
     }
 
-    public options(path : string) : ng.IPromise<IOptions> {
+    public options(path : string) : angular.IPromise<IOptions> {
         if (this.adhPreliminaryNames.isPreliminary(path)) {
             throw "attempt to http-options preliminary path: " + path;
         }
@@ -128,7 +128,7 @@ export class Service<Content extends ResourcesBase.Resource> {
                 .then(this.importOptions, AdhError.logBackendError));
     }
 
-    public getRaw(path : string, params ?: { [key : string] : string }) : ng.IHttpPromise<any> {
+    public getRaw(path : string, params ?: { [key : string] : string }) : angular.IHttpPromise<any> {
         if (this.adhPreliminaryNames.isPreliminary(path)) {
             throw "attempt to http-get preliminary path: " + path;
         }
@@ -150,7 +150,7 @@ export class Service<Content extends ResourcesBase.Resource> {
         path : string,
         params ?: { [key : string] : string },
         warmupPoolCache ?: boolean
-    ) : ng.IPromise<Content> {
+    ) : angular.IPromise<Content> {
         var query = (typeof params === "undefined") ? "" : "?" + $.param(params);
 
         if (warmupPoolCache) {
@@ -168,7 +168,7 @@ export class Service<Content extends ResourcesBase.Resource> {
                 AdhError.logBackendError));
     }
 
-    public putRaw(path : string, obj : Content) : ng.IHttpPromise<any> {
+    public putRaw(path : string, obj : Content) : angular.IHttpPromise<any> {
         if (this.adhPreliminaryNames.isPreliminary(path)) {
             throw "attempt to http-put preliminary path: " + path;
         }
@@ -178,7 +178,7 @@ export class Service<Content extends ResourcesBase.Resource> {
             .put(path, obj);
     }
 
-    public put(path : string, obj : Content, keepMetadata : boolean = false) : ng.IPromise<Content> {
+    public put(path : string, obj : Content, keepMetadata : boolean = false) : angular.IPromise<Content> {
         var _self = this;
 
         return this.putRaw(path, AdhConvert.exportContent(this.adhMetaApi, obj, keepMetadata))
@@ -190,7 +190,7 @@ export class Service<Content extends ResourcesBase.Resource> {
                 AdhError.logBackendError);
     }
 
-    public postRaw(path : string, obj : Content) : ng.IHttpPromise<any> {
+    public postRaw(path : string, obj : Content) : angular.IHttpPromise<any> {
         var _self = this;
 
         if (_self.adhPreliminaryNames.isPreliminary(path)) {
@@ -212,7 +212,7 @@ export class Service<Content extends ResourcesBase.Resource> {
         }
     }
 
-    public post(path : string, obj : Content) : ng.IPromise<Content> {
+    public post(path : string, obj : Content) : angular.IPromise<Content> {
         var _self = this;
 
         return _self.postRaw(path, AdhConvert.exportContent(_self.adhMetaApi, obj))
@@ -233,7 +233,7 @@ export class Service<Content extends ResourcesBase.Resource> {
      * LAST tag and adh-last-version directive.  (even though arguably
      * there is a difference between the LAST tag and this function.)
      */
-    public getNewestVersionPathNoFork(path : string) : ng.IPromise<string> {
+    public getNewestVersionPathNoFork(path : string) : angular.IPromise<string> {
         return this.get(path + "LAST/")
             .then((tag) => {
                 var heads = tag.data[SITag.nick].elements;
@@ -275,12 +275,12 @@ export class Service<Content extends ResourcesBase.Resource> {
      */
     public deepPost(
         resources : ResourcesBase.Resource[]
-    ) : ng.IPromise<ResourcesBase.Resource[]> {
+    ) : angular.IPromise<ResourcesBase.Resource[]> {
 
         var sortedResources : ResourcesBase.Resource[] = AdhResourceUtil.sortResourcesTopologically(resources, this.adhPreliminaryNames);
 
         // post stuff
-        return this.withTransaction((transaction) : ng.IPromise<ResourcesBase.Resource[]> => {
+        return this.withTransaction((transaction) : angular.IPromise<ResourcesBase.Resource[]> => {
             _.forEach(sortedResources, (resource) => {
                 transaction.post(resource.parent, resource);
             });
@@ -314,7 +314,7 @@ export class Service<Content extends ResourcesBase.Resource> {
     public postNewVersionNoFork(
         oldVersionPath : string,
         obj : Content, rootVersions? : string[]
-    ) : ng.IPromise<{ value: Content; parentChanged: boolean; }> {
+    ) : angular.IPromise<{ value: Content; parentChanged: boolean; }> {
         var _self = this;
 
         var timeoutRounds : number = 5;
@@ -330,7 +330,7 @@ export class Service<Content extends ResourcesBase.Resource> {
             nextOldVersionPath : string,
             parentChanged : boolean,
             roundsLeft : number
-        ) : ng.IPromise<{ value : Content; parentChanged : boolean; }> => {
+        ) : angular.IPromise<{ value : Content; parentChanged : boolean; }> => {
             if (roundsLeft === 0) {
                 throw "Tried to post new version of " + dagPath + " " + timeoutRounds.toString() + " times, giving up.";
             }
@@ -375,7 +375,7 @@ export class Service<Content extends ResourcesBase.Resource> {
         return retry(oldVersionPath, false, timeoutRounds);
     }
 
-    public postToPool(poolPath : string, obj : Content) : ng.IPromise<Content> {
+    public postToPool(poolPath : string, obj : Content) : angular.IPromise<Content> {
         return this.post(poolPath, obj);
     }
 
@@ -385,8 +385,8 @@ export class Service<Content extends ResourcesBase.Resource> {
      * If you do not know if a reference is already resolved to the corresponding content
      * you can use this function to be sure.
      */
-    public resolve(path : string) : ng.IPromise<Content>;
-    public resolve(content : Content) : ng.IPromise<Content>;
+    public resolve(path : string) : angular.IPromise<Content>;
+    public resolve(content : Content) : angular.IPromise<Content>;
     public resolve(pathOrContent) {
         if (typeof pathOrContent === "string") {
             return this.get(pathOrContent);
@@ -453,7 +453,9 @@ export class Service<Content extends ResourcesBase.Resource> {
      *         });
      *     };
      */
-    public withTransaction<Result>(callback : (httpTrans : AdhTransaction.Transaction) => ng.IPromise<Result>) : ng.IPromise<Result> {
+    public withTransaction<Result>(
+        callback : (httpTrans : AdhTransaction.Transaction) => angular.IPromise<Result>
+    ) : angular.IPromise<Result> {
         return callback(new AdhTransaction.Transaction(this, this.adhCache, this.adhMetaApi, this.adhPreliminaryNames, this.adhConfig));
     }
 }
@@ -463,7 +465,7 @@ export class Busy {
     public count : number;
 
     constructor(
-        private $q : ng.IQService
+        private $q : angular.IQService
     ) {
         this.count = 0;
     }

@@ -48,7 +48,7 @@ export var recursionHelper = ($compile) => {
 
 
 export var lastVersion = (
-    $compile : ng.ICompileService,
+    $compile : angular.ICompileService,
     adhHttp : AdhHttp.Service<any>
 ) => {
     return {
@@ -78,7 +78,7 @@ export var lastVersion = (
  *         <adh-proposal path="{{path}}"></adh-proposal>
  *     </adh-recompile-on-change>
  */
-export var recompileOnChange = ($compile : ng.ICompileService) => {
+export var recompileOnChange = ($compile : angular.ICompileService) => {
     return {
         restrict: "E",
         compile: (element, link) => {
@@ -88,11 +88,11 @@ export var recompileOnChange = ($compile : ng.ICompileService) => {
 
             var contents = element.contents().remove();
             var compiledContents;
-            var innerScope : ng.IScope;
+            var innerScope : angular.IScope;
 
             return {
                 pre: (link && link.pre) ? link.pre : null,
-                post: (scope : ng.IScope, element, attrs) => {
+                post: (scope : angular.IScope, element, attrs) => {
                     if (!compiledContents) {
                         compiledContents = $compile(contents);
                     }
