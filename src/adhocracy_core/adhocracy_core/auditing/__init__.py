@@ -3,6 +3,7 @@ import substanced.audit
 
 
 class AuditLog(substanced.audit.AuditLog):
+
     """An Auditlog composed of layered entries."""
 
     def __init__(self, max_layers=10000, layer_size=100, entries=None):
