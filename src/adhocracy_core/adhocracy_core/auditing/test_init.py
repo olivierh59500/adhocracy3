@@ -33,7 +33,7 @@ class AuditlogTest(unittest.TestCase):
             auditlog.add(name, None)
         transaction.commit()
 
-        all_entries = auditlog.newer(-1, -1)
+        all_entries = auditlog.get_all_entries()
         assert len(list(all_entries)) == nb_events
 
         for i, entry in zip(range(nb_events), all_entries):
