@@ -35,6 +35,7 @@ import AdhListing = require("./Packages/Listing/Listing");
 import AdhLocale = require("./Packages/Locale/Locale");
 import AdhLocalSocket = require("./Packages/LocalSocket/LocalSocket");
 import AdhMeinBerlinProposal = require("./Packages/MeinBerlinProposal/MeinBerlinProposal");
+import AdhMeinBerlinWorkbench = require("./Packages/MeinBerlinWorkbench/MeinBerlinWorkbench");
 import AdhMovingColumns = require("./Packages/MovingColumns/MovingColumns");
 import AdhPermissions = require("./Packages/Permissions/Permissions");
 import AdhPreliminaryNames = require("./Packages/PreliminaryNames/PreliminaryNames");
@@ -88,6 +89,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
         AdhCrossWindowMessaging.moduleName,
         AdhEmbed.moduleName,
         AdhMeinBerlinProposal.moduleName,
+        AdhMeinBerlinWorkbench.moduleName,
         AdhResourceArea.moduleName,
         AdhSticky.moduleName,
         AdhTracking.moduleName,
@@ -104,7 +106,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
         adhTopLevelStateProvider
             .when("", ["$location", ($location) : AdhTopLevelState.IAreaInput => {
                 $location.replace();
-                $location.path("/r/adhocracy/");
+                $location.path("/r/meinberlin/");
                 return {
                     skip: true
                 };
@@ -113,6 +115,9 @@ export var init = (config : AdhConfig.IService, meta_api) => {
                 return {
                     template: "<adh-page-wrapper><h1>404 - Not Found</h1></adh-page-wrapper>"
                 };
+            })
+            .space("content", {
+                resourceUrl: "/meinberlin/"
             });
     }]);
     app.config(["$compileProvider", ($compileProvider) => {
@@ -169,6 +174,7 @@ export var init = (config : AdhConfig.IService, meta_api) => {
     AdhLocale.register(angular);
     AdhLocalSocket.register(angular);
     AdhMeinBerlinProposal.register(angular);
+    AdhMeinBerlinWorkbench.register(angular);
     AdhMapping.register(angular);
     AdhMovingColumns.register(angular);
     AdhPermissions.register(angular);
