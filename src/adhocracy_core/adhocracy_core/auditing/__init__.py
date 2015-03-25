@@ -11,5 +11,6 @@ def set_auditlog(context):
         return
     root = auditconn.root()
     if 'auditlog' not in root:
-        auditlog = AuditLog()  # TODO: increase log size
+        # TODO: how big should the log size be?
+        auditlog = AuditLog(max_layers=100000, layer_size=1000)
         root['auditlog'] = auditlog
