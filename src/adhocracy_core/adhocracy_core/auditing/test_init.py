@@ -1,57 +1,66 @@
-import unittest
 import transaction
+import json
+
 from unittest.mock import Mock
-from pyramid import testing
+from pytest import fixture
 from substanced.util import get_auditlog
+from . import log_auditevent
 
-from adhocracy_core.auditing import set_auditlog
 
-
-class AuditlogTest(unittest.TestCase):
-
-    def _make_mocked_connection(self):
-        mocked_connection = Mock()
-        mocked_auditconn = Mock()
-        mocked_auditconn.root.return_value = {}
-        mocked_connection.get_connection.return_value = mocked_auditconn
-        return mocked_connection
+class TestAuditlog:
 
     def _get_event_name(self, index):
         return 'event_{}'.format(index)
 
-    def setUp(self):
-        self.context = testing.DummyResource()
-        self.context._p_jar = self._make_mocked_connection()
+    def _get_payload_value1(self, index):
+        return 'value1_{}'.format(index)
 
-    def test_add_events(self):
-        set_auditlog(self.context)
-        auditlog = get_auditlog(self.context)
-        nb_events = 100000
-        events_name = [self._get_event_name(i) for i in range(nb_events)]
+    @fixture
+    def context(self, context):
+        mocked_conn = Mock()
+        mocked_auditconn = Mock()
+        mocked_auditconn.root.return_value = {}
+        mocked_conn.get_connection.return_value = mocked_auditconn
+        context._p_jar = mocked_conn
+        return context
 
-        for name in events_name:
-            auditlog.add(name, None)
+    def test_add_events(self, context):
+        nb_events = 10000
+
+        for idx in range(nb_events):
+            log_auditevent(context,
+                           self._get_event_name(idx),
+                           None,
+                           key1=self._get_payload_value1(idx))
         transaction.commit()
 
-        all_entries = auditlog.get_all_entries()
+        all_entries = get_auditlog(context).itervalues()
         assert len(list(all_entries)) == nb_events
 
         for i, entry in zip(range(nb_events), all_entries):
             event = entry[2]
             assert event.name == self._get_event_name(i)
+            expected_payload \
+                = json.dumps(['key1', self._get_payload_value1(idx)])
+            assert event.payload == expected_payload
 
-    def test_no_audit_connection(self):
-        self.context._p_jar.get_connection \
+    def test_no_audit_connection(self, context):
+        from . import _set_auditlog
+
+        context._p_jar.get_connection \
             = Mock(name='method', side_effect=KeyError('audit'))
-        set_auditlog(self.context)
 
-        assert get_auditlog(self.context) is None
+        _set_auditlog(context)
 
-    def test_auditlog_already_exits(self):
-        set_auditlog(self.context)
-        auditlog1 = get_auditlog(self.context)
+        assert get_auditlog(context) is None
 
-        set_auditlog(self.context)
-        auditlog2 = get_auditlog(self.context)
+    def test_auditlog_already_exits(self, context):
+        from . import _set_auditlog
+
+        _set_auditlog(context)
+        auditlog1 = get_auditlog(context)
+
+        _set_auditlog(context)
+        auditlog2 = get_auditlog(context)
 
         assert auditlog1 == auditlog2
