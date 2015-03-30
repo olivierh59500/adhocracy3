@@ -44,13 +44,11 @@ class TestAuditlog:
                 = json.dumps(['key1', self._get_payload_value1(idx)])
             assert event.payload == expected_payload
 
-    def test_no_audit_connection(self, context):
-        from . import _set_auditlog
-
+    def test_no_audit_connection_adding_entry(self, context):
         context._p_jar.get_connection \
             = Mock(name='method', side_effect=KeyError('audit'))
 
-        _set_auditlog(context)
+        log_auditevent(context, 'eventName')
 
         assert get_auditlog(context) is None
 

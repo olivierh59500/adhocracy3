@@ -41,19 +41,22 @@ def _set_auditlog(context):
         root['auditlog'] = auditlog
 
 
-def _create_auditlog_if_missing(context):
-    if get_auditlog(context) is None:
+def _get_auditlog(context):
+    auditlog = get_auditlog(context)
+    if auditlog is None:
         _set_auditlog(context)
         transaction.commit()
         logger.info('Auditlog created')
+        return get_auditlog(context)
+    return auditlog
 
 
-# TODO use a boolean variable in the registry
 def log_auditevent(context, name, oid=None, **kw):
     """Add a an audit entry to the audit database.
 
-    The audit database is created if missing.
+    The audit database is created if missing. If the zodbconn.uri.audit
+    value is not specified in the config, auditing does not happen.
     """
-    _create_auditlog_if_missing(context)
-    auditlog = get_auditlog(context)
-    auditlog.add(name, oid, **kw)
+    auditlog = _get_auditlog(context)
+    if auditlog is not None:
+        auditlog.add(name, oid, **kw)
