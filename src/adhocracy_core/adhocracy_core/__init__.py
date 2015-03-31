@@ -2,14 +2,12 @@
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
 from substanced.db import RootAdded
-from substanced.util import get_auditlog
 import transaction
 
 from adhocracy_core.authentication import TokenHeaderAuthenticationPolicy
 from adhocracy_core.authorization import RoleACLAuthorizationPolicy
 from adhocracy_core.resources.root import IRootPool
 from adhocracy_core.resources.principal import groups_and_roles_finder
-from adhocracy_core.auditing import set_auditlog
 
 
 def root_factory(request):
@@ -27,12 +25,6 @@ def root_factory(request):
         zodb_root['app_root'] = app_root
         transaction.savepoint()  # give app_root a _p_jar
         registry.notify(RootAdded(app_root))
-        transaction.commit()
-
-    if get_auditlog(zodb_root['app_root']) is None:
-        set_auditlog(zodb_root['app_root'])
-        auditlog = get_auditlog(zodb_root['app_root'])
-        auditlog.add('AuditlogCreated', None)
         transaction.commit()
 
     add_after_commit_hooks(request)
