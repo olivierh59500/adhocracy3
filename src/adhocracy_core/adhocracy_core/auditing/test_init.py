@@ -5,14 +5,22 @@ from unittest.mock import Mock
 from pytest import fixture
 from pytest import mark
 from pyramid import testing
-from . import log_auditevent
-from . import get_auditlog
 
 
 @fixture()
 def integration(config):
+    config.include('adhocracy_core.content')
     config.include('adhocracy_core.events')
     config.include('adhocracy_core.changelog')
+    config.include('adhocracy_core.sheets')
+
+
+@fixture
+def user():
+    from adhocracy_core.sheets.principal import IUserBasic
+    user = testing.DummyResource(__provides__=IUserBasic)
+    user.name = 'god'
+    return user
 
 
 @fixture
@@ -45,19 +53,16 @@ def context(context):
     return context
 
 
-@mark.usefixtures('integration')
-def test_add_changelog(registry):
-    assert hasattr(registry, 'changelog')
-
-
 @fixture()
 def request_(registry):
-    assert hasattr(registry, 'changelog')
     request = testing.DummyResource(registry=registry)
     return request
 
 
 def test_add_events(context):
+    from . import log_auditevent
+    from . import get_auditlog
+
     nb_events = 10000
 
     for idx in range(nb_events):
@@ -78,6 +83,9 @@ def test_add_events(context):
 
 
 def test_no_audit_connection_adding_entry(context):
+    from . import log_auditevent
+    from . import get_auditlog
+
     context._p_jar.get_connection \
         = Mock(name='method', side_effect=KeyError('audit'))
 
@@ -85,9 +93,10 @@ def test_no_audit_connection_adding_entry(context):
 
     assert get_auditlog(context) is None
 
- 
+
 def test_auditlog_already_exits(context):
     from . import _set_auditlog
+    from . import get_auditlog
 
     _set_auditlog(context)
     auditlog1 = get_auditlog(context)
@@ -101,6 +110,8 @@ def test_auditlog_already_exits(context):
 @mark.usefixtures('integration')
 def test_audit_changes_callback_empty_changelog(context, registry, request_):
     from . import audit_changes_callback
+    from . import get_auditlog
+
     request_.registry = registry
     request_.context = context
 
@@ -115,6 +126,8 @@ def test_audit_changes_callback_empty_changelog(context, registry, request_):
 def test_audit_changes_callback(context, registry, request_, changelog,
                                 mock_get_user_info):
     from . import audit_changes_callback
+    from . import get_auditlog
+
     request_.registry = registry
     request_.context = context
     changelog = registry.changelog
@@ -131,3 +144,16 @@ def test_audit_changes_callback(context, registry, request_, changelog,
 
     all_entries = get_auditlog(context).values()
     assert len(all_entries) == 2
+
+
+@mark.usefixtures('integration')
+def test_get_user_info(context, registry, request_, user):
+    from adhocracy_core.auditing import _get_user_info
+
+    request_.root = context
+    request_.root['user1'] = user
+    request_.registry = registry
+    request_.authenticated_userid = '/user1'
+
+    (user_name, user_path) = _get_user_info(request_)
+    assert user_name == 'god'
