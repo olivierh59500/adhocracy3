@@ -1,9 +1,9 @@
 """Auditlog of events stored in a ZODB database."""
 import transaction
 import json
+import substanced.util
 
 from pyramid.traversal import resource_path
-from substanced.util import get_auditlog
 from BTrees.OOBTree import OOBTree
 from datetime import datetime
 from logging import getLogger
@@ -11,7 +11,6 @@ from collections import namedtuple
 from adhocracy_core.utils import get_user
 from adhocracy_core.sheets.principal import IUserBasic
 from adhocracy_core.utils import get_sheet_field
-from pyramid_zodbconn import get_connection
 
 
 logger = getLogger(__name__)
@@ -50,13 +49,18 @@ def _set_auditlog(context):
         root['auditlog'] = auditlog
 
 
-def _get_auditlog(context):
-    auditlog = get_auditlog(context)
+def get_auditlog(context):
+    """Return the auditlog. Create one if none exits."""
+    auditlog = substanced.util.get_auditlog(context)
     if auditlog is None:
         _set_auditlog(context)
         transaction.commit()
-        logger.info('Auditlog created')
-        return get_auditlog(context)
+        auditlog = substanced.util.get_auditlog(context)
+        # auditlog can still be None after _set_auditlog if not audit
+        # conn has been configured
+        if auditlog is not None:
+            logger.info('Auditlog created')
+        return auditlog
     return auditlog
 
 
@@ -66,7 +70,7 @@ def log_auditevent(context, name, **kw):
     The audit database is created if missing. If the zodbconn.uri.audit
     value is not specified in the config, auditing does not happen.
     """
-    auditlog = _get_auditlog(context)
+    auditlog = get_auditlog(context)
     if auditlog is not None:
         auditlog.add(name, **kw)
 
@@ -78,14 +82,17 @@ def audit_changes_callback(request, response):
     if len(changelog_metadata) == 0:
         return
 
-    connection = get_connection(request)
-    root = connection.root()
+    (user, user_name, user_path) = _get_user_info(request)
+
+    for meta in changelog_metadata:
+        _log_change(request.context, user, user_name, user_path, meta)
+
+
+def _get_user_info(request):
     user = get_user(request)
     user_name = get_sheet_field(user, IUserBasic, 'name')
     user_path = resource_path(user)
-
-    for meta in changelog_metadata:
-        _log_change(root, user, user_name, user_path, meta)
+    return (user, user_name, user_path)
 
 
 def _log_change(context, user, user_name, user_path, change):
