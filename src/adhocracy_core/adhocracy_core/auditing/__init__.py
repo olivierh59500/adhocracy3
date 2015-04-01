@@ -82,20 +82,20 @@ def audit_changes_callback(request, response):
     if len(changelog_metadata) == 0:
         return
 
-    (user, user_name, user_path) = _get_user_info(request)
+    (user_name, user_path) = _get_user_info(request)
 
     for meta in changelog_metadata:
-        _log_change(request.context, user, user_name, user_path, meta)
+        _log_change(request.context, user_name, user_path, meta)
 
 
 def _get_user_info(request):
     user = get_user(request)
     user_name = get_sheet_field(user, IUserBasic, 'name')
     user_path = resource_path(user)
-    return (user, user_name, user_path)
+    return (user_name, user_path)
 
 
-def _log_change(context, user, user_name, user_path, change):
+def _log_change(context, user_name, user_path, change):
     path = resource_path(change.resource)
     if change.created:
         log_auditevent(context,

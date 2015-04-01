@@ -15,6 +15,18 @@ def integration(config):
     config.include('adhocracy_core.changelog')
 
 
+@fixture
+def mock_get_user_info(monkeypatch):
+    import adhocracy_core.auditing
+    mock_get_user_info = Mock(spec=adhocracy_core.auditing)
+    mock_get_user_info.return_value = ('god',
+                                       '/principals/users/000001')
+    monkeypatch.setattr(adhocracy_core.auditing,
+                        '_get_user_info',
+                        mock_get_user_info)
+    return mock_get_user_info
+
+
 def _get_event_name(index):
     return 'event_{}'.format(index)
 
@@ -73,7 +85,7 @@ def test_no_audit_connection_adding_entry(context):
 
     assert get_auditlog(context) is None
 
-
+ 
 def test_auditlog_already_exits(context):
     from . import _set_auditlog
 
@@ -97,3 +109,25 @@ def test_audit_changes_callback_empty_changelog(context, registry, request_):
 
     all_entries = get_auditlog(context).values()
     assert len(all_entries) == 0
+
+
+@mark.usefixtures('integration')
+def test_audit_changes_callback(context, registry, request_, changelog,
+                                mock_get_user_info):
+    from . import audit_changes_callback
+    request_.registry = registry
+    request_.context = context
+    changelog = registry.changelog
+
+    changelog['/blublu'] \
+        = changelog['/blublu']._replace(resource=testing.DummyResource())
+    changelog['/'] = changelog['/']._replace(resource=context, created=True)
+    changelog['/blabla'] \
+        = changelog['/blabla']._replace(resource=context, modified=True)
+    registry.changelog = changelog
+
+    response = Mock()
+    audit_changes_callback(request_, response)
+
+    all_entries = get_auditlog(context).values()
+    assert len(all_entries) == 2
