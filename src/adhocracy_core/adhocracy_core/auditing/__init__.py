@@ -36,19 +36,6 @@ class AuditLog(OOBTree):
         self[datetime.utcnow()] = AuditEntry(name, payload)
 
 
-def _set_auditlog(context):
-    """Set an auditlog for the context."""
-    conn = context._p_jar
-    try:
-        auditconn = conn.get_connection('audit')
-    except KeyError:
-        return
-    root = auditconn.root()
-    if 'auditlog' not in root:
-        auditlog = AuditLog()
-        root['auditlog'] = auditlog
-
-
 def get_auditlog(context):
     """Return the auditlog. Create one if none exits."""
     auditlog = substanced.util.get_auditlog(context)
@@ -62,6 +49,19 @@ def get_auditlog(context):
             logger.info('Auditlog created')
         return auditlog
     return auditlog
+
+
+def _set_auditlog(context):
+    """Set an auditlog for the context."""
+    conn = context._p_jar
+    try:
+        auditconn = conn.get_connection('audit')
+    except KeyError:
+        return
+    root = auditconn.root()
+    if 'auditlog' not in root:
+        auditlog = AuditLog()
+        root['auditlog'] = auditlog
 
 
 def log_auditevent(context, name, **kw):
