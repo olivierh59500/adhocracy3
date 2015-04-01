@@ -30,7 +30,6 @@ class TestAuditlog:
         for idx in range(nb_events):
             log_auditevent(context,
                            self._get_event_name(idx),
-                           None,
                            key1=self._get_payload_value1(idx))
         transaction.commit()
 
