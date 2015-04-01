@@ -85,18 +85,22 @@ def audit_changes_callback(request, response):
     user_path = resource_path(user)
 
     for meta in changelog_metadata:
-        path = resource_path(meta.resource)
-        if meta.created:
-            log_auditevent(root,
-                           RESOURCE_CREATED,
-                           resource_path=path,
-                           user_name=user_name,
-                           user_path=user_path)
-        elif meta.modified:
-            log_auditevent(root,
-                           RESOURCE_MODIFIED,
-                           resource_path=path,
-                           user_name=user_name,
-                           user_path=user_path)
-        # else: log visibility changes?
-        transaction.commit()
+        _log_change(root, user, user_name, user_path, meta)
+
+
+def _log_change(context, user, user_name, user_path, change):
+    path = resource_path(change.resource)
+    if change.created:
+        log_auditevent(context,
+                       RESOURCE_CREATED,
+                       resource_path=path,
+                       user_name=user_name,
+                       user_path=user_path)
+    elif change.modified:
+        log_auditevent(context,
+                       RESOURCE_MODIFIED,
+                       resource_path=path,
+                       user_name=user_name,
+                       user_path=user_path)
+    # else: log visibility changes?
+    transaction.commit()
