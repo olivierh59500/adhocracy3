@@ -12,7 +12,7 @@ install:
 script:
   - "./bin/py.test_run_unittests_with_coverage"
   - "./bin/py.test_run_all"
-  - "PATH=${TRAVIS_BUILD_DIR}/bin:${PATH} ./bin/protractor etc/protractorConfFirefox.js"
+  - "PATH=${TRAVIS_BUILD_DIR}/bin:${PATH} ./bin/protractor etc/protractorConfTravis.js"
 notifications:
   email: false
 after_success:
@@ -25,3 +25,5 @@ env:
   matrix:
     - BUILDOUT_TARGET=meinberlin
     - BUILDOUT_TARGET=mercator
+addons:
+  firefox: "34.0"
