@@ -164,9 +164,9 @@ export var mapInput = (
 export var mapDetail = (leaflet : typeof L) => {
     return {
         scope: {
-            lat: "=",
-            lng: "=",
-            polygon: "=",
+            lat: "@",
+            lng: "@",
+            polygon: "@",
             height: "@",
             zoom: "@?"
         },
@@ -187,13 +187,8 @@ export var mapDetail = (leaflet : typeof L) => {
                 minZoom: scope.map.getZoom(),
                 maxBounds: scope.map.getBounds()
             });
-            scope.marker = leaflet.marker(leaflet.latLng(scope.lat, scope.lng)).addTo(scope.map);
-
-            scope.$watchGroup(["lat","lng"], function(newValues, oldValues, scope){
-                scope.marker.setLatLng(leaflet.latLng(newValues[0], newValues[1]));
-            });
+            leaflet.marker(leaflet.latLng(scope.lat, scope.lng)).addTo(scope.map);
         }
-
     };
 };
 
