@@ -3,9 +3,12 @@
 
 import _ = require("lodash");
 
+import ResourcesBase = require("../../ResourcesBase");
+
 import AdhAngularHelpers = require("../AngularHelpers/AngularHelpers");
 import AdhConfig = require("../Config/Config");
 import AdhEmbed = require("../Embed/Embed");
+import AdhListing = require("../Listing/Listing");
 import AdhMappingUtils = require("./MappingUtils");
 
 var pkgLocation = "/Mapping";
@@ -360,6 +363,12 @@ export var mapList = (adhConfig : AdhConfig.IService, leaflet : typeof L, $timeo
     };
 };
 
+
+export class Listing<Container extends ResourcesBase.Resource> extends AdhListing.Listing<Container> {
+    public static templateUrl : string = pkgLocation + "/Listing.html";
+}
+
+
 export var moduleName = "adhMapping";
 
 export var register = (angular) => {
@@ -367,6 +376,7 @@ export var register = (angular) => {
         .module(moduleName, [
             AdhAngularHelpers.moduleName,
             AdhEmbed.moduleName,
+            AdhListing.moduleName,
             "duScroll"
         ])
         .config(["adhEmbedProvider", (adhEmbedProvider : AdhEmbed.Provider) => {
@@ -374,5 +384,7 @@ export var register = (angular) => {
         }])
         .directive("adhMapInput", ["adhConfig", "adhSingleClickWrapper", "$timeout", "leaflet", mapInput])
         .directive("adhMapDetail", ["leaflet", mapDetail])
-        .directive("adhMapList", ["adhConfig", "leaflet", "$timeout" , mapList]);
+        .directive("adhMapList", ["adhConfig", "leaflet", "$timeout" , mapList])
+        .directive("adhMapListing", ["adhConfig", "adhWebSocket", (adhConfig, adhWebSocket) =>
+                new Listing(new AdhListing.ListingPoolAdapter()).createDirective(adhConfig, adhWebSocket)]);
 };
