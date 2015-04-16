@@ -257,7 +257,8 @@ export interface IMapListScope<T> extends angular.IScope {
     getNextItem(item : IItem<T>) : void;
 }
 
-export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHttp.Service<any>, leaflet : typeof L, $timeout : angular.ITimeoutService) => {
+export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHttp.Service<any>,
+    leaflet : typeof L, $timeout : angular.ITimeoutService) => {
     return {
         scope: {
             height: "@",
@@ -376,29 +377,15 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
             };
 
             scope.getPreviousItem = (item) => {
-                var index = item.index - 1;
-                while (scope.items[index] && scope.items[index].hide) {
-                    index --;
-
-                }
-                if (index >= 0) {
-                    scope.toggleItem(scope.items[index]);
-                    scrollToItem(index);
-                }
+                var index = scope.items[item.index - 1] ? item.index - 1 : scope.items.length - 1;
+                scope.toggleItem(scope.items[index]);
+                scrollToItem(index);
             };
 
             scope.getNextItem = (item) => {
-
-                var index = item.index + 1;
-                while (scope.items[index] && scope.items[index].hide ) {
-                    index ++;
-
-                }
-                if (index < (scope.items.length)) {
-                    scope.toggleItem(scope.items[index]);
-                    scrollToItem(index);
-                }
-
+                var index = scope.items[item.index + 1] ? item.index + 1 : 0;
+                scope.toggleItem(scope.items[index]);
+                scrollToItem(index);
             };
         }
     };
