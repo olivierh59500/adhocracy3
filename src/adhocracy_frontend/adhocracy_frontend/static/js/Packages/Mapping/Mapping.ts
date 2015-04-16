@@ -276,9 +276,9 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
 
         link: (scope : IMapListScope<any>, element, attrs) => {
 
-            var scrollContainer = angular.element(".scroll-container");
+            var scrollContainer = angular.element(".map-list-scroll-container");
             var scrollToItem = (key) : void => {
-                var element = angular.element(".item" + key);
+                var element = angular.element(".map-list-item" + key);
                 if (attrs.orientation === "vertical") {
                     (<any>scrollContainer).scrollToElement(element, 10, 300);
                 } else {
@@ -287,7 +287,7 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
                 }
             };
 
-            var mapElement = element.find(".map");
+            var mapElement = element.find(".map-list-map");
             mapElement.height(scope.height);
 
             var map = leaflet.map(mapElement[0]);
