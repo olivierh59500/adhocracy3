@@ -24,6 +24,8 @@
 
 [data-icon]:before,
 .icon-add:before,
+.icon-arrow-next:before,
+.icon-arrow-prev:before,
 .icon-attention:before,
 .icon-back-to-top:before,
 .icon-ban-circle:before,
@@ -76,6 +78,8 @@
 }
 
 .icon-add:before { content: "\f10f"; }
+.icon-arrow-next:before { content: "\f126"; }
+.icon-arrow-prev:before { content: "\f127"; }
 .icon-attention:before { content: "\f110"; }
 .icon-back-to-top:before { content: "\f111"; }
 .icon-ban-circle:before { content: "\f112"; }
