@@ -306,20 +306,21 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
             var itemLeafletIcon = (<any>leaflet).divIcon(cssItemIcon);
 
             scope.items = [];
-             _.forEach(scope.itemValues, (value, key) => {
+             _.forEach(scope.itemValues, (url, key) => {
 
-                adhHttp.get(AdhUtil.parentPath(value), {
+                adhHttp.get(AdhUtil.parentPath(url), {
                     content_type: RICommentVersion.content_type,
                     depth: "all",
                     tag: "LAST",
                     count: true
                 }).then((pool) => {
-                    adhHttp.get(value).then((resource : RIProposalVersion) => {
+                    adhHttp.get(url).then((resource : RIProposalVersion) => {
                         var mainSheet : SIProposal.Sheet = resource.data[SIProposal.nick];
                         var pointSheet : SIPoint.Sheet = resource.data[SIPoint.nick];
                         var poolSheet = pool.data[SIPool.nick];
 
                         var value = {
+                            url: url,
                             title: mainSheet.title,
                             locationText: mainSheet.location_text,
                             commentCount: poolSheet.count,
@@ -352,8 +353,6 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
                 });
 
             });
-
-
 
             map.on("moveend", () => {
                 var bounds = map.getBounds();
