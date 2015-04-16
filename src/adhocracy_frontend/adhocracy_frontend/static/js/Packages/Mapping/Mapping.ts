@@ -15,8 +15,15 @@ import AdhWebSocket = require("../WebSocket/WebSocket");
 import AdhHttp = require("../Http/Http");  if (AdhHttp) { ; }
 import AdhPermissions = require("../Permissions/Permissions");  if (AdhPermissions) { ; }
 import AdhPreliminaryNames = require("../PreliminaryNames/PreliminaryNames");  if (AdhPreliminaryNames) { ; }
+import AdhUtil = require("../Util/Util");
 
 import AdhMappingUtils = require("./MappingUtils");
+
+import RICommentVersion = require("../../Resources_/adhocracy_core/resources/comment/ICommentVersion");
+import RIProposalVersion = require("../../Resources_/adhocracy_meinberlin/resources/kiezkassen/IProposalVersion");
+import SIProposal = require("../../Resources_/adhocracy_meinberlin/sheets/kiezkassen/IProposal");
+import SIPoint = require("../../Resources_/adhocracy_core/sheets/geo/IPoint");
+import SIPool = require("../../Resources_/adhocracy_core/sheets/pool/IPool");
 
 var pkgLocation = "/Mapping";
 
@@ -231,7 +238,6 @@ export var mapDetail = (leaflet : typeof L) => {
     };
 };
 
-
 export interface IItem<T> {
     value : T;
     marker : L.Marker;
@@ -251,7 +257,7 @@ export interface IMapListScope<T> extends angular.IScope {
     getNextItem(item : IItem<T>) : void;
 }
 
-export var mapListingInternal = (adhConfig : AdhConfig.IService, leaflet : typeof L, $timeout : angular.ITimeoutService) => {
+export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHttp.Service<any>, leaflet : typeof L, $timeout : angular.ITimeoutService) => {
     return {
         scope: {
             height: "@",
@@ -293,33 +299,61 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, leaflet : typeo
             // limit map to polygon
             map.fitBounds(scope.polygon.getBounds());
             leaflet.Util.setOptions(map, {
-                 minZoom: map.getZoom(),
-                 maxBounds: map.getBounds()
+                 minZoom: map.getZoom()
             });
 
             var selectedItemLeafletIcon = (<any>leaflet).divIcon(cssSelectedItemIcon);
             var itemLeafletIcon = (<any>leaflet).divIcon(cssItemIcon);
 
             scope.items = [];
-            _.forEach(scope.itemValues, (value, key) => {
-                var item = {
-                    value: value,
-                    marker: L.marker(leaflet.latLng(value.lat, value.lng), {icon: itemLeafletIcon}),
-                    hide: false,
-                    index: key
-                };
-                item.marker.addTo(map);
-                item.marker.on("click", (e) => {
-                    $timeout(() => {
-                        scope.toggleItem(item);
-                        scrollToItem(item.index);
+             _.forEach(scope.itemValues, (value, key) => {
+
+                adhHttp.get(AdhUtil.parentPath(value), {
+                    content_type: RICommentVersion.content_type,
+                    depth: "all",
+                    tag: "LAST",
+                    count: true
+                }).then((pool) => {
+                    adhHttp.get(value).then((resource : RIProposalVersion) => {
+                        var mainSheet : SIProposal.Sheet = resource.data[SIProposal.nick];
+                        var pointSheet : SIPoint.Sheet = resource.data[SIPoint.nick];
+                        var poolSheet = pool.data[SIPool.nick];
+
+                        var value = {
+                            title: mainSheet.title,
+                            locationText: mainSheet.location_text,
+                            commentCount: poolSheet.count,
+                            lng: pointSheet.x,
+                            lat: pointSheet.y
+                        };
+
+                        var item = {
+                            value: value,
+                            marker: L.marker(leaflet.latLng(value.lat, value.lng), {icon: itemLeafletIcon}),
+                            hide: false,
+                            index: key
+                        };
+
+                        item.marker.addTo(map);
+                        item.marker.on("click", (e) => {
+                            $timeout(() => {
+                                scope.toggleItem(item);
+                                scrollToItem(item.index);
+                            });
+                        });
+
+                        if (key === 0) {
+                            scope.selectedItem = item;
+                            <any>scope.selectedItem.marker.setIcon(selectedItemLeafletIcon);
+                        }
+                        scope.items.push(item);
+
                     });
                 });
-                scope.items.push(item);
+
             });
 
-            scope.selectedItem = scope.items[0];
-            <any>scope.selectedItem.marker.setIcon(selectedItemLeafletIcon);
+
 
             map.on("moveend", () => {
                 var bounds = map.getBounds();
@@ -398,7 +432,7 @@ export var register = (angular) => {
         }])
         .directive("adhMapInput", ["adhConfig", "adhSingleClickWrapper", "$timeout", "leaflet", mapInput])
         .directive("adhMapDetail", ["leaflet", mapDetail])
-        .directive("adhMapListingInternal", ["adhConfig", "leaflet", "$timeout" , mapListingInternal])
+        .directive("adhMapListingInternal", ["adhConfig", "adhHttp", "leaflet", "$timeout" , mapListingInternal])
         .directive("adhMapListing", ["adhConfig", "adhWebSocket", (adhConfig, adhWebSocket) =>
                 new Listing(new AdhListing.ListingPoolAdapter()).createDirective(adhConfig, adhWebSocket)]);
 };

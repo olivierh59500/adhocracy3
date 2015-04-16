@@ -1,8 +1,4 @@
-<pre>
-{{ elements | json }}
-</pre>
-
 <adh-recompile-on-change data-value="{{elements}}" data-key="items">
-    <adh-map-listing-internal data-ng-if="items" data-items="items" data-height="400" data-polygon="polygon">
+    <adh-map-listing-internal data-ng-if="polygon && items" data-items="elements" data-height="400" data-polygon="polygon">
     </adh-map-listing-internal>
 </adh-recompile-on-change>
