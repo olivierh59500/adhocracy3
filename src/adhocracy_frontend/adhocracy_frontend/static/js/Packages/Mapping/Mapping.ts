@@ -380,6 +380,12 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
 
             scope.getDataFromURLs();
 
+            var loopCarousel = (index, total) => {
+                index = index < 0 ? total : index;
+                index = index > total ? 0 : index;
+                return index;
+            };
+
             scope.toggleItem = (item) => {
                 if (typeof scope.selectedItem !== "undefined") {
                     scope.selectedItem.marker.setIcon(itemLeafletIcon);
@@ -389,13 +395,19 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
             };
 
             scope.getPreviousItem = (item) => {
-                var index = scope.items[item.index - 1] ? item.index - 1 : scope.items.length - 1;
+                var index = loopCarousel(item.index - 1, scope.items.length - 1);
+                while (scope.items[index].hide) {
+                    index = loopCarousel(index - 1, scope.items.length - 1);
+                }
                 scope.toggleItem(scope.items[index]);
                 scrollToItem(index);
             };
 
             scope.getNextItem = (item) => {
-                var index = scope.items[item.index + 1] ? item.index + 1 : 0;
+                var index = loopCarousel(item.index + 1, scope.items.length - 1);
+                while (scope.items[index].hide) {
+                    index = loopCarousel(index + 1, scope.items.length - 1);
+                }
                 scope.toggleItem(scope.items[index]);
                 scrollToItem(index);
             };
