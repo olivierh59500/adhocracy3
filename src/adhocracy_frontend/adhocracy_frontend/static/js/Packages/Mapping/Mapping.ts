@@ -264,6 +264,7 @@ export interface IMapListScope<T> extends angular.IScope {
     toggleItem(item : IItem<T>) : void;
     getPreviousItem(item : IItem<T>) : void;
     getNextItem(item : IItem<T>) : void;
+    getDataFromURLs(): void;
 }
 
 export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHttp.Service<any>,
@@ -315,54 +316,54 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
             var selectedItemLeafletIcon = (<any>leaflet).divIcon(cssSelectedItemIcon);
             var itemLeafletIcon = (<any>leaflet).divIcon(cssItemIcon);
 
-            scope.items = [];
-             _.forEach(scope.itemValues, (url, key) => {
+            scope.getDataFromURLs = () => {
+                scope.items = [];
+                _.forEach(scope.itemValues, (url, key) => {
 
-                adhHttp.get(AdhUtil.parentPath(url), {
-                    content_type: RICommentVersion.content_type,
-                    depth: "all",
-                    tag: "LAST",
-                    count: true
-                }).then((pool) => {
-                    adhHttp.get(url).then((resource : RIProposalVersion) => {
-                        var mainSheet : SIProposal.Sheet = resource.data[SIProposal.nick];
-                        var pointSheet : SIPoint.Sheet = resource.data[SIPoint.nick];
-                        var poolSheet = pool.data[SIPool.nick];
+                    adhHttp.get(AdhUtil.parentPath(url), {
+                        content_type: RICommentVersion.content_type,
+                        depth: "all",
+                        tag: "LAST",
+                        count: true
+                    }).then((pool) => {
+                        adhHttp.get(url).then((resource: RIProposalVersion) => {
+                            var mainSheet: SIProposal.Sheet = resource.data[SIProposal.nick];
+                            var pointSheet: SIPoint.Sheet = resource.data[SIPoint.nick];
+                            var poolSheet = pool.data[SIPool.nick];
 
-                        var value = {
-                            url: url,
-                            title: mainSheet.title,
-                            locationText: mainSheet.location_text,
-                            commentCount: poolSheet.count,
-                            lng: pointSheet.x,
-                            lat: pointSheet.y
-                        };
+                            var value = {
+                                url: url,
+                                title: mainSheet.title,
+                                locationText: mainSheet.location_text,
+                                commentCount: poolSheet.count,
+                                lng: pointSheet.x,
+                                lat: pointSheet.y
+                            };
 
-                        var item = {
-                            value: value,
-                            marker: L.marker(leaflet.latLng(value.lat, value.lng), {icon: itemLeafletIcon}),
-                            hide: false,
-                            index: key
-                        };
+                            var item = {
+                                value: value,
+                                marker: L.marker(leaflet.latLng(value.lat, value.lng), { icon: itemLeafletIcon }),
+                                hide: false,
+                                index: key
+                            };
 
-                        item.marker.addTo(map);
-                        item.marker.on("click", (e) => {
-                            $timeout(() => {
-                                scope.toggleItem(item);
-                                scrollToItem(item.index);
+                            item.marker.addTo(map);
+                            item.marker.on("click", (e) => {
+                                $timeout(() => {
+                                    scope.toggleItem(item);
+                                    scrollToItem(item.index);
+                                });
                             });
+
+                            if (key === 0) {
+                                scope.selectedItem = item;
+                                <any>scope.selectedItem.marker.setIcon(selectedItemLeafletIcon);
+                            }
+                            scope.items.push(item);
                         });
-
-                        if (key === 0) {
-                            scope.selectedItem = item;
-                            <any>scope.selectedItem.marker.setIcon(selectedItemLeafletIcon);
-                        }
-                        scope.items.push(item);
-
                     });
                 });
-
-            });
+            };
 
             map.on("moveend", () => {
                 var bounds = map.getBounds();
@@ -376,6 +377,8 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
                     });
                 });
             });
+
+            scope.getDataFromURLs();
 
             scope.toggleItem = (item) => {
                 if (typeof scope.selectedItem !== "undefined") {
@@ -407,6 +410,11 @@ export class Listing<Container extends ResourcesBase.Resource> extends AdhListin
     public createDirective(adhConfig : AdhConfig.IService, adhWebSocket: AdhWebSocket.Service) {
         var directive = super.createDirective(adhConfig, adhWebSocket);
         directive.scope["polygon"] = "=";
+        directive.link = function(scope, element, attrs) {
+            scope.changeData = () => {
+                scope.elements.splice(0, 1);
+            };
+        };
         return directive;
     }
 }
