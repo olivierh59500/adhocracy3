@@ -11,6 +11,7 @@ from adhocracy_core.interfaces import IRateValidator
 from adhocracy_core.interfaces import ISheetReferenceAutoUpdateMarker
 from adhocracy_core.interfaces import SheetToSheet
 from adhocracy_core.sheets import add_sheet_to_registry
+from adhocracy_core.sheets import AttributeStorageSheet
 from adhocracy_core.schema import Integer
 from adhocracy_core.schema import Reference
 from adhocracy_core.schema import UniqueReferences
@@ -158,9 +159,9 @@ class RateSchema(colander.MappingSchema):
             err['rate'] = rate_validator.helpful_error_message()
             raise err
 
-
 rate_meta = sheet_meta._replace(isheet=IRate,
                                 schema_class=RateSchema,
+                                sheet_class=AttributeStorageSheet,
                                 create_mandatory=True)
 
 

@@ -5,6 +5,7 @@ from substanced.evolution import add_evolution_step
 from zope.interface.interfaces import IInterface
 from adhocracy_core.utils import get_sheet
 from adhocracy_core.interfaces import IPool
+from adhocracy_core.sheets.rate import IRate
 
 
 logger = logging.getLogger(__name__)
@@ -35,6 +36,10 @@ def migrate_sheet_to_attribute_storage(context: IPool,
         if annotation_data == {} and hasattr(resource, '_sheets'):
             delattr(resource, '_sheets')
 
+
+def evolve2_use_attribute_storage_for_rate_sheet(root: IPool):
+    """Migrate rate sheet to attribute storage."""
+    migrate_sheet_to_attribute_storage(root, IRate)
 
 
 def includeme(config):  # pragma: no cover
