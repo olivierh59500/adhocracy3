@@ -6,6 +6,7 @@ from zope.interface.interfaces import IInterface
 from adhocracy_core.utils import get_sheet
 from adhocracy_core.interfaces import IPool
 from adhocracy_core.sheets.rate import IRate
+from adhocracy_core.sheets.comment import IComment
 
 
 logger = logging.getLogger(__name__)
@@ -40,6 +41,11 @@ def migrate_sheet_to_attribute_storage(context: IPool,
 def evolve2_use_attribute_storage_for_rate_sheet(root: IPool):
     """Migrate rate sheet to attribute storage."""
     migrate_sheet_to_attribute_storage(root, IRate)
+
+
+def evolve3_use_attribute_storage_for_comment_sheet(root: IPool):
+    """Migrate commet sheet to attribute storage."""
+    migrate_sheet_to_attribute_storage(root, IComment)
 
 
 def includeme(config):  # pragma: no cover

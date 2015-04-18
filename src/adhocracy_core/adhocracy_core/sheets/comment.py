@@ -6,6 +6,7 @@ from adhocracy_core.interfaces import ISheetReferenceAutoUpdateMarker
 from adhocracy_core.interfaces import IPostPoolSheet
 from adhocracy_core.interfaces import SheetToSheet
 from adhocracy_core.sheets import add_sheet_to_registry
+from adhocracy_core.sheets import AttributeStorageSheet
 from adhocracy_core.schema import UniqueReferences
 from adhocracy_core.schema import Reference
 from adhocracy_core.sheets import sheet_meta
@@ -45,6 +46,7 @@ class CommentSchema(colander.MappingSchema):
 
 
 comment_meta = sheet_meta._replace(isheet=IComment,
+                                   sheet_class=AttributeStorageSheet,
                                    schema_class=CommentSchema)
 
 
