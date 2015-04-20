@@ -17,7 +17,6 @@ export var detailDirective = (adhConfig : AdhConfig.IService, adhHttp : AdhHttp.
         link: (scope) => {
 
             scope.currentTab = 0;
-            scope.showMap = true;
 
             scope.tabs = [{
                 heading: "Tab1",
