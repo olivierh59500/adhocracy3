@@ -325,7 +325,7 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
             var selectedItemLeafletIcon = (<any>leaflet).divIcon(cssSelectedItemIcon);
             var itemLeafletIcon = (<any>leaflet).divIcon(cssItemIcon);
 
-            scope.getDataFromURLs = () => {
+            var getDataFromURLs = () => {
                 scope.items = [];
                 _.forEach(scope.itemValues, (url, key) => {
 
@@ -349,10 +349,12 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
                                 lat: pointSheet.y
                             };
 
+                            var hide = (value.lat === 0 && value.lat === 0);
+
                             var item = {
                                 value: value,
                                 marker: L.marker(leaflet.latLng(value.lat, value.lng), { icon: itemLeafletIcon }),
-                                hide: false,
+                                hide: hide,
                                 index: key
                             };
 
@@ -387,7 +389,7 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
                 });
             });
 
-            scope.getDataFromURLs();
+            getDataFromURLs();
 
             var loopCarousel = (index, total) => {
                 index = index < 0 ? total : index;
