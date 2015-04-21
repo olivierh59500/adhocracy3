@@ -325,56 +325,56 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
             var selectedItemLeafletIcon = (<any>leaflet).divIcon(cssSelectedItemIcon);
             var itemLeafletIcon = (<any>leaflet).divIcon(cssItemIcon);
 
-            var getDataFromURLs = () => {
-                scope.items = [];
-                _.forEach(scope.itemValues, (url, key) => {
 
-                    adhHttp.get(AdhUtil.parentPath(url), {
-                        content_type: RICommentVersion.content_type,
-                        depth: "all",
-                        tag: "LAST",
-                        count: true
-                    }).then((pool) => {
-                        adhHttp.get(url).then((resource: RIProposalVersion) => {
-                            var mainSheet: SIProposal.Sheet = resource.data[SIProposal.nick];
-                            var pointSheet: SIPoint.Sheet = resource.data[SIPoint.nick];
-                            var poolSheet = pool.data[SIPool.nick];
+            scope.items = [];
+            _.forEach(scope.itemValues, (url, key) => {
 
-                            var value = {
-                                url: url,
-                                title: mainSheet.title,
-                                locationText: mainSheet.location_text,
-                                commentCount: poolSheet.count,
-                                lng: pointSheet.x,
-                                lat: pointSheet.y
-                            };
+                adhHttp.get(AdhUtil.parentPath(url), {
+                    content_type: RICommentVersion.content_type,
+                    depth: "all",
+                    tag: "LAST",
+                    count: true
+                }).then((pool) => {
+                    adhHttp.get(url).then((resource: RIProposalVersion) => {
+                        var mainSheet: SIProposal.Sheet = resource.data[SIProposal.nick];
+                        var pointSheet: SIPoint.Sheet = resource.data[SIPoint.nick];
+                        var poolSheet = pool.data[SIPool.nick];
 
-                            var hide = (value.lat === 0 && value.lat === 0);
+                        var value = {
+                            url: url,
+                            title: mainSheet.title,
+                            locationText: mainSheet.location_text,
+                            commentCount: poolSheet.count,
+                            lng: pointSheet.x,
+                            lat: pointSheet.y
+                        };
 
-                            var item = {
-                                value: value,
-                                marker: L.marker(leaflet.latLng(value.lat, value.lng), { icon: itemLeafletIcon }),
-                                hide: hide,
-                                index: key
-                            };
+                        var hide = (value.lat === 0 && value.lat === 0);
 
-                            item.marker.addTo(map);
-                            item.marker.on("click", (e) => {
-                                $timeout(() => {
-                                    scope.toggleItem(item);
-                                    scrollToItem(item.index);
-                                });
+                        var item = {
+                            value: value,
+                            marker: L.marker(leaflet.latLng(value.lat, value.lng), { icon: itemLeafletIcon }),
+                            hide: hide,
+                            index: key
+                        };
+
+                        item.marker.addTo(map);
+                        item.marker.on("click", (e) => {
+                            $timeout(() => {
+                                scope.toggleItem(item);
+                                scrollToItem(item.index);
                             });
-
-                            if (key === 0) {
-                                scope.selectedItem = item;
-                                <any>scope.selectedItem.marker.setIcon(selectedItemLeafletIcon);
-                            }
-                            scope.items.push(item);
                         });
+
+                        if (key === 0) {
+                            scope.selectedItem = item;
+                            <any>scope.selectedItem.marker.setIcon(selectedItemLeafletIcon);
+                        }
+                        scope.items.push(item);
                     });
                 });
-            };
+            });
+
 
             map.on("moveend", () => {
                 var bounds = map.getBounds();
@@ -388,8 +388,6 @@ export var mapListingInternal = (adhConfig : AdhConfig.IService, adhHttp : AdhHt
                     });
                 });
             });
-
-            getDataFromURLs();
 
             var loopCarousel = (index, total) => {
                 index = index < 0 ? total : index;
