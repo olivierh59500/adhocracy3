@@ -252,6 +252,10 @@ States:
     .moving-column-menu-nav-button {
         color: $color-text-inverted;
         margin-right: 0;
+
+        &:hover, &:focus {
+            color: $color-text-highlight-normal;
+        }
     }
 
     .moving-column-menu-sort-option {
