@@ -20,6 +20,10 @@
         }
     }
 
+    &.is-current-phase {
+        @include single-box-shadow(0, 2px, 0, 0, $color-function-valid);
+    }
+
     .tab-button, &.is-active .tab-button {
         line-height: 1em;
         margin-right: 0;
