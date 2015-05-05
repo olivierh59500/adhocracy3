@@ -17,6 +17,7 @@ input[type="button"] {
     }
 
     &.m-call-to-action {
+        @include border-radius(1em);
         font-weight: $font-weight-extrovert;
 
         &:hover:not(:disabled):not(.ng-disabled),
@@ -55,5 +56,15 @@ input[type="button"] {
             color: $color-text-inverted;
             text-decoration: none;
         }
+    }
+}
+
+.moving-column-body {
+    button,
+    .button,
+    input[type="reset"],
+    input[type="submit"],
+    input[type="button"] {
+        @include border-radius(0);
     }
 }
