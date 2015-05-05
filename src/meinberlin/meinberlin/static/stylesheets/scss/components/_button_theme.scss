@@ -23,6 +23,7 @@ input[type="button"] {
         &:hover:not(:disabled):not(.ng-disabled),
         &:focus:not(:disabled):not(.ng-disabled) {
             background: $color-brand-two-introvert;
+            text-decoration: none;
         }
 
         &:active:not(:disabled):not(.ng-disabled) {
@@ -31,9 +32,11 @@ input[type="button"] {
     }
 
     &.m-call-to-action-secondary {
+        color: $color-text-introvert;
+
         &:hover:not(:disabled):not(.ng-disabled),
         &:focus:not(:disabled):not(.ng-disabled) {
-            color: $color-text-highlight-normal;
+            background: transparent;
             text-decoration: underline;
         }
     }
