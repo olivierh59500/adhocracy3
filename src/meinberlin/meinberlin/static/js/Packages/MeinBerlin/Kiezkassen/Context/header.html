@@ -4,8 +4,8 @@
             <i class="mein-berlin-keizkassen-context-header-logo icon-meinberlin-logo"></i>
         </div>
         <div class="mein-berlin-keizkassen-context-main-header-right">
-            <button class="m-call-to-action">Add Proposal</button>
-            <button>Login</button>
+            <a href="{{path | adhResourceUrl:'create_proposal'}}" class="button m-call-to-action">{{ "TR__CREATE_PROPOSAL" | translate }}</a>
+            <a href="/login" class="button m-call-to-action-secondary"><i class="icon-user-unfilled"></i> Login</a>
         </div>
     </div>
     <tabset
