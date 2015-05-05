@@ -84,10 +84,6 @@ export var processHeaderDirective = (adhConfig : AdhConfig.IService, $translate)
 };
 
 export var phasesTabsController = (scope, element, document) => {
-    element.find(".tabset-panes-wrapper").height(0);
-    document.on("click", ".mein-berlin-keizkassen-context-header .tab", () => {
-        element.find(".tabset-panes-wrapper").height(element.find(".tabset-panes").outerHeight());
-    });
     var tabsScope = element.find(".tabset-tabs").scope();
     tabsScope.processHeader = true;
 };
