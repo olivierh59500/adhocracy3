@@ -67,7 +67,7 @@ export var processHeaderDirective = (adhConfig : AdhConfig.IService, $translate)
         restrict: "E",
         link: (scope, element) => {
             // FIXME: Dummy data
-            var currentPhase = 1;
+            var currentPhase = 2;
             scope.tabs = [];
             _([0, 1, 2, 3]).forEach(function(n) {
                 // FIXME : lodash can probably do this much tidier
