@@ -18,6 +18,10 @@
         &:after {
             border-left-color: $color-background-base-introvert;
         }
+
+        &:before {
+            display: none;
+        }
     }
 
     &.is-current-phase {
