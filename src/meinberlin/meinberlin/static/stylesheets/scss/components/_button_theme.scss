@@ -17,13 +17,11 @@ input[type="button"] {
     }
 
     &.m-call-to-action {
-        @include border-radius(1em);
         font-weight: $font-weight-extrovert;
 
         &:hover:not(:disabled):not(.ng-disabled),
         &:focus:not(:disabled):not(.ng-disabled) {
             background: $color-brand-two-introvert;
-            text-decoration: none;
         }
 
         &:active:not(:disabled):not(.ng-disabled) {
@@ -32,11 +30,9 @@ input[type="button"] {
     }
 
     &.m-call-to-action-secondary {
-        color: $color-text-introvert;
-
         &:hover:not(:disabled):not(.ng-disabled),
         &:focus:not(:disabled):not(.ng-disabled) {
-            background: transparent;
+            color: $color-text-highlight-normal;
             text-decoration: underline;
         }
     }
@@ -59,15 +55,5 @@ input[type="button"] {
             color: $color-text-inverted;
             text-decoration: none;
         }
-    }
-}
-
-.moving-column-body {
-    button,
-    .button,
-    input[type="reset"],
-    input[type="submit"],
-    input[type="button"] {
-        @include border-radius(0);
     }
 }
