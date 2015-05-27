@@ -22,3 +22,13 @@
     margin-top: 0;
     text-transform: capitalize;
 }
+
+.user-form-wrapper {
+    .main-header-logo {
+        @extend .mein-berlin-keizkassen-context-header-logo;
+
+        &:before {
+            @extend .icon-meinberlin-logo:before;
+        }
+    }
+}
