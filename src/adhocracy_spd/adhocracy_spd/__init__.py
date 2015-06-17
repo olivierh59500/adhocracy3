@@ -12,6 +12,7 @@ def includeme(config):
     config.include('.resources.root')
     config.include('.resources.subscriber')
     config.include('.resources.digital_leben')
+    config.include('.evolution')
 
 
 def main(global_config, **settings):
