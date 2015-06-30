@@ -33,3 +33,18 @@
         color: $color-text-highlight-normal;
     }
 }
+
+.blog {
+    .document-form {
+        background: $color-background-base-introvert;
+        padding: 1em;
+
+        .title, .paragraph {
+            margin-bottom: 10px / $font-size-normal * 1em;
+        }
+
+        .paragraph {
+            background: $color-background-base;
+        }
+    }
+}

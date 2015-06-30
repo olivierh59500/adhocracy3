@@ -11,7 +11,7 @@
         <select
             data-ng-model="data.title"
             name="title"
-            class="m-title"
+            class="title"
             required="required">
             <!-- FIXME: dummy options -->
             <option value="challenge">challenge</option>
@@ -29,6 +29,7 @@
             data-msd-elastic=""
             data-ng-model="data.paragraphs[0].body"
             name="paragraph-0"
+            class="paragraph"
             placeholder="{{ 'TR__PARAGRAPH_PLACEHOLDER' | translate }}"
             required="required"></textarea>
 
