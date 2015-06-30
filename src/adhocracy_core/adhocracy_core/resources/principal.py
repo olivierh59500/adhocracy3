@@ -216,6 +216,8 @@ class PasswordReset(Base):
         password_sheet = get_sheet(
             user, adhocracy_core.sheets.principal.IPasswordAuthentication)
         password_sheet.set({'password': password}, send_event=False)
+        if not user.active:
+            user.activate()
         del self.__parent__[self.__name__]
 
 
@@ -288,9 +290,9 @@ class UserLocatorAdapter(object):
 
     def get_user_by_activation_path(self, activation_path: str) -> IUser:
         """Find user per activation path or return None."""
-        users = find_service(self.context, 'principals', 'users')
-        for user in users.values():
-            if user.activation_path == activation_path:
+        users = self._get_users()
+        for user in users:
+            if user.activation_path == activation_path:  # pragma: no branch
                 return user
 
     def get_groupids(self, userid: str) -> list:

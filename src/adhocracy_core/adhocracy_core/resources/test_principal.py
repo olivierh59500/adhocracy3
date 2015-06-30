@@ -272,6 +272,18 @@ class TestPasswordReset:
         reset.reset_password('new_password')
         assert reset.__parent__ is None
 
+    @mark.usefixtures('integration')
+    def test_activate_after_reset_password(self, registry, principals):
+        from . import principal
+        user = registry.content.create(principal.IUser.__identifier__,
+                                       parent=principals['users'],
+                                       appstructs={})
+        reset = registry.content.create(principal.IPasswordReset.__identifier__,
+                                        parent=principals['resets'],
+                                        creator=user)
+        reset.reset_password('new_password')
+        assert user.active
+
 
 class TestUserLocatorAdapter:
 
@@ -325,8 +337,12 @@ class TestUserLocatorAdapter:
         assert inst.get_user_by_login('wrong login name') is None
 
     def test_get_user_by_activation_path_user_exists(self, context, request, inst):
-        user = testing.DummyResource(activation_path='/activate/foo')
+        from .principal import IUser
+        user = testing.DummyResource(activation_path='/activate/foo',
+                                     __provides__=IUser)
         context['principals']['users']['User1'] = user
+        other = testing.DummyResource()
+        context['principals']['users']['other'] = other
         assert inst.get_user_by_activation_path('/activate/foo') is user
         
     def test_get_user_by_activation_path_user_not_exists(self, context, request, inst):
