@@ -1,6 +1,6 @@
 from pyramid import testing
 from pytest import fixture
-from pytest import raises
+ from pytest import raises
 from pytest import mark
 from unittest.mock import Mock
 
