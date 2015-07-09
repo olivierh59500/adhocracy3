@@ -2,7 +2,9 @@
     <div data-ng-if="ready">
         <div data-ng-if="success">
             <h1 class="standalone-wrapper-title">{{ "TR__ACTIVATION_SUCCESS_TITLE" | translate }}</h1>
-            <p>{{ "TR__ACTIVATION_CLOSE_THIS_TAB_AND_PROCEED" | translate:{siteName: siteName} }}</p>
+            <p data-adh-html-translate="TR__ACTIVATION_CLOSE_THIS_TAB_AND_PROCEED" data-translate-values="{siteName: siteName}" data-translate-templates="{
+            link: '&lt;a href=&quot;/&quot;&gt;{{ content }}&lt;/a&gt;'
+        }"></p>
         </div>
         <div data-ng-if="!success">
             <h1 class="standalone-wrapper-title">{{ "TR__ACTIVATION_ERROR_TITLE" | translate }}</h1>
