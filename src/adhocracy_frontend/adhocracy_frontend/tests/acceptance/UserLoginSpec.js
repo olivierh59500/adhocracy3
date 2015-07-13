@@ -87,35 +87,53 @@ describe("user password reset", function() {
         var page = new UserPages.ResetPasswordCreatePage().get();
         var resetUrl = "";
 
+        console.log(1);
         page.fill(UserPages.participantEmail);
 
+        console.log(2);
         var flow = browser.controlFlow();
+        console.log(3);
         flow.execute(function() {
+            console.log(4);
             var mailsAfterMessaging = fs.readdirSync(browser.params.mail.queue_path + "/new");
+            console.log(5);
             var newMails = _.difference(mailsAfterMessaging, mailsBeforeMessaging);
+            console.log(6);
             var mailpath = browser.params.mail.queue_path + "/new/" + newMails[0];
 
+            console.log(7);
             shared.parseEmail(mailpath, function(mail) {
                 // console.log('email=', mail);
+                console.log(8);
                 expect(mail.subject).toContain("Reset Password");
+                console.log(9);
                 expect(mail.to[0].address).toContain("participant");
+                console.log(10);
                 resetUrl = mail.text.split("\n\n")[4];
             });
         });
 
+        console.log(11);
         browser.driver.wait(function() {
+            console.log(12);
             return resetUrl != "";
         }).then(function() {
+            console.log(13);
             var resetPage = new UserPages.ResetPasswordPage().get(resetUrl);
+            console.log(14);
             resetPage.fill('new password');
 
             // After changing the password the user is logged in
             //expect(UserPages.isLoggedIn()).toBe(true);
 
             // and can now login with the new password
+            console.log(15);
             UserPages.logout();
+            console.log(16);
             UserPages.login(UserPages.participantEmail, 'new password');
+            console.log(17);
             expect(UserPages.isLoggedIn()).toBe(true);
+            console.log(18);
         });
     });
 });
