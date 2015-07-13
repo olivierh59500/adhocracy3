@@ -20,7 +20,7 @@ var shared = require("./shared");
     });
 });*/
 
-describe("user login", function() {
+xdescribe("user login", function() {
     it("can login with username", function() {
         UserPages.login(UserPages.participantName, UserPages.participantPassword);
         expect(UserPages.isLoggedIn()).toBe(true);
