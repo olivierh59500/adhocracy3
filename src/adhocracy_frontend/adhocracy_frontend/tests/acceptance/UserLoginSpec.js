@@ -118,6 +118,7 @@ describe("user password reset", function() {
             console.log(12);
             return resetUrl != "";
         }).then(function() {
+            console.log(resetUrl);
             console.log(13);
             var resetPage = new UserPages.ResetPasswordPage().get(resetUrl);
             console.log(14);
