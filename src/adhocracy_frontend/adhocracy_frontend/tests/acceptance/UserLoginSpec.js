@@ -120,7 +120,7 @@ describe("user password reset", function() {
         }).then(function() {
             console.log(resetUrl);
             console.log(13);
-            browser.getLocationAbsUrl().then(function() {console.log(arguments)});
+            browser.getCurrentUrl().then(function() {console.log(arguments)});
             browser.driver.get(resetUrl);
             browser.driver.getPageSource().then(function() {console.log(arguments)});
             var resetPage = new UserPages.ResetPasswordPage().get(resetUrl);
