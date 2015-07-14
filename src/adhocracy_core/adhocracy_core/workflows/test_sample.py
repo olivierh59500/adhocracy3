@@ -4,12 +4,9 @@ from pytest import mark
 
 
 @fixture
-def integration(config):
-    config.include('adhocracy_core.events')
-    config.include('adhocracy_core.content')
-    config.include('adhocracy_core.rest')
-    config.include('adhocracy_core.workflows')
-
+def integration(integration):
+    integration.include('adhocracy_core.workflows')
+    return integration
 
 @mark.usefixtures('integration')
 def test_includeme_add_sample_workflow(registry):
