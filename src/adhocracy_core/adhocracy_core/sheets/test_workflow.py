@@ -318,3 +318,11 @@ def test_includeme_register_generic_workflow_sheet(config):
     context = testing.DummyResource(__provides__=IWorkflowAssignment)
     inst = get_sheet(context, IWorkflowAssignment)
     assert inst.meta.isheet is IWorkflowAssignment
+
+@mark.usefixtures('integration')
+def test_includeme_register_standard_sheet(config):
+    from adhocracy_core.sheets.workflow import IStandard
+    from adhocracy_core.utils import get_sheet
+    context = testing.DummyResource(__provides__=IStandard)
+    inst = get_sheet(context, IStandard)
+    assert inst.meta.isheet is IStandard

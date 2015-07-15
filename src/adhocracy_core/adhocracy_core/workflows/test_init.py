@@ -1,6 +1,8 @@
 from pyramid import testing
 from pyramid.request import Request
+from pyrsistent import discard
 from pyrsistent import freeze
+from pyrsistent import thaw
 from pytest import fixture
 from pytest import mark
 from pytest import raises
@@ -108,13 +110,13 @@ class TestAddWorkflow:
     def test_create_workflow_and_add_transitions(self, registry, cstruct):
         self.call_fut(registry, cstruct, 'sample')
         workflow = registry.content.workflows['sample']
-        transition_data = cstruct['transitions']['to_announced']
+        transition_data = thaw(cstruct['transitions']['to_announced'])
         transition_data['name'] = 'to_announced'
         assert workflow._transitions['to_announced'] == transition_data
 
     def test_raise_if_cstruct_not_valid(self, registry, cstruct):
         from adhocracy_core.exceptions import ConfigurationError
-        cstruct = cstruct.transform(('transitions', 'to_announced', 'from_state'), None)
+        cstruct = cstruct.transform(('transitions', 'to_announced', 'from_state'), discard)
         with raises(ConfigurationError) as err:
             self.call_fut(registry, cstruct, 'sample')
         assert 'Required' in err.value.__str__()
