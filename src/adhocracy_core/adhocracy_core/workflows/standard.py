@@ -11,9 +11,9 @@ standard_meta = freeze({
                   'description': 'This phase is for internal review.',
                   'acm': {'principals': [        'participant', 'moderator', 'creator', 'initiator'],  # noqa
                           'permissions':
-                          [['view',              'Deny',        'Allow',     'Allow',    'Allow'    ],  # noqa
-                           ['create_proposal',    None,          None,        None,      'Allow'    ],  # noqa
-                           ['edit_proposal',      None,          None,       'Allow',    'Allow'    ],  # noqa
+                          [['view',              'Deny',        'Allow',     'Allow',    'Allow'],  # noqa
+                           ['create_proposal',    None,          None,        None,      'Allow'],  # noqa
+                           ['edit_proposal',      None,          None,       'Allow',    'Allow'],  # noqa
                           ]},
                   'display_only_to_roles': ['admin', 'initiator', 'moderator'],
                   },
