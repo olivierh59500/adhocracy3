@@ -25,6 +25,8 @@ def test_initiate_and_transition_to_result(registry, context):
     assert workflow.state_of(context) is 'announce'
     workflow.transition_to_state(context, request, 'participate')
     assert workflow.state_of(context) is 'participate'
+    workflow.transition_to_state(context, request, 'evaluate')
+    assert workflow.state_of(context) is 'evaluate'
     workflow.transition_to_state(context, request, 'result')
     assert workflow.state_of(context) is 'result'
     workflow.transition_to_state(context, request, 'closed')

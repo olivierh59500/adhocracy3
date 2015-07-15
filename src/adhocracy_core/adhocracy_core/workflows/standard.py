@@ -4,7 +4,7 @@ from adhocracy_core.workflows import add_workflow
 from pyrsistent import freeze
 
 standard_meta = freeze({
-    'states_order': ['draft', 'announce', 'participate', 'result', 'closed'],
+    'states_order': ['draft', 'announce', 'participate', 'evaluate', 'result', 'closed'],
     'states': {
         'draft': {'title': 'Draft',
                   'description': 'This phase is for internal review.',
@@ -31,6 +31,9 @@ standard_meta = freeze({
                                    ['edit_rate',                   None,          None,       'Allow',    None  ],  # noqa
                                    ]},
                         },
+        'evaluate': {'title': 'Evaluate',
+                     'description': '',
+        },
         'result': {'title': 'Result',
                    'description': '',
                    },
@@ -48,7 +51,10 @@ standard_meta = freeze({
         'to_participate': {'from_state': 'announce',
                            'to_state': 'participate',
                            },
-        'to_result': {'from_state': 'participate',
+        'to_evaluate': {'from_state': 'participate',
+                        'to_state': 'evaluate',
+                      },
+        'to_result': {'from_state': 'evaluate',
                       'to_state': 'result',
                       },
         'to_closed': {'from_state': 'result',
