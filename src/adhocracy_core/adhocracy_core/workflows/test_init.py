@@ -1,9 +1,10 @@
-from unittest.mock import Mock
 from pyramid import testing
+from pyramid.request import Request
+from pyrsistent import freeze
 from pytest import fixture
 from pytest import mark
 from pytest import raises
-from pyramid.request import Request
+from unittest.mock import Mock
 
 from adhocracy_core.resources import add_resource_type_to_registry
 from adhocracy_core.resources import process
@@ -62,7 +63,7 @@ class TestAddWorkflow:
     @fixture
     def cstruct(self) -> dict:
         """Return example workflow cstruct with required data."""
-        cstruct = \
+        cstruct = freeze(\
             {'states_order': ['draft', 'announced'],
              'states': {'draft': {'acm': {'principals':           ['moderator'],
                                           'permissions': [['view', 'Deny']]}},
@@ -72,7 +73,7 @@ class TestAddWorkflow:
                                               'permission': 'do_transition',
                                               'callback': None,
                                               }},
-             }
+             })
         return cstruct
 
     def call_fut(self, registry, cstruct, name):
@@ -113,7 +114,7 @@ class TestAddWorkflow:
 
     def test_raise_if_cstruct_not_valid(self, registry, cstruct):
         from adhocracy_core.exceptions import ConfigurationError
-        del cstruct['transitions']['to_announced']['from_state']
+        cstruct = cstruct.transform(('transitions', 'to_announced', 'from_state'), None)
         with raises(ConfigurationError) as err:
             self.call_fut(registry, cstruct, 'sample')
         assert 'Required' in err.value.__str__()
@@ -154,7 +155,7 @@ class TestSetupWorkflow:
 
     def _make_workflow(self, registry, name):
         from . import add_workflow
-        cstruct = \
+        cstruct = freeze(\
             {'states_order': ['draft', 'announced', 'participate'],
              'states': {'draft': {'acm': {'principals':           ['moderator'],
                                           'permissions': [['view', 'Deny']]}},
@@ -170,7 +171,7 @@ class TestSetupWorkflow:
                                                 'permission': 'do_transition',
                                                 'callback': None,
                              }},
-             }
+             })
         return add_workflow(registry, cstruct, name)
 
     @fixture
