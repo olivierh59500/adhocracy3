@@ -27,13 +27,18 @@ standard_meta = freeze({
                                   [['create_proposal',             None,          None,        None,     'Allow'],  # noqa
                                    ['edit_proposal',               None,          None,       'Allow',   'Allow'],  # noqa
                                    ['create_comment',             'Allow',       'Allow',      None,     'Allow'],  # noqa
-                                   ['edit_comment',                None,          None,       'Allow',    None  ],  # noqa
-                                   ['create_rate',                'Allow',        None,        None,      None  ],  # noqa
-                                   ['edit_rate',                   None,          None,       'Allow',    None  ],  # noqa
+                                   ['edit_comment',                None,          None,       'Allow',    None],  # noqa
+                                   ['create_rate',                'Allow',        None,        None,      None],  # noqa
+                                   ['edit_rate',                   None,          None,       'Allow',    None],  # noqa
                                    ]},
                         },
         'evaluate': {'title': 'Evaluate',
                      'description': '',
+                     'acm': {'principals':                      ['participant', 'moderator', 'creator', 'initiator'],  # noqa
+                             'permissions':
+                             [['create_proposal',                 None,          None,        None,     'Allow'],  # noqa
+                              ['edit_proposal',                   None,          None,        None,     'Allow'],  # noqa
+                             ]}
         },
         'result': {'title': 'Result',
                    'description': '',
