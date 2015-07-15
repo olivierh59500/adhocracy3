@@ -1,7 +1,8 @@
 """Standard workflow."""
 
-from adhocracy_core.workflows import add_workflow
 from pyrsistent import freeze
+
+from adhocracy_core.workflows import add_workflow
 
 standard_meta = freeze({
     'states_order': ['draft', 'announce', 'participate', 'evaluate', 'result', 'closed'],
