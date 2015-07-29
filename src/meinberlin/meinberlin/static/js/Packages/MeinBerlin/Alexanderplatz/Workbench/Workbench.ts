@@ -47,6 +47,9 @@ export var processDetailColumnDirective = (
             column.bindVariablesAndClear(scope, ["processUrl"]);
             scope.$on("$destroy", adhTopLevelState.bind("tab", scope));
             adhPermissions.bindScope(scope, () => scope.processUrl, "processOptions");
+            scope.showMap = (isShowMap) => {
+                scope.shared.isShowMap = isShowMap;
+            };
             // FIXME: dummy data
             scope.polygon = [[13.43, 52.49], [13.44, 52.48], [13.44, 52.49]];
         }
