@@ -31,6 +31,7 @@ export var headerDirective = (
         link: (scope) => {
             scope.$on("$destroy", adhTopLevelState.bind("processUrl", scope));
             adhPermissions.bindScope(scope, () => scope.processUrl, "processOptions");
+            scope.$on("$destroy", adhTopLevelState.bind("tab", scope));
         }
     };
 
