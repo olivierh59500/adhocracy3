@@ -17,6 +17,9 @@ class TestProposal:
         assert meta.extended_sheets == (sheets.badge.IBadgeable,
                                         )
         assert meta.permission_create == 'create_proposal'
+        assert meta.autonaming_prefix == 'proposal_'
+        assert meta.use_autonaming
+        assert meta.is_implicit_addable
 
     @mark.usefixtures('integration')
     def test_create(self, meta, registry):

@@ -1,4 +1,4 @@
-"""Mercator proposal."""
+"""Burgerhaushalt proposal."""
 from adhocracy_core.resources import add_resource_type_to_registry
 from adhocracy_core.resources import process
 from adhocracy_core.resources import proposal
@@ -6,23 +6,23 @@ from adhocracy_core.sheets.description import IDescription
 from adhocracy_core.sheets.geo import IPoint
 from adhocracy_core.sheets.geo import ILocationReference
 from adhocracy_core.sheets.image import IImageReference
-import adhocracy_meinberlin.sheets.kiezkassen
+import adhocracy_meinberlin.sheets.burgerhaushalt
 
 
 class IProposalVersion(proposal.IProposalVersion):
 
-    """Kiezkassen proposal version."""
+    """Burgerhaushalt proposal version."""
 
 
 proposal_version_meta = proposal.proposal_version_meta._replace(
     iresource=IProposalVersion,
-)._add(extended_sheets=(adhocracy_meinberlin.sheets.kiezkassen.IProposal,
+)._add(extended_sheets=(adhocracy_meinberlin.sheets.burgerhaushalt.IProposal,
                         IPoint))
 
 
 class IProposal(proposal.IProposal):
 
-    """Kiezkassen proposal versions pool."""
+    """Burgerhaushalt proposal versions pool."""
 
 
 proposal_meta = proposal.proposal_meta._replace(
@@ -34,7 +34,7 @@ proposal_meta = proposal.proposal_meta._replace(
 
 class IProcess(process.IProcess):
 
-    """Kiezkassen participation process."""
+    """Burgerhaushalt participation process."""
 
 
 process_meta = process.process_meta._replace(
@@ -47,7 +47,7 @@ process_meta = process.process_meta._replace(
         ILocationReference,
         IImageReference,
     ),
-    workflow_name = 'kiezkassen',
+    workflow_name = 'standard',
 )
 
 
