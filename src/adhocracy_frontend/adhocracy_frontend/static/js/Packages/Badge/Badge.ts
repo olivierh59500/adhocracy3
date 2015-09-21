@@ -5,6 +5,8 @@ import * as _ from "lodash";
 import * as AdhConfig from "../Config/Config";
 import * as AdhCredentials from "../User/Credentials";
 import * as AdhHttp from "../Http/Http";
+import * as AdhMovingColumns from "../MovingColumns/MovingColumns";
+import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 import * as AdhUtil from "../Util/Util";
 
 import RIBadgeAssignment from "../../Resources_/adhocracy_core/resources/badge/IBadgeAssignment";
@@ -154,21 +156,32 @@ export var badgeAssignmentEditDirective = (
     adhConfig : AdhConfig.IService,
     adhHttp : AdhHttp.Service<any>,
     $q : angular.IQService,
-    adhCredentials : AdhCredentials.Service
+    adhCredentials : AdhCredentials.Service,
+    adhTopLevelState : AdhTopLevelState.Service
 ) => {
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/Assignment.html",
+        require: "^adhMovingColumn",
         scope: {
-            path: "@",
-            badgesPath: "@"
+            path: "@"
         },
-        link: (scope, element) => {
-            bindPath(adhHttp, $q)(scope, "path");
+        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+            var processUrl = adhTopLevelState.get("processUrl");
+            adhHttp.get(processUrl).then((resource) => {
+                console.log(resource);
+                scope.badgesPath = resource.data["adhocracy_core.sheets.badge.IHasBadgesPool"].badges_pool;
+                scope.badgeablePath = scope.path;
+                bindPath(adhHttp, $q)(scope, "path");
+            });
 
             scope.submit = () => {
                 var resource = scope.resource;
                 return adhHttp.put(resource.path, fill(resource, scope, adhCredentials.userPath));
+            };
+
+            scope.cancel = () => {
+                column.hideOverlay("badges");
             };
         }
     };
