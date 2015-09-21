@@ -26,6 +26,7 @@ export var register = (angular) => {
         }])
         .factory("adhGetBadges", ["adhHttp", "$q", AdhBadge.getBadgesFactory])
         .directive("adhBadgeAssignmentCreate", ["adhConfig", "adhHttp", "$q", "adhCredentials", AdhBadge.badgeAssignmentCreateDirective])
-        .directive("adhBadgeAssignmentEdit", ["adhConfig", "adhHttp", "$q", "adhCredentials", "adhTopLevelState",
-            AdhBadge.badgeAssignmentEditDirective]);
+        .directive("adhBadgeAssignmentEdit", ["adhConfig", "adhHttp", "$q", "adhCredentials", AdhBadge.badgeAssignmentEditDirective])
+        .directive("adhBadgeAssignment", ["adhConfig", "adhHttp", "$q", "adhCredentials", "adhTopLevelState",
+            AdhBadge.badgeAssignmentDirective]);
 };
