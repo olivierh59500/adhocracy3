@@ -1,0 +1,25 @@
+<div>
+    <select
+        data-ng-model="data.option"
+        name="options"
+        data-ng-options="option for option in options">
+        <option value="">Create a new assignment</option>
+    </select>
+
+    <div data-ng-if="ready">
+        <adh-badge-assignment-edit
+            data-path="{{data.option}}"
+            data-ng-if="data.option"
+            data-on-submit="onSubmit"
+            data-on-cancel="onCancel"
+            data-badges-path="{{badgesPath}}"></adh-badge-assignment-edit>
+
+        <adh-badge-assignment-create
+            data-pool-path="{{poolPath}}"
+            data-badgeable-path="{{badgeablePath}}"
+            data-badges-path="{{badgesPath}}"
+            data-on-submit="onSubmit"
+            data-on-cancel="onCancel"
+            data-ng-if="!data.option"></adh-badge-assignment-create>
+    </div>
+</div>
