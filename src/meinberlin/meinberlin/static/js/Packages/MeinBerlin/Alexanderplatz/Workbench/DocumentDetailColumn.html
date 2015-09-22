@@ -13,6 +13,11 @@
 
         <a
             class="moving-column-menu-button"
+            data-ng-click="ctrl.toggleOverlay('badges')"
+            href="">{{ "TR__MANAGE_BADGE_ASSIGNMENTS" | translate }}</a>
+
+        <a
+            class="moving-column-menu-button"
             data-ng-if="documentItemOptions.hide"
             data-ng-click="hide()"
             href="">{{ "TR__HIDE" | translate }}</a>
@@ -31,4 +36,10 @@
     <div data-ng-switch-when="body">
         <adh-document-detail data-path="{{documentUrl}}" data-has-map="true" data-has-badges="true" data-badgeclass="'m-info'"></adh-document-detail>
     </div>
+
+    <adh-badge-assignment
+        data-ng-switch-when="overlays"
+        data-ng-if="overlay === 'badges'"
+        data-path="{{documentUrl}}">
+    </adh-badge-assignment>
 </div>

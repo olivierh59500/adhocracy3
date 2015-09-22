@@ -5,11 +5,6 @@
             {{ "TR__MEINBERLIN_ALEXANDERPLATZ_DOCUMENT" | translate }}
         </div>
 
-        <a
-            class="moving-column-menu-button"
-            data-ng-click="ctrl.toggleOverlay('badges')"
-            href="">{{ "TR__MANAGE_BADGE_ASSIGNMENTS" | translate }}</a>
-
         <a class="moving-column-menu-button" href="" data-ng-click="cancel()">{{ "TR__CANCEL" | translate }}</a>
 
         <div class="moving-column-menu-nav">
@@ -26,10 +21,4 @@
     <div data-ng-switch-when="body">
         <adh-document-edit data-path="{{documentUrl}}" data-has-map="true" data-has-image="true" data-polygon="polygon"></adh-document-edit>
     </div>
-
-    <adh-badge-assignment
-        data-ng-switch-when="overlays"
-        data-ng-if="overlay === 'badges'"
-        data-path="{{documentUrl}}">
-    </adh-badge-assignment>
 </div>
