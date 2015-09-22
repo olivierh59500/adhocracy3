@@ -13,6 +13,11 @@
 
         <a
             class="moving-column-menu-button"
+            data-ng-click="ctrl.toggleOverlay('badges')"
+            href="">{{ "TR__MANAGE_BADGE_ASSIGNMENTS" | translate }}</a>
+
+        <a
+            class="moving-column-menu-button"
             data-ng-if="documentItemOptions.hide"
             data-ng-click="hide()"
             href="">{{ "TR__HIDE" | translate }}</a>
