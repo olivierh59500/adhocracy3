@@ -15,6 +15,8 @@ import * as AdhUtil from "../Util/Util";
 import * as ResourcesBase from "../../ResourcesBase";
 
 import RIExternalResource from "../../Resources_/adhocracy_core/resources/external_resource/IExternalResource";
+import * as SICanPolarize from "../../Resources_/adhocracy_core/sheets/relation/ICanPolarize";
+import * as SIPolarization from "../../Resources_/adhocracy_core/sheets/relation/IPolarization";
 import * as SIPool from "../../Resources_/adhocracy_core/sheets/pool/IPool";
 
 var pkgLocation = "/Comment";
@@ -94,6 +96,7 @@ export class CommentResource<R extends ResourcesBase.Resource> extends AdhResour
         directive.scope.frontendOrderPredicate = "=?";
         directive.scope.frontendOrderReverse = "=?";
         directive.scope.updateListing = "=";
+        directive.scope.hasPolarization = "=?";
 
         return directive;
     }
@@ -185,18 +188,21 @@ export class CommentResource<R extends ResourcesBase.Resource> extends AdhResour
         return this.adhHttp.getNewestVersionPathNoFork(item.path)
             .then((path) => this.adhHttp.get(path))
             .then((version) => {
-                var scope : ICommentResourceScope = instance.scope;
-                scope.data = {
-                    path: version.path,
-                    content: this.adapter.content(version),
-                    creator: this.adapter.creator(item),
-                    creationDate: this.adapter.creationDate(version),
-                    modificationDate: this.adapter.modificationDate(version),
-                    commentCount: this.adapter.commentCount(version),
-                    comments: this.adapter.elemRefs(version),
-                    replyPoolPath: this.adapter.poolPath(version),
-                    edited: this.adapter.edited(version)
-                };
+                this.adhHttp.get(version.data[SICanPolarize.nick].reference).then((polarization) => {
+                    var scope : ICommentResourceScope = instance.scope;
+                    scope.data = {
+                        path: version.path,
+                        content: this.adapter.content(version),
+                        creator: this.adapter.creator(item),
+                        creationDate: this.adapter.creationDate(version),
+                        modificationDate: this.adapter.modificationDate(version),
+                        commentCount: this.adapter.commentCount(version),
+                        comments: this.adapter.elemRefs(version),
+                        replyPoolPath: this.adapter.poolPath(version),
+                        edited: this.adapter.edited(version),
+                        polarization: polarization.data[SIPolarization.nick].position
+                    };
+                });
             });
     }
 
