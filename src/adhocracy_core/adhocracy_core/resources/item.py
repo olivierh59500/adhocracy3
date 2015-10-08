@@ -17,7 +17,9 @@ def create_initial_content_for_item(context, registry, options):
     metadata = registry.content.resources_meta[iresource]
     item_type = metadata.item_type
     create = registry.content.create
-    first_version = create(item_type.__identifier__, parent=context)
+    first_version = create(item_type.__identifier__,
+                           parent=context,
+                           creator=options.get('creator'))
 
     tag_first_data = {'adhocracy_core.sheets.tags.ITag': {'elements':
                                                           [first_version]},
