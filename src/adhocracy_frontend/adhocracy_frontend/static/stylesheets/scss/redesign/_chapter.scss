@@ -1,0 +1,73 @@
+/*doc
+---
+title: Hero Unit
+name: hero-unit
+category: Widgets-Redesign
+---
+
+A very large fancy header
+
+```html_example
+<div class="hero-unit">
+
+    <a class="back" href="">Go back</a>
+
+    <h1 class="hero-unit-title">Here is a title for this hero unit</h1>
+
+    <ul class="meta-list">
+        <li class="meta-list-item">25.000€ Requested</li>
+        <li class="meta-list-item">25.000€ Total Budget</li>
+        <li class="meta-list-item">13. APRIL 2015</li>
+        <li class="meta-list-item">From Oleksii Clifford</li>
+        <li class="meta-list-item">4485 Votes</li>
+        <li class="meta-list-item">232 Comments</li>
+    </ul>
+
+    <a class="button" href="">Vote here</a>
+
+    <div class="pop-menu">
+        <a href="" title="Admin menu"><i class="icon-ellipsis-v"></i></a>
+
+        <ul>
+            <li><a href=""><i class="icon-share"></i> Share</a></li>
+            <li><a href=""><i class="icon-code"></i> Embed</a></li>
+            <li><a href=""><i class="icon-pencil-square"></i> Edit</a></li>
+        </ul>
+    </div>
+
+</div>
+```
+*/
+.chapter-wrapper {
+    @extend .text-container;
+    counter-reset: chapter-counter;
+}
+
+.chapter {
+    @include clearfix;
+    @include rem(margin-bottom, 1rem);
+
+    @media print {
+        border: 0;
+        margin: 0;
+
+        .chapter-header:before {
+            display: none;
+        }
+    }
+}
+
+.chapter-header {
+    @include rem(margin, 0 0 1rem);
+    @include rem(font-size, 16px);
+    color: $color-text-introvert;
+
+    &.active {
+        color: $color-text-highlight-normal;
+    }
+
+    &.m-counted:before {
+        content: counter(chapter-counter) ". ";
+        counter-increment: chapter-counter;
+    }
+}

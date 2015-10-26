@@ -1,0 +1,57 @@
+html {
+    @include rem-baseline;
+}
+
+body {
+    color: $color-text-normal;
+    line-height: $line-height-normal;
+    font-family: $font-family-normal;
+
+    @media print {
+        // scss-lint:disable ImportantRule
+        padding: 0 1.5em !important;
+    }
+}
+
+@media print {
+    * {
+        // scss-lint:disable ImportantRule, ColorVariable
+        background-color: #fff !important;
+        border-color: #000 !important;
+        color: #000 !important;
+        // scss-lint:enable ImportantRule, ColorVariable
+    }
+}
+
+p {
+    @include rem(margin, 0 0 1rem);
+}
+
+/*doc
+---
+title: Text
+name: text-container
+category: Type-Redesign
+---
+
+A narrower text column for easily displaying text.
+
+```html_example
+<div class="text-container">
+Lorem ipsum Ullamco et est sunt in nisi pariatur nisi cillum laborum cillum Duis do consequat ea ea enim incididunt
+tempor aliqua id magna amet adipisicing fugiat sunt commodo velit ut mollit Excepteur tempor pariatur laboris nostrud
+exercitation nostrud dolor do cupidatat fugiat dolore ad elit esse id velit dolore est laboris quis esse eiusmod
+incididunt velit in Excepteur esse reprehenderit eiusmod dolore minim deserunt Ut qui reprehenderit culpa voluptate
+proident labore est veniam dolor consequat id tempor magna tempor ea exercitation dolore amet sit eiusmod ad in sed
+irure eiusmod minim incididunt ut in do fugiat commodo officia dolore ex non minim fugiat quis amet est est culpa
+anim mollit incididunt pariatur est reprehenderit exercitation in eiusmod cupidatat elit enim mollit labore id aliquip
+ea esse irure ea officia sed sed Excepteur fugiat officia sunt tempor eu aliqua aliquip deserunt Excepteur elit dolore
+</div>
+```
+*/
+
+.text-container {
+    @include span(8 of 12);
+    float: none;
+    margin: 0 auto;
+}
