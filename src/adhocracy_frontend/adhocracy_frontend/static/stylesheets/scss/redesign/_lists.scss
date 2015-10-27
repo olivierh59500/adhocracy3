@@ -1,0 +1,23 @@
+@mixin plain-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.meta-list {
+    @include plain-list;
+    color: $color-text-highlight-normal;
+    font-size: $font-size-small;
+}
+
+.meta-list-item {
+    @include inline-block;
+
+    &:after {
+        content: " /";
+    }
+
+    &:last-child:after {
+        content: "";
+    }
+}

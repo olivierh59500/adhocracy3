@@ -1,0 +1,128 @@
+/*doc
+---
+title: Pop Menu
+name: pop-menu
+category: Widgets-menus
+---
+
+A menu that pops out
+
+```html_example
+<div class="pop-menu" tabindex="0">
+    <ul class="pop-menu-list">
+        <li class="pop-menu-list-item"><a href=""><i class="icon-share pop-menu-list-icon"></i> Share</a></li>
+        <li class="pop-menu-list-item"><a href=""><i class="icon-code pop-menu-list-icon"></i> Embed</a></li>
+        <li class="pop-menu-list-item"><a href=""><i class="icon-pencil-square pop-menu-list-icon"></i> Edit</a></li>
+    </ul>
+</div>
+
+<div class="pop-menu m-right" tabindex="0">
+    <ul class="pop-menu-list">
+        <li class="pop-menu-list-item"><a href=""><i class="icon-share pop-menu-list-icon"></i> Share</a></li>
+        <li class="pop-menu-list-item"><a href=""><i class="icon-code pop-menu-list-icon"></i> Embed</a></li>
+        <li class="pop-menu-list-item"><a href=""><i class="icon-pencil-square pop-menu-list-icon"></i> Edit</a></li>
+    </ul>
+</div>
+```
+*/
+
+$arrow-width: 6px;
+
+.pop-menu {
+    @include inline-block;
+    cursor: pointer;
+    outline: 0;
+    position: relative;
+
+    &:before {
+        @extend .icon-ellipsis-h:before;
+        @include rem(font-size, 20px);
+        color: $color-text-introvert;
+    }
+
+    &:focus {
+        pointer-events: none;
+
+        .pop-menu-list {
+            @include opacity(1);
+            pointer-events: auto;
+            visibility: visible;
+        }
+    }
+
+    &.m-right {
+        float: right;
+
+        .pop-menu-list {
+            right: -$arrow-width - 2px;
+
+            >:after, >:before {
+                @include rem(right, $arrow-width + 3px);
+                left: auto;
+            }
+
+            >:before {
+                @include rem(margin, 0 -1px 0);
+            }
+        }
+    }
+}
+
+.pop-menu-list {
+    @include opacity(0);
+    @include border-radius(3px);
+    @include plain-list;
+    @include rem(min-width, 105px);
+    @include single-box-shadow(0, 0, 2px, 2px, rgba(0, 0, 0, 0.05));
+    @include transition(visibility 0.3s);
+    position: absolute;
+    background: $color-background-base;
+    border: 1px solid $color-structure-border;
+    visibility: invisible;
+    z-index: 1;
+
+    >:after, >:before {
+        @include rem(left, $arrow-width + 3px);
+        bottom: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+
+    >:after {
+        @include rem(border-width, $arrow-width);
+        @include rem(margin-left, -$arrow-width);
+        border-color: rgba(255, 255, 255, 0);
+        border-bottom-color: $color-text-inverted;
+    }
+
+    >:before {
+        @include rem(border-width, $arrow-width + 1px);
+        @include rem(margin, 0 0 0 (-$arrow-width - 1px));
+        border-color: rgba(229, 229, 229, 0);
+        border-bottom-color: $color-structure-border;
+    }
+}
+
+.pop-menu-list-item {
+    @include rem(font-size, $font-size-small);
+    border-bottom: 1px solid $color-structure-border;
+
+    a {
+        @include rem(padding, 5px 10px);
+        color: $color-text-introvert;
+        display: block;
+        text-decoration: none;
+
+        &:hover, &:focus {
+            color: $color-text-highlight-normal;
+        }
+    }
+}
+
+.pop-menu-list-icon {
+    @include rem(margin-right, 5px);
+}

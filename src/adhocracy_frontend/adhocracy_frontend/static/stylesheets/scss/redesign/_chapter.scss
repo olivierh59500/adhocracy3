@@ -1,40 +1,26 @@
 /*doc
 ---
-title: Hero Unit
-name: hero-unit
+title: Chapter
+name: redesign-chapter
 category: Widgets-Redesign
 ---
 
-A very large fancy header
+A high-level section of a document with its own heading.
 
 ```html_example
-<div class="hero-unit">
-
-    <a class="back" href="">Go back</a>
-
-    <h1 class="hero-unit-title">Here is a title for this hero unit</h1>
-
-    <ul class="meta-list">
-        <li class="meta-list-item">25.000€ Requested</li>
-        <li class="meta-list-item">25.000€ Total Budget</li>
-        <li class="meta-list-item">13. APRIL 2015</li>
-        <li class="meta-list-item">From Oleksii Clifford</li>
-        <li class="meta-list-item">4485 Votes</li>
-        <li class="meta-list-item">232 Comments</li>
-    </ul>
-
-    <a class="button" href="">Vote here</a>
-
-    <div class="pop-menu">
-        <a href="" title="Admin menu"><i class="icon-ellipsis-v"></i></a>
-
-        <ul>
-            <li><a href=""><i class="icon-share"></i> Share</a></li>
-            <li><a href=""><i class="icon-code"></i> Embed</a></li>
-            <li><a href=""><i class="icon-pencil-square"></i> Edit</a></li>
-        </ul>
-    </div>
-
+<div class="chapter-wrapper">
+    <section class="chapter">
+        <h3 class="chapter-header">Introduction</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.</p>
+    </section>
+    <section class="chapter">
+        <h3 class="chapter-header m-counted active">First Chapter</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.</p>
+    </section>
+    <section class="chapter">
+        <h3 class="chapter-header m-counted">Second Chapter</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.</p>
+    </section>
 </div>
 ```
 */
