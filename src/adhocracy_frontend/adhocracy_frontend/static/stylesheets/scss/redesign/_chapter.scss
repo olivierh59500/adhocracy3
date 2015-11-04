@@ -46,10 +46,10 @@ A high-level section of a document with its own heading.
 .chapter-header {
     @include rem(margin, 0 0 1rem);
     @include rem(font-size, 16px);
-    color: $color-text-introvert;
+    color: $color-text-heading;
 
     &.active {
-        color: $color-text-highlight-normal;
+        color: $color-text-highlight;
     }
 
     &.m-counted:before {

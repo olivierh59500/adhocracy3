@@ -37,7 +37,7 @@ $arrow-width: 6px;
     &:before {
         @extend .icon-ellipsis-h:before;
         @include rem(font-size, 20px);
-        color: $color-text-introvert;
+        color: $color-text-heading;
     }
 
     &:focus {
@@ -118,7 +118,7 @@ $arrow-width: 6px;
         text-decoration: none;
 
         &:hover, &:focus {
-            color: $color-text-highlight-normal;
+            color: $color-text-highlight;
         }
     }
 }

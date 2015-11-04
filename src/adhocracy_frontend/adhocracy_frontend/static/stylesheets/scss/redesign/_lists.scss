@@ -6,7 +6,7 @@
 
 .meta-list {
     @include plain-list;
-    color: $color-text-highlight-normal;
+    color: $color-text-highlight;
     font-size: $font-size-small;
 }
 
