@@ -533,7 +533,7 @@ export var mapSwitch = (
                 scope.isShowMap = isShowMap;
             };
         }
-    }
+    };
 };
 
 export class Listing<Container extends ResourcesBase.Resource> extends AdhListing.Listing<Container> {
