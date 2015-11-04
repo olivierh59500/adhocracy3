@@ -522,8 +522,7 @@ export var mapListingInternal = (
 };
 
 export var mapSwitch = (
-    adhConfig : AdhConfig.IService,
-    adhHttp : AdhHttp.Service<any>
+    adhConfig : AdhConfig.IService
 ) => {
     return {
         restrict: "E",
