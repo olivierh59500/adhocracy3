@@ -1,3 +1,4 @@
+import * as AdhActionBarModule from "../../../ActionBar/Module";
 import * as AdhDocumentModule from "../../../Document/Module";
 import * as AdhHttpModule from "../../../Http/Module";
 import * as AdhMappingModule from "../../../Mapping/Module";
@@ -22,6 +23,7 @@ export var register = (angular) => {
 
     angular
         .module(moduleName, [
+            AdhActionBarModule.moduleName,
             AdhDocumentModule.moduleName,
             AdhHttpModule.moduleName,
             AdhMappingModule.moduleName,
