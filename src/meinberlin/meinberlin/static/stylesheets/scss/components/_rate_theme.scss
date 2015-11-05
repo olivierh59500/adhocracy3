@@ -40,7 +40,7 @@
 
     &.is-disabled {
         &:after {
-            @extend .icon-voting:before;
+            @extend .icon-voting:before !optional; // FIXME: #1781, icons not compiling properly
             cursor: not-allowed;
             line-height: 1.35;
             font-size: 150%;
