@@ -5,6 +5,7 @@ import * as AdhHttp from "../../../Http/Http";
 import * as AdhMovingColumns from "../../../MovingColumns/MovingColumns";
 import * as AdhPermissions from "../../../Permissions/Permissions";
 import * as AdhResourceArea from "../../../ResourceArea/ResourceArea";
+import * as AdhResourceActions from "../../../ResourceActions/ResourceActions";
 import * as AdhTopLevelState from "../../../TopLevelState/TopLevelState";
 import * as AdhUtil from "../../../Util/Util";
 
@@ -159,11 +160,6 @@ export var documentCreateColumnDirective = (
                     });
                 }
             });
-
-            scope.cancel = () => {
-                var url = adhResourceUrl(scope.processUrl);
-                adhTopLevelState.goToCameFrom(url);
-            };
         }
     };
 };
