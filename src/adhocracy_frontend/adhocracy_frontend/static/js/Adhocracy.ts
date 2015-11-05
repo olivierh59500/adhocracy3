@@ -23,6 +23,7 @@ import * as leaflet from "leaflet";
 import * as markdownit from "markdownit";
 
 import * as AdhAbuseModule from "./Packages/Abuse/Module";
+import * as AdhActionBarModule from "./Packages/ActionBar/Module";
 import * as AdhAngularHelpersModule from "./Packages/AngularHelpers/Module";
 import * as AdhBadgeModule from "./Packages/Badge/Module";
 import * as AdhCommentModule from "./Packages/Comment/Module";
@@ -155,6 +156,7 @@ export var init = (config : AdhConfig.IService, metaApi) => {
     // register our modules
     app.value("adhConfig", config);
     AdhAbuseModule.register(angular);
+    AdhActionBarModule.register(angular);
     AdhBadgeModule.register(angular);
     AdhCommentModule.register(angular);
     AdhCrossWindowMessagingModule.register(angular, config.trusted_domains !== []);
