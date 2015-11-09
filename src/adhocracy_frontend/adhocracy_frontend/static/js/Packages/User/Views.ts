@@ -393,7 +393,7 @@ export var indicatorDirective = (
 
 
             // thentos indicator [begin]
-            $scope.bootThentosIndicatorShouldRun = true;
+            $scope.bootThentosIndicatorShouldRun = false;
             $scope.bootThentosIndicatorRunning = false;
 
             $scope.bootThentosIndicator = () => {
