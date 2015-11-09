@@ -91,8 +91,10 @@ export var editActionDirective = (
             class: "@"
         },
         link: (scope, element, attrs) => {
-            var url = adhResourceUrl(scope.resourcePath, "edit");
-            $location.url(url);
+            scope.edit = () => {
+                var url = adhResourceUrl(scope.resourcePath, "edit");
+                $location.url(url);
+            };
         }
     };
 };
