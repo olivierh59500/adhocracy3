@@ -94,7 +94,6 @@ export var init = (config : AdhConfig.IService, metaApi) => {
         AdhCrossWindowMessagingModule.moduleName,
         AdhEmbedModule.moduleName,
         AdhMercatorWorkbenchModule.moduleName,
-        AdhResourceActionsModule.moduleName,
         AdhResourceAreaModule.moduleName,
         AdhTrackingModule.moduleName,
         AdhUserViewsModule.moduleName
