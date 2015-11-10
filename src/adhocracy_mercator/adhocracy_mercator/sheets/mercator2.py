@@ -5,7 +5,6 @@ from adhocracy_core.sheets import sheet_meta
 from adhocracy_core.schema import SingleLine
 from adhocracy_core.interfaces import ISheet
 from adhocracy_core.sheets import add_sheet_to_registry
-from adhocracy_core.interfaces import ISheetReferenceAutoUpdateMarker
 from adhocracy_core.schema import ISOCountryCode
 from adhocracy_core.schema import AdhocracySchemaNode
 from adhocracy_core.schema import Text
@@ -28,7 +27,7 @@ userinfo_meta = sheet_meta._replace(isheet=IUserInfo,
                                     schema_class=UserInfoSchema)
 
 
-class IOrganizationInfo(ISheet, ISheetReferenceAutoUpdateMarker):
+class IOrganizationInfo(ISheet):
     """Marker interface for organizational information."""
 
 
@@ -55,14 +54,14 @@ class OrganizationInfoSchema(colander.MappingSchema):
     registration_date = DateTime(missing=colander.required, default=None)
     website = URL(missing=colander.drop)
     contact_email = Email(missing=colander.required)
-    status = StatusEnum()
+    status = StatusEnum(missing=colander.required)
     status_other = Text(validator=colander.Length(max=300))
 
     def validator(self, node, value):
         """Extra validation depending of the status of the organisation.
 
         Make `status_other` required if `status` == `other` and
-        `support_needed` required if `status` == `status_other`.
+        `help_request` required if `status` == `support_needed`.
         """
         status = value.get('status', None)
         if status == 'support_needed':
@@ -80,6 +79,26 @@ class OrganizationInfoSchema(colander.MappingSchema):
 
 organizationinfo_meta = sheet_meta._replace(
     isheet=IOrganizationInfo, schema_class=OrganizationInfoSchema)
+
+
+class IPartners(ISheet):
+    """Marker interface for the partner description."""
+
+
+class PartnersSchema(colander.MappingSchema):
+    partner1_name = SingleLine()
+    partner1_website = URL()
+    partner1_country = ISOCountryCode()
+    partner2_name = SingleLine()
+    partner2_website = URL()
+    partner2_country = ISOCountryCode()
+    partner3_name = SingleLine()
+    partner3_website = URL()
+    partner3_country = ISOCountryCode()
+
+
+partners_meta = sheet_meta._replace(
+    isheet=IPartners, schema_class=PartnersSchema)
 
 
 def includeme(config):

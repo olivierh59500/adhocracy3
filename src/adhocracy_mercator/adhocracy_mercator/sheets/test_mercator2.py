@@ -1,6 +1,10 @@
+from datetime import datetime
+from datetime import timedelta
+
 from pyramid import testing
 from pytest import fixture
 from pytest import mark
+from pytest import raises
 
 
 class TestUserInfoSheet:
@@ -71,6 +75,71 @@ class TestOrganizationInfoSheet:
                   }
         assert inst.get() == wanted
 
+
+class TestOrganizationInfoSchema:
+
+    @fixture
+    def inst(self):
+        from adhocracy_mercator.sheets.mercator2 import OrganizationInfoSchema
+        return OrganizationInfoSchema()
+
+    @fixture
+    def cstruct_required(self):
+        return {'country': 'DE',
+                'name': 'Name',
+                'status': 'planned_nonprofit',
+                'contact_email': 'anna@example.com',
+                'registration_date': '2015-02-18T14:17:24+00:00',
+                'city': 'Berlin',
+                }
+
+    def test_deserialize_empty(self, inst):
+        from colander import Invalid
+        cstruct = {}
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'city': 'Required',
+                                        'contact_email': 'Required',
+                                        'country': 'Required',
+                                        'name': 'Required',
+                                        'registration_date': 'Required',
+                                        'status': 'Required'}
+
+    def test_deserialize_with_required(self, inst, cstruct_required):
+        from pytz import UTC
+        wanted = cstruct_required
+        assert inst.deserialize(cstruct_required) == \
+            {'country': 'DE',
+             'name': 'Name',
+             'status': 'planned_nonprofit',
+             'contact_email': 'anna@example.com',
+             'registration_date': datetime(2015, 2, 18,
+                                           14, 17, 24, 0, tzinfo=UTC),
+             'city': 'Berlin',
+            }
+
+    def test_deserialize_with_status_other_and_no_description(
+            self, inst, cstruct_required):
+        from colander import Invalid
+        cstruct = cstruct_required
+        cstruct['status'] = 'other'
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'status_other':
+                                        'Required iff status == other'}
+
+    def test_deserialize_with_status_support_needed_and_no_help_request(
+            self, inst, cstruct_required):
+        from colander import Invalid
+        cstruct = cstruct_required
+        cstruct['status'] = 'support_needed'
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'help_request':
+                                        'Required iff status == support_needed'}
+
+
+
 @mark.usefixtures('integration')
 class TestIncludeme:
 
@@ -79,3 +148,5 @@ class TestIncludeme:
         from adhocracy_core.utils import get_sheet
         context = testing.DummyResource(__provides__=IOrganizationInfo)
         assert get_sheet(context, IOrganizationInfo)
+
+        # TODO other types
