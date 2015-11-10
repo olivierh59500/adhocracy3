@@ -29,7 +29,8 @@ class TestMercatorProposal:
         #                               mercator.IFinance,
         #                               mercator.IExperience,
         #                               )
-        assert meta.extended_sheets == (adhocracy_mercator.sheets.mercator2.IUserInfo,)
+        assert meta.extended_sheets == \
+            (adhocracy_mercator.sheets.mercator2.IUserInfo,)
         assert meta.is_implicit_addable
         assert add_ratesservice in meta.after_creation
         assert add_commentsservice in meta.after_creation
@@ -57,7 +58,7 @@ class TestProcess:
         assert meta.iresource is IProcess
         assert IProcess.isOrExtends(adhocracy_core.resources.process.IProcess)
         assert meta.element_types == (IMercatorProposal,)
-        # assert add_assets_service in meta.after_creation
+        # TODO specify workflow
         # assert meta.workflow_name == 'mercator'
 
     @mark.usefixtures('integration')
