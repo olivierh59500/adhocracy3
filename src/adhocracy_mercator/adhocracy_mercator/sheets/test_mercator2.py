@@ -79,6 +79,11 @@ class TestOrganizationInfoSheet:
 class TestOrganizationInfoSchema:
 
     @fixture
+    def meta(self):
+        from .mercator2 import organizationinfo_meta
+        return organizationinfo_meta
+
+    @fixture
     def inst(self):
         from adhocracy_mercator.sheets.mercator2 import OrganizationInfoSchema
         return OrganizationInfoSchema()
@@ -138,6 +143,11 @@ class TestOrganizationInfoSchema:
         assert error.value.asdict() == {'help_request':
                                         'Required iff status == support_needed'}
 
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
 
 
 @mark.usefixtures('integration')
