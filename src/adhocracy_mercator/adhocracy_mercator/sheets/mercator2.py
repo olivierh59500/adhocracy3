@@ -78,7 +78,8 @@ class OrganizationInfoSchema(colander.MappingSchema):
 
 
 organizationinfo_meta = sheet_meta._replace(
-    isheet=IOrganizationInfo, schema_class=OrganizationInfoSchema)
+    isheet=IOrganizationInfo,
+    schema_class=OrganizationInfoSchema)
 
 
 class IPartners(ISheet):
@@ -95,6 +96,7 @@ class PartnersSchema(colander.MappingSchema):
     partner3_name = SingleLine()
     partner3_website = URL()
     partner3_country = ISOCountryCode()
+    other_partners = Text()
 
 
 partners_meta = sheet_meta._replace(
@@ -105,3 +107,4 @@ def includeme(config):
     """Register sheets."""
     add_sheet_to_registry(userinfo_meta, config.registry)
     add_sheet_to_registry(organizationinfo_meta, config.registry)
+    add_sheet_to_registry(partners_meta, config.registry)

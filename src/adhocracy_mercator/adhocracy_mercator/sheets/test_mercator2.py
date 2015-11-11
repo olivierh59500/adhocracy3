@@ -150,13 +150,41 @@ class TestOrganizationInfoSchema:
         assert get_sheet(context, meta.isheet)
 
 
-@mark.usefixtures('integration')
-class TestIncludeme:
+class TestPartnersSheet:
 
-    def test_includeme_register_organizationinfo_sheet(self, config):
-        from adhocracy_mercator.sheets.mercator import IOrganizationInfo
+    @fixture
+    def meta(self):
+        from adhocracy_mercator.sheets.mercator2 import partners_meta
+        return partners_meta
+
+    @fixture
+    def context(self):
+        from adhocracy_core.interfaces import IItem
+        return testing.DummyResource(__provides__=IItem)
+
+    def test_create_valid(self, meta, context):
+        from adhocracy_mercator.sheets.mercator2 import IPartners
+        from adhocracy_mercator.sheets.mercator2 import PartnersSchema
+        inst = meta.sheet_class(meta, context)
+        assert inst.meta.isheet == IPartners
+        assert inst.meta.schema_class == PartnersSchema
+
+    def test_get_empty(self, meta, context):
+        inst = meta.sheet_class(meta, context)
+        wanted = {'partner1_name': '',
+                  'partner1_website': '',
+                  'partner1_country': 'DE',
+                  'partner2_name': '',
+                  'partner2_website': '',
+                  'partner2_country': 'DE',
+                  'partner3_name': '',
+                  'partner3_website': '',
+                  'partner3_country': 'DE',
+                  'other_partners': ''}
+        assert inst.get() == wanted
+
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
         from adhocracy_core.utils import get_sheet
-        context = testing.DummyResource(__provides__=IOrganizationInfo)
-        assert get_sheet(context, IOrganizationInfo)
-
-        # TODO other types
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
