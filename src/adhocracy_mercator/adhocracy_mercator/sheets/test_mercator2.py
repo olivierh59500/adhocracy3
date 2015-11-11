@@ -180,7 +180,8 @@ class TestPartnersSheet:
                   'partner3_name': '',
                   'partner3_website': '',
                   'partner3_country': 'DE',
-                  'other_partners': ''}
+                  'other_partners': '',
+                  'has_partners': False}
         assert inst.get() == wanted
 
     @mark.usefixtures('integration')

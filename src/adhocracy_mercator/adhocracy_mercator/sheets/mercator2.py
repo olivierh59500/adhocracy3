@@ -11,6 +11,7 @@ from adhocracy_core.schema import Text
 from adhocracy_core.schema import URL
 from adhocracy_core.schema import DateTime
 from adhocracy_core.schema import Email
+from adhocracy_core.schema import Boolean
 
 
 class IUserInfo(ISheet):
@@ -87,6 +88,7 @@ class IPartners(ISheet):
 
 
 class PartnersSchema(colander.MappingSchema):
+    has_partners = Boolean()
     partner1_name = SingleLine()
     partner1_website = URL()
     partner1_country = ISOCountryCode()
