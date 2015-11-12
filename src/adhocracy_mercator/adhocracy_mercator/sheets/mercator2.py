@@ -71,7 +71,7 @@ class OrganizationInfoSchema(colander.MappingSchema):
                 raise colander.Invalid(
                     help_request,
                     msg='Required iff status == support_needed')
-        if status == 'other':
+        elif status == 'other':
             if not value.get('status_other', None):
                 status_other = node['status_other']
                 raise colander.Invalid(status_other,
@@ -105,8 +105,41 @@ partners_meta = sheet_meta._replace(
     isheet=IPartners, schema_class=PartnersSchema)
 
 
+class TopicEnum(AdhocracySchemaNode):
+    """Enum of topic domains."""
+
+    schema_type = colander.String
+    default = 'other'
+    missing = colander.required
+    validator = colander.OneOf(['democracy_and_participation',
+                                'arts_and_cultural_activities',
+                                'environment',
+                                'social_inclusion',
+                                'migration',
+                                'communities',
+                                'urban_development',
+                                'education',
+                                'other',
+                                ])
+
+
+class ITopic(ISheet):
+    """Marker interface for the topic (ex: democracy, art, environment etc)."""
+
+
+class TopicSchema(colander.MappingSchema):
+    topic = TopicEnum(missing=colander.required)
+    # TODO check other text is specified if topic is 'other'
+    other = Text()
+
+
+topic_meta = sheet_meta._replace(
+    isheet=ITopic, schema_class=TopicSchema)
+
+
 def includeme(config):
     """Register sheets."""
     add_sheet_to_registry(userinfo_meta, config.registry)
     add_sheet_to_registry(organizationinfo_meta, config.registry)
     add_sheet_to_registry(partners_meta, config.registry)
+    add_sheet_to_registry(topic_meta, config.registry)

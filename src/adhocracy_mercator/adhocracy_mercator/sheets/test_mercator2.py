@@ -75,6 +75,12 @@ class TestOrganizationInfoSheet:
                   }
         assert inst.get() == wanted
 
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
+
 
 class TestOrganizationInfoSchema:
 
@@ -143,12 +149,6 @@ class TestOrganizationInfoSchema:
         assert error.value.asdict() == {'help_request':
                                         'Required iff status == support_needed'}
 
-    @mark.usefixtures('integration')
-    def test_includeme(self, meta):
-        from adhocracy_core.utils import get_sheet
-        context = testing.DummyResource(__provides__=meta.isheet)
-        assert get_sheet(context, meta.isheet)
-
 
 class TestPartnersSheet:
 
@@ -183,6 +183,60 @@ class TestPartnersSheet:
                   'other_partners': '',
                   'has_partners': False}
         assert inst.get() == wanted
+
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
+
+class TestTopicSchema:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import topic_meta
+        return topic_meta
+
+    @fixture
+    def inst(self):
+        from .mercator2 import TopicSchema
+        return TopicSchema()
+
+    @fixture
+    def cstruct_required(self):
+        return {'topic': 'urban_development'}
+
+    def test_deserialize_empty(self, inst):
+        from colander import Invalid
+        cstruct = {}
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'topic': 'Required'}
+
+    def test_deserialize_with_required(self, inst, cstruct_required):
+        from pytz import UTC
+        wanted = cstruct_required
+        assert inst.deserialize(cstruct_required) == \
+            {'topic': 'urban_development'}
+
+class TestTopicSheet:
+
+    @fixture
+    def meta(self):
+        from adhocracy_mercator.sheets.mercator2 import topic_meta
+        return topic_meta
+
+    @fixture
+    def context(self):
+        from adhocracy_core.interfaces import IItem
+        return testing.DummyResource(__provides__=IItem)
+
+    def test_create_valid(self, meta, context):
+        from adhocracy_mercator.sheets.mercator2 import ITopic
+        from adhocracy_mercator.sheets.mercator2 import TopicSchema
+        inst = meta.sheet_class(meta, context)
+        assert inst.meta.isheet == ITopic
+        assert inst.meta.schema_class == TopicSchema
 
     @mark.usefixtures('integration')
     def test_includeme(self, meta):
