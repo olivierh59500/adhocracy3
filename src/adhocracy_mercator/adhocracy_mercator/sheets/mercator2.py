@@ -214,6 +214,22 @@ status_meta = sheet_meta._replace(
 )
 
 
+class ISelectionCriteria(ISheet):
+    """Marker interface for the selection criteria."""
+
+
+class SelectionCriteriaSchema(colander.MappingSchema):
+    connection_and_cohesion_europe = Text(missing=colander.required)
+    difference = Text(missing=colander.required)
+    practical_relevance = Text(missing=colander.required)
+
+
+selectioncriteria_meta = sheet_meta._replace(
+    isheet=ISelectionCriteria,
+    schema_class=SelectionCriteriaSchema,
+)
+
+
 def includeme(config):
     """Register sheets."""
     add_sheet_to_registry(userinfo_meta, config.registry)
@@ -224,3 +240,4 @@ def includeme(config):
     add_sheet_to_registry(location_meta, config.registry)
     add_sheet_to_registry(status_meta, config.registry)
     add_sheet_to_registry(roadtoimpact_meta, config.registry)
+    add_sheet_to_registry(selectioncriteria_meta, config.registry)
