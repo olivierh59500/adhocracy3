@@ -413,3 +413,67 @@ class TestLocationSheet:
         from adhocracy_core.utils import get_sheet
         context = testing.DummyResource(__provides__=meta.isheet)
         assert get_sheet(context, meta.isheet)
+
+
+class TestRoadToImpactSchema:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import roadtoimpact_meta
+        return roadtoimpact_meta
+
+    @fixture
+    def inst(self):
+        from .mercator2 import RoadToImpactSchema
+        return RoadToImpactSchema()
+
+    @fixture
+    def cstruct_required(self):
+        return {'challenge': 'the challenge',
+                'aim': 'the aim',
+                'plan': 'the plan',
+                'doing': 'the actions',
+                'team': 'the team',
+                'other': 'extra'}
+
+    def test_deserialize_empty(self, inst):
+        from colander import Invalid
+        cstruct = {}
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'aim': 'Required',
+                                        'challenge': 'Required',
+                                        'doing': 'Required',
+                                        'other': 'Required',
+                                        'plan': 'Required',
+                                        'team': 'Required'}
+
+    def test_deserialize_with_required(self, inst, cstruct_required):
+        wanted = cstruct_required
+        assert inst.deserialize(cstruct_required) == cstruct_required
+
+
+class TestRoadToImpactSheet:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import roadtoimpact_meta
+        return roadtoimpact_meta
+
+    @fixture
+    def context(self):
+        from adhocracy_core.interfaces import IItem
+        return testing.DummyResource(__provides__=IItem)
+
+    def test_create_valid(self, meta, context):
+        from adhocracy_mercator.sheets.mercator2 import IRoadToImpact
+        from adhocracy_mercator.sheets.mercator2 import RoadToImpactSchema
+        inst = meta.sheet_class(meta, context)
+        assert inst.meta.isheet == IRoadToImpact
+        assert inst.meta.schema_class == RoadToImpactSchema
+
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)

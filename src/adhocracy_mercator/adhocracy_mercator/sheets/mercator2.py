@@ -191,6 +191,23 @@ class StatusSchema(colander.MappingSchema):
     status = ProjectStatusEnum(missing=colander.required)
 
 
+class IRoadToImpact(ISheet):
+    """Marker interface for the road to impact."""
+
+
+class RoadToImpactSchema(colander.MappingSchema):
+    challenge = Text(missing=colander.required)
+    aim = Text(missing=colander.required)
+    plan = Text(missing=colander.required)
+    doing = Text(missing=colander.required)
+    team = Text(missing=colander.required)
+    other = Text(missing=colander.required)
+
+roadtoimpact_meta = sheet_meta._replace(
+    isheet=IRoadToImpact,
+    schema_class=RoadToImpactSchema,
+)
+
 status_meta = sheet_meta._replace(
     isheet=IStatus,
     schema_class=StatusSchema,
@@ -206,3 +223,4 @@ def includeme(config):
     add_sheet_to_registry(duration_meta, config.registry)
     add_sheet_to_registry(location_meta, config.registry)
     add_sheet_to_registry(status_meta, config.registry)
+    add_sheet_to_registry(roadtoimpact_meta, config.registry)
