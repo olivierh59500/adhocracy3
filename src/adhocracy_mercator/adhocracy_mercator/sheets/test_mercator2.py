@@ -387,3 +387,29 @@ class TestLocationSchema:
     def test_deserialize_with_required(self, inst, cstruct_required):
         wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == {'status': 'other'}
+
+
+class TestLocationSheet:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import status_meta
+        return status_meta
+
+    @fixture
+    def context(self):
+        from adhocracy_core.interfaces import IItem
+        return testing.DummyResource(__provides__=IItem)
+
+    def test_create_valid(self, meta, context):
+        from adhocracy_mercator.sheets.mercator2 import IStatus
+        from adhocracy_mercator.sheets.mercator2 import StatusSchema
+        inst = meta.sheet_class(meta, context)
+        assert inst.meta.isheet == IStatus
+        assert inst.meta.schema_class == StatusSchema
+
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
