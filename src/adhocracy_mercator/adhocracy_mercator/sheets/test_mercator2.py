@@ -359,3 +359,31 @@ class TestLocationSheet:
         from adhocracy_core.utils import get_sheet
         context = testing.DummyResource(__provides__=meta.isheet)
         assert get_sheet(context, meta.isheet)
+
+
+class TestLocationSchema:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import status_meta
+        return status_meta
+
+    @fixture
+    def inst(self):
+        from .mercator2 import StatusSchema
+        return StatusSchema()
+
+    @fixture
+    def cstruct_required(self):
+        return {'status': 'other'}
+
+    def test_deserialize_empty(self, inst):
+        from colander import Invalid
+        cstruct = {}
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'status': 'Required'}
+
+    def test_deserialize_with_required(self, inst, cstruct_required):
+        wanted = cstruct_required
+        assert inst.deserialize(cstruct_required) == {'status': 'other'}

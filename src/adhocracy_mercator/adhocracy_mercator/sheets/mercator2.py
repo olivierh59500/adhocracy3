@@ -33,7 +33,7 @@ class IOrganizationInfo(ISheet):
     """Marker interface for organizational information."""
 
 
-class StatusEnum(AdhocracySchemaNode):
+class OrganizationStatusEnum(AdhocracySchemaNode):
     """Enum of organizational statuses."""
 
     schema_type = colander.String
@@ -56,7 +56,7 @@ class OrganizationInfoSchema(colander.MappingSchema):
     registration_date = DateTime(missing=colander.required, default=None)
     website = URL(missing=colander.drop)
     contact_email = Email(missing=colander.required)
-    status = StatusEnum(missing=colander.required)
+    status = OrganizationStatusEnum(missing=colander.required)
     status_other = Text(validator=colander.Length(max=300))
 
     def validator(self, node, value):
@@ -170,6 +170,33 @@ location_meta = sheet_meta._replace(
 )
 
 
+class IStatus(ISheet):
+    """Marker interface for the project status."""
+
+
+class ProjectStatusEnum(AdhocracySchemaNode):
+    """Enum of organizational statuses."""
+
+    schema_type = colander.String
+    default = 'other'
+    missing = colander.required
+    validator = colander.OneOf(['starting',
+                                'developping',
+                                'scaling',
+                                'other',
+                                ])
+
+
+class StatusSchema(colander.MappingSchema):
+    status = ProjectStatusEnum(missing=colander.required)
+
+
+status_meta = sheet_meta._replace(
+    isheet=IStatus,
+    schema_class=StatusSchema,
+    )
+
+
 def includeme(config):
     """Register sheets."""
     add_sheet_to_registry(userinfo_meta, config.registry)
@@ -178,3 +205,4 @@ def includeme(config):
     add_sheet_to_registry(topic_meta, config.registry)
     add_sheet_to_registry(duration_meta, config.registry)
     add_sheet_to_registry(location_meta, config.registry)
+    add_sheet_to_registry(status_meta, config.registry)
