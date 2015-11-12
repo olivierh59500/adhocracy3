@@ -13,6 +13,7 @@ from adhocracy_core.schema import DateTime
 from adhocracy_core.schema import Email
 from adhocracy_core.schema import Boolean
 from adhocracy_core.schema import Integer
+from adhocracy_core.schema import CurrencyAmount
 
 
 class IUserInfo(ISheet):
@@ -230,6 +231,27 @@ selectioncriteria_meta = sheet_meta._replace(
 )
 
 
+class IFinancialPlanning(ISheet):
+    """Marker interface for the financial planning."""
+
+
+class FinancialPlanningSchema(colander.MappingSchema):
+    budget = CurrencyAmount(missing=colander.required)
+    requested_funding = CurrencyAmount(
+        missing=colander.required,
+        validator=colander.Range(min=1, max=50000))
+    major_expenses = Text(missing=colander.required)
+
+# TODO as special sheet:
+    # other_sources = Text()
+    # other_sources_secured = Text()
+
+financialplanning_meta = sheet_meta._replace(
+    isheet=IFinancialPlanning,
+    schema_class=FinancialPlanningSchema,
+)
+
+
 def includeme(config):
     """Register sheets."""
     add_sheet_to_registry(userinfo_meta, config.registry)
@@ -241,3 +263,4 @@ def includeme(config):
     add_sheet_to_registry(status_meta, config.registry)
     add_sheet_to_registry(roadtoimpact_meta, config.registry)
     add_sheet_to_registry(selectioncriteria_meta, config.registry)
+    add_sheet_to_registry(financialplanning_meta, config.registry)
