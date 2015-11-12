@@ -194,7 +194,7 @@ class StatusSchema(colander.MappingSchema):
 status_meta = sheet_meta._replace(
     isheet=IStatus,
     schema_class=StatusSchema,
-    )
+)
 
 
 def includeme(config):
