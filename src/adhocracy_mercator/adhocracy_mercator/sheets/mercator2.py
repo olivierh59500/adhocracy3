@@ -12,6 +12,7 @@ from adhocracy_core.schema import URL
 from adhocracy_core.schema import DateTime
 from adhocracy_core.schema import Email
 from adhocracy_core.schema import Boolean
+from adhocracy_core.schema import Integer
 
 
 class IUserInfo(ISheet):
@@ -134,7 +135,21 @@ class TopicSchema(colander.MappingSchema):
 
 
 topic_meta = sheet_meta._replace(
-    isheet=ITopic, schema_class=TopicSchema)
+    isheet=ITopic,
+    schema_class=TopicSchema)
+
+
+class IDuration(ISheet):
+    """Marker interface for the duration."""
+
+
+class DurationSchema(colander.MappingSchema):
+    duration = Integer(missing=colander.required)
+
+
+duration_meta = sheet_meta._replace(
+    isheet=IDuration,
+    schema_class=DurationSchema)
 
 
 def includeme(config):
@@ -143,3 +158,4 @@ def includeme(config):
     add_sheet_to_registry(organizationinfo_meta, config.registry)
     add_sheet_to_registry(partners_meta, config.registry)
     add_sheet_to_registry(topic_meta, config.registry)
+    add_sheet_to_registry(duration_meta, config.registry)

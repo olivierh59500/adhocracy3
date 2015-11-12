@@ -243,3 +243,33 @@ class TestTopicSheet:
         from adhocracy_core.utils import get_sheet
         context = testing.DummyResource(__provides__=meta.isheet)
         assert get_sheet(context, meta.isheet)
+
+
+class TestDurationSchema:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import duration_meta
+        return duration_meta
+
+    @fixture
+    def inst(self):
+        from .mercator2 import DurationSchema
+        return DurationSchema()
+
+    @fixture
+    def cstruct_required(self):
+        return {'duration': '6'}
+
+    def test_deserialize_empty(self, inst):
+        from colander import Invalid
+        cstruct = {}
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'duration': 'Required'}
+
+    def test_deserialize_with_required(self, inst, cstruct_required):
+        from pytz import UTC
+        wanted = cstruct_required
+        assert inst.deserialize(cstruct_required) == \
+            {'duration': 6}
