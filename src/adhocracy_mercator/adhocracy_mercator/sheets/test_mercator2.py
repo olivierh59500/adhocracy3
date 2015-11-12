@@ -214,7 +214,6 @@ class TestTopicSchema:
         assert error.value.asdict() == {'topic': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        from pytz import UTC
         wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
             {'topic': 'urban_development'}
@@ -269,7 +268,94 @@ class TestDurationSchema:
         assert error.value.asdict() == {'duration': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        from pytz import UTC
         wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
             {'duration': 6}
+
+
+class TestDurationSheet:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import duration_meta
+        return duration_meta
+
+    @fixture
+    def context(self):
+        from adhocracy_core.interfaces import IItem
+        return testing.DummyResource(__provides__=IItem)
+
+    def test_create_valid(self, meta, context):
+        from adhocracy_mercator.sheets.mercator2 import IDuration
+        from adhocracy_mercator.sheets.mercator2 import DurationSchema
+        inst = meta.sheet_class(meta, context)
+        assert inst.meta.isheet == IDuration
+        assert inst.meta.schema_class == DurationSchema
+
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
+
+
+class TestLocationSchema:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import location_meta
+        return location_meta
+
+    @fixture
+    def inst(self):
+        from .mercator2 import LocationSchema
+        return LocationSchema()
+
+    @fixture
+    def cstruct_required(self):
+        return {'city': 'Berlin',
+                'country': 'DE',
+                'has_link_to_ruhr': 'false',
+                'link_to_ruhr': ''
+        }
+
+    def test_deserialize_empty(self, inst):
+        from colander import Invalid
+        cstruct = {}
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'city': 'Required',
+                                        'country': 'Required',
+                                        'has_link_to_ruhr': 'Required'}
+
+    def test_deserialize_with_required(self, inst, cstruct_required):
+        wanted = cstruct_required
+        assert inst.deserialize(cstruct_required) == \
+              {'city': 'Berlin',
+               'country': 'DE',
+               'has_link_to_ruhr': False}
+
+class TestLocationSheet:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import location_meta
+        return location_meta
+
+    @fixture
+    def context(self):
+        from adhocracy_core.interfaces import IItem
+        return testing.DummyResource(__provides__=IItem)
+
+    def test_create_valid(self, meta, context):
+        from adhocracy_mercator.sheets.mercator2 import ILocation
+        from adhocracy_mercator.sheets.mercator2 import LocationSchema
+        inst = meta.sheet_class(meta, context)
+        assert inst.meta.isheet == ILocation
+        assert inst.meta.schema_class == LocationSchema
+
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)

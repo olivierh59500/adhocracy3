@@ -152,6 +152,24 @@ duration_meta = sheet_meta._replace(
     schema_class=DurationSchema)
 
 
+class ILocation(ISheet):
+    """Marker interface for the location."""
+
+
+class LocationSchema(colander.MappingSchema):
+    city = Text(missing=colander.required)
+    country = ISOCountryCode(missing=colander.required)
+    has_link_to_ruhr = Boolean(missing=colander.required, default=False)
+    # TODO makes next field obligatory if there is a link
+    link_to_ruhr = Text()
+
+
+location_meta = sheet_meta._replace(
+    isheet=ILocation,
+    schema_class=LocationSchema,
+)
+
+
 def includeme(config):
     """Register sheets."""
     add_sheet_to_registry(userinfo_meta, config.registry)
@@ -159,3 +177,4 @@ def includeme(config):
     add_sheet_to_registry(partners_meta, config.registry)
     add_sheet_to_registry(topic_meta, config.registry)
     add_sheet_to_registry(duration_meta, config.registry)
+    add_sheet_to_registry(location_meta, config.registry)
