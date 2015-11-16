@@ -252,6 +252,37 @@ financialplanning_meta = sheet_meta._replace(
 )
 
 
+class ICommunity(ISheet):
+    """Marker interface for the community information."""
+
+
+class HeardFromEnum(AdhocracySchemaNode):
+    """Enum of organizational statuses."""
+
+    schema_type = colander.String
+    default = 'other'
+    missing = colander.required
+    validator = colander.OneOf(['personal_contact',
+                                'website',
+                                'facebook',
+                                'twitter',
+                                'newsletter',
+                                'other',
+                                ])
+
+
+class CommunitySchema(colander.MappingSchema):
+    expected_feedback = Text(missing=colander.required)
+    heard_from = HeardFromEnum(missing=colander.required)
+    heard_from_other = Text()
+
+
+community_meta = sheet_meta._replace(
+    isheet=ICommunity,
+    schema_class=CommunitySchema,
+)
+
+
 def includeme(config):
     """Register sheets."""
     add_sheet_to_registry(userinfo_meta, config.registry)

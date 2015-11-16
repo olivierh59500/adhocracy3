@@ -599,3 +599,60 @@ class TestFinancialPlanningSheet:
         from adhocracy_core.utils import get_sheet
         context = testing.DummyResource(__provides__=meta.isheet)
         assert get_sheet(context, meta.isheet)
+
+
+class TestCommunitySchema:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import financialplanning_meta
+        return financialplanning_meta
+
+    @fixture
+    def inst(self):
+        from .mercator2 import CommunitySchema
+        return CommunitySchema()
+
+    @fixture
+    def cstruct_required(self):
+        return {'expected_feedback': 'Nice comments',
+                'heard_from': 'website'}
+
+    def test_deserialize_empty(self, inst):
+        from colander import Invalid
+        cstruct = {}
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == \
+            {'expected_feedback': 'Required',
+             'heard_from': 'Required'}
+
+    def test_deserialize_with_required(self, inst, cstruct_required):
+        wanted = cstruct_required
+        assert inst.deserialize(cstruct_required) == cstruct_required
+
+
+class TestCommunitySheet:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import financialplanning_meta
+        return financialplanning_meta
+
+    @fixture
+    def context(self):
+        from adhocracy_core.interfaces import IItem
+        return testing.DummyResource(__provides__=IItem)
+
+    def test_create_valid(self, meta, context):
+        from adhocracy_mercator.sheets.mercator2 import ICommunity
+        from adhocracy_mercator.sheets.mercator2 import CommunitySchema
+        inst = meta.sheet_class(meta, context)
+        assert inst.meta.isheet == ICommunity
+        assert inst.meta.schema_class == CommunitySchema
+
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
