@@ -612,7 +612,7 @@ class TestCommunitySheet:
         assert get_sheet(context, meta.isheet)
 
 
-class TestWinnerinfoSchema:
+class TestWinnerInfoSchema:
 
     @fixture
     def inst(self):
@@ -636,7 +636,7 @@ class TestWinnerinfoSchema:
              'funding': 10000}
 
 
-class TestWinnerinfoSheet:
+class TestWinnerInfoSheet:
 
     @fixture
     def meta(self):
