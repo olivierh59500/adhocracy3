@@ -85,11 +85,6 @@ class TestOrganizationInfoSheet:
 class TestOrganizationInfoSchema:
 
     @fixture
-    def meta(self):
-        from .mercator2 import organizationinfo_meta
-        return organizationinfo_meta
-
-    @fixture
     def inst(self):
         from adhocracy_mercator.sheets.mercator2 import OrganizationInfoSchema
         return OrganizationInfoSchema()
@@ -193,11 +188,6 @@ class TestPartnersSheet:
 class TestTopicSchema:
 
     @fixture
-    def meta(self):
-        from .mercator2 import topic_meta
-        return topic_meta
-
-    @fixture
     def inst(self):
         from .mercator2 import TopicSchema
         return TopicSchema()
@@ -245,11 +235,6 @@ class TestTopicSheet:
 
 
 class TestDurationSchema:
-
-    @fixture
-    def meta(self):
-        from .mercator2 import duration_meta
-        return duration_meta
 
     @fixture
     def inst(self):
@@ -300,11 +285,6 @@ class TestDurationSheet:
 
 
 class TestLocationSchema:
-
-    @fixture
-    def meta(self):
-        from .mercator2 import location_meta
-        return location_meta
 
     @fixture
     def inst(self):
@@ -364,11 +344,6 @@ class TestLocationSheet:
 class TestLocationSchema:
 
     @fixture
-    def meta(self):
-        from .mercator2 import status_meta
-        return status_meta
-
-    @fixture
     def inst(self):
         from .mercator2 import StatusSchema
         return StatusSchema()
@@ -416,11 +391,6 @@ class TestLocationSheet:
 
 
 class TestRoadToImpactSchema:
-
-    @fixture
-    def meta(self):
-        from .mercator2 import roadtoimpact_meta
-        return roadtoimpact_meta
 
     @fixture
     def inst(self):
@@ -482,12 +452,6 @@ class TestRoadToImpactSheet:
 class TestSelectionCriteriaSchema:
 
     @fixture
-    def meta(self):
-        # TODO not used? check the others
-        from .mercator2 import selectioncriteria_meta
-        return selectioncriteria
-
-    @fixture
     def inst(self):
         from .mercator2 import SelectionCriteriaSchema
         return SelectionCriteriaSchema()
@@ -540,11 +504,6 @@ class TestSelectionCriteriaSheet:
 
 
 class TestFinancialPlanningSchema:
-
-    @fixture
-    def meta(self):
-        from .mercator2 import financialplanning_meta
-        return financialplanning_meta
 
     @fixture
     def inst(self):
@@ -604,11 +563,6 @@ class TestFinancialPlanningSheet:
 class TestCommunitySchema:
 
     @fixture
-    def meta(self):
-        from .mercator2 import financialplanning_meta
-        return financialplanning_meta
-
-    @fixture
     def inst(self):
         from .mercator2 import CommunitySchema
         return CommunitySchema()
@@ -659,11 +613,6 @@ class TestCommunitySheet:
 
 
 class TestWinnerinfoSchema:
-
-    @fixture
-    def meta(self):
-        from .mercator2 import winnerinfo_meta
-        return winnerinfo_meta
 
     @fixture
     def inst(self):
