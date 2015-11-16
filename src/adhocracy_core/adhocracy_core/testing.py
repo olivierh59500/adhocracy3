@@ -1,4 +1,4 @@
-"""Public py.test fixtures: http://pytest.org/latest/fixture.html. """
+"""Public py.test fixtures: http://pytest.org/latest/fixture.html."""
 from unittest.mock import Mock
 from configparser import ConfigParser
 from distutils import dir_util
@@ -79,7 +79,6 @@ batch_url = '/batch'
 
 
 class DummyPool(testing.DummyResource):
-
     """Dummy Pool based on :class:`pyramid.testing.DummyResource`."""
 
     def add(self, name, resource, **kwargs):
@@ -180,7 +179,7 @@ def integration(config) -> Configurator:
 
 @fixture
 def resource_meta() -> ResourceMetadata:
-    """ Return basic resource metadata."""
+    """Return basic resource metadata."""
     from adhocracy_core.resources import resource_meta
     from adhocracy_core.interfaces import IResource
     return resource_meta._replace(iresource=IResource)
@@ -188,7 +187,7 @@ def resource_meta() -> ResourceMetadata:
 
 @fixture
 def sheet_meta() -> SheetMetadata:
-    """ Return basic sheet metadata."""
+    """Return basic sheet metadata."""
     from adhocracy_core.sheets import sheet_meta
     from adhocracy_core.interfaces import ISheet
     return sheet_meta._replace(isheet=ISheet,
@@ -225,31 +224,33 @@ def log(request) -> LogCapture:
 
 @fixture
 def request_():
-    """ Return dummy request with additional validation attributes.
+    """Return dummy request with additional validation attributes.
 
     Additional Attributes:
         `errors`, `validated`
     """
-    return DummyRequest()
+    request = DummyRequest()
+    request.registry.settings = {}
+    return request
 
 
 @fixture
 def changelog_meta() -> ChangelogMetadata:
-    """ Return changelog metadata."""
+    """Return changelog metadata."""
     from adhocracy_core.changelog import changelog_meta
     return changelog_meta
 
 
 @fixture
 def context() -> testing.DummyResource:
-    """ Return dummy context with IResource interface."""
+    """Return dummy context with IResource interface."""
     from adhocracy_core.interfaces import IResource
     return testing.DummyResource(__provides__=IResource)
 
 
 @fixture
 def pool() -> DummyPool:
-    """ Return dummy pool with IPool interface."""
+    """Return dummy pool with IPool interface."""
     from adhocracy_core.interfaces import IPool
     from substanced.interfaces import IFolder
     return DummyPool(__provides__=(IPool, IFolder))
@@ -257,7 +258,7 @@ def pool() -> DummyPool:
 
 @fixture
 def service() -> DummyPool:
-    """ Return dummy pool with IServicePool interface."""
+    """Return dummy pool with IServicePool interface."""
     from adhocracy_core.interfaces import IServicePool
     from substanced.interfaces import IFolder
     return DummyPool(__provides__=(IServicePool, IFolder),
@@ -266,7 +267,7 @@ def service() -> DummyPool:
 
 @fixture
 def item() -> DummyPool:
-    """ Return dummy pool with IItem and IMetadata interface."""
+    """Return dummy pool with IItem and IMetadata interface."""
     from adhocracy_core.interfaces import IItem
     from adhocracy_core.sheets.metadata import IMetadata
     return DummyPool(__provides__=(IItem, IMetadata))
@@ -765,7 +766,6 @@ def backend_with_ws(request, zeo, websocket, supervisor):
 
 
 class AppUser:
-
     """:class:`webtest.TestApp` wrapper for backend functional testing."""
 
     def __init__(self, app,

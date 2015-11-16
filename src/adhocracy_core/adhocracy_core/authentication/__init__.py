@@ -1,6 +1,7 @@
 """Authentication with support for token http headers."""
 import hashlib
 from datetime import datetime
+import urllib
 
 from colander import Invalid
 from persistent.dict import PersistentDict
@@ -13,6 +14,7 @@ from pyramid.settings import asbool
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.component import ComponentLookupError
+from substanced.stats import statsd_timer
 
 from adhocracy_core.interfaces import ITokenManger
 from adhocracy_core.interfaces import IRolesUserLocator
@@ -124,12 +126,7 @@ def _get_raw_x_user_headers(request: Request) -> tuple:
     # well with the pyramid authentication system. We don't have the
     # a context or root object to resolve the resource path when processing
     # the unauthenticated_userid and effective_principals methods.
-    app_url_length = len(request.application_url)
-    user_path = None
-    if user_url.startswith('/'):
-        user_path = user_url
-    elif len(user_url) >= app_url_length:
-        user_path = user_url[app_url_length:][:-1]
+    user_path = urllib.parse.urlparse(user_url).path.rstrip('/') or None
     token = request.headers.get('X-User-Token', None)
     return user_path, token
 
@@ -205,8 +202,11 @@ class TokenHeaderAuthenticationPolicy(CallbackAuthenticationPolicy):
         settings = request.registry.settings
         if not asbool(settings.get('adhocracy.validate_user_token', True)):
             return userid
-        authenticated_userid = tokenmanager.get_user_id(token,
-                                                        timeout=self.timeout)
+        if token is None:
+            raise KeyError
+        with statsd_timer('authentication.user', rate=.1):
+            authenticated_userid = \
+                tokenmanager.get_user_id(token, timeout=self.timeout)
         if authenticated_userid != userid:
             raise KeyError
         return authenticated_userid
@@ -248,6 +248,8 @@ class TokenHeaderAuthenticationPolicy(CallbackAuthenticationPolicy):
         if cached_principals:
             return cached_principals
         if self.authenticated_userid(request) is None:
+            # FIXME this should go to principals.groups_and_roles_finder
+            # to make adhocracy work with other authentication polices.
             return [Everyone, Anonymous]
         principals = super().effective_principals(request)
         request.__cached_principals__ = principals
