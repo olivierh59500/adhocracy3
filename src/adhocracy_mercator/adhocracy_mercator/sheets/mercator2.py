@@ -294,6 +294,8 @@ class WinnerInfoSchema(colander.MappingSchema):
 winnerinfo_meta = sheet_meta._replace(
     isheet=IWinnerInfo,
     schema_class=WinnerInfoSchema,
+    permission_view='view_winnerinfo',
+    permission_edit='edit_winnerinfo',
 )
 
 

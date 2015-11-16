@@ -654,6 +654,8 @@ class TestWinnerInfoSheet:
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IWinnerInfo
         assert inst.meta.schema_class == WinnerInfoSchema
+        assert inst.meta.permission_view == 'view_winnerinfo'
+        assert inst.meta.permission_edit == 'edit_winnerinfo'
 
     @mark.usefixtures('integration')
     def test_includeme(self, meta):
