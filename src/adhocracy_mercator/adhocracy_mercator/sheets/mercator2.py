@@ -1,19 +1,23 @@
 """Sheets for Mercator 2 proposals."""
 import colander
 
-from adhocracy_core.sheets import sheet_meta
-from adhocracy_core.schema import SingleLine
 from adhocracy_core.interfaces import ISheet
-from adhocracy_core.sheets import add_sheet_to_registry
-from adhocracy_core.schema import ISOCountryCode
+from adhocracy_core.interfaces import ISheetReferenceAutoUpdateMarker
+from adhocracy_core.interfaces import SheetToSheet
 from adhocracy_core.schema import AdhocracySchemaNode
-from adhocracy_core.schema import Text
-from adhocracy_core.schema import URL
+from adhocracy_core.schema import Boolean
+from adhocracy_core.schema import CurrencyAmount
 from adhocracy_core.schema import DateTime
 from adhocracy_core.schema import Email
-from adhocracy_core.schema import Boolean
+from adhocracy_core.schema import ISOCountryCode
 from adhocracy_core.schema import Integer
-from adhocracy_core.schema import CurrencyAmount
+from adhocracy_core.schema import Reference
+from adhocracy_core.schema import SingleLine
+from adhocracy_core.schema import Text
+from adhocracy_core.schema import URL
+from adhocracy_core.sheets import add_sheet_to_registry
+from adhocracy_core.sheets import sheet_meta
+from adhocracy_core.sheets.description import IDescription
 
 
 class IUserInfo(ISheet):
@@ -192,6 +196,12 @@ class StatusSchema(colander.MappingSchema):
     status = ProjectStatusEnum(missing=colander.required)
 
 
+status_meta = sheet_meta._replace(
+    isheet=IStatus,
+    schema_class=StatusSchema,
+)
+
+
 class IRoadToImpact(ISheet):
     """Marker interface for the road to impact."""
 
@@ -204,14 +214,10 @@ class RoadToImpactSchema(colander.MappingSchema):
     team = Text(missing=colander.required)
     other = Text(missing=colander.required)
 
+
 roadtoimpact_meta = sheet_meta._replace(
     isheet=IRoadToImpact,
     schema_class=RoadToImpactSchema,
-)
-
-status_meta = sheet_meta._replace(
-    isheet=IStatus,
-    schema_class=StatusSchema,
 )
 
 
@@ -299,6 +305,97 @@ winnerinfo_meta = sheet_meta._replace(
 )
 
 
+class IMercatorSubResources(ISheet, ISheetReferenceAutoUpdateMarker):
+    """Marker interface for commentable subresources of MercatorProposal."""
+
+
+class OrganizationInfoReference(SheetToSheet):
+    source_isheet = IMercatorSubResources
+    source_isheet_field = 'organization_info'
+    target_isheet = IOrganizationInfo
+
+
+class PartnersReference(SheetToSheet):
+    source_isheet = IMercatorSubResources
+    source_isheet_field = 'partners'
+    target_isheet = IPartners
+
+
+class TopicReference(SheetToSheet):
+    source_isheet = IMercatorSubResources
+    source_isheet_field = 'topic'
+    target_isheet = ITopic
+
+
+class DurationReference(SheetToSheet):
+    source_isheet = IMercatorSubResources
+    source_isheet_field = 'duration'
+    target_isheet = IDuration
+
+
+class LocationReference(SheetToSheet):
+    source_isheet = IMercatorSubResources
+    source_isheet_field = 'duration'
+    target_isheet = ILocation
+
+
+class StatusReference(SheetToSheet):
+    source_isheet = IMercatorSubResources
+    source_isheet_field = 'status'
+    target_isheet = IStatus
+
+
+class RoadToImpactReference(SheetToSheet):
+    source_isheet = IMercatorSubResources
+    source_isheet_field = 'road_to_impact'
+    target_isheet = IStatus
+
+
+class SelectionCriteriaReference(SheetToSheet):
+    source_isheet = IMercatorSubResources
+    source_isheet_field = 'selection_criteria'
+    target_isheet = ISelectionCriteria
+
+
+class FinancialPlanningReference(SheetToSheet):
+    source_isheet = IMercatorSubResources
+    source_isheet_field = 'financial_planning'
+    target_isheet = IFinancialPlanning
+
+
+class CommunityReference(SheetToSheet):
+    source_isheet = IMercatorSubResources
+    source_isheet_field = 'community'
+    target_isheet = ICommunity
+
+
+class DescriptionReference(SheetToSheet):
+    source_isheet = IMercatorSubResources
+    source_isheet_field = 'pitch'
+    target_isheet = IDescription
+
+
+class MercatorSubResourcesSchema(colander.MappingSchema):
+    organization_info = Reference(reftype=OrganizationInfoReference)
+    pitch = Reference(reftype=OrganizationInfoReference)
+    partners = Reference(reftype=PartnersReference)
+    topic = Reference(reftype=TopicReference)
+    duration = Reference(reftype=DurationReference)
+    location = Reference(reftype=LocationReference)
+    status = Reference(reftype=StatusReference)
+    selection_criteria = Reference(reftype=SelectionCriteriaReference)
+    financial_planning = Reference(reftype=FinancialPlanningReference)
+    community = Reference(reftype=CommunityReference)
+
+
+mercator_subresources_meta = sheet_meta._replace(
+    isheet=IMercatorSubResources,
+    schema_class=MercatorSubResourcesSchema)
+
+# TODO: image!
+# TODO: max length for fields
+
+
 def includeme(config):
     """Register sheets."""
     add_sheet_to_registry(userinfo_meta, config.registry)
@@ -313,3 +410,4 @@ def includeme(config):
     add_sheet_to_registry(financialplanning_meta, config.registry)
     add_sheet_to_registry(community_meta, config.registry)
     add_sheet_to_registry(winnerinfo_meta, config.registry)
+    add_sheet_to_registry(mercator_subresources_meta, config.registry)
