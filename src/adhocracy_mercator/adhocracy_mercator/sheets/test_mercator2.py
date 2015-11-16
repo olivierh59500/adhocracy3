@@ -636,8 +636,8 @@ class TestCommunitySheet:
 
     @fixture
     def meta(self):
-        from .mercator2 import financialplanning_meta
-        return financialplanning_meta
+        from .mercator2 import community_meta
+        return community_meta
 
     @fixture
     def context(self):
@@ -650,6 +650,61 @@ class TestCommunitySheet:
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == ICommunity
         assert inst.meta.schema_class == CommunitySchema
+
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
+
+
+class TestWinnerinfoSchema:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import winnerinfo_meta
+        return winnerinfo_meta
+
+    @fixture
+    def inst(self):
+        from .mercator2 import WinnerInfoSchema
+        return WinnerInfoSchema()
+
+    @fixture
+    def cstruct_required(self):
+        return {'explanation': 'Relevant project',
+                'funding': '10000'}
+
+    def test_deserialize_empty(self, inst):
+        from colander import Invalid
+        cstruct = {}
+        assert inst.deserialize(cstruct) == {}
+
+    def test_deserialize_with_required(self, inst, cstruct_required):
+        wanted = cstruct_required
+        assert inst.deserialize(cstruct_required) == \
+            {'explanation': 'Relevant project',
+             'funding': 10000}
+
+
+class TestWinnerinfoSheet:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import winnerinfo_meta
+        return winnerinfo_meta
+
+    @fixture
+    def context(self):
+        from adhocracy_core.interfaces import IItem
+        return testing.DummyResource(__provides__=IItem)
+
+    def test_create_valid(self, meta, context):
+        from adhocracy_mercator.sheets.mercator2 import IWinnerInfo
+        from adhocracy_mercator.sheets.mercator2 import WinnerInfoSchema
+        inst = meta.sheet_class(meta, context)
+        assert inst.meta.isheet == IWinnerInfo
+        assert inst.meta.schema_class == WinnerInfoSchema
 
     @mark.usefixtures('integration')
     def test_includeme(self, meta):

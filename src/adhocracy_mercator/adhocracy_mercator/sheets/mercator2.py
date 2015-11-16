@@ -283,6 +283,20 @@ community_meta = sheet_meta._replace(
 )
 
 
+class IWinnerInfo(ISheet):
+    """Marker interface for the winner information."""
+
+
+class WinnerInfoSchema(colander.MappingSchema):
+    explanation = Text()
+    funding = Integer()
+
+winnerinfo_meta = sheet_meta._replace(
+    isheet=IWinnerInfo,
+    schema_class=WinnerInfoSchema,
+)
+
+
 def includeme(config):
     """Register sheets."""
     add_sheet_to_registry(userinfo_meta, config.registry)
@@ -295,3 +309,5 @@ def includeme(config):
     add_sheet_to_registry(roadtoimpact_meta, config.registry)
     add_sheet_to_registry(selectioncriteria_meta, config.registry)
     add_sheet_to_registry(financialplanning_meta, config.registry)
+    add_sheet_to_registry(community_meta, config.registry)
+    add_sheet_to_registry(winnerinfo_meta, config.registry)
