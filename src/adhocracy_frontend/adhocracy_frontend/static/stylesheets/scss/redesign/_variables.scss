@@ -1,17 +1,15 @@
 /* FIXME: create documentation */
 
-$color-brand-one: #898989;
-$color-brand-two: #535353;
-$color-brand-three: #00a8e3;
+$color-brand-one: #00a8e3;
+$color-brand-two: #00678b;
 
-$color-text-normal: $color-brand-one;
-$color-text-heading: $color-brand-two;
-$color-text-emphasize: $color-brand-two;
-$color-text-highlight: $color-brand-three;
+$color-muted: #c2c2c2;
 
-
-$color-text-introvert: #535353;
-$color-text-highlight: #00a8e3;
+$color-text-normal: #898989;
+$color-text-heading: #535353;
+$color-text-secondary: #a4a4a4;
+$color-text-emphasize: $color-text-heading;
+$color-text-highlight: $color-brand-one;
 $color-text-inverted: white;
 
 $color-structure-border: #e5e5e5;
