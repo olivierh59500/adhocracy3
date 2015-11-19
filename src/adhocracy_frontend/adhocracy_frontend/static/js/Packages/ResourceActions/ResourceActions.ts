@@ -156,9 +156,9 @@ export var filterAndSortDirective = (
     return {
         restrict: "E",
         template: "<a data-ng-class=\"{ 'm-selected': data.showFilter }\" class=\"{{class}}\" href=\"\"\
-        data-ng-click=\"toggleFilter();\">{{ \"TR__FILTER\" | translate }}</a>\
+        data-ng-click=\"toggleFilter();\">Filter</a>\
         <a data-ng-class=\"{ 'm-selected': data.showSort }\" class=\"{{class}}\" href=\"\"\
-        data-ng-click=\"toggleSort();\">{{ \"TR__SORT\" | translate }}</a>",
+        data-ng-click=\"toggleSort();\">Sort</a>",
         scope: {
             class: "@",
             data: "=?"
