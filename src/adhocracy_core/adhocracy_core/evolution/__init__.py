@@ -21,12 +21,12 @@ from adhocracy_core.interfaces import IResource
 from adhocracy_core.interfaces import ISimple
 from adhocracy_core.interfaces import ResourceMetadata
 from adhocracy_core.interfaces import search_query
-from adhocracy_core.resources.asset import IPoolWithAssets
 from adhocracy_core.resources.asset import IAsset
+from adhocracy_core.resources.asset import IPoolWithAssets
+from adhocracy_core.resources.asset import add_assets_service
 from adhocracy_core.resources.badge import IBadgeAssignmentsService
 from adhocracy_core.resources.badge import add_badge_assignments_service
 from adhocracy_core.resources.badge import add_badges_service
-from adhocracy_core.resources.asset import add_assets_service
 from adhocracy_core.resources.comment import ICommentVersion
 from adhocracy_core.resources.pool import IBasicPool
 from adhocracy_core.resources.principal import IUser
@@ -40,7 +40,9 @@ from adhocracy_core.sheets.badge import IBadgeable
 from adhocracy_core.sheets.badge import IHasBadgesPool
 from adhocracy_core.sheets.image import IImageReference
 from adhocracy_core.sheets.pool import IPool
+from adhocracy_core.sheets.principal import IUserBasic
 from adhocracy_core.sheets.principal import IUserExtended
+from adhocracy_core.sheets.rate import ICanLike
 from adhocracy_core.sheets.relation import ICanPolarize
 from adhocracy_core.sheets.relation import IPolarizable
 from adhocracy_core.sheets.title import ITitle
@@ -506,6 +508,12 @@ def update_asset_download_children(root):  # pragma: no cover
             logger.warn('Asset {} has no downloads to migrate.'.format(asset))
 
 
+@log_migration
+def add_icanlike_sheet_to_users(root):  # pragma: no cover
+    """Add ICanLike sheets to users."""
+    migrate_new_sheet(root, IUserBasic, ICanLike)
+
+
 def includeme(config):  # pragma: no cover
     """Register evolution utilities and add evolution steps."""
     config.add_directive('add_evolution_step', add_evolution_step)
@@ -527,3 +535,4 @@ def includeme(config):  # pragma: no cover
     config.add_evolution_step(add_icanpolarize_sheet_to_comments)
     config.add_evolution_step(add_image_reference_to_users)
     config.add_evolution_step(update_asset_download_children)
+    config.add_evolution_step(add_icanlike_sheet_to_users)

@@ -742,6 +742,16 @@ class IRateValidator(Interface):  # pragma: no cover
         """Return a error message that explains which values are allowed."""
 
 
+class ILikeValidator(Interface):  # pragma: no cover
+    """Adapter responsible for validating likes about likeables."""
+
+    def validate(self, rate: int) -> bool:
+        """Return True if the like is valid, False otherwise."""
+
+    def helpful_error_message(self) -> str:
+        """Return a error message that explains which values are allowed."""
+
+
 class Reference(namedtuple('Reference', 'source isheet field target')):
     """Reference between two resources.
 
