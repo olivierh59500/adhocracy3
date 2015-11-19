@@ -299,15 +299,7 @@ export var mapSwitchDirective = (
 ) => {
     return {
         restrict: "E",
-        templateUrl: adhConfig.pkg_path + pkgLocation + "/MapSwitch.html",
-        scope: {
-            model: "="
-        },
-        link: (scope) => {
-            scope.showMap = (isShowMap) => {
-                scope.model = isShowMap;
-            };
-        }
+        templateUrl: adhConfig.pkg_path + pkgLocation + "/MapSwitch.html"
     };
 };
 
@@ -316,10 +308,16 @@ export var listingActionsDirective = (
 ) => {
     return {
         restrict: "E",
+        templateUrl: adhConfig.pkg_path + pkgLocation + "/ListingActions.html",
         scope: {
-            mapSwitch: "=?"
+            mapSwitch: "=?",
+            model: "=?"
         },
-        templateUrl: adhConfig.pkg_path + pkgLocation + "/ListingActions.html"
+        link: (scope) => {
+            scope.showMap = (isShowMap) => {
+                scope.model = isShowMap;
+            };
+        }
     };
 };
 
