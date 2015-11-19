@@ -1,9 +1,7 @@
 <div class="meinberlin-kiezkasse-detail">
-    <adh-resource-actions
+    <adh-listing-actions
         data-model="isShowMap"
-        data-map-switch="true"></adh-resource-actions>
-        {{model}}
-        {{isShowMap}}
+        data-map-switch="true"></adh-listing-actions>
     <div data-ng-switch="currentPhase.name">
         <div data-ng-switch-when="announce" class="meinberlin-kiezkasse-detail-announce">
             {{ currentPhase.description }}
