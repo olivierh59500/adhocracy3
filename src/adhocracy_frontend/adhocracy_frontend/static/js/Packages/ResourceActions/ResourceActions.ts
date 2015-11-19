@@ -149,20 +149,3 @@ export var cancelActionDirective = (
         }
     };
 };
-
-export var mapSwitchDirective = (
-    adhConfig : AdhConfig.IService
-) => {
-    return {
-        restrict: "E",
-        templateUrl: adhConfig.pkg_path + pkgLocation + "/MapSwitch.html",
-        scope: {
-            model: "="
-        },
-        link: (scope) => {
-            scope.showMap = (isShowMap) => {
-                scope.model = isShowMap;
-            };
-        }
-    };
-};

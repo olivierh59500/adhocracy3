@@ -19,6 +19,5 @@ export var register = (angular) => {
         .directive("adhDeleteAction", [AdhResourceActions.deleteActionDirective])
         .directive("adhEditAction", ["adhTopLevelState", "adhResourceUrlFilter", "$location", AdhResourceActions.editActionDirective])
         .directive("adhPrintAction", ["adhTopLevelState", "$window", AdhResourceActions.printActionDirective])
-        .directive("adhMapSwitchAction", ["adhConfig", AdhResourceActions.mapSwitchDirective])
         .directive("adhCancelAction", ["adhTopLevelState", "adhResourceUrlFilter", AdhResourceActions.cancelActionDirective]);
 };
