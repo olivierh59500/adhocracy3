@@ -92,6 +92,14 @@ class IPitch(ISheet):
     """Marker interface for the pitch."""
 
 
+class PitchSchema(colander.MappingSchema):
+    pitch = Text(missing=colander.required)
+
+
+pitch_meta = sheet_meta._replace(
+    isheet=IPitch, schema_class=PitchSchema)
+
+
 class IPartners(ISheet):
     """Marker interface for the partner description."""
 
@@ -264,7 +272,7 @@ class ExtraFundingSchema(colander.MappingSchema):
 extra_funding_meta = sheet_meta._replace(
     isheet=IExtraFunding,
     schema_class=ExtraFundingSchema,
-    permission_view='view_mercator_extra_funding',
+    permission_view='view_mercator2_extra_funding',
 )
 
 
@@ -316,8 +324,8 @@ class WinnerInfoSchema(colander.MappingSchema):
 winnerinfo_meta = sheet_meta._replace(
     isheet=IWinnerInfo,
     schema_class=WinnerInfoSchema,
-    permission_view='view_winnerinfo',
-    permission_edit='edit_winnerinfo',
+    permission_view='view_mercator2_winnerinfo',
+    permission_edit='edit_mercator2_winnerinfo',
 )
 
 
@@ -378,6 +386,7 @@ def includeme(config):
     """Register sheets."""
     add_sheet_to_registry(userinfo_meta, config.registry)
     add_sheet_to_registry(organizationinfo_meta, config.registry)
+    add_sheet_to_registry(pitch_meta, config.registry)
     add_sheet_to_registry(partners_meta, config.registry)
     add_sheet_to_registry(topic_meta, config.registry)
     add_sheet_to_registry(duration_meta, config.registry)

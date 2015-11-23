@@ -144,6 +144,55 @@ class TestOrganizationInfoSchema:
         assert error.value.asdict() == {'help_request':
                                         'Required iff status == support_needed'}
 
+class TestPitchSchema:
+
+    @fixture
+    def inst(self):
+        from .mercator2 import PitchSchema
+        return PitchSchema()
+
+    @fixture
+    def cstruct_required(self):
+        return {'pitch': 'something'}
+
+    def test_deserialize_empty(self, inst):
+        from colander import Invalid
+        cstruct = {}
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'pitch': 'Required'}
+
+    def test_deserialize_with_required(self, inst, cstruct_required):
+        wanted = cstruct_required
+        assert inst.deserialize(cstruct_required) == \
+            {'pitch': 'something'}
+
+
+class TestPitchSheet:
+
+    @fixture
+    def meta(self):
+        from adhocracy_mercator.sheets.mercator2 import pitch_meta
+        return pitch_meta
+
+    @fixture
+    def context(self):
+        from adhocracy_core.interfaces import IItem
+        return testing.DummyResource(__provides__=IItem)
+
+    def test_create_valid(self, meta, context):
+        from adhocracy_mercator.sheets.mercator2 import IPitch
+        from adhocracy_mercator.sheets.mercator2 import PitchSchema
+        inst = meta.sheet_class(meta, context)
+        assert inst.meta.isheet == IPitch
+        assert inst.meta.schema_class == PitchSchema
+
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
+
 
 class TestPartnersSheet:
 
@@ -706,8 +755,8 @@ class TestWinnerInfoSheet:
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IWinnerInfo
         assert inst.meta.schema_class == WinnerInfoSchema
-        assert inst.meta.permission_view == 'view_winnerinfo'
-        assert inst.meta.permission_edit == 'edit_winnerinfo'
+        assert inst.meta.permission_view == 'view_mercator2_winnerinfo'
+        assert inst.meta.permission_edit == 'edit_mercator2_winnerinfo'
 
     @mark.usefixtures('integration')
     def test_includeme(self, meta):
