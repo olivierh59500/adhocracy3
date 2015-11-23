@@ -302,7 +302,6 @@ class TestMercator2:
                                 'closed')
         assert resp.status_code == 200
 
-
     def test_closed_participant_cannot_edit_topic(self,
                                                   registry,
                                                   app,

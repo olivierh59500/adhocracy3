@@ -146,9 +146,20 @@ class ITopic(ISheet):
 
 class TopicSchema(colander.MappingSchema):
     topic = TopicEnum(missing=colander.required)
-    # TODO check other text is specified if topic is 'other'
     other = Text()
 
+    def validator(self, node, value):
+        """Extra validation depending of the status of the topic.
+        Make `other` required if `topic` == `other`.
+        """
+        topic = value.get('topic', None)
+        import pudb; pudb.set_trace() #  noqa
+        if topic == 'other':
+            if not value.get('other', None):
+                other = node['other']
+                raise colander.Invalid(
+                    other,
+                    msg='Required iff topic == other')
 
 topic_meta = sheet_meta._replace(
     isheet=ITopic,

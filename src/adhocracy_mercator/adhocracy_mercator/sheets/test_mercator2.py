@@ -257,6 +257,16 @@ class TestTopicSchema:
         assert inst.deserialize(cstruct_required) == \
             {'topic': 'urban_development'}
 
+    def test_deserialize_with_status_other_and_no_text(
+            self, inst, cstruct_required):
+        from colander import Invalid
+        cstruct = cstruct_required
+        cstruct['topic'] = 'other'
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'other':
+                                        'Required iff topic == other'}
+
 class TestTopicSheet:
 
     @fixture
