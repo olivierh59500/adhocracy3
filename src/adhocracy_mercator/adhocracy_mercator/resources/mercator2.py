@@ -43,6 +43,21 @@ location_meta = simple_meta._replace(
 )
 
 
+class IRoadToImpact(ISimple):
+    """Road to impact."""
+
+road_to_impact_meta = simple_meta._replace(
+    content_name='road_to_impact',
+    iresource=IRoadToImpact,
+    permission_create='create_proposal',
+    use_autonaming=True,
+    autonaming_prefix='road_to_impact',
+    extended_sheets=(
+        adhocracy_mercator.sheets.mercator2.IRoadToImpact,
+        adhocracy_core.sheets.comment.ICommentable),
+)
+
+
 class IMercatorProposal(IProposal):
     """Mercator 2 proposal. Not versionable."""
 
@@ -69,6 +84,7 @@ def includeme(config):
     add_resource_type_to_registry(proposal_meta, config)
     add_resource_type_to_registry(pitch_meta, config)
     add_resource_type_to_registry(location_meta, config)
+    add_resource_type_to_registry(road_to_impact_meta, config)
 
 # TODO specify workflow
 #    workflow_name = 'mercator'

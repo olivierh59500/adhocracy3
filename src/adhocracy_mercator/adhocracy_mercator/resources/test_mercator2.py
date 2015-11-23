@@ -1,6 +1,32 @@
 from pytest import fixture
 from pytest import mark
 
+class TestPitch:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import pitch_meta
+        return pitch_meta
+
+    def test_meta(self, meta):
+        import adhocracy_mercator.sheets.mercator2
+        import adhocracy_core.sheets
+        from adhocracy_mercator.resources import mercator2
+        assert meta.iresource == mercator2.IPitch
+        assert meta.permission_create == 'create_proposal'
+        assert meta.autonaming_prefix == 'pitch'
+        assert meta.extended_sheets == \
+            (adhocracy_mercator.sheets.mercator2.IPitch,
+             adhocracy_core.sheets.description.IDescription,
+             adhocracy_core.sheets.comment.ICommentable,)
+
+    @mark.usefixtures('integration')
+    def test_create(self, pool, meta, registry):
+        res = registry.content.create(meta.iresource.__identifier__,
+                                      parent=pool,
+                                      )
+        assert meta.iresource.providedBy(res)
+
 
 class TestDuration:
 
@@ -27,23 +53,23 @@ class TestDuration:
                                       )
         assert meta.iresource.providedBy(res)
 
-class TestPitch:
+
+class TestRoadToImpact:
 
     @fixture
     def meta(self):
-        from .mercator2 import pitch_meta
-        return pitch_meta
+        from .mercator2 import road_to_impact_meta
+        return road_to_impact_meta
 
     def test_meta(self, meta):
         import adhocracy_mercator.sheets.mercator2
         import adhocracy_core.sheets
         from adhocracy_mercator.resources import mercator2
-        assert meta.iresource == mercator2.IPitch
+        assert meta.iresource == mercator2.IRoadToImpact
         assert meta.permission_create == 'create_proposal'
-        assert meta.autonaming_prefix == 'pitch'
+        assert meta.autonaming_prefix == 'road_to_impact'
         assert meta.extended_sheets == \
-            (adhocracy_mercator.sheets.mercator2.IPitch,
-             adhocracy_core.sheets.description.IDescription,
+            (adhocracy_mercator.sheets.mercator2.IRoadToImpact,
              adhocracy_core.sheets.comment.ICommentable,)
 
     @mark.usefixtures('integration')
