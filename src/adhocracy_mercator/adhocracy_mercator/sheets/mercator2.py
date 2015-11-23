@@ -17,7 +17,6 @@ from adhocracy_core.schema import Text
 from adhocracy_core.schema import URL
 from adhocracy_core.sheets import add_sheet_to_registry
 from adhocracy_core.sheets import sheet_meta
-from adhocracy_core.sheets.description import IDescription
 
 
 class IUserInfo(ISheet):
@@ -87,6 +86,10 @@ class OrganizationInfoSchema(colander.MappingSchema):
 organizationinfo_meta = sheet_meta._replace(
     isheet=IOrganizationInfo,
     schema_class=OrganizationInfoSchema)
+
+
+class IPitch(ISheet):
+    """Marker interface for the pitch."""
 
 
 class IPartners(ISheet):
@@ -369,15 +372,15 @@ class CommunityReference(SheetToSheet):
     target_isheet = ICommunity
 
 
-class DescriptionReference(SheetToSheet):
+class PitchReference(SheetToSheet):
     source_isheet = IMercatorSubResources
     source_isheet_field = 'pitch'
-    target_isheet = IDescription
+    target_isheet = IPitch
 
 
 class MercatorSubResourcesSchema(colander.MappingSchema):
     organization_info = Reference(reftype=OrganizationInfoReference)
-    pitch = Reference(reftype=OrganizationInfoReference)
+    pitch = Reference(reftype=PitchReference)
     partners = Reference(reftype=PartnersReference)
     topic = Reference(reftype=TopicReference)
     duration = Reference(reftype=DurationReference)
