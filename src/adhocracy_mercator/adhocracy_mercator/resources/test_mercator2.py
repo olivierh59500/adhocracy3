@@ -2,6 +2,31 @@ from pytest import fixture
 from pytest import mark
 
 
+class TestLocation:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import location_meta
+        return location_meta
+
+    def test_meta(self, meta):
+        import adhocracy_mercator.sheets.mercator2
+        import adhocracy_core.sheets
+        from adhocracy_mercator.resources import mercator2
+        assert meta.iresource == mercator2.ILocation
+        assert meta.permission_create == 'create_proposal'
+        assert meta.autonaming_prefix == 'location'
+        assert meta.extended_sheets == \
+            (adhocracy_mercator.sheets.mercator2.ILocation,
+             adhocracy_core.sheets.comment.ICommentable,)
+
+    @mark.usefixtures('integration')
+    def test_create(self, pool, meta, registry):
+        res = registry.content.create(meta.iresource.__identifier__,
+                                      parent=pool,
+                                      )
+        assert meta.iresource.providedBy(res)
+
 class TestPitch:
 
     @fixture
@@ -13,7 +38,6 @@ class TestPitch:
         import adhocracy_mercator.sheets.mercator2
         import adhocracy_core.sheets
         from adhocracy_mercator.resources import mercator2
-        from adhocracy_core.resources.comment import add_commentsservice
         assert meta.iresource == mercator2.IPitch
         assert meta.permission_create == 'create_proposal'
         assert meta.autonaming_prefix == 'pitch'
