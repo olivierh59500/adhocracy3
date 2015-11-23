@@ -102,13 +102,20 @@ proposal_meta = proposal.proposal_meta._replace(
     iresource=IMercatorProposal,
     element_types=(IPitch,
                    IPartners,
-                   IRoadToImpact,)
+                   IRoadToImpact,
+                   ISelectionCriteria)
 )._add(after_creation=(add_logbook_service,),
        extended_sheets=(ITitle,
                         IDescription,
                         ICommentable,
                         IRateable,
-                        adhocracy_mercator.sheets.mercator2.IUserInfo,))
+                        adhocracy_mercator.sheets.mercator2.IUserInfo,
+                        adhocracy_mercator.sheets.mercator2.IOrganizationInfo,
+                        adhocracy_mercator.sheets.mercator2.ITopic,
+                        adhocracy_mercator.sheets.mercator2.ILocation,
+                        adhocracy_mercator.sheets.mercator2.IStatus,
+                        adhocracy_mercator.sheets.mercator2.IFinancialPlanning,
+                        adhocracy_mercator.sheets.mercator2.ICommunity,))
 
 
 class IProcess(process.IProcess):

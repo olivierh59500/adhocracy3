@@ -150,7 +150,7 @@ class TestMercatorProposal:
         assert meta.element_types == (mercator2.IPitch,
                                       mercator2.IPartners,
                                       mercator2.IRoadToImpact,
-
+                                      mercator2.ISelectionCriteria,
                                       )
         assert meta.extended_sheets == \
             (adhocracy_core.sheets.badge.IBadgeable,
@@ -158,7 +158,13 @@ class TestMercatorProposal:
              adhocracy_core.sheets.description.IDescription,
              adhocracy_core.sheets.comment.ICommentable,
              adhocracy_core.sheets.rate.IRateable,
-             adhocracy_mercator.sheets.mercator2.IUserInfo,)
+             adhocracy_mercator.sheets.mercator2.IUserInfo,
+             adhocracy_mercator.sheets.mercator2.IOrganizationInfo,
+             adhocracy_mercator.sheets.mercator2.ITopic,
+             adhocracy_mercator.sheets.mercator2.ILocation,
+             adhocracy_mercator.sheets.mercator2.IStatus,
+             adhocracy_mercator.sheets.mercator2.IFinancialPlanning,
+             adhocracy_mercator.sheets.mercator2.ICommunity,)
         assert meta.is_implicit_addable
         assert add_ratesservice in meta.after_creation
         assert add_commentsservice in meta.after_creation

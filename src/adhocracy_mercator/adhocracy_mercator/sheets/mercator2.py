@@ -251,6 +251,7 @@ class FinancialPlanningSchema(colander.MappingSchema):
         validator=colander.Range(min=1, max=50000))
     major_expenses = Text(missing=colander.required)
 
+
 # TODO as special sheet:
     # other_sources = Text()
     # other_sources_secured = Text()
