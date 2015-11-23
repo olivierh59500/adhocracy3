@@ -28,17 +28,17 @@ pitch_meta = simple_meta._replace(
 )
 
 
-class ILocation(ISimple):
-    """Location."""
+class IDuration(ISimple):
+    """Duration."""
 
 location_meta = simple_meta._replace(
     content_name='location',
-    iresource=ILocation,
+    iresource=IDuration,
     permission_create='create_proposal',
     use_autonaming=True,
     autonaming_prefix='location',
     extended_sheets=(
-        adhocracy_mercator.sheets.mercator2.ILocation,
+        adhocracy_mercator.sheets.mercator2.IDuration,
         adhocracy_core.sheets.comment.ICommentable),
 )
 

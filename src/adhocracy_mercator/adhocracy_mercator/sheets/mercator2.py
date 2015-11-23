@@ -384,7 +384,6 @@ class MercatorSubResourcesSchema(colander.MappingSchema):
     partners = Reference(reftype=PartnersReference)
     topic = Reference(reftype=TopicReference)
     duration = Reference(reftype=DurationReference)
-    location = Reference(reftype=LocationReference)
     status = Reference(reftype=StatusReference)
     selection_criteria = Reference(reftype=SelectionCriteriaReference)
     financial_planning = Reference(reftype=FinancialPlanningReference)

@@ -2,7 +2,7 @@ from pytest import fixture
 from pytest import mark
 
 
-class TestLocation:
+class TestDuration:
 
     @fixture
     def meta(self):
@@ -13,11 +13,11 @@ class TestLocation:
         import adhocracy_mercator.sheets.mercator2
         import adhocracy_core.sheets
         from adhocracy_mercator.resources import mercator2
-        assert meta.iresource == mercator2.ILocation
+        assert meta.iresource == mercator2.IDuration
         assert meta.permission_create == 'create_proposal'
         assert meta.autonaming_prefix == 'location'
         assert meta.extended_sheets == \
-            (adhocracy_mercator.sheets.mercator2.ILocation,
+            (adhocracy_mercator.sheets.mercator2.IDuration,
              adhocracy_core.sheets.comment.ICommentable,)
 
     @mark.usefixtures('integration')
