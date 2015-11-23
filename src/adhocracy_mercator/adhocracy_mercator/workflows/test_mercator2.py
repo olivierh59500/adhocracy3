@@ -216,7 +216,6 @@ class TestMercator2:
         data = resp.json_body['PUT']['request_body']['data']
         assert ITopic.__identifier__ not in data
 
-
     def test_evaluate_moderator_can_update_winnerinfo(self,
                                                       registry,
                                                       app,
@@ -227,3 +226,72 @@ class TestMercator2:
         resp = app_moderator.options(proposal0_url)
         data = resp.json_body['PUT']['request_body']['data']
         assert IWinnerInfo.__identifier__ in data
+
+    def test_evaluate_participant_cannot_view_winnerinfo(self,
+                                                         registry,
+                                                         app,
+                                                         process_url,
+                                                         app_participant,
+                                                         proposal0_url):
+        from adhocracy_mercator.sheets.mercator2 import IWinnerInfo
+        resp = app_participant.options(proposal0_url)
+        data = resp.json_body['GET']['response_body']['data']
+        assert IWinnerInfo.__identifier__ not in data
+
+    def test_set_result_state(self, registry, app, process_url, app_admin):
+        resp = do_transition_to(app_admin,
+                                process_url,
+                                'result')
+        assert resp.status_code == 200
+
+    def test_result_participant_can_view_winnerinfo(self,
+                                                    registry,
+                                                    app,
+                                                    process_url,
+                                                    app_participant,
+                                                    proposal0_url):
+        from adhocracy_mercator.sheets.mercator2 import IWinnerInfo
+        resp = app_participant.options(proposal0_url)
+        data = resp.json_body['GET']['response_body']['data']
+        assert IWinnerInfo.__identifier__ in data
+
+    def test_result_participant_cannot_creates_proposal(self,
+                                                          registry,
+                                                          app,
+                                                          process_url,
+                                                          app_participant):
+        from adhocracy_mercator.resources.mercator2 import IMercatorProposal
+        postable_types = app_participant.get_postable_types(process_url)
+        assert IMercatorProposal not in postable_types
+
+    def test_result_participant_cannot_comment(self,
+                                                 registry,
+                                                 app,
+                                                 process_url,
+                                                 app_participant,
+                                                 proposal0_url):
+        from adhocracy_core.resources.comment import ICommentVersion
+        url = proposal0_url + '/comments'
+        postable_types = app_participant.get_postable_types(url)
+        assert ICommentVersion not in postable_types
+
+    def test_result_participant_cannot_edit_topic(self,
+                                                  registry,
+                                                  app,
+                                                  process_url,
+                                                  app_participant,
+                                                  proposal0_url):
+        from adhocracy_mercator.sheets.mercator2 import ITopic
+        resp = app_participant.options(proposal0_url)
+        data = resp.json_body['PUT']['request_body']['data']
+        assert ITopic.__identifier__ not in data
+
+    def test_result_participant_can_create_logbook(self,
+                                                  registry,
+                                                  app,
+                                                  process_url,
+                                                  app_participant,
+                                                  proposal0_url):
+        from adhocracy_core.resources.document import IDocument
+        postable_types = app_participant.get_postable_types(proposal0_url + '/logbook')
+        assert IDocument in postable_types
