@@ -20,19 +20,22 @@ mercator2_meta = standard_meta \
                 .transform(('states', 'evaluate', 'acm'),
                            {'principals':                      ['participant', 'moderator', 'creator', 'initiator'],
                             'permissions':
-                            [['view_mercator2_extra_funding',   'Deny',        'Allow',     None,       None],
-                             ['view_mercator2_winnerinfo',      'Deny',        'Allow',     None,       None],
-                             ['edit_mercator2_winnerinfo',      'Deny',        'Allow',     None,       None]
+                            [['edit',                            None,          None,       'Deny',     None],
+                             ['view_mercator2_extra_funding',   'Deny',        'Allow',      None,      None],
+                             ['view_mercator2_winnerinfo',      'Deny',        'Allow',      None,      None],
+                             ['edit_mercator2_winnerinfo',      'Deny',        'Allow',      None,      None]
                             ]}) \
                 .transform(('states', 'result', 'acm'),
                            {'principals':                      ['participant', 'moderator', 'creator', 'initiator'],
                             'permissions':
-                            [['view_mercator2_extra_funding',   'Deny',        'Allow',      None,      None],
+                            [['edit',                            None,          None,       'Deny',     None],
+                             ['view_mercator2_extra_funding',   'Deny',        'Allow',      None,      None],
                              ['view_mercator2_winnerinfo',      'Allow',       'Allow',      None,      None],
                              ['edit_mercator2_winnerinfo',      'Deny',        'Allow',      None,      None],
                              ['create_document',                 None,          None,       'Allow',    None],
                              ['edit_document',                   None,          None,       'Allow',    None],
                             ]})
+# TODO deny 'edit' on the next states too!
 
 def includeme(config):
     """Add workflow."""

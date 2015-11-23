@@ -125,17 +125,16 @@ class TestMercator2:
         resp = _post_proposal(app_participant, path=process_url)
         assert resp.status_code == 200
 
-    def test_participate_participant_cant_read_extrafunding(self,
-                                                            registry,
-                                                            app,
-                                                            process_url,
-                                                            app_participant,
-                                                            proposal0_url):
+    def test_participate_participant_can_read_extrafunding(self,
+                                                           registry,
+                                                           app,
+                                                           process_url,
+                                                           app_participant,
+                                                           proposal0_url):
         from adhocracy_mercator.sheets.mercator2 import IExtraFunding
         resp = app_participant.get(proposal0_url)
         data = resp.json_body['data']
         assert IExtraFunding.__identifier__ in data
-
 
     def test_participate_participant2_cannot_read_extrafunding(self,
                                                                registry,
@@ -148,11 +147,59 @@ class TestMercator2:
         data = resp.json_body['data']
         assert IExtraFunding.__identifier__ not in data
 
+    def test_participate_participant_can_edit_topic(self,
+                                                       registry,
+                                                       app,
+                                                       process_url,
+                                                       app_participant,
+                                                       proposal0_url):
+        from adhocracy_mercator.sheets.mercator2 import ITopic
+        resp = app_participant.options(proposal0_url)
+        data = resp.json_body['PUT']['request_body']['data']
+        assert ITopic.__identifier__ in data
+
     def test_participate_participant_creates_comment(self,
                                                      registry,
                                                      app,
-                                                     process_url,
-                                                     app_participant):
-        path = process_url + '/proposal_0000000/comments'
+                                                     app_participant,
+                                                     proposal0_url):
+        path = proposal0_url +  '/comments'
         resp = _post_comment_item(app_participant, path=path)
         assert resp.status_code == 200
+
+    def test_set_evaluate_state(self, registry, app, process_url, app_admin):
+        resp = do_transition_to(app_admin,
+                                process_url,
+                                'evaluate')
+        assert resp.status_code == 200
+
+    def test_evaluate_participant_cannot_creates_proposal(self,
+                                                          registry,
+                                                          app,
+                                                          process_url,
+                                                          app_participant):
+        from adhocracy_mercator.resources.mercator2 import IMercatorProposal
+        postable_types = app_participant.get_postable_types(process_url)
+        assert IMercatorProposal not in postable_types
+
+    def test_evaluate_participant_cannot_comment(self,
+                                                 registry,
+                                                 app,
+                                                 process_url,
+                                                 app_participant,
+                                                 proposal0_url):
+        from adhocracy_core.resources.comment import ICommentVersion
+        url = proposal0_url + '/comments'
+        postable_types = app_participant.get_postable_types(url)
+        assert ICommentVersion not in postable_types
+
+    def test_evaluate_participant_cannot_edit_topic(self,
+                                                    registry,
+                                                    app,
+                                                    process_url,
+                                                    app_participant,
+                                                    proposal0_url):
+        from adhocracy_mercator.sheets.mercator2 import ITopic
+        resp = app_participant.options(proposal0_url)
+        data = resp.json_body['PUT']['request_body']['data']
+        assert ITopic.__identifier__ not in data
