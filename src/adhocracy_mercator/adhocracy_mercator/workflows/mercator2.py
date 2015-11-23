@@ -34,8 +34,13 @@ mercator2_meta = standard_meta \
                              ['edit_mercator2_winnerinfo',      'Deny',        'Allow',      None,      None],
                              ['create_document',                 None,          None,       'Allow',    None],
                              ['edit_document',                   None,          None,       'Allow',    None],
+                            ]}) \
+                .transform(('states', 'closed', 'acm'),
+                           {'principals':                      ['participant', 'moderator', 'creator', 'initiator'],
+                            'permissions':
+                            [['edit',                            None,          None,       'Deny',     None],
                             ]})
-# TODO deny 'edit' on the next states too!
+
 
 def includeme(config):
     """Add workflow."""
