@@ -312,22 +312,16 @@ class IMercatorSubResources(ISheet, ISheetReferenceAutoUpdateMarker):
     """Marker interface for commentable subresources of MercatorProposal."""
 
 
-class OrganizationInfoReference(SheetToSheet):
+class PitchReference(SheetToSheet):
     source_isheet = IMercatorSubResources
-    source_isheet_field = 'organization_info'
-    target_isheet = IOrganizationInfo
+    source_isheet_field = 'pitch'
+    target_isheet = IPitch
 
 
 class PartnersReference(SheetToSheet):
     source_isheet = IMercatorSubResources
     source_isheet_field = 'partners'
     target_isheet = IPartners
-
-
-class TopicReference(SheetToSheet):
-    source_isheet = IMercatorSubResources
-    source_isheet_field = 'topic'
-    target_isheet = ITopic
 
 
 class DurationReference(SheetToSheet):
@@ -342,12 +336,6 @@ class LocationReference(SheetToSheet):
     target_isheet = ILocation
 
 
-class StatusReference(SheetToSheet):
-    source_isheet = IMercatorSubResources
-    source_isheet_field = 'status'
-    target_isheet = IStatus
-
-
 class RoadToImpactReference(SheetToSheet):
     source_isheet = IMercatorSubResources
     source_isheet_field = 'road_to_impact'
@@ -360,34 +348,12 @@ class SelectionCriteriaReference(SheetToSheet):
     target_isheet = ISelectionCriteria
 
 
-class FinancialPlanningReference(SheetToSheet):
-    source_isheet = IMercatorSubResources
-    source_isheet_field = 'financial_planning'
-    target_isheet = IFinancialPlanning
-
-
-class CommunityReference(SheetToSheet):
-    source_isheet = IMercatorSubResources
-    source_isheet_field = 'community'
-    target_isheet = ICommunity
-
-
-class PitchReference(SheetToSheet):
-    source_isheet = IMercatorSubResources
-    source_isheet_field = 'pitch'
-    target_isheet = IPitch
-
-
 class MercatorSubResourcesSchema(colander.MappingSchema):
-    organization_info = Reference(reftype=OrganizationInfoReference)
     pitch = Reference(reftype=PitchReference)
     partners = Reference(reftype=PartnersReference)
-    topic = Reference(reftype=TopicReference)
     duration = Reference(reftype=DurationReference)
-    status = Reference(reftype=StatusReference)
+    road_to_impact = Reference(reftype=RoadToImpactReference)
     selection_criteria = Reference(reftype=SelectionCriteriaReference)
-    financial_planning = Reference(reftype=FinancialPlanningReference)
-    community = Reference(reftype=CommunityReference)
 
 
 mercator_subresources_meta = sheet_meta._replace(
