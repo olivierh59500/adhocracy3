@@ -10,11 +10,11 @@ A very large fancy header
 ```html_example
 <div class="hero-unit">
 
-    <a class="back" href="">Go back</a>
+    <a class="back hero-unit-back" href="">Go back</a>
 
     <h1 class="hero-unit-title">Here is a title for this hero unit</h1>
 
-    <ul class="meta-list">
+    <ul class="meta-list hero-unit-meta-list">
         <li class="meta-list-item">25.000€ Requested</li>
         <li class="meta-list-item">25.000€ Total Budget</li>
         <li class="meta-list-item">13. APRIL 2015</li>
@@ -25,7 +25,7 @@ A very large fancy header
 
     <a class="button-cta" href="">Vote here</a>
 
-    <div class="pop-menu m-right" tabindex="0">
+    <div class="pop-menu m-right hero-unit-pop-menu" tabindex="0">
         <ul class="pop-menu-list">
             <li class="pop-menu-list-item"><a href=""><i class="icon-share pop-menu-list-icon"></i> Share</a></li>
             <li class="pop-menu-list-item"><a href=""><i class="icon-code pop-menu-list-icon"></i> Embed</a></li>
@@ -41,7 +41,25 @@ A very large fancy header
     position: relative;
     text-align: center;
 
-    .pop-menu {
+    .hero-unit-title {
+        @include rem(margin-bottom, 26px);
+    }
+
+    .hero-unit-meta-list {
+        @include rem(margin-bottom, 23px);
+    }
+
+    .hero-unit-back {
+        @include rem(padding, 25px 0 45px 43px);
+        display: block;
+        text-align: left;
+        width: 100%;
+    }
+
+    .hero-unit-pop-menu {
+        @include rem(right, 22px);
+        @include rem(top, 34px);
+        position: absolute;
         text-align: left;
     }
 }

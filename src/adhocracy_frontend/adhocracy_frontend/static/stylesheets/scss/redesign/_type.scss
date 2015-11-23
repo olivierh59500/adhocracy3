@@ -38,6 +38,14 @@ h1, .h1 {
     font-weight: $font-weight-medium;
 }
 
+a {
+    color: $color-text-highlight;
+
+    &:focus, &:hover {
+        text-decoration: underline;
+    }
+}
+
 /*doc
 ---
 title: Text
@@ -65,4 +73,34 @@ ea esse irure ea officia sed sed Excepteur fugiat officia sunt tempor eu aliqua 
     @include span(8 of 12);
     float: none;
     margin: 0 auto;
+}
+
+/*doc
+---
+title: Back
+name: text-back
+category: Type-Redesign
+---
+
+A Link telling you to go back
+
+```html_example
+<a class="back" href="">Go back</a>
+```
+*/
+
+.back {
+    @include rem(font-size, $font-size-small);
+    color: $color-text-heading;
+    font-weight: $font-weight-heavy;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    &:hover, &:focus {
+        color: $color-text-highlight;
+    }
+
+    &:before {
+        content: "← ";
+    }
 }

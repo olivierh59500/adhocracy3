@@ -1,7 +1,54 @@
+/*doc
+---
+title: Lists
+name: list
+category: Lists-Redesign
+---
+*/
+
+/*doc
+---
+title: Plain List
+name: list.plain-list
+parent: list
+---
+
+An unstyled list
+
+```html_example
+<ul class="plain-list">
+    <li>This</li>
+    <li>List</li>
+    <li>Is</li>
+    <li>Boring</li>
+</li>
+
+<ul class="plain-list m-inline">
+    <li>This</li>
+    <li>List</li>
+    <li>Is</li>
+    <li>Boring</li>
+    <li>Inline</li>
+</li>
+```
+*/
+
 @mixin plain-list {
     margin: 0;
     padding: 0;
     list-style: none;
+}
+
+.plain-list {
+    @include plain-list;
+}
+
+ul, ol {
+    &.m-inline {
+        li {
+            @include inline-block;
+        }
+    }
 }
 
 .meta-list {
@@ -12,6 +59,7 @@
 
 .meta-list-item {
     @include inline-block;
+    font-weight: $font-weight-heavy;
 
     &:after {
         content: " /";
