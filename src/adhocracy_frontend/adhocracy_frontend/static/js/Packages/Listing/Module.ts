@@ -21,6 +21,7 @@ export var register = (angular) => {
         .directive("adhFacets", ["adhConfig", AdhListing.facets])
         .directive("adhListingActions", ["adhConfig", AdhListing.listingActionsDirective])
         .directive("adhMapSwitchAction", ["adhConfig", AdhListing.mapSwitchDirective])
+        .directive("adhFilterAndSort", [AdhListing.filterAndSortDirective])
         .directive("adhListing",
             ["adhConfig", "adhWebSocket", (adhConfig, adhWebSocket) =>
                 new AdhListing.Listing(new AdhListing.ListingPoolAdapter()).createDirective(adhConfig, adhWebSocket)]);
