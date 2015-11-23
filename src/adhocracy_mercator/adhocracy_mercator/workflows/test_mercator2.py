@@ -167,6 +167,18 @@ class TestMercator2:
         resp = _post_comment_item(app_participant, path=path)
         assert resp.status_code == 200
 
+    def test_participate_participant_cannot_update_winnerinfo(self,
+                                                              registry,
+                                                              app,
+                                                              process_url,
+                                                              app_participant,
+                                                              proposal0_url):
+        from adhocracy_mercator.sheets.mercator2 import IWinnerInfo
+        resp = app_participant.options(proposal0_url)
+        data = resp.json_body['PUT']['request_body']['data']
+        assert IWinnerInfo not in data
+
+
     def test_set_evaluate_state(self, registry, app, process_url, app_admin):
         resp = do_transition_to(app_admin,
                                 process_url,
@@ -203,3 +215,15 @@ class TestMercator2:
         resp = app_participant.options(proposal0_url)
         data = resp.json_body['PUT']['request_body']['data']
         assert ITopic.__identifier__ not in data
+
+
+    def test_evaluate_moderator_can_update_winnerinfo(self,
+                                                      registry,
+                                                      app,
+                                                      process_url,
+                                                      app_moderator,
+                                                      proposal0_url):
+        from adhocracy_mercator.sheets.mercator2 import IWinnerInfo
+        resp = app_moderator.options(proposal0_url)
+        data = resp.json_body['PUT']['request_body']['data']
+        assert IWinnerInfo.__identifier__ in data
