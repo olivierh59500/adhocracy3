@@ -158,13 +158,17 @@ class TestMercatorProposal:
              adhocracy_core.sheets.description.IDescription,
              adhocracy_core.sheets.comment.ICommentable,
              adhocracy_core.sheets.rate.IRateable,
+             adhocracy_core.sheets.image.IImageReference,
+             adhocracy_mercator.sheets.mercator2.IMercatorSubResources,
              adhocracy_mercator.sheets.mercator2.IUserInfo,
              adhocracy_mercator.sheets.mercator2.IOrganizationInfo,
              adhocracy_mercator.sheets.mercator2.ITopic,
              adhocracy_mercator.sheets.mercator2.ILocation,
              adhocracy_mercator.sheets.mercator2.IStatus,
              adhocracy_mercator.sheets.mercator2.IFinancialPlanning,
-             adhocracy_mercator.sheets.mercator2.ICommunity,)
+             adhocracy_mercator.sheets.mercator2.IExtraFunding,
+             adhocracy_mercator.sheets.mercator2.ICommunity,
+             adhocracy_mercator.sheets.mercator2.IWinnerInfo)
         assert meta.is_implicit_addable
         assert add_ratesservice in meta.after_creation
         assert add_commentsservice in meta.after_creation

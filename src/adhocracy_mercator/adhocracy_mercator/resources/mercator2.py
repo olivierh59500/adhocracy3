@@ -11,6 +11,8 @@ from adhocracy_core.sheets.comment import ICommentable
 from adhocracy_core.sheets.description import IDescription
 from adhocracy_core.sheets.rate import IRateable
 from adhocracy_core.sheets.title import ITitle
+from adhocracy_core.sheets.image import IImageReference
+
 import adhocracy_mercator.sheets.mercator2
 import adhocracy_core.sheets
 
@@ -105,17 +107,22 @@ proposal_meta = proposal.proposal_meta._replace(
                    IRoadToImpact,
                    ISelectionCriteria)
 )._add(after_creation=(add_logbook_service,),
-       extended_sheets=(ITitle,
-                        IDescription,
-                        ICommentable,
-                        IRateable,
-                        adhocracy_mercator.sheets.mercator2.IUserInfo,
-                        adhocracy_mercator.sheets.mercator2.IOrganizationInfo,
-                        adhocracy_mercator.sheets.mercator2.ITopic,
-                        adhocracy_mercator.sheets.mercator2.ILocation,
-                        adhocracy_mercator.sheets.mercator2.IStatus,
-                        adhocracy_mercator.sheets.mercator2.IFinancialPlanning,
-                        adhocracy_mercator.sheets.mercator2.ICommunity,))
+       extended_sheets=
+       (ITitle,
+        IDescription,
+        ICommentable,
+        IRateable,
+        IImageReference,
+        adhocracy_mercator.sheets.mercator2.IMercatorSubResources,
+        adhocracy_mercator.sheets.mercator2.IUserInfo,
+        adhocracy_mercator.sheets.mercator2.IOrganizationInfo,
+        adhocracy_mercator.sheets.mercator2.ITopic,
+        adhocracy_mercator.sheets.mercator2.ILocation,
+        adhocracy_mercator.sheets.mercator2.IStatus,
+        adhocracy_mercator.sheets.mercator2.IFinancialPlanning,
+        adhocracy_mercator.sheets.mercator2.IExtraFunding,
+        adhocracy_mercator.sheets.mercator2.ICommunity,
+        adhocracy_mercator.sheets.mercator2.IWinnerInfo))
 
 
 class IProcess(process.IProcess):

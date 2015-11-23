@@ -252,9 +252,21 @@ class FinancialPlanningSchema(colander.MappingSchema):
     major_expenses = Text(missing=colander.required)
 
 
-# TODO as special sheet:
-    # other_sources = Text()
-    # other_sources_secured = Text()
+class IExtraFunding(ISheet):
+    """Marker interface for the 'other sources of income' fie."""
+
+
+class ExtraFundingSchema(colander.MappingSchema):
+    other_sources = Text()
+    secured = Boolean(default=False)
+
+
+extra_funding_meta = sheet_meta._replace(
+    isheet=IExtraFunding,
+    schema_class=ExtraFundingSchema,
+    permission_view='view_mercator_extra_funding',
+)
+
 
 financialplanning_meta = sheet_meta._replace(
     isheet=IFinancialPlanning,
@@ -361,9 +373,6 @@ mercator_subresources_meta = sheet_meta._replace(
     isheet=IMercatorSubResources,
     schema_class=MercatorSubResourcesSchema)
 
-# TODO: image!
-# TODO: max length for fields
-
 
 def includeme(config):
     """Register sheets."""
@@ -377,6 +386,7 @@ def includeme(config):
     add_sheet_to_registry(roadtoimpact_meta, config.registry)
     add_sheet_to_registry(selectioncriteria_meta, config.registry)
     add_sheet_to_registry(financialplanning_meta, config.registry)
+    add_sheet_to_registry(extra_funding_meta, config.registry)
     add_sheet_to_registry(community_meta, config.registry)
     add_sheet_to_registry(winnerinfo_meta, config.registry)
     add_sheet_to_registry(mercator_subresources_meta, config.registry)

@@ -559,6 +559,58 @@ class TestFinancialPlanningSheet:
         context = testing.DummyResource(__provides__=meta.isheet)
         assert get_sheet(context, meta.isheet)
 
+class TestExtraFundingSchema:
+
+    @fixture
+    def inst(self):
+        from .mercator2 import ExtraFundingSchema
+        return ExtraFundingSchema()
+
+    @fixture
+    def cstruct_required(self):
+        return {'other_sources': 'XYZ grant',
+                'secured': 'False'}
+
+    # def test_deserialize_empty(self, inst):
+    #     from colander import Invalid
+    #     cstruct = {}
+    #     with raises(Invalid) as error:
+    #         inst.deserialize(cstruct)
+    #     assert error.value.asdict() == \
+    #         {'other_sources': 'Required',}
+
+    def test_deserialize_with_required(self, inst, cstruct_required):
+        wanted = cstruct_required
+        assert inst.deserialize(cstruct_required) == \
+            {'other_sources': 'XYZ grant',
+             'secured': False}
+
+
+class TestExtraFundingSheet:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import extra_funding_meta
+        return extra_funding_meta
+
+    @fixture
+    def context(self):
+        from adhocracy_core.interfaces import IItem
+        return testing.DummyResource(__provides__=IItem)
+
+    def test_create_valid(self, meta, context):
+        from adhocracy_mercator.sheets.mercator2 import IExtraFunding
+        from adhocracy_mercator.sheets.mercator2 import ExtraFundingSchema
+        inst = meta.sheet_class(meta, context)
+        assert inst.meta.isheet == IExtraFunding
+        assert inst.meta.schema_class == ExtraFundingSchema
+
+    @mark.usefixtures('integration')
+    def test_includeme(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
+
 
 class TestCommunitySchema:
 
