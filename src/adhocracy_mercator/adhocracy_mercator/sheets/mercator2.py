@@ -64,7 +64,7 @@ class OrganizationInfoSchema(colander.MappingSchema):
     status_other = Text(validator=colander.Length(max=300))
 
     def validator(self, node, value):
-        """Extra validation depending of the status of the organisation.
+        """Extra validation depending on the status of the organisation.
 
         Make `status_other` required if `status` == `other` and
         `help_request` required if `status` == `support_needed`.
@@ -149,11 +149,11 @@ class TopicSchema(colander.MappingSchema):
     other = Text()
 
     def validator(self, node, value):
-        """Extra validation depending of the status of the topic.
+        """Extra validation depending on the status of the topic.
+
         Make `other` required if `topic` == `other`.
         """
         topic = value.get('topic', None)
-        import pudb; pudb.set_trace() #  noqa
         if topic == 'other':
             if not value.get('other', None):
                 other = node['other']
@@ -187,8 +187,20 @@ class LocationSchema(colander.MappingSchema):
     city = Text(missing=colander.required)
     country = ISOCountryCode(missing=colander.required)
     has_link_to_ruhr = Boolean(missing=colander.required, default=False)
-    # TODO makes next field obligatory if there is a link
     link_to_ruhr = Text()
+
+    def validator(self, node, value):
+        """Extra validation depending on the status of the location.
+
+        Make `link_to_ruhr` required if `has_link_to_ruhr` == `True`.
+        """
+        has_link_to_ruhr = value.get('has_link_to_ruhr', None)
+        if has_link_to_ruhr:
+            if not value.get('link_to_ruhr', None):
+                link_to_ruhr = node['link_to_ruhr']
+                raise colander.Invalid(
+                    link_to_ruhr,
+                    msg='Required iff has_link_to_ruhr == True')
 
 
 location_meta = sheet_meta._replace(

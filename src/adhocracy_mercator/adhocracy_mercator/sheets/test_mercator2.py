@@ -374,6 +374,17 @@ class TestLocationSchema:
                'country': 'DE',
                'has_link_to_ruhr': False}
 
+    def test_deserialize_with_link_to_ruhr_but_no_text(self,
+                                                       inst,
+                                                       cstruct_required):
+        from colander import Invalid
+        cstruct = cstruct_required
+        cstruct['has_link_to_ruhr'] = True
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'link_to_ruhr':
+                                        'Required iff has_link_to_ruhr == True'}
+
 class TestLocationSheet:
 
     @fixture
@@ -400,7 +411,7 @@ class TestLocationSheet:
         assert get_sheet(context, meta.isheet)
 
 
-class TestLocationSchema:
+class TestStatusSchema:
 
     @fixture
     def inst(self):
@@ -423,7 +434,7 @@ class TestLocationSchema:
         assert inst.deserialize(cstruct_required) == {'status': 'other'}
 
 
-class TestLocationSheet:
+class TestStatusSheet:
 
     @fixture
     def meta(self):
