@@ -56,6 +56,12 @@ def _post_proposal(app_user, path='/') -> TestResponse:
     resp = app_user.post_resource(path, IMercatorProposal,   {})
     return resp
 
+# todo refactor
+def _post_comment_item(app_user, path='') -> TestResponse:
+    from adhocracy_core.resources.comment import IComment
+    resp = app_user.post_resource(path, IComment, {})
+    return resp
+
 def _post_document_item(app_user, path='/') -> TestResponse:
     from adhocracy_core.resources.document import IDocument
     resp = app_user.post_resource(path, IDocument, {})
@@ -80,6 +86,11 @@ class TestMercator2:
     @fixture
     def process_url(self):
         return '/organisation/advocate-europe2'
+
+    @fixture
+    def proposal0_url(self):
+        return '/organisation/advocate-europe2/proposal_0000000'
+
 
     def test_create_resources(self,
                               registry,
@@ -111,7 +122,37 @@ class TestMercator2:
                                                       app,
                                                       process_url,
                                                       app_participant):
-        import pudb; pudb.set_trace() #  noqa
         resp = _post_proposal(app_participant, path=process_url)
-        import pudb; pudb.set_trace() #  noqa
+        assert resp.status_code == 200
+
+    def test_participate_participant_cant_read_extrafunding(self,
+                                                            registry,
+                                                            app,
+                                                            process_url,
+                                                            app_participant,
+                                                            proposal0_url):
+        from adhocracy_mercator.sheets.mercator2 import IExtraFunding
+        resp = app_participant.get(proposal0_url)
+        data = resp.json_body['data']
+        assert IExtraFunding.__identifier__ in data
+
+
+    def test_participate_participant2_cannot_read_extrafunding(self,
+                                                               registry,
+                                                               app,
+                                                               process_url,
+                                                               app_participant2,
+                                                               proposal0_url):
+        from adhocracy_mercator.sheets.mercator2 import IExtraFunding
+        resp = app_participant2.get(proposal0_url)
+        data = resp.json_body['data']
+        assert IExtraFunding.__identifier__ not in data
+
+    def test_participate_participant_creates_comment(self,
+                                                     registry,
+                                                     app,
+                                                     process_url,
+                                                     app_participant):
+        path = process_url + '/proposal_0000000/comments'
+        resp = _post_comment_item(app_participant, path=path)
         assert resp.status_code == 200

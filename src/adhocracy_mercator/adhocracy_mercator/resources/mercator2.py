@@ -12,6 +12,9 @@ from adhocracy_core.sheets.description import IDescription
 from adhocracy_core.sheets.rate import IRateable
 from adhocracy_core.sheets.title import ITitle
 from adhocracy_core.sheets.image import IImageReference
+from adhocracy_core.resources.comment import add_commentsservice
+from adhocracy_core.resources.rate import add_ratesservice
+from adhocracy_core.resources.badge import add_badge_assignments_service
 
 import adhocracy_mercator.sheets.mercator2
 import adhocracy_core.sheets
@@ -105,9 +108,13 @@ proposal_meta = proposal.proposal_meta._replace(
     element_types=(IPitch,
                    IPartners,
                    IRoadToImpact,
-                   ISelectionCriteria)
-)._add(after_creation=(add_logbook_service,),
-       extended_sheets=
+                   ISelectionCriteria),
+    after_creation=(
+        add_commentsservice,
+        add_ratesservice,
+        add_badge_assignments_service,
+        add_logbook_service,)
+)._add(extended_sheets=
        (ITitle,
         IDescription,
         ICommentable,
