@@ -28,12 +28,38 @@ class TestPitch:
         assert meta.iresource.providedBy(res)
 
 
+class TestPartners:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import partners_meta
+        return partners_meta
+
+    def test_meta(self, meta):
+        import adhocracy_mercator.sheets.mercator2
+        import adhocracy_core.sheets
+        from adhocracy_mercator.resources import mercator2
+        assert meta.iresource == mercator2.IPartners
+        assert meta.permission_create == 'create_proposal'
+        assert meta.autonaming_prefix == 'partners'
+        assert meta.extended_sheets == \
+            (adhocracy_mercator.sheets.mercator2.IPartners,
+             adhocracy_core.sheets.comment.ICommentable,)
+
+    @mark.usefixtures('integration')
+    def test_create(self, pool, meta, registry):
+        res = registry.content.create(meta.iresource.__identifier__,
+                                      parent=pool,
+                                      )
+        assert meta.iresource.providedBy(res)
+
+
 class TestDuration:
 
     @fixture
     def meta(self):
-        from .mercator2 import location_meta
-        return location_meta
+        from .mercator2 import duration_meta
+        return duration_meta
 
     def test_meta(self, meta):
         import adhocracy_mercator.sheets.mercator2
@@ -41,7 +67,7 @@ class TestDuration:
         from adhocracy_mercator.resources import mercator2
         assert meta.iresource == mercator2.IDuration
         assert meta.permission_create == 'create_proposal'
-        assert meta.autonaming_prefix == 'location'
+        assert meta.autonaming_prefix == 'duration'
         assert meta.extended_sheets == \
             (adhocracy_mercator.sheets.mercator2.IDuration,
              adhocracy_core.sheets.comment.ICommentable,)
@@ -79,6 +105,32 @@ class TestRoadToImpact:
                                       )
         assert meta.iresource.providedBy(res)
 
+
+class TestSelectionCriteria:
+
+    @fixture
+    def meta(self):
+        from .mercator2 import selection_criteria_meta
+        return selection_criteria_meta
+
+    def test_meta(self, meta):
+        import adhocracy_mercator.sheets.mercator2
+        import adhocracy_core.sheets
+        from adhocracy_mercator.resources import mercator2
+        assert meta.iresource == mercator2.ISelectionCriteria
+        assert meta.permission_create == 'create_proposal'
+        assert meta.autonaming_prefix == 'selection_criteria'
+        assert meta.extended_sheets == \
+            (adhocracy_mercator.sheets.mercator2.ISelectionCriteria,
+             adhocracy_core.sheets.comment.ICommentable,)
+
+    @mark.usefixtures('integration')
+    def test_create(self, pool, meta, registry):
+        res = registry.content.create(meta.iresource.__identifier__,
+                                      parent=pool,
+                                      )
+        assert meta.iresource.providedBy(res)
+
 class TestMercatorProposal:
 
     @fixture
@@ -88,27 +140,25 @@ class TestMercatorProposal:
 
     def test_meta(self, meta):
         import adhocracy_mercator.sheets.mercator2
+        import adhocracy_core.sheets
         from adhocracy_mercator.resources import mercator2
         from adhocracy_core.resources.comment import add_commentsservice
         from adhocracy_core.resources.rate import add_ratesservice
         from adhocracy_core.resources.logbook import add_logbook_service
         from adhocracy_core.sheets.badge import IBadgeable
         assert meta.iresource == mercator2.IMercatorProposal
-        # assert meta.element_types == (mercator.IMercatorProposalVersion,
-        #                               mercator.IOrganizationInfo,
-        #                               mercator.IIntroduction,
-        #                               mercator.IDescription,
-        #                               mercator.ILocation,
-        #                               mercator.IStory,
-        #                               mercator.IOutcome,
-        #                               mercator.ISteps,
-        #                               mercator.IValue,
-        #                               mercator.IPartners,
-        #                               mercator.IFinance,
-        #                               mercator.IExperience,
-        #                               )
+        assert meta.element_types == (mercator2.IPitch,
+                                      mercator2.IPartners,
+                                      mercator2.IRoadToImpact,
+
+                                      )
         assert meta.extended_sheets == \
-            (adhocracy_mercator.sheets.mercator2.IUserInfo,)
+            (adhocracy_core.sheets.badge.IBadgeable,
+             adhocracy_core.sheets.title.ITitle,
+             adhocracy_core.sheets.description.IDescription,
+             adhocracy_core.sheets.comment.ICommentable,
+             adhocracy_core.sheets.rate.IRateable,
+             adhocracy_mercator.sheets.mercator2.IUserInfo,)
         assert meta.is_implicit_addable
         assert add_ratesservice in meta.after_creation
         assert add_commentsservice in meta.after_creation
