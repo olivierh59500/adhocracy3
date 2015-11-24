@@ -153,6 +153,3 @@ def includeme(config):
     add_resource_type_to_registry(duration_meta, config)
     add_resource_type_to_registry(road_to_impact_meta, config)
     add_resource_type_to_registry(selection_criteria_meta, config)
-
-# TODO specify workflow
-#    workflow_name = 'mercator'
