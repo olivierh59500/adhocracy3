@@ -93,7 +93,8 @@ class IPitch(ISheet):
 
 
 class PitchSchema(colander.MappingSchema):
-    pitch = Text(missing=colander.required)
+    pitch = Text(missing=colander.required,
+                 validator=colander.Length(min=3, max=100))
 
 
 pitch_meta = sheet_meta._replace(
@@ -241,12 +242,18 @@ class IRoadToImpact(ISheet):
 
 
 class RoadToImpactSchema(colander.MappingSchema):
-    challenge = Text(missing=colander.required)
-    aim = Text(missing=colander.required)
-    plan = Text(missing=colander.required)
-    doing = Text(missing=colander.required)
-    team = Text(missing=colander.required)
-    other = Text(missing=colander.required)
+    challenge = Text(missing=colander.required,
+                     validator=colander.Length(min=3, max=500))
+    aim = Text(missing=colander.required,
+               validator=colander.Length(min=3, max=500))
+    plan = Text(missing=colander.required,
+                validator=colander.Length(min=3, max=800))
+    doing = Text(missing=colander.required,
+                 validator=colander.Length(min=3, max=500))
+    team = Text(missing=colander.required,
+                validator=colander.Length(min=3, max=800))
+    other = Text(missing=colander.required,
+                 validator=colander.Length(min=3, max=500))
 
 
 roadtoimpact_meta = sheet_meta._replace(
@@ -260,9 +267,13 @@ class ISelectionCriteria(ISheet):
 
 
 class SelectionCriteriaSchema(colander.MappingSchema):
-    connection_and_cohesion_europe = Text(missing=colander.required)
-    difference = Text(missing=colander.required)
-    practical_relevance = Text(missing=colander.required)
+    connection_and_cohesion_europe = Text(
+        missing=colander.required,
+        validator=colander.Length(min=3, max=500))
+    difference = Text(missing=colander.required,
+                      validator=colander.Length(min=3, max=500))
+    practical_relevance = Text(missing=colander.required,
+                               validator=colander.Length(min=3, max=500))
 
 
 selectioncriteria_meta = sheet_meta._replace(

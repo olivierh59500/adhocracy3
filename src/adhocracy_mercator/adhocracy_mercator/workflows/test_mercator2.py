@@ -53,7 +53,7 @@ def app_initiator(app_initiator):
 
 def _post_proposal(app_user, path='/') -> TestResponse:
     from adhocracy_mercator.resources.mercator2 import IMercatorProposal
-    resp = app_user.post_resource(path, IMercatorProposal,   {})
+    resp = app_user.post_resource(path, IMercatorProposal, {})
     return resp
 
 def _post_comment_item(app_user, path='') -> TestResponse:
