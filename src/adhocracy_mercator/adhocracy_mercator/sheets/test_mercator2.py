@@ -641,14 +641,6 @@ class TestExtraFundingSchema:
         return {'other_sources': 'XYZ grant',
                 'secured': 'False'}
 
-    # def test_deserialize_empty(self, inst):
-    #     from colander import Invalid
-    #     cstruct = {}
-    #     with raises(Invalid) as error:
-    #         inst.deserialize(cstruct)
-    #     assert error.value.asdict() == \
-    #         {'other_sources': 'Required',}
-
     def test_deserialize_with_required(self, inst, cstruct_required):
         wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \

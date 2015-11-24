@@ -1,5 +1,7 @@
 """Workflow for Mercator2."""
 
+# flake8: noqa
+
 from adhocracy_core.workflows import add_workflow
 from adhocracy_core.workflows.standard import standard_meta
 

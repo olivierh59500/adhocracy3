@@ -1,6 +1,7 @@
 from pytest import fixture
 from pytest import mark
 
+
 class TestPitch:
 
     @fixture
@@ -131,6 +132,7 @@ class TestSelectionCriteria:
                                       )
         assert meta.iresource.providedBy(res)
 
+
 class TestMercatorProposal:
 
     @fixture
@@ -180,6 +182,7 @@ class TestMercatorProposal:
                                       parent=pool,
                                       )
         assert meta.iresource.providedBy(res)
+
 
 class TestProcess:
 
