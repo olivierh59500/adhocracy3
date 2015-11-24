@@ -56,7 +56,6 @@ def _post_proposal(app_user, path='/') -> TestResponse:
     resp = app_user.post_resource(path, IMercatorProposal,   {})
     return resp
 
-# todo refactor
 def _post_comment_item(app_user, path='') -> TestResponse:
     from adhocracy_core.resources.comment import IComment
     resp = app_user.post_resource(path, IComment, {})
@@ -248,7 +247,6 @@ class TestMercator2:
         url = proposal0_url + '/badge_assignments'
         postable_types = app_moderator.get_postable_types(url)
         assert IBadgeAssignment in postable_types
-
 
     def test_set_result_state(self, registry, app, process_url, app_admin):
         resp = do_transition_to(app_admin,
