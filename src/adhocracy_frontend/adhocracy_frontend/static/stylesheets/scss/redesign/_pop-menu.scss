@@ -35,7 +35,7 @@ $arrow-width: 6px;
     position: relative;
 
     &:before {
-        @extend .icon-ellipsis-h:before;
+        @include fa(pop-menu);
         @include rem(font-size, 20px);
         color: $color-text-heading;
     }

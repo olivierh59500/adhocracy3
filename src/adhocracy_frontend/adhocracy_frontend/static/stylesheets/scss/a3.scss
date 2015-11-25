@@ -9,14 +9,13 @@
 @import "general/future";
 @import "general/a11y";
 
-@import "third_party/adhocracy3-icons-rails";
-
 @import "redesign/variables";
 @import "redesign/variables_extra";
 
 @import "general/mixins";
 
 @import "redesign/fonts";
+@import "redesign/icons";
 
 @import "third_party/normalize";
 @import "general/normalize";
@@ -27,3 +26,5 @@
 @import "redesign/chapter";
 @import "redesign/pop-menu";
 @import "redesign/hero-unit";
+@import "redesign/comment";
+@import "redesign/placeholder";

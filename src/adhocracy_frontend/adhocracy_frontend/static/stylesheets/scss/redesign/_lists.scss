@@ -51,6 +51,25 @@ ul, ol {
     }
 }
 
+/*doc
+---
+title: Meta List
+name: list.meta-list
+parent: list
+---
+
+An List of meta information
+
+```html_example
+<ul class="meta-list">
+    <li>This</li>
+    <li>List</li>
+    <li>Is</li>
+    <li>Meta</li>
+</li>
+```
+*/
+
 .meta-list {
     @include plain-list;
     color: $color-text-highlight;
@@ -67,5 +86,45 @@ ul, ol {
 
     &:last-child:after {
         content: "";
+    }
+}
+
+/*doc
+---
+title: Action List
+name: list.action-list
+parent: list
+---
+
+An List of meta information
+
+```html_example
+<ul class="action-list">
+    <li><a href=""><i class="comment-header-icon icon-reply"></i> Reply</a></li>
+    <li><a href=""><i class="comment-header-icon icon-pencil"></i> Edit</a></li>
+    <li><a href=""><i class="comment-header-icon icon-ban-circle"></i> Report</a></li>
+</li>
+```
+*/
+
+.action-list {
+    @extend .m-inline;
+    @include plain-list;
+    font-size: $font-size-small;
+
+    li {
+        @include rem(margin-right, 26px);
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        a {
+            color: $color-text-emphasize;
+
+            &:hover, &:focus {
+                color: $color-text-highlight;
+            }
+        }
     }
 }

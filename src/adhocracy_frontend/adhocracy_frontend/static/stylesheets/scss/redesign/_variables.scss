@@ -13,8 +13,10 @@ $color-text-highlight: $color-brand-one;
 $color-text-inverted: white;
 
 $color-structure-border: #e5e5e5;
-
 $color-background-base: white;
+
+$color-invalid: #f00;
+$color-valid: #0f0;
 
 $font-size-small: 12px;
 $font-size-normal: 14px;
@@ -30,3 +32,30 @@ $line-height-normal: 1.3;
 $font-weight-normal: 400;
 $font-weight-medium: 500;
 $font-weight-heavy: 900;
+
+// AD3 Alias : FontAwesome Alias
+// so .icon-report is equivalent to .fa-flag
+$icons: (
+    "reply" :       "reply",
+    "report" :      "flag",
+    "favorite" :    "star",
+    "edit" :        "pencil",
+    "delete" :      "ban",
+    "pop-menu" :    "ellipsis-h"
+);
+
+//// LEGACY
+
+$color-text-introvert: $color-muted;
+$color-background-base-introvert: $color-muted;
+$font-weight-introvert: $font-weight-normal;
+$color-structure-introvert: $color-muted;
+$color-structure-normal: $color-muted;
+$color-text-highlight-normal: $color-text-highlight;
+$color-text-highlight-extrovert: $color-brand-two;
+$color-function-valid: $color-valid;
+$color-function-invalid: $color-invalid;
+
+.listing-create-form {
+    zoom: 1;
+}

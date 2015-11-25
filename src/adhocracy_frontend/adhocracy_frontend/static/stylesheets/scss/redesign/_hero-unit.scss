@@ -58,7 +58,7 @@ A very large fancy header
 
     .hero-unit-pop-menu {
         @include rem(right, 22px);
-        @include rem(top, 34px);
+        @include rem(top, 24px);
         position: absolute;
         text-align: left;
     }
