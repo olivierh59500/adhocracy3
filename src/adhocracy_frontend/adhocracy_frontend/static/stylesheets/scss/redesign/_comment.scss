@@ -1,0 +1,252 @@
+/*doc
+---
+title: Comment Redesign
+name: comment-redesign
+category: Widgets-redesign
+---
+
+A comment widget consists of a comment-main widget and a list of child
+comments (replies). There is a form for creating new replies.
+
+The comment may have the states `is-selected` or `is-not-selected` where
+the latter one is used if a different comment is selected. If no comment
+is selected, no state is applied.
+
+```html_example
+<div class="comment">
+    <header class="comment-header debug-placeholder">
+        Comment Header
+    </header>
+    <div class="comment-main debug-placeholder">Comment Main</div>
+
+    <div class="comment-children-create-form debug-placeholder">
+        Comment Create Form
+    </div>
+
+    <div class="comment-children">
+        <div class="comment">
+            <div class="comment-main debug-placeholder">Comment Main</div>
+
+            <div class="comment-children">
+            </div>
+        </div>
+        <div class="comment">
+            <div class="comment-main debug-placeholder">Comment Main</div>
+
+            <div class="comment-children-create-form debug-placeholder">
+                Comment Create Form
+            </div>
+
+            <div class="comment-children"></div>
+        </div>
+    </div>
+</div>
+<div class="comment">
+    <div class="comment-main debug-placeholder">Comment Main</div>
+
+    <div class="comment-children"></div>
+</div>
+```
+*/
+
+.comment {
+    @extend .text-container;
+    @include rem(margin-bottom, 68px);
+    border-bottom: 1px solid $color-muted;
+
+    &.is-not-selected {
+        background: $color-muted;
+    }
+
+    &.is-selected {
+        background: $color-background-base;
+    }
+
+    .comment {
+        margin: 0;
+        width: 100%;
+    }
+}
+
+.comment-children {
+    .comment {
+        @include rem(margin-left, 35px);
+        @include rem(padding-left, 17px);
+        border-left: 2px solid $color-brand-one;
+    }
+}
+
+/*doc
+---
+title: Comment Main Header Redesign
+name: comment-main-redesign-header
+parent: comment-redesign
+---
+
+```html_example
+<header class="comment-header">
+    <div class="text-container">
+        <span class="comment-amount">5 Comments</span>
+        <a class="button-cta comment-header-cta" href="">Comment</a>
+    </div>
+</header>
+```
+*/
+
+.comment-header {
+    @include clearfix;
+    @include rem(padding, 21px 0);
+    border-bottom: 1px solid $color-structure-border;
+
+    .comment-amount {
+        @include rem(font-size, $font-size-large);
+        color: $color-text-emphasize;
+        font-weight: $font-weight-medium;
+        float: left;
+        line-height: $button-line-height;
+    }
+
+    .comment-header-cta {
+        float: right;
+    }
+}
+
+/*doc
+---
+title: Comment Main Redesign
+name: comment-main-redesign
+parent: comment-redesign
+---
+
+```html_example
+<div class="comment">
+    <div class="comment-main">
+        <header class="comment-main-header">
+            <img class="comment-author-thumbnail" src="/static/images/sample.jpg" alt="" />
+            <span class="comment-header-meta">
+                <span class="comment-header-creator">
+                    <a href="">god</a>
+                </span>
+                <span class="comment-header-date">
+                    25 minutes ago
+                </span>
+            </span>
+        </header>
+        <div class="comment-content">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue.</p>
+            <p>Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est.</p>
+        </div>
+        <footer class="comment-footer">
+            <ul class="action-list comment-action-list">
+                <li><a href=""><i class="action-list-icon icon-reply"></i> Reply</a></li>
+                <li><a href=""><i class="action-list-icon icon-edit"></i> Edit</a></li>
+                <li><a href=""><i class="action-list-icon icon-report"></i> Report</a></li>
+                <li><a href=""><i class="action-list-icon icon-delete"></i> Delete</a></li>
+            </ul>
+        </footer>
+    </div>
+
+    <div class="comment-children">
+        <div class="comment">
+            <div class="comment-main">
+                <header class="comment-main-header">
+                    <img class="comment-author-thumbnail" src="/static/images/sample.jpg" alt="" />
+                    <span class="comment-header-meta">
+                        <span class="comment-header-creator">
+                            <a href="">god</a>
+                        </span>
+                        <span class="comment-header-date">
+                            25 minutes ago
+                        </span>
+                    </span>
+                </header>
+                <div class="comment-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue.</p>
+                    <p>Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est.</p>
+                </div>
+                <footer class="comment-footer">
+                    <ul class="action-list comment-action-list">
+                        <li><a href=""><i class="action-list-icon icon-reply"></i> Reply</a></li>
+                        <li><a href=""><i class="action-list-icon icon-edit"></i> Edit</a></li>
+                        <li><a href=""><i class="action-list-icon icon-report"></i> Report</a></li>
+                        <li><a href=""><i class="action-list-icon icon-delete"></i> Delete</a></li>
+                    </ul>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+```
+*/
+
+.comment-main {
+    @include rem(font-size, $font-size-large);
+    color: $color-text-emphasize;
+}
+
+.comment-main-header {
+    @include rem(margin-bottom, 28px);
+
+    .comment-author-thumbnail {
+        @include rem(border-radius, 18.5px);
+        @include rem(height, 37px);
+        @include rem(margin-right, 16px);
+        @include rem(width, 37px);
+        vertical-align: middle;
+    }
+
+    .comment-author-thumbnail,
+    .comment-header-meta {
+        @include inline-block;
+    }
+
+    .comment-header-date {
+        @include rem(font-size, $font-size-small);
+        color: $color-text-normal;
+        display: block;
+    }
+}
+
+.comment-footer {
+    @include clearfix;
+    @include rem(margin-top, 30px);
+
+    .comment-action-list {
+        float: right;
+    }
+}
+
+.comment-create-form {
+    @include clearfix;
+}
+
+.comment-create-form-text,
+.comment-edit-form-text {
+    @include rem(min-height, 5.8rem);
+    background: $color-text-inverted;
+}
+
+.comment-edit-form-text {
+    min-height: 1px;
+}
+
+.comment-create-form-button-submit {
+    float: right;
+}
+
+/*doc
+---
+title: Comment Create Form Redesign
+name: comment-create-form-redesign
+parent: comment-redesign
+---
+
+```html_example
+<form class="comment-create-form">
+    <textarea class="comment-create-form-text"></textarea>
+    <footer class="form-footer">
+        <input class="comment-create-form-button-submit button-cta form-footer-button-cta" type="submit" value="Submit">
+    </footer>
+</form>
+```
+*/
