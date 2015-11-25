@@ -1,0 +1,25 @@
+// FontAwesome mapper
+@import "../../../lib/font-awesome/scss/variables";
+$fa-font-path: "../lib/font-awesome/fonts";
+@import "../../../lib/font-awesome/scss/mixins";
+@import "../../../lib/font-awesome/scss/path";
+@import "../../../lib/font-awesome/scss/core";
+@import "../../../lib/font-awesome/scss/icons";
+
+// see variables.scss for name mapping
+
+[class^='icon-'],
+[class*=' icon-'] {
+    @extend .fa;
+}
+
+@each $name, $icon in $icons {
+    .icon-#{$name} {
+        @extend .fa-#{$icon};
+    }
+}
+
+@mixin fa($icon) {
+    @extend .fa;
+    @extend .fa-#{map-get($icons, $icon)};
+}
