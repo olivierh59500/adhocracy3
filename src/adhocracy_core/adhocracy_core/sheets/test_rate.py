@@ -135,6 +135,7 @@ class TestRateSchema:
         assert schema_with_mock_ensure_rate.deserialize(data) == {
             'subject': subject, 'object': object, 'rate': -1}
 
+
     def test_deserialize_invalid_rate(self, context,
                                       schema_with_mock_ensure_rate, subject):
         context['subject'] = subject
@@ -228,20 +229,6 @@ class TestRateSchema:
         value = {'subject': subject, 'object': object, 'rate': '1'}
         with raises(colander.Invalid):
             _ensure_resource_is_unique(node, value, request_, IRate, 'rate')
-
-
-@mark.usefixtures('integration')
-class TestRateValidators:
-
-    def test_rateable_rate_validator(self, registry):
-        from adhocracy_core.interfaces import IRateValidator
-        rateable = _make_rateable()
-        validator = registry.getAdapter(rateable, IRateValidator)
-        assert validator.validate(1) is True
-        assert validator.validate(0) is True
-        assert validator.validate(-1) is True
-        assert validator.validate(2) is False
-        assert validator.validate(-2) is False
 
 
 @mark.usefixtures('integration')

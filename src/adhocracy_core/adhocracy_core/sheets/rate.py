@@ -1,13 +1,10 @@
 """Rate sheet."""
 from pyramid.traversal import resource_path
 from substanced.util import find_catalog
-from zope.interface import implementer
 import colander
 
 from adhocracy_core.interfaces import ISheet
 from adhocracy_core.interfaces import IPredicateSheet
-from adhocracy_core.interfaces import ILikeValidator
-from adhocracy_core.interfaces import IRateValidator
 from adhocracy_core.interfaces import ISheetReferenceAutoUpdateMarker
 from adhocracy_core.interfaces import SheetToSheet
 from adhocracy_core.interfaces import Reference
@@ -27,33 +24,6 @@ class IRate(IPredicateSheet, ISheetReferenceAutoUpdateMarker):
 
 class IRateable(ISheet, ISheetReferenceAutoUpdateMarker):
     """Marker interface for resources that can be rated."""
-
-
-@implementer(IRateValidator)
-class RateableRateValidator:
-    """
-    Validator for rates about IRateable.
-
-    The following values are allowed:
-
-      * 1: pro
-      * 0: neutral
-      * -1: contra
-    """
-
-    _allowed_values = (1, 0, -1)
-
-    def __init__(self, context):
-        """Initialize self."""
-        self.context = context
-
-    def validate(self, rate: int) -> bool:
-        """Validate the rate."""
-        return rate in self._allowed_values
-
-    def helpful_error_message(self) -> str:
-        """Return error message."""
-        return 'rate must be one of {}'.format(self._allowed_values)
 
 
 class ICanRate(ISheet):
@@ -113,21 +83,12 @@ def _ensure_like_is_unique(node, value, request):
     _ensure_resource_is_unique(node, value, request, ILike, 'like')
 
 
-def _query_registered_object_validator(node, value, request, iface, field):
-    registry = request.registry
-    validator = registry.getAdapter(value['object'], iface)
-    if not validator.validate(value[field]):
-        err = colander.Invalid(node)
-        err[field] = validator.helpful_error_message()
-        raise err
-
-
 class RateSchema(colander.MappingSchema):
     """Rate sheet data structure."""
 
     subject = ReferenceSchema(reftype=RateSubjectReference)
     object = ReferenceSchema(reftype=RateObjectReference)
-    rate = Integer()
+    rate = Integer(validator=colander.Range(-1, 1))
 
     def validator(self, node, value):
         """
@@ -138,20 +99,12 @@ class RateSchema(colander.MappingSchema):
         2. Ensure that no other rate for the same subject/object combination
            exists, except predecessors of this version.
 
-        3. Ask the validator registered for *object* whether *rate* is valid.
-           In this way, `IRateable` subclasses can modify the range of allowed
-           ratings by registering their own `IRateValidator` adapter.
         """
         # TODO make this validator deferred
         # TODO add post_pool validator
         request = node.bindings['request']
         _validate_subject_is_current_user(node, value, request)
         _ensure_rate_is_unique(node, value, request)
-        _query_registered_object_validator(node,
-                                           value,
-                                           request,
-                                           IRateValidator,
-                                           'rate')
 
 
 rate_meta = sheet_meta._replace(isheet=IRate,
@@ -229,7 +182,7 @@ class LikeSchema(colander.MappingSchema):
 
     subject = ReferenceSchema(reftype=LikeSubjectReference)
     object = ReferenceSchema(reftype=LikeObjectReference)
-    like = Integer()
+    like = Integer(validator=colander.Range(0, 1))
 
     def validator(self, node, value):
         """Validate the like."""
@@ -238,42 +191,12 @@ class LikeSchema(colander.MappingSchema):
         request = node.bindings['request']
         _validate_subject_is_current_user(node, value, request)
         _ensure_like_is_unique(node, value, request)
-        _query_registered_object_validator(node,
-                                           value,
-                                           request,
-                                           ILikeValidator,
-                                           'like')
+
 
 like_meta = sheet_meta._replace(isheet=ILike,
                                 schema_class=LikeSchema,
                                 sheet_class=AttributeResourceSheet,
                                 create_mandatory=True)
-
-
-@implementer(ILikeValidator)
-class LikeableLikeValidator:
-    """
-    Validator for rates about ILikeable.
-
-    The following values are allowed:
-
-      * 1: like
-      * 0: neutral/no vote
-    """
-
-    _allowed_values = (1, 0)
-
-    def __init__(self, context):
-        """Initialize self."""
-        self.context = context
-
-    def validate(self, rate: int) -> bool:
-        """Validate the rate."""
-        return rate in self._allowed_values
-
-    def helpful_error_message(self) -> str:
-        """Return error message."""
-        return 'rate must be one of {}'.format(self._allowed_values)
 
 
 class LikeableSchema(colander.MappingSchema):
@@ -301,9 +224,3 @@ def includeme(config):
     add_sheet_to_registry(can_like_meta, config.registry)
     add_sheet_to_registry(rateable_meta, config.registry)
     add_sheet_to_registry(likeable_meta, config.registry)
-    config.registry.registerAdapter(RateableRateValidator,
-                                    (IRateable,),
-                                    IRateValidator)
-    config.registry.registerAdapter(LikeableLikeValidator,
-                                    (ILikeable,),
-                                    ILikeValidator)
