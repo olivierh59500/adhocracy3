@@ -1,0 +1,4 @@
+.l-rows-wrapper {
+    @include rem(max-width, $wrapper-width);
+    margin: 0 auto;
+}
