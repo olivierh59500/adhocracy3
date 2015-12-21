@@ -12,27 +12,39 @@ A very large fancy header
 
     <a class="back hero-unit-back" href="">Go back</a>
 
-    <h1 class="hero-unit-title">Here is a title for this hero unit</h1>
-
     <ul class="meta-list hero-unit-meta-list">
         <li class="meta-list-item">25.000€ Requested</li>
         <li class="meta-list-item">25.000€ Total Budget</li>
         <li class="meta-list-item">13. APRIL 2015</li>
         <li class="meta-list-item">From Oleksii Clifford</li>
         <li class="meta-list-item">4485 Votes</li>
-        <li class="meta-list-item">232 Comments</li>
+        <li class="meta-list-item"><a href="#">232 Comments</a></li>
     </ul>
+
+    <h1 class="hero-unit-title">Here is a title for this hero unit</h1>
+
+    <p class="hero-unit-description">In  Treptow-Köpenick ist die Entwicklung eines Gewerbegebietes geplant. Sie können
+    Ihre Anregungen derzeit über das Stellungnahmenformular hinzufügen.</p>
 
     <a class="button-cta" href="">Vote here</a>
 
     <div class="pop-menu m-right hero-unit-pop-menu" tabindex="0">
         <ul class="pop-menu-list">
             <li class="pop-menu-list-item"><a href=""><i class="icon-share pop-menu-list-icon"></i> Share</a></li>
-            <li class="pop-menu-list-item"><a href=""><i class="icon-code pop-menu-list-icon"></i> Embed</a></li>
-            <li class="pop-menu-list-item"><a href=""><i class="icon-pencil-square pop-menu-list-icon"></i> Edit</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-embed pop-menu-list-icon"></i> Embed</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-report pop-menu-list-icon"></i> Report</a></li>
         </ul>
     </div>
-
+</div>
+<div class="tabset">
+    <ul class="tabset-tabs">
+        <li class="tab">
+            <a class="tab-button" href="">Information</a>
+        </li>
+        <li class="tab is-active">
+            <a class="tab-button" href="">Stellungnahme</a>
+        </li>
+    </ul>
 </div>
 ```
 */
@@ -61,5 +73,16 @@ A very large fancy header
         @include rem(top, 24px);
         position: absolute;
         text-align: left;
+    }
+
+    .hero-unit-description {
+        @include rem(padding-bottom, 40px);
+        color: $color-text-heading;
+        margin: 0 auto;
+        width: 70%;
+    }
+
+    + .tabset {
+        @include rem(margin-top, 45px);
     }
 }

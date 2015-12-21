@@ -36,12 +36,18 @@ $font-weight-heavy: 900;
 // AD3 Alias : FontAwesome Alias
 // so .icon-report is equivalent to .fa-flag
 $icons: (
-    "reply" :       "reply",
-    "report" :      "flag",
-    "favorite" :    "star",
-    "edit" :        "pencil",
-    "delete" :      "ban",
-    "pop-menu" :    "ellipsis-h"
+    "reply":        "reply",
+    "report":       "flag",
+    "favorite":     "star",
+    "edit":         "pencil",
+    "pop-menu":     "ellipsis-h",
+    "share":        "share",
+    "embed":        "code",
+    "print":        "print",
+    "deactivate":   "adjust",
+    "delete":       "trash",
+    "move":         "exchange",
+    "create":       "plus-square-o"
 );
 
 //// LEGACY

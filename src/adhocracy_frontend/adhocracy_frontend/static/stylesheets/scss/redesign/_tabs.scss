@@ -1,0 +1,56 @@
+/*doc
+---
+title: Tabs
+name: tabs
+category: Widgets-Redesign
+---
+
+Tabs
+
+```html_example
+<div class="tabset">
+    <ul class="tabset-tabs">
+        <li class="tab">
+            <a class="tab-button" href="">Information</a>
+        </li>
+        <li class="tab is-active">
+            <a class="tab-button" href="">Stellungnahme</a>
+        </li>
+    </ul>
+</div>
+```
+*/
+
+.tabset {
+    @include clearfix;
+    text-align: center;
+}
+
+.tabset-tabs {
+    @extend .m-inline;
+    @include plain-list;
+
+    .tab {
+        @include rem(margin-right, 30px);
+        a {
+            @include rem(padding, 0 5px);
+            border-bottom: 2px solid transparent;
+            color: $color-text-heading;
+            display: block;
+            line-height: 1.6;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+
+        &.is-active a, a:focus, a:hover {
+            border-bottom: 2px solid $color-text-highlight;
+            color: $color-text-highlight;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

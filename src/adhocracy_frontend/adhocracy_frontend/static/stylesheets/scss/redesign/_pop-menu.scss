@@ -10,16 +10,28 @@ A menu that pops out
 ```html_example
 <div class="pop-menu" tabindex="0">
     <ul class="pop-menu-list">
-        <li class="pop-menu-list-item"><a href=""><i class="icon-share pop-menu-list-icon"></i> Share</a></li>
-        <li class="pop-menu-list-item"><a href=""><i class="icon-code pop-menu-list-icon"></i> Embed</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-share pop-menu-list-icon"></i> Share</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-embed pop-menu-list-icon"></i> Embed</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-report pop-menu-list-icon"></i> Report</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-print pop-menu-list-icon"></i> Print</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-deactivate pop-menu-list-icon"></i> Set inactive</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-delete pop-menu-list-icon"></i> Delete</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-move pop-menu-list-icon"></i> Move to topic</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-create pop-menu-list-icon"></i> Create topic</a></li>
         <li class="pop-menu-list-item"><a href=""><i class="icon-pencil-square pop-menu-list-icon"></i> Edit</a></li>
     </ul>
 </div>
 
 <div class="pop-menu m-right" tabindex="0">
     <ul class="pop-menu-list">
-        <li class="pop-menu-list-item"><a href=""><i class="icon-share pop-menu-list-icon"></i> Share</a></li>
-        <li class="pop-menu-list-item"><a href=""><i class="icon-code pop-menu-list-icon"></i> Embed</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-share pop-menu-list-icon"></i> Share</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-embed pop-menu-list-icon"></i> Embed</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-report pop-menu-list-icon"></i> Report</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-print pop-menu-list-icon"></i> Print</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-deactivate pop-menu-list-icon"></i> Set inactive</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-delete pop-menu-list-icon"></i> Delete</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-move pop-menu-list-icon"></i> Move to topic</a></li>
+            <li class="pop-menu-list-item"><a href=""><i class="icon-create pop-menu-list-icon"></i> Create topic</a></li>
         <li class="pop-menu-list-item"><a href=""><i class="icon-pencil-square pop-menu-list-icon"></i> Edit</a></li>
     </ul>
 </div>
