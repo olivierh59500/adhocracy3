@@ -58,7 +58,7 @@ class TestOrganizationInfoSheet:
         inst = meta.sheet_class(meta, context)
         wanted = {'name': '',
                   'city': '',
-                  'country': 'DE',
+                  'country': '',
                   'help_request': '',
                   'registration_date': None,
                   'website': '',
@@ -234,13 +234,13 @@ class TestPartnersSheet:
         inst = meta.sheet_class(meta, context)
         wanted = {'partner1_name': '',
                   'partner1_website': '',
-                  'partner1_country': 'DE',
+                  'partner1_country': '',
                   'partner2_name': '',
                   'partner2_website': '',
-                  'partner2_country': 'DE',
+                  'partner2_country': '',
                   'partner3_name': '',
                   'partner3_website': '',
-                  'partner3_country': 'DE',
+                  'partner3_country': '',
                   'other_partners': '',
                   'has_partners': False}
         assert inst.get() == wanted
@@ -1141,8 +1141,7 @@ class TestWinnerInfoSchema:
 
     @fixture
     def cstruct_required(self):
-        return {'explanation': 'Relevant project',
-                'funding': '10000'}
+        return {'funding': '10000'}
 
     def test_deserialize_empty(self, inst):
         cstruct = {}
@@ -1150,8 +1149,7 @@ class TestWinnerInfoSchema:
 
     def test_deserialize_with_required(self, inst, cstruct_required):
         assert inst.deserialize(cstruct_required) == \
-            {'explanation': 'Relevant project',
-             'funding': 10000}
+            {'funding': 10000}
 
 
 class TestWinnerInfoSheet:

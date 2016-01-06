@@ -266,7 +266,6 @@ var fill = (data : IFormData, resource) => {
                 picture: data.introduction.picture
             });
             resource.data[SIWinnerInfo.nick] = new SIWinnerInfo.Sheet({
-                explanation: null,  // FIXME
                 funding: null  // FIXME
             });
             break;
@@ -602,8 +601,11 @@ export var mercatorProposalFormController2016 = (
     adhSubmitIfValid,
     adhResourceUrl,
     adhUploadImage,
-    flowFactory
+    flowFactory,
+    $translate
 ) => {
+    $translate.use("en");
+
     $scope.$flow = flowFactory.create();
 
     $scope.data = {
@@ -732,7 +734,8 @@ export var detailDirective = (
     adhConfig : AdhConfig.IService,
     adhHttp : AdhHttp.Service<any>,
     adhTopLevelState : AdhTopLevelState.Service,
-    adhPermissions : AdhPermissions.Service
+    adhPermissions : AdhPermissions.Service,
+    $translate
 ) => {
     return {
         restrict: "E",
@@ -741,6 +744,8 @@ export var detailDirective = (
             path: "@"
         },
         link: (scope) => {
+            $translate.use("en");
+
             adhPermissions.bindScope(scope, () => scope.path);
             // FIXME, waa
             scope.isModerator = scope.options.PUT;
