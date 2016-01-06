@@ -522,7 +522,8 @@ export var createDirective = (adhConfig : AdhConfig.IService) => {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/Create.html",
         scope: {
-            poolPath: "@"
+            poolPath: "@",
+            path: "@"
         }
     };
 };
@@ -542,9 +543,6 @@ export var listing = (adhConfig : AdhConfig.IService) => {
             frontendOrderReverse: "=?",
             initialLimit: "=?",
             params: "=?"
-        },
-        link: (scope) => {
-            scope.contentType = RIMercatorProposal.content_type;
         }
     };
 };
@@ -604,7 +602,12 @@ export var mercatorProposalFormController2016 = (
     flowFactory,
     $translate
 ) => {
+
     $translate.use("en");
+
+    $scope.path = "";
+
+    console.log($scope);
 
     $scope.$flow = flowFactory.create();
 

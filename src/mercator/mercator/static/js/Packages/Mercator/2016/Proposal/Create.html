@@ -15,6 +15,7 @@
             name="mercatorProposalForm"
             data-ng-submit="submitIfValid()"
             data-du-spy-context=""
+            data-path="{{path}}"
             data-ng-controller="mercatorProposalFormController2016 as form">
         <div class="form-error" data-ng-repeat="error in errors track by $index">
             <p>{{ error | adhFormatError | translate }}</p>
