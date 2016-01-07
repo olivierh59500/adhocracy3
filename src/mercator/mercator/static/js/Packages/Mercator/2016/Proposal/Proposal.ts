@@ -135,6 +135,7 @@ export interface IData {
         other : boolean;
         otherText : string;
     };
+    topic_other : string;
     duration : number;
     location : {
         location_is_linked_to_ruhr : boolean;
@@ -224,12 +225,12 @@ var fill = (data : IFormData, resource) => {
             });
             resource.data[SITopic.nick] = new SITopic.Sheet({
                 topic: _.reduce(<any>data.topic, (result, include, topic) => {
-                    if (include) {
+                    if (include && (topic !== "otherText")) {
                         result.push(topic);
                     }
                     return result;
                 }, []),
-                other: data.topic.otherText
+                topic_other: data.topic.otherText
             });
             resource.data[SITitle.nick] = new SITitle.Sheet({
                 title: data.title
@@ -266,7 +267,7 @@ var fill = (data : IFormData, resource) => {
                 picture: data.introduction.picture
             });
             resource.data[SIWinnerInfo.nick] = new SIWinnerInfo.Sheet({
-                funding: null  // FIXME
+                funding: null  // FIXME,
             });
             break;
         case RIPitch.content_type:
@@ -436,6 +437,7 @@ var get = (
                     result[key] = _.indexOf(proposal.data[SITopic.nick].topic, key) !== -1;
                     return result;
                 }, {}),
+                topic_other: proposal.data[SITopic.nick].topic_other,
                 title: proposal.data[SITitle.nick].title,
                 location: {
                     location_is_specific: !!proposal.data[SILocation.nick].location,
@@ -453,7 +455,7 @@ var get = (
                     secured: (proposal.data[SIExtraFunding.nick] || {}).secured
                 },
                 experience: proposal.data[SICommunity.nick].expected_feedback,
-                heardFrom: proposal.data[SICommunity.nick].heard_from,
+                heardFrom: proposal.data[SICommunity.nick].heard_froms,
                 introduction: {
                     pitch: subs.pitch.data[SIPitch.nick].pitch,
                     picture: proposal.data[SIImageReference.nick].picture
@@ -521,7 +523,10 @@ export var createDirective = (
         $q : ng.IQService,
         adhConfig : AdhConfig.IService,
         adhHttp : AdhHttp.Service<any>,
-        adhTopLevelState : AdhTopLevelState.Service
+        adhTopLevelState : AdhTopLevelState.Service,
+        $translate,
+        flowFactory,
+        adhShowError
     ) => {
     return {
         restrict: "E",
@@ -532,8 +537,103 @@ export var createDirective = (
             data: "="
         },
         link: (scope) => {
+
+            console.log(scope);
+
+            var el = angular.element('#mercatorProposalForm');
+
+            var form = el[0];
+
+            scope.mercatorProposalForm = el.scope();
+
+            $translate.use("en");
+
+            scope.$flow = flowFactory.create();
+
+            var topicTotal = 0;
+
+            scope.topics = topics;
+
+            var heardFromCheckboxes = [
+                "heard-from-personal",
+                "heard-from-website",
+                "heard-from-newsletter",
+                "heard-from-facebook",
+                "heard-from-twitter",
+                "heard-from-other"
+            ];
+
+            var locationCheckboxes = [
+                "location-location-is-specific",
+                "location-location-is-online",
+                "location-location-is-linked-to-ruhr"
+            ];
+
+            scope.topicChange = (isChecked) => {
+                if (scope.data.topic) {
+                    topicTotal = isChecked ? (topicTotal + 1) : (topicTotal - 1);
+                    var validity = topicTotal > 0 && topicTotal < 3;
+                    scope.mercatorProposalForm.mercatorProposalBriefForm["introduction-topics"].$setValidity("enoughTopics", validity);
+                    scope.mercatorProposalForm.mercatorProposalBriefForm["introduction-topics"].$setDirty();
+                } else {
+                    scope.mercatorProposalForm.mercatorProposalBriefForm["introduction-topics"].$setValidity("enoughTopics", false);
+                    scope.mercatorProposalForm.mercatorProposalBriefForm["introduction-topics"].$setDirty();
+                }
+            };
+
+            var updateCheckBoxGroupValidity = (form, names : string[]) : boolean => {
+                var valid =  _.some(names, (name) => form[name].$modelValue);
+                _.forOwn(names, (name) => {
+                    form[name].$setValidity("groupRequired", valid);
+                });
+                return valid;
+            };
+
+            scope.topicTrString = topicTrString;
+
+            var showCheckboxGroupError = (form, names : string[]) : boolean => {
+                if (!form) {
+                    return false;
+                }
+                var dirty = scope.mercatorProposalForm.$submitted || _.some(names, (name) => form[name].$dirty);
+                return !updateCheckBoxGroupValidity(form, names) && dirty;
+            };
+
+            scope.showTopicsError = () : boolean => {
+                return ((topicTotal < 1) || (topicTotal > 2)) &&
+                    scope.mercatorProposalForm.mercatorProposalBriefForm["introduction-topics"].$dirty;
+            };
+
+            scope.showLocationError = () : boolean => {
+                return showCheckboxGroupError(scope.mercatorProposalBriefForm, locationCheckboxes);
+            };
+
+            scope.showStatusError = () : boolean => {
+                return showCheckboxGroupError(scope.mercatorProposalBriefForm, locationCheckboxes);
+            };
+
+            scope.showFinanceGrantedInfo = () : boolean => {
+                if (!scope.data) {
+                    return false;
+                }
+                return (scope.data.finance && scope.data.finance.otherSources && scope.data.finance.otherSources !== "");
+            };
+
+            scope.showHeardFromError = () : boolean => {
+                return showCheckboxGroupError(scope.mercatorProposalCommunityForm, heardFromCheckboxes);
+            };
+
+            scope.dateChange = (date) => {
+                // FIXME: this is quite hacky dates need proper validation EG not so much in the past or future too
+                scope.data.organizationInfo.registrationDate = date + "-01";
+            };
+
+            scope.showError = adhShowError;
+
             if (scope.path) {
                 // Edit
+                scope.edit = "true";
+
                 get($q, adhHttp, adhTopLevelState)(scope.path).then((data) => {
                     scope.data = data;
                     scope.selectedTopics = [];
@@ -543,9 +643,17 @@ export var createDirective = (
                             scope.selectedTopics.push(topicTrString(key));
                         }
                     });
+
+                    _.forEach(scope.data.heardFrom, function(heardFromName:string) {
+                        scope.data.heardFrom[heardFromName] = true;
+                    });
+
                 });
             } else {
                 // Create
+                // FIXME !
+                scope.create = "true";
+
                 scope.data = {
                     user_info: {},
                     organization_info: {},
@@ -642,89 +750,6 @@ export var mercatorProposalFormController2016 = (
     $translate
 ) => {
 
-    $translate.use("en");
-
-    $scope.$flow = flowFactory.create();
-
-    console.log($scope);
-
-    var topicTotal = 0;
-
-    $scope.topics = topics;
-
-    var heardFromCheckboxes = [
-        "heard-from-personal",
-        "heard-from-website",
-        "heard-from-newsletter",
-        "heard-from-facebook",
-        "heard-from-twitter",
-        "heard-from-other"
-    ];
-
-    var locationCheckboxes = [
-        "location-location-is-specific",
-        "location-location-is-online",
-        "location-location-is-linked-to-ruhr"
-    ];
-
-    $scope.topicChange = (isChecked) => {
-        if ($scope.data.topic) {
-            topicTotal = isChecked ? (topicTotal + 1) : (topicTotal - 1);
-            var validity = topicTotal > 0 && topicTotal < 3;
-            $scope.mercatorProposalForm.mercatorProposalBriefForm["introduction-topics"].$setValidity("enoughTopics", validity);
-            $scope.mercatorProposalForm.mercatorProposalBriefForm["introduction-topics"].$setDirty();
-        } else {
-            $scope.mercatorProposalForm.mercatorProposalBriefForm["introduction-topics"].$setValidity("enoughTopics", false);
-            $scope.mercatorProposalForm.mercatorProposalBriefForm["introduction-topics"].$setDirty();
-        }
-    };
-
-    var updateCheckBoxGroupValidity = (form, names : string[]) : boolean => {
-        var valid =  _.some(names, (name) => form[name].$modelValue);
-        _.forOwn(names, (name) => {
-            form[name].$setValidity("groupRequired", valid);
-        });
-        return valid;
-    };
-
-    $scope.topicTrString = topicTrString;
-
-    var showCheckboxGroupError = (form, names : string[]) : boolean => {
-        var dirty = $scope.mercatorProposalForm.$submitted || _.some(names, (name) => form[name].$dirty);
-        return !updateCheckBoxGroupValidity(form, names) && dirty;
-    };
-
-    $scope.showTopicsError = () : boolean => {
-        return ((topicTotal < 1) || (topicTotal > 2)) &&
-            $scope.mercatorProposalForm.mercatorProposalBriefForm["introduction-topics"].$dirty;
-    };
-
-    $scope.showLocationError = () : boolean => {
-        return showCheckboxGroupError($scope.mercatorProposalBriefForm, locationCheckboxes);
-    };
-
-    $scope.showStatusError = () : boolean => {
-        return showCheckboxGroupError($scope.mercatorProposalBriefForm, locationCheckboxes);
-    };
-
-    $scope.showFinanceGrantedInfo = () : boolean => {
-        return ($scope.data.finance && $scope.data.finance.otherSources && $scope.data.finance.otherSources !== "");
-    };
-
-    $scope.showHeardFromError = () : boolean => {
-        return showCheckboxGroupError($scope.mercatorProposalCommunityForm, heardFromCheckboxes);
-    };
-
-    $scope.dateChange = (date) => {
-        // FIXME: this is quite hacky dates need proper validation EG not so much in the past or future too
-        $scope.data.organizationInfo.registrationDate = date + "-01";
-    };
-
-    $scope.showError = adhShowError;
-
-    // FIXME !
-    $scope.create = "true";
-
     $scope.submitIfValid = () => {
         adhSubmitIfValid($scope, $element, $scope.mercatorProposalForm, () => {
             var post = () => create(adhHttp)($scope, adhPreliminaryNames).then((proposalPath) => {
@@ -768,7 +793,6 @@ export var detailDirective = (
         },
         link: (scope) => {
             $translate.use("en");
-
             adhPermissions.bindScope(scope, () => scope.path);
             // FIXME, waa
             scope.isModerator = scope.options.PUT;
@@ -779,7 +803,7 @@ export var detailDirective = (
                 scope.selectedTopics = [];
 
                 _.forEach(scope.data.topic, function(isSelected, key) {
-                    if (isSelected === true) {
+                    if ((isSelected === true) && (key !== "other")) {
                         scope.selectedTopics.push(topicTrString(key));
                     }
                 });
