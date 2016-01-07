@@ -517,13 +517,52 @@ var get = (
 };
 
 
-export var createDirective = (adhConfig : AdhConfig.IService) => {
+export var createDirective = (
+        $q : ng.IQService,
+        adhConfig : AdhConfig.IService,
+        adhHttp : AdhHttp.Service<any>,
+        adhTopLevelState : AdhTopLevelState.Service
+    ) => {
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/Create.html",
         scope: {
             poolPath: "@",
-            path: "@"
+            path: "@",
+            data: "="
+        },
+        link: (scope) => {
+            if (scope.path) {
+                // Edit
+                get($q, adhHttp, adhTopLevelState)(scope.path).then((data) => {
+                    scope.data = data;
+                    scope.selectedTopics = [];
+
+                    _.forEach(scope.data.topic, function(isSelected, key) {
+                        if (isSelected === true) {
+                            scope.selectedTopics.push(topicTrString(key));
+                        }
+                    });
+                });
+            } else {
+                // Create
+                scope.data = {
+                    user_info: {},
+                    organization_info: {},
+                    introduction: {},
+                    partners: {
+                        partner1: {},
+                        partner2: {},
+                        partner3: {}
+                    },
+                    topic: {},
+                    location: {},
+                    impact: {},
+                    criteria: {},
+                    finance: {},
+                    heardFrom: {}
+                };
+            }
         }
     };
 };
@@ -605,28 +644,9 @@ export var mercatorProposalFormController2016 = (
 
     $translate.use("en");
 
-    $scope.path = "";
-
-    console.log($scope);
-
     $scope.$flow = flowFactory.create();
 
-    $scope.data = {
-        user_info: {},
-        organization_info: {},
-        introduction: {},
-        partners: {
-            partner1: {},
-            partner2: {},
-            partner3: {}
-        },
-        topic: {},
-        location: {},
-        impact: {},
-        criteria: {},
-        finance: {},
-        heardFrom: {}
-    };
+    console.log($scope);
 
     var topicTotal = 0;
 
