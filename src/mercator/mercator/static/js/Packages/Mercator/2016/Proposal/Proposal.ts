@@ -540,9 +540,7 @@ export var createDirective = (
 
             console.log(scope);
 
-            var el = angular.element('#mercatorProposalForm');
-
-            var form = el[0];
+            var el = angular.element("#mercatorProposalForm");
 
             scope.mercatorProposalForm = el.scope();
 
@@ -644,7 +642,7 @@ export var createDirective = (
                         }
                     });
 
-                    _.forEach(scope.data.heardFrom, function(heardFromName:string) {
+                    _.forEach(scope.data.heardFrom, function(heardFromName: string) {
                         scope.data.heardFrom[heardFromName] = true;
                     });
 
