@@ -688,6 +688,9 @@ export var listing = (adhConfig : AdhConfig.IService) => {
             frontendOrderReverse: "=?",
             initialLimit: "=?",
             params: "=?"
+        },
+        link: (scope) => {
+            scope.contentType = RIMercatorProposal.content_type;
         }
     };
 };
