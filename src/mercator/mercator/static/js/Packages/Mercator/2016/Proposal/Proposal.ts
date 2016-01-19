@@ -177,6 +177,8 @@ export interface IData {
     };
     winner : {
         funding : number;
+        description : string;
+        name : string;
     };
 }
 
@@ -425,7 +427,8 @@ var edit = (
 var get = (
     $q : ng.IQService,
     adhHttp : AdhHttp.Service<any>,
-    adhTopLevelState : AdhTopLevelState.Service
+    adhTopLevelState : AdhTopLevelState.Service,
+    adhGetBadges : AdhBadge.IGetBadges
 ) => (path : string) : ng.IPromise<IDetailData> => {
     return adhHttp.get(path).then((proposal) => {
         var subs : {
@@ -451,6 +454,12 @@ var get = (
             AdhMercator2015Proposal.getWorkflowState(adhHttp, adhTopLevelState, $q)(),
             AdhMercator2015Proposal.countSupporters(adhHttp, path + "rates/", path),
             AdhMercator2015Proposal.countComments(adhHttp, path),
+            adhGetBadges(proposal).then((assignments : AdhBadge.IBadge[]) => {
+                var communityAssignment = _.find(assignments, (a) => a.name === "community");
+                var winningAssignment = _.find(assignments, (a) => a.name === "winning");
+
+                return communityAssignment || winningAssignment;
+            })
         ])).then((args : any[]) : IDetailData => {
             return {
                 currentPhase: args[0],
@@ -509,7 +518,9 @@ var get = (
                     return result;
                 }, {}),
                 winner: {
-                    funding: (proposal.data[SIWinnerInfo.nick] || {}).funding
+                    funding: (proposal.data[SIWinnerInfo.nick] || {}).funding,
+                    description: (args[3] || {}).description,
+                    name: (args[3] || {}).name
                 },
                 introduction: {
                     pitch: subs.pitch.data[SIPitch.nick].pitch,
@@ -618,7 +629,8 @@ export var editDirective = (
     adhHttp : AdhHttp.Service<any>,
     adhTopLevelState : AdhTopLevelState.Service,
     adhPreliminaryNames : AdhPreliminaryNames.Service,
-    adhResourceUrl
+    adhResourceUrl,
+    adhGetBadges : AdhBadge.IGetBadges
 ) => {
     return {
         restrict: "E",
@@ -645,7 +657,7 @@ export var editDirective = (
                 winner: {}
             };
 
-            get($q, adhHttp, adhTopLevelState)(scope.path).then((data) => {
+            get($q, adhHttp, adhTopLevelState, adhGetBadges)(scope.path).then((data) => {
                 scope.data = data;
 
                 scope.data.partners.hasPartners = scope.data.partners.hasPartners ? "true" : "false";
@@ -700,7 +712,7 @@ export var listItem = (
             path: "@"
         },
         link: (scope, element) => {
-            get($q, adhHttp, adhTopLevelState)(scope.path).then((data) => {
+            get($q, adhHttp, adhTopLevelState, adhGetBadges)(scope.path).then((data) => {
 
                 scope.data = {
                     title: {
@@ -858,6 +870,7 @@ export var detailDirective = (
     adhHttp : AdhHttp.Service<any>,
     adhTopLevelState : AdhTopLevelState.Service,
     adhPermissions : AdhPermissions.Service,
+    adhGetBadges : AdhBadge.IGetBadges,
     $translate
 ) => {
     return {
@@ -872,7 +885,7 @@ export var detailDirective = (
             // FIXME, waa
             scope.isModerator = scope.options.PUT;
 
-            get($q, adhHttp, adhTopLevelState)(scope.path).then((data) => {
+            get($q, adhHttp, adhTopLevelState, adhGetBadges)(scope.path).then((data) => {
                 scope.data = data;
             });
         }
