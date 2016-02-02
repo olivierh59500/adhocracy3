@@ -12,7 +12,7 @@ class TestUserInfoSheet:
 
     @fixture
     def meta(self):
-        from adhocracy_mercator.sheets.mercator2 import userinfo_meta
+        from .mercator2 import userinfo_meta
         return userinfo_meta
 
     @fixture
@@ -21,9 +21,8 @@ class TestUserInfoSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from zope.interface.verify import verifyObject
-        from adhocracy_mercator.sheets.mercator2 import IUserInfo
-        from adhocracy_mercator.sheets.mercator2 import UserInfoSchema
+        from .mercator2 import IUserInfo
+        from .mercator2 import UserInfoSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IUserInfo
         assert inst.meta.schema_class == UserInfoSchema
@@ -40,7 +39,7 @@ class TestOrganizationInfoSheet:
 
     @fixture
     def meta(self):
-        from adhocracy_mercator.sheets.mercator2 import organizationinfo_meta
+        from .mercator2 import organizationinfo_meta
         return organizationinfo_meta
 
     @fixture
@@ -49,9 +48,8 @@ class TestOrganizationInfoSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from zope.interface.verify import verifyObject
-        from adhocracy_mercator.sheets.mercator2 import IOrganizationInfo
-        from adhocracy_mercator.sheets.mercator2 import OrganizationInfoSchema
+        from .mercator2 import IOrganizationInfo
+        from .mercator2 import OrganizationInfoSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IOrganizationInfo
         assert inst.meta.schema_class == OrganizationInfoSchema
@@ -60,11 +58,10 @@ class TestOrganizationInfoSheet:
         inst = meta.sheet_class(meta, context)
         wanted = {'name': '',
                   'city': '',
-                  'country': 'DE',
+                  'country': '',
                   'help_request': '',
                   'registration_date': None,
                   'website': '',
-                  'contact_email': '',
                   'status': 'other',
                   'status_other': '',
                   }
@@ -81,7 +78,7 @@ class TestOrganizationInfoSchema:
 
     @fixture
     def inst(self):
-        from adhocracy_mercator.sheets.mercator2 import OrganizationInfoSchema
+        from .mercator2 import OrganizationInfoSchema
         return OrganizationInfoSchema()
 
     @fixture
@@ -89,7 +86,6 @@ class TestOrganizationInfoSchema:
         return {'country': 'DE',
                 'name': 'Name',
                 'status': 'planned_nonprofit',
-                'contact_email': 'anna@example.com',
                 'registration_date': '2015-02-18T14:17:24+00:00',
                 'city': 'Berlin',
                 }
@@ -99,20 +95,13 @@ class TestOrganizationInfoSchema:
         cstruct = {}
         with raises(Invalid) as error:
             inst.deserialize(cstruct)
-        assert error.value.asdict() == {'city': 'Required',
-                                        'contact_email': 'Required',
-                                        'country': 'Required',
-                                        'name': 'Required',
-                                        'registration_date': 'Required',
-                                        'status': 'Required'}
+        assert error.value.asdict() == {'status': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
             {'country': 'DE',
              'name': 'Name',
              'status': 'planned_nonprofit',
-             'contact_email': 'anna@example.com',
              'registration_date': datetime(2015, 2, 18,
                                            14, 17, 24, 0, tzinfo=UTC),
              'city': 'Berlin',
@@ -130,7 +119,6 @@ class TestOrganizationInfoSchema:
 
     def test_deserialize_with_status_other(
             self, inst, cstruct_required):
-        from colander import Invalid
         cstruct = cstruct_required
         cstruct['status'] = 'other'
         cstruct['status_other'] = 'Blabla'
@@ -139,7 +127,6 @@ class TestOrganizationInfoSchema:
              'name': 'Name',
              'status': 'other',
              'status_other': 'Blabla',
-             'contact_email': 'anna@example.com',
              'registration_date': datetime(2015, 2, 18,
                                            14, 17, 24, 0, tzinfo=UTC),
              'city': 'Berlin',
@@ -147,7 +134,6 @@ class TestOrganizationInfoSchema:
 
     def test_deserialize_with_status_support_needed(
             self, inst, cstruct_required):
-        from colander import Invalid
         cstruct = cstruct_required
         cstruct['status'] = 'support_needed'
         cstruct['help_request'] = 'Blabla'
@@ -156,12 +142,10 @@ class TestOrganizationInfoSchema:
              'name': 'Name',
              'status': 'support_needed',
              'help_request': 'Blabla',
-             'contact_email': 'anna@example.com',
              'registration_date': datetime(2015, 2, 18,
                                            14, 17, 24, 0, tzinfo=UTC),
              'city': 'Berlin',
             }
-
 
     def test_deserialize_with_status_support_needed_and_no_help_request(
             self, inst, cstruct_required):
@@ -172,6 +156,7 @@ class TestOrganizationInfoSchema:
             inst.deserialize(cstruct)
         assert error.value.asdict() == {'help_request':
                                         'Required iff status == support_needed'}
+
 
 class TestPitchSchema:
 
@@ -192,16 +177,14 @@ class TestPitchSchema:
         assert error.value.asdict() == {'pitch': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
-        assert inst.deserialize(cstruct_required) == \
-            {'pitch': 'something'}
+        assert inst.deserialize(cstruct_required) == {'pitch': 'something'}
 
 
 class TestPitchSheet:
 
     @fixture
     def meta(self):
-        from adhocracy_mercator.sheets.mercator2 import pitch_meta
+        from .mercator2 import pitch_meta
         return pitch_meta
 
     @fixture
@@ -210,8 +193,8 @@ class TestPitchSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IPitch
-        from adhocracy_mercator.sheets.mercator2 import PitchSchema
+        from .mercator2 import IPitch
+        from .mercator2 import PitchSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IPitch
         assert inst.meta.schema_class == PitchSchema
@@ -227,7 +210,7 @@ class TestPartnersSheet:
 
     @fixture
     def meta(self):
-        from adhocracy_mercator.sheets.mercator2 import partners_meta
+        from .mercator2 import partners_meta
         return partners_meta
 
     @fixture
@@ -236,8 +219,8 @@ class TestPartnersSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IPartners
-        from adhocracy_mercator.sheets.mercator2 import PartnersSchema
+        from .mercator2 import IPartners
+        from .mercator2 import PartnersSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IPartners
         assert inst.meta.schema_class == PartnersSchema
@@ -246,13 +229,13 @@ class TestPartnersSheet:
         inst = meta.sheet_class(meta, context)
         wanted = {'partner1_name': '',
                   'partner1_website': '',
-                  'partner1_country': 'DE',
+                  'partner1_country': '',
                   'partner2_name': '',
                   'partner2_website': '',
-                  'partner2_country': 'DE',
+                  'partner2_country': '',
                   'partner3_name': '',
                   'partner3_website': '',
-                  'partner3_country': 'DE',
+                  'partner3_country': '',
                   'other_partners': '',
                   'has_partners': False}
         assert inst.get() == wanted
@@ -263,6 +246,7 @@ class TestPartnersSheet:
         context = testing.DummyResource(__provides__=meta.isheet)
         assert get_sheet(context, meta.isheet)
 
+
 class TestTopicSchema:
 
     @fixture
@@ -272,7 +256,11 @@ class TestTopicSchema:
 
     @fixture
     def cstruct_required(self):
-        return {'topic': 'urban_development'}
+        return {'topic': ['urban_development']}
+
+    def test_serialize_empty(self, inst):
+        assert inst.bind().serialize() == {'topic': [],
+                                           'topic_other': ''}
 
     def test_deserialize_empty(self, inst):
         from colander import Invalid
@@ -281,37 +269,50 @@ class TestTopicSchema:
             inst.deserialize(cstruct)
         assert error.value.asdict() == {'topic': 'Required'}
 
+    def test_deserialize_with_gt_2_topics(self, inst, cstruct_required):
+        from colander import Invalid
+        cstruct_required['topic'] = ['education', 'migration', 'communities']
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct_required)
+        assert error.value.asdict() == {'topic': 'Longer than maximum length 2'}
+
+    def test_deserialize_with_duplicated_topics(self, inst, cstruct_required):
+        from colander import Invalid
+        cstruct_required['topic'] = ['migration', 'migration']
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct_required)
+        assert error.value.asdict() == {'topic': 'Duplicates are not allowed'}
+
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
-            {'topic': 'urban_development'}
+            {'topic': ['urban_development']}
 
     def test_deserialize_with_status_other_and_no_text(
             self, inst, cstruct_required):
         from colander import Invalid
         cstruct = cstruct_required
-        cstruct['topic'] = 'other'
+        cstruct['topic'] = ['other', 'urban_development']
         with raises(Invalid) as error:
             inst.deserialize(cstruct)
-        assert error.value.asdict() == {'other':
-                                        'Required iff topic == other'}
+        assert error.value.asdict() == {'topic_other':
+                                        'Required if "other" in topic'}
+
 
     def test_deserialize_with_status_other(
             self, inst, cstruct_required):
-        from colander import Invalid
         cstruct = cstruct_required
-        cstruct['topic'] = 'other'
-        cstruct['other'] = 'Blabla'
+        cstruct['topic'] = ['other', 'urban_development']
+        cstruct['topic_other'] = 'Blabla'
         assert inst.deserialize(cstruct_required) == \
-            {'topic': 'other',
-             'other': 'Blabla'}
+            {'topic': ['other', 'urban_development'],
+             'topic_other': 'Blabla'}
 
 
 class TestTopicSheet:
 
     @fixture
     def meta(self):
-        from adhocracy_mercator.sheets.mercator2 import topic_meta
+        from .mercator2 import topic_meta
         return topic_meta
 
     @fixture
@@ -320,8 +321,8 @@ class TestTopicSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import ITopic
-        from adhocracy_mercator.sheets.mercator2 import TopicSchema
+        from .mercator2 import ITopic
+        from .mercator2 import TopicSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == ITopic
         assert inst.meta.schema_class == TopicSchema
@@ -352,9 +353,7 @@ class TestDurationSchema:
         assert error.value.asdict() == {'duration': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
-        assert inst.deserialize(cstruct_required) == \
-            {'duration': 6}
+        assert inst.deserialize(cstruct_required) == {'duration': 6}
 
 
 class TestDurationSheet:
@@ -370,8 +369,8 @@ class TestDurationSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IDuration
-        from adhocracy_mercator.sheets.mercator2 import DurationSchema
+        from .mercator2 import IDuration
+        from .mercator2 import DurationSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IDuration
         assert inst.meta.schema_class == DurationSchema
@@ -403,11 +402,9 @@ class TestLocationSchema:
         cstruct = {}
         with raises(Invalid) as error:
             inst.deserialize(cstruct)
-        assert error.value.asdict() == {'location': 'Required',
-                                        'has_link_to_ruhr': 'Required'}
+        assert error.value.asdict() == {'has_link_to_ruhr': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
               {'location': 'Berlin',
                'is_online': False,
@@ -428,7 +425,6 @@ class TestLocationSchema:
     def test_deserialize_with_link_to_ruhr(self,
                                            inst,
                                            cstruct_required):
-        from colander import Invalid
         cstruct = cstruct_required
         cstruct['has_link_to_ruhr'] = True
         cstruct['link_to_ruhr'] = 'Blabla'
@@ -437,6 +433,7 @@ class TestLocationSchema:
              'is_online': False,
              'link_to_ruhr': 'Blabla',
              'location': 'Berlin'}
+
 
 class TestLocationSheet:
 
@@ -451,8 +448,8 @@ class TestLocationSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import ILocation
-        from adhocracy_mercator.sheets.mercator2 import LocationSchema
+        from .mercator2 import ILocation
+        from .mercator2 import LocationSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == ILocation
         assert inst.meta.schema_class == LocationSchema
@@ -483,7 +480,6 @@ class TestStatusSchema:
         assert error.value.asdict() == {'status': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == {'status': 'other'}
 
 
@@ -500,8 +496,8 @@ class TestStatusSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IStatus
-        from adhocracy_mercator.sheets.mercator2 import StatusSchema
+        from .mercator2 import IStatus
+        from .mercator2 import StatusSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IStatus
         assert inst.meta.schema_class == StatusSchema
@@ -532,9 +528,8 @@ class TestChallengeSchema:
         assert error.value.asdict() == {'challenge': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
-        {'challenge': 'reduce pollution in Europe'}
+            {'challenge': 'reduce pollution in Europe'}
 
 
 class TestChallengeSheet:
@@ -550,8 +545,8 @@ class TestChallengeSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IChallenge
-        from adhocracy_mercator.sheets.mercator2 import ChallengeSchema
+        from .mercator2 import IChallenge
+        from .mercator2 import ChallengeSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IChallenge
         assert inst.meta.schema_class == ChallengeSchema
@@ -582,9 +577,8 @@ class TestGoalSchema:
         assert error.value.asdict() == {'goal': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
-        {'goal': 'free bicycle for everyone'}
+               {'goal': 'free bicycle for everyone'}
 
 
 class TestGoalSheet:
@@ -600,8 +594,8 @@ class TestGoalSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IGoal
-        from adhocracy_mercator.sheets.mercator2 import GoalSchema
+        from .mercator2 import IGoal
+        from .mercator2 import GoalSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IGoal
         assert inst.meta.schema_class == GoalSchema
@@ -632,9 +626,8 @@ class TestPlanSchema:
         assert error.value.asdict() == {'plan': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
-        {'plan': '3D-printed bicycle'}
+               {'plan': '3D-printed bicycle'}
 
 
 class TestPlanSheet:
@@ -650,8 +643,8 @@ class TestPlanSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IPlan
-        from adhocracy_mercator.sheets.mercator2 import PlanSchema
+        from .mercator2 import IPlan
+        from .mercator2 import PlanSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IPlan
         assert inst.meta.schema_class == PlanSchema
@@ -682,9 +675,7 @@ class TestTargetSchema:
         assert error.value.asdict() == {'target': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
-        assert inst.deserialize(cstruct_required) == \
-        {'target': 'everyone'}
+        assert inst.deserialize(cstruct_required) == {'target': 'everyone'}
 
 
 class TestTargetSheet:
@@ -700,8 +691,8 @@ class TestTargetSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import ITarget
-        from adhocracy_mercator.sheets.mercator2 import TargetSchema
+        from .mercator2 import ITarget
+        from .mercator2 import TargetSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == ITarget
         assert inst.meta.schema_class == TargetSchema
@@ -732,9 +723,7 @@ class TestTeamSchema:
         assert error.value.asdict() == {'team': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
-        assert inst.deserialize(cstruct_required) == \
-        {'team': 'Ana'}
+        assert inst.deserialize(cstruct_required) == {'team': 'Ana'}
 
 
 class TestTeamSheet:
@@ -750,8 +739,8 @@ class TestTeamSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import ITeam
-        from adhocracy_mercator.sheets.mercator2 import TeamSchema
+        from .mercator2 import ITeam
+        from .mercator2 import TeamSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == ITeam
         assert inst.meta.schema_class == TeamSchema
@@ -777,9 +766,8 @@ class TestExtraInfoSchema:
     def test_deserialize_empty(self, inst):
         from colander import Invalid
         cstruct = {}
-        with raises(Invalid) as error:
-            inst.deserialize(cstruct)
-        assert error.value.asdict() == {'extrainfo': 'Required'}
+        inst.deserialize(cstruct) == {'extrainfo': ''}
+
 
     def test_deserialize_with_required(self, inst, cstruct_required):
         wanted = cstruct_required
@@ -800,8 +788,8 @@ class TestExtraInfoSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IExtraInfo
-        from adhocracy_mercator.sheets.mercator2 import ExtraInfoSchema
+        from .mercator2 import IExtraInfo
+        from .mercator2 import ExtraInfoSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IExtraInfo
         assert inst.meta.schema_class == ExtraInfoSchema
@@ -832,9 +820,8 @@ class TestConnectionCohesionSchema:
         assert error.value.asdict() == {'connection_cohesion': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
-        {'connection_cohesion': 'Reducing pollution reduces social problems.'}
+               {'connection_cohesion': 'Reducing pollution reduces social problems.'}
 
 
 class TestConnectionCohesionSheet:
@@ -850,8 +837,8 @@ class TestConnectionCohesionSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IConnectionCohesion
-        from adhocracy_mercator.sheets.mercator2 import ConnectionCohesionSchema
+        from .mercator2 import IConnectionCohesion
+        from .mercator2 import ConnectionCohesionSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IConnectionCohesion
         assert inst.meta.schema_class == ConnectionCohesionSchema
@@ -882,9 +869,8 @@ class TestDifferenceSchema:
         assert error.value.asdict() == {'difference': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
-        {'difference': 'Designs of bicycles are open-sourced.'}
+               {'difference': 'Designs of bicycles are open-sourced.'}
 
 
 class TestDifferenceSheet:
@@ -900,8 +886,8 @@ class TestDifferenceSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IDifference
-        from adhocracy_mercator.sheets.mercator2 import DifferenceSchema
+        from .mercator2 import IDifference
+        from .mercator2 import DifferenceSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IDifference
         assert inst.meta.schema_class == DifferenceSchema
@@ -932,9 +918,8 @@ class TestPracticalRelevanceSchema:
         assert error.value.asdict() == {'practicalrelevance': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
-        {'practicalrelevance': 'Designs of bicycles are open-sourced.'}
+               {'practicalrelevance': 'Designs of bicycles are open-sourced.'}
 
 
 class TestPracticalRelevanceSheet:
@@ -950,8 +935,8 @@ class TestPracticalRelevanceSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IPracticalRelevance
-        from adhocracy_mercator.sheets.mercator2 import PracticalRelevanceSchema
+        from .mercator2 import IPracticalRelevance
+        from .mercator2 import PracticalRelevanceSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IPracticalRelevance
         assert inst.meta.schema_class == PracticalRelevanceSchema
@@ -987,7 +972,6 @@ class TestFinancialPlanningSchema:
              'requested_funding': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
             {'budget': 10000,
              'requested_funding': 500,
@@ -1007,8 +991,8 @@ class TestFinancialPlanningSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IFinancialPlanning
-        from adhocracy_mercator.sheets.mercator2 import FinancialPlanningSchema
+        from .mercator2 import IFinancialPlanning
+        from .mercator2 import FinancialPlanningSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IFinancialPlanning
         assert inst.meta.schema_class == FinancialPlanningSchema
@@ -1018,6 +1002,7 @@ class TestFinancialPlanningSheet:
         from adhocracy_core.utils import get_sheet
         context = testing.DummyResource(__provides__=meta.isheet)
         assert get_sheet(context, meta.isheet)
+
 
 class TestExtraFundingSchema:
 
@@ -1032,9 +1017,14 @@ class TestExtraFundingSchema:
                 'secured': 'False'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
             {'other_sources': 'XYZ grant',
+             'secured': False}
+
+    def test_deserialize_empty_other_sources(self, inst, cstruct_required):
+        assert inst.deserialize({'other_sources': '',
+                                 'secured': 'False'}) == \
+            {'other_sources': '',
              'secured': False}
 
 
@@ -1051,8 +1041,8 @@ class TestExtraFundingSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IExtraFunding
-        from adhocracy_mercator.sheets.mercator2 import ExtraFundingSchema
+        from .mercator2 import IExtraFunding
+        from .mercator2 import ExtraFundingSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IExtraFunding
         assert inst.meta.schema_class == ExtraFundingSchema
@@ -1074,7 +1064,7 @@ class TestCommunitySchema:
     @fixture
     def cstruct_required(self):
         return {'expected_feedback': 'Nice comments',
-                'heard_from': 'website'}
+                'heard_froms': ['website']}
 
     def test_deserialize_empty(self, inst):
         from colander import Invalid
@@ -1082,12 +1072,38 @@ class TestCommunitySchema:
         with raises(Invalid) as error:
             inst.deserialize(cstruct)
         assert error.value.asdict() == \
-            {'expected_feedback': 'Required',
-             'heard_from': 'Required'}
+            {'heard_froms': 'Required'}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == cstruct_required
+
+    def test_deserialize_with_duplicate_heard_froms(self, inst, cstruct_required):
+        from colander import Invalid
+        cstruct_required['heard_froms'] = ['website', 'website']
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct_required)
+        assert error.value.asdict() == {'heard_froms': 'Duplicates are not allowed'}
+
+    def test_deserialize_with_heard_from_other_and_no_text(
+            self, inst, cstruct_required):
+        from colander import Invalid
+        cstruct = cstruct_required
+        cstruct['heard_froms'] = ['other', 'website']
+        with raises(Invalid) as error:
+            inst.deserialize(cstruct)
+        assert error.value.asdict() == {'heard_from_other':
+                                        'Required if "other" in heard_froms'}
+
+    def test_deserialize_with_heard_from_other(
+            self, inst, cstruct_required):
+        from colander import Invalid
+        cstruct = cstruct_required
+        cstruct['heard_froms'] = ['other', 'website']
+        cstruct['heard_from_other'] = 'blabla'
+        assert inst.deserialize(cstruct) == \
+            {'expected_feedback': 'Nice comments',
+             'heard_from_other': 'blabla',
+             'heard_froms': ['other', 'website']}
 
 
 class TestCommunitySheet:
@@ -1103,8 +1119,8 @@ class TestCommunitySheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import ICommunity
-        from adhocracy_mercator.sheets.mercator2 import CommunitySchema
+        from .mercator2 import ICommunity
+        from .mercator2 import CommunitySchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == ICommunity
         assert inst.meta.schema_class == CommunitySchema
@@ -1125,19 +1141,15 @@ class TestWinnerInfoSchema:
 
     @fixture
     def cstruct_required(self):
-        return {'explanation': 'Relevant project',
-                'funding': '10000'}
+        return {'funding': '10000'}
 
     def test_deserialize_empty(self, inst):
-        from colander import Invalid
         cstruct = {}
         assert inst.deserialize(cstruct) == {}
 
     def test_deserialize_with_required(self, inst, cstruct_required):
-        wanted = cstruct_required
         assert inst.deserialize(cstruct_required) == \
-            {'explanation': 'Relevant project',
-             'funding': 10000}
+            {'funding': 10000}
 
 
 class TestWinnerInfoSheet:
@@ -1153,8 +1165,8 @@ class TestWinnerInfoSheet:
         return testing.DummyResource(__provides__=IItem)
 
     def test_create_valid(self, meta, context):
-        from adhocracy_mercator.sheets.mercator2 import IWinnerInfo
-        from adhocracy_mercator.sheets.mercator2 import WinnerInfoSchema
+        from .mercator2 import IWinnerInfo
+        from .mercator2 import WinnerInfoSchema
         inst = meta.sheet_class(meta, context)
         assert inst.meta.isheet == IWinnerInfo
         assert inst.meta.schema_class == WinnerInfoSchema

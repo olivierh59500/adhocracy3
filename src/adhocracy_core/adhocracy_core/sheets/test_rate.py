@@ -6,62 +6,59 @@ from pytest import raises
 from pytest import mark
 import colander
 
-from adhocracy_core.sheets.rate import IRateable
-from adhocracy_core.sheets.rate import ILikeable
-
-
-
 
 @fixture
-def integration(config):
-    config.include('adhocracy_core.content')
-    config.include('adhocracy_core.catalog')
-    config.include('adhocracy_core.sheets.rate')
-
-
-def _make_rateable():
-    return testing.DummyResource(__provides__=IRateable)
+def registry(registry_with_content):
+    return registry_with_content
 
 
 class TestRateableSheet:
 
     @fixture
-    def inst(self, pool, service):
-        pool['rates'] = service
-        from adhocracy_core.sheets.rate import rateable_meta
-        return rateable_meta.sheet_class(rateable_meta, pool)
+    def meta(self):
+        from .rate import rateable_meta
+        return rateable_meta
 
-    def test_create(self, inst):
+    @fixture
+    def inst(self, pool, service, meta):
+        pool['rates'] = service
+        return meta.sheet_class(meta, pool)
+
+    def test_meta(self, meta):
         from adhocracy_core.sheets import AnnotationRessourceSheet
-        from adhocracy_core.sheets.rate import IRateable
-        from adhocracy_core.sheets.rate import RateableSchema
-        assert isinstance(inst, AnnotationRessourceSheet)
-        assert inst.meta.isheet == IRateable
-        assert inst.meta.schema_class == RateableSchema
-        assert inst.meta.create_mandatory is False
+        from . import rate
+        assert meta.sheet_class == AnnotationRessourceSheet
+        assert meta.isheet == rate.IRateable
+        assert meta.schema_class == rate.RateableSchema
+        assert meta.create_mandatory is False
+
+    def test_create(self, meta, pool):
+        inst = meta.sheet_class(meta, pool)
+        assert inst
 
     def test_get_empty(self, inst):
         post_pool = inst.context['rates']
-        assert inst.get() == {'post_pool': post_pool,
-                              'rates': [],
-                              }
+        assert inst.get() == {'post_pool': post_pool}
+
 
 class TestRateSheet:
 
     @fixture
     def meta(self):
-        from adhocracy_core.sheets.rate import rate_meta
+        from .rate import rate_meta
         return rate_meta
 
-    def test_create(self, meta, context):
-        from adhocracy_core.sheets.rate import IRate
-        from adhocracy_core.sheets.rate import RateSchema
+    def test_meta(self, meta, context):
         from adhocracy_core.sheets import AttributeResourceSheet
-        inst = meta.sheet_class(meta, context)
+        from . import rate
         assert issubclass(meta.sheet_class, AttributeResourceSheet)
-        assert inst.meta.isheet == IRate
-        assert inst.meta.schema_class == RateSchema
-        assert inst.meta.create_mandatory
+        assert meta.isheet == rate.IRate
+        assert meta.schema_class == rate.RateSchema
+        assert meta.create_mandatory
+
+    def test_create(self, meta, context):
+        inst = meta.sheet_class(meta, context)
+        assert inst
 
     def test_get_empty(self, meta, context):
         inst = meta.sheet_class(meta, context)
@@ -70,174 +67,123 @@ class TestRateSheet:
                               'rate': 0,
                               }
 
+    def test_validators(self, mocker, meta, context, request_):
+        from . import rate
+        inst = meta.sheet_class(meta, context)
+        validate_subject = mocker.patch.object(rate, 'create_validate_subject')
+        validate_unique = mocker.patch.object(rate,
+                                              'create_validate_rate_is_unique')
+        bindings = {'context': context, 'request': request_}
 
-class DummyQuery:
+        validators = inst.schema.validator(inst.schema, bindings)
 
-    def __init__(self, result=[]):
-        self.result = result
+        validate_subject.assert_called_with(request_)
+        validate_unique.assert_called_with(meta.isheet, context,
+                                           request_.registry)
+        assert inst.schema['rate'].validator.max == 1
+        assert inst.schema['rate'].validator.min == -1
 
-    def __iand__(self, other):
-        return self
-
-    def execute(self, **kwargs):
-        return self.result
-
-
-class DummyIndex:
-
-    def __init__(self, result=[]):
-        self.result = result
-
-    def eq(self, *args, **kwargs):
-        return DummyQuery(self.result)
-
-    def noteq(self, *args, **kwargs):
-        return DummyQuery(self.result)
+    @mark.usefixtures('integration')
+    def test_includeme_register(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
 
 
-@mark.usefixtures('integration')
-class TestRateSchema:
+class TestCreateValidateSubject:
 
-    @fixture
-    def schema_with_mock_ensure_rate(self, monkeypatch, request_, context):
-        from adhocracy_core.sheets import rate
-        from adhocracy_core.sheets.rate import RateSchema
-        mock = Mock()
-        monkeypatch.setattr(rate, '_ensure_rate_is_unique', mock)
-        schema = RateSchema().bind(request=request_, context=context)
-        return schema
+    def call_fut(self, *args):
+        from .rate import create_validate_subject
+        return create_validate_subject(*args)
 
     @fixture
-    def subject(self, monkeypatch):
-        from adhocracy_core.sheets import rate
-        from adhocracy_core.sheets.rate import ICanRate
-        subject = testing.DummyResource(__provides__=ICanRate)
-        mock_get_user = Mock(return_value=subject)
-        monkeypatch.setattr(rate, 'get_user', mock_get_user)
-        return subject
+    def mock_get_user(self, mocker):
+        from . import rate
+        mock_get_user = mocker.patch.object(rate, 'get_user')
+        return mock_get_user
 
-    def test_deserialize_valid(self, context, schema_with_mock_ensure_rate,
-                               subject):
-        context['subject'] = subject
-        object = _make_rateable()
-        context['object'] = object
-        data = {'subject': '/subject', 'object': '/object', 'rate': '1'}
-        assert schema_with_mock_ensure_rate.deserialize(data) == {
-            'subject': subject, 'object': object, 'rate': 1}
+    def test_ignore_if_subject_is_loggedin_user(self, node, request_, mock_get_user):
+        user = testing.DummyResource()
+        mock_get_user.return_value = user
+        validator = self.call_fut(request_)
+        assert validator(node, {'subject': user}) is None
 
-    def test_deserialize_valid_minus_one(self, context,
-                                         schema_with_mock_ensure_rate,
-                                         subject):
-        context['subject'] = subject
-        object = _make_rateable()
-        context['object'] = object
-        data = {'subject': '/subject', 'object': '/object', 'rate': '-1'}
-        assert schema_with_mock_ensure_rate.deserialize(data) == {
-            'subject': subject, 'object': object, 'rate': -1}
-
-
-    def test_deserialize_invalid_rate(self, context,
-                                      schema_with_mock_ensure_rate, subject):
-        context['subject'] = subject
-        object = _make_rateable()
-        context['object'] = object
-        data = {'subject': '/subject', 'object': '/object', 'rate': '77'}
+    def test_raise_if_subject_is_not_loggedin_user(self, node, request_,
+                                                   mock_get_user):
+        user = testing.DummyResource()
+        mock_get_user.return_value = None
+        validator = self.call_fut(request_)
         with raises(colander.Invalid):
-            schema_with_mock_ensure_rate.deserialize(data)
+            node['subject'] = Mock()
+            validator(node,  {'subject': user})
 
-    def test_deserialize_invalid_subject(self, context,
-                                         schema_with_mock_ensure_rate):
+
+class TestCreateValidateRateIsUnique:
+
+    def call_fut(self, *args):
+        from .rate import create_validate_rate_is_unique
+        return create_validate_rate_is_unique(*args)
+
+    @fixture
+    def mock_versions_sheet(self, registry, mock_sheet):
+        mock_sheet.get.return_value = {'elements': []}
+        registry.content.get_sheet = Mock(return_value=mock_sheet)
+        return mock_sheet
+
+    @fixture
+    def mock_catalogs(self, mock_catalogs, monkeypatch):
+        from . import rate
+        monkeypatch.setattr(rate, 'find_service', lambda x, y: mock_catalogs)
+        return mock_catalogs
+
+    def test_ignore_if_no_other_rates(self, node, context, registry, query,
+                                      mock_catalogs):
+        from adhocracy_core.interfaces import Reference
+        from .rate import IRate
         subject = testing.DummyResource()
-        context['subject'] = subject
-        object = _make_rateable()
-        context['object'] = object
-        data = {'subject': '/subject', 'object': '/object', 'rate': '0'}
+        object_ = testing.DummyResource()
+        value = {'subject': subject,
+                 'object': object_,
+                 }
+        validator = self.call_fut(IRate, context, registry)
+        assert validator(node, value) is None
+        assert mock_catalogs.search.call_args[0][0] == query._replace(
+                references=(Reference(None, IRate, 'subject', subject),
+                            Reference(None, IRate, 'object', object_)),
+                resolve=True)
+
+    def test_ignore_if_some_but_older_versions(
+            self, node, context, registry, search_result, mock_catalogs,
+            mock_versions_sheet):
+        from .rate import IRate
+        value = {'subject': testing.DummyResource(),
+                 'object': testing.DummyResource(),
+                 }
+        old_version = testing.DummyResource()
+        mock_catalogs.search.return_value = search_result._replace(
+                elements=[old_version])
+        mock_versions_sheet.get.return_value = \
+            {'elements': [old_version]}
+        validator = self.call_fut(IRate, context, registry)
+        assert validator(node, value) is None
+
+    def test_raise_if_other_rates(
+            self, node, context, registry, search_result, mock_catalogs,
+            mock_versions_sheet):
+        from .rate import IRate
+        value = {'subject': testing.DummyResource(),
+                 'object': testing.DummyResource(),
+                 }
+        old_version = testing.DummyResource()
+        other_version = testing.DummyResource()
+        mock_catalogs.search.return_value = search_result._replace(
+                elements=[old_version, other_version])
+        mock_versions_sheet.get.return_value = \
+            {'elements': [old_version]}
+        validator = self.call_fut(IRate, context, registry)
         with raises(colander.Invalid):
-            schema_with_mock_ensure_rate.deserialize(data)
-
-    def test_deserialize_invalid_subject_missing(self, context,
-                                                 schema_with_mock_ensure_rate):
-        object = _make_rateable()
-        context['object'] = object
-        data = {'subject': '', 'object': '/object', 'rate': '0'}
-        with raises(colander.Invalid):
-            schema_with_mock_ensure_rate.deserialize(data)
-
-    def test_deserialize_subject_isnt_current_user(
-            self, context, monkeypatch, schema_with_mock_ensure_rate):
-        from adhocracy_core.sheets import rate
-        from adhocracy_core.sheets.rate import ICanRate
-        subject = testing.DummyResource(__provides__=ICanRate)
-        user = testing.DummyResource(__provides__=ICanRate)
-        mock_get_user = Mock(return_value=user)
-        monkeypatch.setattr(rate, 'get_user', mock_get_user)
-        context['subject'] = subject
-        object = _make_rateable()
-        context['object'] = object
-        data = {'subject': '/subject', 'object': '/object', 'rate': '0'}
-        with raises(colander.Invalid):
-            schema_with_mock_ensure_rate.deserialize(data)
-
-    def test_deserialize_invalid_object(self, context,
-                                        schema_with_mock_ensure_rate,
-                                        subject):
-        context['subject'] = subject
-        object = testing.DummyResource()
-        context['object'] = object
-        data = {'subject': '/subject', 'object': '/object', 'rate': '0'}
-        with raises(colander.Invalid):
-            schema_with_mock_ensure_rate.deserialize(data)
-
-    def test_deserialize_invalid_object_missing(self, context,
-                                        schema_with_mock_ensure_rate, subject):
-        context['subject'] = subject
-        data = {'subject': '/subject', 'object': '', 'rate': '0'}
-        with raises(colander.Invalid):
-            schema_with_mock_ensure_rate.deserialize(data)
-
-    def test_ensure_rate_is_unique_ok(self, monkeypatch, request_,
-                                      context, subject):
-        from adhocracy_core.sheets.rate import _ensure_rate_is_unique
-        from adhocracy_core.sheets.rate import RateSchema
-        from adhocracy_core.sheets.rate import IRate
-        from adhocracy_core.sheets import rate
-        mock_find_catalog = Mock(return_value={'reference': DummyIndex(),
-                                               'path': DummyIndex()})
-        monkeypatch.setattr(rate, 'find_catalog', mock_find_catalog)
-        schema = RateSchema().bind(request=request_, context=context)
-        object = _make_rateable()
-        node = Mock()
-        value = {'subject': subject, 'object': object, 'rate': '1'}
-        result = _ensure_rate_is_unique(node, value, request_)
-        assert result is None
-
-    def test_ensure_rate_is_unique_error(self, monkeypatch, request_,
-                                         context, subject):
-        from adhocracy_core.sheets.rate import IRate
-        from adhocracy_core.sheets.rate import RateSchema
-        from adhocracy_core.sheets.rate import _ensure_resource_is_unique
-        from adhocracy_core.sheets import rate
-        from adhocracy_core.utils import named_object
-        mock_find_catalog = Mock(
-            return_value={'reference': DummyIndex(['dummy']),
-                          'path': DummyIndex()})
-        monkeypatch.setattr(rate, 'find_catalog', mock_find_catalog)
-        schema = RateSchema().bind(request=request_, context=context)
-        object = _make_rateable()
-        node = Mock()
-        node.children = [named_object('object')]
-        value = {'subject': subject, 'object': object, 'rate': '1'}
-        with raises(colander.Invalid):
-            _ensure_resource_is_unique(node, value, request_, IRate, 'rate')
-
-
-@mark.usefixtures('integration')
-def test_includeme_register_rate_sheet(config, context):
-    from adhocracy_core.sheets.rate import IRate
-    from adhocracy_core.utils import get_sheet
-    context = testing.DummyResource(__provides__=IRate)
-    inst = get_sheet(context, IRate)
-    assert inst.meta.isheet is IRate
+            node['object'] = Mock()
+            validator(node, value)
 
 
 class TestLikeableSheet:
@@ -265,7 +211,6 @@ class TestLikeableSheet:
     def test_get_empty(self, inst):
         post_pool = inst.context['likes']
         assert inst.get() == {'post_pool': post_pool,
-                              'likes': [],
                               }
 
     @mark.usefixtures('integration')
@@ -279,18 +224,20 @@ class TestLikeSheet:
 
     @fixture
     def meta(self):
-        from adhocracy_core.sheets.rate import like_meta
+        from .rate import like_meta
         return like_meta
 
-    def test_create(self, meta, context):
-        from adhocracy_core.sheets.rate import ILike
-        from adhocracy_core.sheets.rate import LikeSchema
+    def test_meta(self, meta, context):
         from adhocracy_core.sheets import AttributeResourceSheet
-        inst = meta.sheet_class(meta, context)
+        from . import rate
         assert issubclass(meta.sheet_class, AttributeResourceSheet)
-        assert inst.meta.isheet == ILike
-        assert inst.meta.schema_class == LikeSchema
-        assert inst.meta.create_mandatory
+        assert meta.isheet == rate.ILike
+        assert meta.schema_class == rate.LikeSchema
+        assert meta.create_mandatory
+
+    def test_create(self, meta, context):
+        inst = meta.sheet_class(meta, context)
+        assert inst
 
     def test_get_empty(self, meta, context):
         inst = meta.sheet_class(meta, context)
@@ -299,129 +246,26 @@ class TestLikeSheet:
                               'like': 0,
                               }
 
-def _make_likeable():
-    return testing.DummyResource(__provides__=ILikeable)
+    def test_validators(self, mocker, meta, context, request_):
+        from . import rate
+        inst = meta.sheet_class(meta, context)
+        validate_subject = mocker.patch.object(rate, 'create_validate_subject')
+        validate_unique = mocker.patch.object(rate,
+                                              'create_validate_rate_is_unique')
+        bindings = {'context': context, 'request': request_}
 
-@mark.usefixtures('integration')
-class TestLikeSchema:
+        validators = inst.schema.validator(inst.schema, bindings)
 
-    @fixture
-    def schema_with_mock_ensure_like(self, monkeypatch, request_, context):
-        from adhocracy_core.sheets import rate
-        from adhocracy_core.sheets.rate import LikeSchema
-        mock = Mock()
-        monkeypatch.setattr(rate, '_ensure_like_is_unique', mock)
-        schema = LikeSchema().bind(request=request_, context=context)
-        return schema
+        validate_subject.assert_called_with(request_)
+        validate_unique.assert_called_with(meta.isheet, context,
+                                           request_.registry)
+        assert inst.schema['like'].validator.max == 1
+        assert inst.schema['like'].validator.min == 0
 
-    @fixture
-    def subject(self, monkeypatch):
-        from adhocracy_core.sheets import rate
-        from adhocracy_core.sheets.rate import ICanLike
-        subject = testing.DummyResource(__provides__=ICanLike)
-        mock_get_user = Mock(return_value=subject)
-        monkeypatch.setattr(rate, 'get_user', mock_get_user)
-        return subject
+    @mark.usefixtures('integration')
+    def test_includeme_register(self, meta):
+        from adhocracy_core.utils import get_sheet
+        context = testing.DummyResource(__provides__=meta.isheet)
+        assert get_sheet(context, meta.isheet)
 
-    def test_deserialize_valid(self, context, schema_with_mock_ensure_like,
-                               subject):
-        context['subject'] = subject
-        object = _make_likeable()
-        context['object'] = object
-        data = {'subject': '/subject', 'object': '/object', 'like': '1'}
-        assert schema_with_mock_ensure_like.deserialize(data) == {
-            'subject': subject, 'object': object, 'like': 1}
 
-    def test_deserialize_invalid_like(self, context,
-                                      schema_with_mock_ensure_like, subject):
-        context['subject'] = subject
-        object = _make_likeable()
-        context['object'] = object
-        data = {'subject': '/subject', 'object': '/object', 'like': '77'}
-        with raises(colander.Invalid):
-            schema_with_mock_ensure_like.deserialize(data)
-
-    def test_deserialize_invalid_subject(self, context,
-                                         schema_with_mock_ensure_like):
-        subject = testing.DummyResource()
-        context['subject'] = subject
-        object = _make_likeable()
-        context['object'] = object
-        data = {'subject': '/subject', 'object': '/object', 'like': '0'}
-        with raises(colander.Invalid):
-            schema_with_mock_ensure_like.deserialize(data)
-
-    def test_deserialize_invalid_subject_missing(self, context,
-                                                 schema_with_mock_ensure_like):
-        object = _make_likeable()
-        context['object'] = object
-        data = {'subject': '', 'object': '/object', 'like': '0'}
-        with raises(colander.Invalid):
-            schema_with_mock_ensure_like.deserialize(data)
-
-    def test_deserialize_subject_isnt_current_user(
-            self, context, monkeypatch, schema_with_mock_ensure_like):
-        from adhocracy_core.sheets import rate
-        from adhocracy_core.sheets.rate import ICanLike
-        subject = testing.DummyResource(__provides__=ICanLike)
-        user = testing.DummyResource(__provides__=ICanLike)
-        mock_get_user = Mock(return_value=user)
-        monkeypatch.setattr(rate, 'get_user', mock_get_user)
-        context['subject'] = subject
-        object = _make_likeable()
-        context['object'] = object
-        data = {'subject': '/subject', 'object': '/object', 'like': '0'}
-        with raises(colander.Invalid):
-            schema_with_mock_ensure_like.deserialize(data)
-
-    def test_deserialize_invalid_object(self, context,
-                                        schema_with_mock_ensure_like,
-                                        subject):
-        context['subject'] = subject
-        object = testing.DummyResource()
-        context['object'] = object
-        data = {'subject': '/subject', 'object': '/object', 'like': '0'}
-        with raises(colander.Invalid):
-            schema_with_mock_ensure_like.deserialize(data)
-
-    def test_deserialize_invalid_object_missing(self, context,
-                                        schema_with_mock_ensure_like, subject):
-        context['subject'] = subject
-        data = {'subject': '/subject', 'object': '', 'like': '0'}
-        with raises(colander.Invalid):
-            schema_with_mock_ensure_like.deserialize(data)
-
-    def test_ensure_like_is_unique_ok(self, monkeypatch, request_,
-                                      context, subject):
-        from adhocracy_core.sheets.rate import _ensure_like_is_unique
-        from adhocracy_core.sheets.rate import LikeSchema
-        from adhocracy_core.sheets.rate import ILike
-        from adhocracy_core.sheets import rate
-        mock_find_catalog = Mock(return_value={'reference': DummyIndex(),
-                                               'path': DummyIndex()})
-        monkeypatch.setattr(rate, 'find_catalog', mock_find_catalog)
-        schema = LikeSchema().bind(request=request_, context=context)
-        object = _make_likeable()
-        node = Mock()
-        value = {'subject': subject, 'object': object, 'like': '1'}
-        result = _ensure_like_is_unique(node, value, request_)
-        assert result is None
-
-    def test_ensure_like_is_unique_error(self, monkeypatch, request_,
-                                         context, subject):
-        from adhocracy_core.sheets.rate import ILike
-        from adhocracy_core.sheets.rate import LikeSchema
-        from adhocracy_core.sheets.rate import _ensure_resource_is_unique
-        from adhocracy_core.sheets import rate
-        from adhocracy_core.utils import named_object
-        mock_find_catalog = Mock(
-            return_value={'reference': DummyIndex(['dummy']),
-                          'path': DummyIndex()})
-        monkeypatch.setattr(rate, 'find_catalog', mock_find_catalog)
-        schema = LikeSchema().bind(request=request_, context=context)
-        object = _make_likeable()
-        node = Mock()
-        node.children = [named_object('object')]
-        value = {'subject': subject, 'object': object, 'like': '1'}
-        with raises(colander.Invalid):
-            _ensure_resource_is_unique(node, value, request_, ILike, 'like')

@@ -175,6 +175,20 @@ class TestIndexRate:
         item['rateable'] = dummy_rateable
         assert index_rates(item['rateable'], None) == 0
 
+    @mark.usefixtures('integration')
+    def test_includeme_register_index_rates(self, registry):
+        from adhocracy_core.sheets.rate import IRateable
+        from substanced.interfaces import IIndexView
+        assert registry.adapters.lookup((IRateable,), IIndexView,
+                                        name='adhocracy|rates')
+
+    @mark.usefixtures('integration')
+    def test_includeme_register_index_rate(self, registry):
+        from adhocracy_core.sheets.rate import IRate
+        from substanced.interfaces import IIndexView
+        assert registry.adapters.lookup((IRate,), IIndexView,
+                                        name='adhocracy|rate')
+
 
 class TestIndexComments:
 
@@ -199,59 +213,44 @@ class TestIndexComments:
         assert mock_catalogs.search.call_args[0][0] == query
 
 
-@mark.usefixtures('integration')
-def test_includeme_register_index_rate(registry):
-    from adhocracy_core.sheets.rate import IRate
-    from substanced.interfaces import IIndexView
-    assert registry.adapters.lookup((IRate,), IIndexView,
-                                    name='adhocracy|rate')
+
+class TestIndexTag:
+
+    @fixture
+    def registry(self, registry_with_content):
+        return registry_with_content
+
+    @fixture
+    def mock_tags_sheet(self, registry, mock_sheet):
+        registry.content.get_sheet.return_value = mock_sheet
+        return mock_sheet
+
+    @fixture
+    def version(self, item):
+        item['version'] = testing.DummyResource()
+        return item['version']
+
+    def call_fut(self, *args):
+        from .adhocracy import index_tag
+        return index_tag(*args)
+
+    def test_index_version_with_tags(self, version, mock_tags_sheet, registry):
+        other = testing.DummyResource()
+        mock_tags_sheet.get.return_value = {'LAST': version,
+                                            'FIRST': other}
+        assert self.call_fut(version, 'default') == ['LAST']
 
 
-@mark.usefixtures('integration')
-def test_includeme_register_index_rates(registry):
-    from adhocracy_core.sheets.rate import IRateable
-    from substanced.interfaces import IIndexView
-    assert registry.adapters.lookup((IRateable,), IIndexView,
-                                    name='adhocracy|rates')
+    def test_index_version_without_tags(self, version, mock_tags_sheet, registry):
+        mock_tags_sheet.get.return_value = {}
+        assert self.call_fut(version, 'default') == 'default'
 
-
-@mark.usefixtures('integration')
-def test_includeme_register_index_like(registry):
-    from adhocracy_core.sheets.rate import ILike
-    from substanced.interfaces import IIndexView
-    assert registry.adapters.lookup((ILike,), IIndexView,
-                                    name='adhocracy|like')
-
-
-@mark.usefixtures('integration')
-def test_includeme_register_index_likes(registry):
-    from adhocracy_core.sheets.rate import ILikeable
-    from substanced.interfaces import IIndexView
-    assert registry.adapters.lookup((ILikeable,), IIndexView,
-                                    name='adhocracy|likes')
-
-
-def test_index_tag_with_tags(context, mock_graph):
-    from .adhocracy import index_tag
-    context.__graph__ = mock_graph
-    tag = testing.DummyResource(__name__='tag')
-    mock_graph.get_back_reference_sources.return_value = [tag]
-    assert index_tag(context, 'default') == ['tag']
-
-
-def test_index_tag_without_tags(context, mock_graph):
-    from .adhocracy import index_tag
-    context.__graph__ = mock_graph
-    mock_graph.get_back_reference_sources.return_value = []
-    assert index_tag(context, 'default') == 'default'
-
-
-@mark.usefixtures('integration')
-def test_includeme_register_index_rates(registry):
-    from adhocracy_core.sheets.versions import IVersionable
-    from substanced.interfaces import IIndexView
-    assert registry.adapters.lookup((IVersionable,), IIndexView,
-                                    name='adhocracy|tag')
+    @mark.usefixtures('integration')
+    def test_includeme_register(self, registry):
+        from adhocracy_core.sheets.versions import IVersionable
+        from substanced.interfaces import IIndexView
+        assert registry.adapters.lookup((IVersionable,), IIndexView,
+                                        name='adhocracy|tag')
 
 
 class TestIndexBadge:
@@ -565,3 +564,17 @@ class TestIndexLike:
         from .adhocracy import index_likes
         item['likeable'] = dummy_likeable
         assert index_likes(item['likeable'], None) == 0
+
+    @mark.usefixtures('integration')
+    def test_includeme_register_index_like(self, registry):
+        from adhocracy_core.sheets.rate import ILike
+        from substanced.interfaces import IIndexView
+        assert registry.adapters.lookup((ILike,), IIndexView,
+                                        name='adhocracy|like')
+
+    @mark.usefixtures('integration')
+    def test_includeme_register_index_likes(self, registry):
+        from adhocracy_core.sheets.rate import ILikeable
+        from substanced.interfaces import IIndexView
+        assert registry.adapters.lookup((ILikeable,), IIndexView,
+                                        name='adhocracy|likes')

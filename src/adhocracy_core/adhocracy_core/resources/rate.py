@@ -9,9 +9,7 @@ from adhocracy_core.resources import add_resource_type_to_registry
 from adhocracy_core.resources.itemversion import itemversion_meta
 from adhocracy_core.resources.item import item_meta
 from adhocracy_core.resources.service import service_meta
-
-from adhocracy_core.sheets.rate import IRate
-from adhocracy_core.sheets.rate import ILike
+import adhocracy_core.sheets.rate
 
 
 class IRateVersion(IItemVersion):
@@ -20,7 +18,7 @@ class IRateVersion(IItemVersion):
 
 rateversion_meta = itemversion_meta._replace(
     iresource=IRateVersion,
-    extended_sheets=(IRate,),
+    extended_sheets=(adhocracy_core.sheets.rate.IRate,),
     permission_create='edit_rate',
 )
 
@@ -61,7 +59,7 @@ class ILikeVersion(IItemVersion):
 
 likeversion_meta = itemversion_meta._replace(
     iresource=ILikeVersion,
-    extended_sheets=(ILike,),
+    extended_sheets=(adhocracy_core.sheets.rate.ILike,),
     permission_create='edit_rate',
 )
 

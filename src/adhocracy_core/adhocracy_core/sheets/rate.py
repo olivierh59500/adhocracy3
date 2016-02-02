@@ -1,21 +1,26 @@
 """Rate sheet."""
-from pyramid.traversal import resource_path
-from substanced.util import find_catalog
+from pyramid.traversal import find_interface
+from pyramid.registry import Registry
+from substanced.util import find_service
+from zope.interface.interfaces import IInterface
 import colander
 
 from adhocracy_core.interfaces import ISheet
+from adhocracy_core.interfaces import IItem
 from adhocracy_core.interfaces import IPredicateSheet
 from adhocracy_core.interfaces import ISheetReferenceAutoUpdateMarker
+from adhocracy_core.interfaces import search_query
 from adhocracy_core.interfaces import SheetToSheet
 from adhocracy_core.interfaces import Reference
 from adhocracy_core.sheets import add_sheet_to_registry
 from adhocracy_core.sheets import AttributeResourceSheet
+from adhocracy_core.sheets.versions import IVersions
 from adhocracy_core.schema import Integer
 from adhocracy_core.schema import Reference as ReferenceSchema
-from adhocracy_core.schema import UniqueReferences
 from adhocracy_core.schema import PostPool
 from adhocracy_core.sheets import sheet_meta
 from adhocracy_core.utils import get_user
+from adhocracy_core.utils import get_sheet_field
 
 
 class IRate(IPredicateSheet, ISheetReferenceAutoUpdateMarker):
@@ -46,43 +51,6 @@ class RateObjectReference(SheetToSheet):
     target_isheet = IRateable
 
 
-def _validate_subject_is_current_user(node, value, request):
-    user = get_user(request)
-    if user is None or user != value['subject']:
-        err = colander.Invalid(node)
-        err['subject'] = 'Must be the currently logged-in user'
-        raise err
-
-
-def _ensure_resource_is_unique(node, value, request, iface, name):
-    # Other rates/likes with the same subject and object may occur below the
-    # current context (earlier versions of the same rate/like item).
-    # If they occur elsewhere, an error is thrown.
-    adhocracy_catalog = find_catalog(request.context, 'adhocracy')
-    index = adhocracy_catalog['reference']
-    reference_subject = Reference(None, iface, 'subject', value['subject'])
-    query = index.eq(reference_subject)
-    reference_object = Reference(None, iface, 'object', value['object'])
-    query &= index.eq(reference_object)
-    system_catalog = find_catalog(request.context, 'system')
-    path_index = system_catalog['path']
-    query &= path_index.noteq(resource_path(request.context), depth=None)
-    elements = query.execute(resolver=None)
-    if elements:
-        err = colander.Invalid(node)
-        err['object'] = 'Another {} by the same user already exists' \
-                        .format(name)
-        raise err
-
-
-def _ensure_rate_is_unique(node, value, request):
-    _ensure_resource_is_unique(node, value, request, IRate, 'rate')
-
-
-def _ensure_like_is_unique(node, value, request):
-    _ensure_resource_is_unique(node, value, request, ILike, 'like')
-
-
 class RateSchema(colander.MappingSchema):
     """Rate sheet data structure."""
 
@@ -90,22 +58,66 @@ class RateSchema(colander.MappingSchema):
     object = ReferenceSchema(reftype=RateObjectReference)
     rate = Integer(validator=colander.Range(-1, 1))
 
-    def validator(self, node, value):
-        """
-        Validate the rate.
-
-        1. Validate that the subject is the user who is currently logged-in.
-
-        2. Ensure that no other rate for the same subject/object combination
-           exists, except predecessors of this version.
-
-        """
-        # TODO make this validator deferred
+    @colander.deferred
+    def validator(self, kw: dict) -> callable:
+        """Validate the rate."""
         # TODO add post_pool validator
-        request = node.bindings['request']
-        _validate_subject_is_current_user(node, value, request)
-        _ensure_rate_is_unique(node, value, request)
+        context = kw['context']
+        request = kw.get('request', None)
+        if request is None:
+            return
+        registry = request.registry
+        return colander.All(create_validate_subject(request),
+                            create_validate_rate_is_unique(IRate,
+                                                           context,
+                                                           registry),
+                            )
 
+
+def create_validate_subject(request) -> callable:
+    """Create validator to ensure value['subject'] is current user."""
+    def validator(node, value):
+        user = get_user(request)
+        if user is None or user != value['subject']:
+            err = colander.Invalid(node,
+                                   msg='')  # msg='' workaround colander bug
+            err['subject'] = 'Must be the currently logged-in user'
+            raise err
+    return validator
+
+
+def create_validate_rate_is_unique(isheet: IInterface,
+                                   context,
+                                   registry: Registry) -> callable:
+    """Create validator to ensure rate version is unique.
+
+    Older rate versions with the same subject and object may occur.
+    If they belong to a different rate item an error is thrown.
+
+
+    :param isheet: :class:`adhocracy_core.sheets.rate.IRate` or
+        :class:`adhocracy_core.sheets.rate.ILike` to define what kind
+        of rate should be checked.
+    """
+    def validator(node, value):
+        catalogs = find_service(context, 'catalogs')
+        query = search_query._replace(
+            references=(Reference(None, isheet, 'subject', value['subject']),
+                        Reference(None, isheet, 'object', value['object'])),
+            resolve=True,
+        )
+        same_rates = catalogs.search(query).elements
+        if not same_rates:
+            return
+        item = find_interface(context, IItem)
+        old_versions = get_sheet_field(item, IVersions, 'elements',
+                                       registry=registry)
+        for rate in same_rates:
+            if rate not in old_versions:
+                err = colander.Invalid(node, msg='')
+                err['object'] = 'Another rate by the same user already exists'
+                raise err
+    return validator
 
 rate_meta = sheet_meta._replace(isheet=IRate,
                                 schema_class=RateSchema,
@@ -127,9 +139,6 @@ class RateableSchema(colander.MappingSchema):
     `post_pool`: Pool to post new :class:`adhocracy_sample.resource.IRate`.
     """
 
-    rates = UniqueReferences(readonly=True,
-                             backref=True,
-                             reftype=RateObjectReference)
     post_pool = PostPool(iresource_or_service_name='rates')
 
 
@@ -184,13 +193,19 @@ class LikeSchema(colander.MappingSchema):
     object = ReferenceSchema(reftype=LikeObjectReference)
     like = Integer(validator=colander.Range(0, 1))
 
-    def validator(self, node, value):
+    @colander.deferred
+    def validator(node, kw: dict) -> callable:
         """Validate the like."""
-        # TODO make this validator deferred
-        # TODO add post_pool validator
-        request = node.bindings['request']
-        _validate_subject_is_current_user(node, value, request)
-        _ensure_like_is_unique(node, value, request)
+        context = kw['context']
+        request = kw.get('request', None)
+        if request is None:
+            return
+        registry = request.registry
+        return colander.All(create_validate_subject(request),
+                            create_validate_rate_is_unique(ILike,
+                                                           context,
+                                                           registry),
+                            )
 
 
 like_meta = sheet_meta._replace(isheet=ILike,
@@ -202,9 +217,6 @@ like_meta = sheet_meta._replace(isheet=ILike,
 class LikeableSchema(colander.MappingSchema):
     """Likeable sheet data structure."""
 
-    likes = UniqueReferences(readonly=True,
-                             backref=True,
-                             reftype=LikeObjectReference)
     post_pool = PostPool(iresource_or_service_name='likes')
 
 

@@ -36,7 +36,6 @@ class TestMercator2:
     def proposal0_url(self):
         return '/organisation/advocate-europe2/proposal_0000000'
 
-
     def test_create_resources(self,
                               registry,
                               datadir,
@@ -244,16 +243,30 @@ class TestMercator2:
         postable_types = app_participant.get_postable_types(url)
         assert ICommentVersion not in postable_types
 
-    def test_result_participant_cannot_edit_topic(self,
+    def test_result_participant_can_edit_topic(self,
+                                               registry,
+                                               app,
+                                               process_url,
+                                               app_participant,
+                                               proposal0_url):
+        from adhocracy_mercator.sheets.mercator2 import ITopic
+        resp = app_participant.options(proposal0_url)
+        data = resp.json_body['PUT']['request_body']['data']
+        assert ITopic.__identifier__ in data
+
+    # partners are a subresources
+    def test_result_participant_can_edit_partners(self,
                                                   registry,
                                                   app,
                                                   process_url,
                                                   app_participant,
                                                   proposal0_url):
-        from adhocracy_mercator.sheets.mercator2 import ITopic
+        from adhocracy_mercator.sheets.mercator2 import IPartners
         resp = app_participant.options(proposal0_url)
-        data = resp.json_body['PUT']['request_body']['data']
-        assert ITopic.__identifier__ not in data
+        sheets = set()
+        for data in resp.json_body['POST']['request_body']:
+            sheets.update(data['data'].keys())
+        assert IPartners.__identifier__ in sheets
 
     def test_result_participant_can_create_logbook(self,
                                                    registry,
