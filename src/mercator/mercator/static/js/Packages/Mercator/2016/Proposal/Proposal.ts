@@ -464,7 +464,6 @@ var get = (
         })).then(() => $q.all([
             AdhMercator2015Proposal.getWorkflowState(adhHttp, adhTopLevelState, $q)(),
             AdhMercator2015Proposal.countSupporters(adhHttp, path + "rates/", path),
-            AdhMercator2015Proposal.countComments(adhHttp, path),
             adhGetBadges(proposal).then((assignments : AdhBadge.IBadge[]) => {
                 var communityAssignment = _.find(assignments, (a) => a.name === "community");
                 var winningAssignment = _.find(assignments, (a) => a.name === "winning");
@@ -472,10 +471,25 @@ var get = (
                 return communityAssignment || winningAssignment;
             })
         ])).then((args : any[]) : IDetailData => {
+            var commentCounts = {
+                proposal: proposal.data[SICommentable.nick].comments_count,
+                pitch: subs.pitch.data[SICommentable.nick].comments_count,
+                partners: subs.partners.data[SICommentable.nick].comments_count,
+                duration: subs.duration.data[SICommentable.nick].comments_count,
+                challenge: subs.challenge.data[SICommentable.nick].comments_count,
+                goal: subs.goal.data[SICommentable.nick].comments_count,
+                plan: subs.plan.data[SICommentable.nick].comments_count,
+                target: subs.target.data[SICommentable.nick].comments_count,
+                team: subs.team.data[SICommentable.nick].comments_count,
+                extrainfo: subs.extrainfo.data[SICommentable.nick].comments_count,
+                connectioncohesion: subs.connectioncohesion.data[SICommentable.nick].comments_count,
+                difference: subs.difference.data[SICommentable.nick].comments_count,
+                practicalrelevance: subs.practicalrelevance.data[SICommentable.nick].comments_count
+            };
+
             return {
                 currentPhase: args[0],
                 supporterCount: args[1],
-                commentCountTotal: args[2],
 
                 creationDate: proposal.data[SIMetaData.nick].item_creation_date,
                 creator: proposal.data[SIMetaData.nick].creator,
@@ -529,8 +543,8 @@ var get = (
                 }, {}),
                 winner: {
                     funding: (proposal.data[SIWinnerInfo.nick] || {}).funding,
-                    description: (args[3] || {}).description,
-                    name: (args[3] || {}).name
+                    description: (args[2] || {}).description,
+                    name: (args[2] || {}).name
                 },
                 introduction: {
                     pitch: subs.pitch.data[SIPitch.nick].pitch,
@@ -570,21 +584,8 @@ var get = (
                     difference: subs.difference.data[SIDifference.nick].difference,
                     practical: subs.practicalrelevance.data[SIPracticalRelevance.nick].practicalrelevance
                 },
-                commentCounts: {
-                    proposal: proposal.data[SICommentable.nick].comments_count,
-                    pitch: subs.pitch.data[SICommentable.nick].comments_count,
-                    partners: subs.partners.data[SICommentable.nick].comments_count,
-                    duration: subs.duration.data[SICommentable.nick].comments_count,
-                    challenge: subs.challenge.data[SICommentable.nick].comments_count,
-                    goal: subs.goal.data[SICommentable.nick].comments_count,
-                    plan: subs.plan.data[SICommentable.nick].comments_count,
-                    target: subs.target.data[SICommentable.nick].comments_count,
-                    team: subs.team.data[SICommentable.nick].comments_count,
-                    extrainfo: subs.extrainfo.data[SICommentable.nick].comments_count,
-                    connectioncohesion: subs.connectioncohesion.data[SICommentable.nick].comments_count,
-                    difference: subs.difference.data[SICommentable.nick].comments_count,
-                    practicalrelevance: subs.practicalrelevance.data[SICommentable.nick].comments_count
-                }
+                commentCounts: commentCounts,
+                commentCountTotal: _.sum(<any>commentCounts)
             };
         });
     });
