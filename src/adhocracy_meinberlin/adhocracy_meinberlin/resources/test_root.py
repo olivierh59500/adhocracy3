@@ -32,7 +32,11 @@ def test_add_example_process(pool_with_catalogs, registry):
     import adhocracy_core.sheets.geo
     from adhocracy_meinberlin import resources
     from .root import add_example_process
+    from .root import add_debate_process
+    from .digital_leben import IProcess
     root = pool_with_catalogs
     add_locations_service(root, registry, {})
     add_example_process(root, registry, {})
     assert IOrganisation.providedBy(root['organisation'])
+    add_debate_process(root, registry, {})
+    IProcess.providedBy(pool['digital_leben'])
