@@ -30,6 +30,7 @@ import * as AdhBadgeModule from "./Packages/Badge/Module";
 import * as AdhCommentModule from "./Packages/Comment/Module";
 import * as AdhCrossWindowMessagingModule from "./Packages/CrossWindowMessaging/Module";
 import * as AdhDateTimeModule from "./Packages/DateTime/Module";
+import * as AdhDebateWorkbenchModule from "./Packages/DebateWorkbench/Module";
 import * as AdhDocumentModule from "./Packages/Document/Module";
 import * as AdhDoneModule from "./Packages/Done/Module";
 import * as AdhEmbedModule from "./Packages/Embed/Module";
@@ -99,6 +100,7 @@ export var init = (config : AdhConfig.IService, metaApi) => {
         "flow",
         AdhCommentModule.moduleName,
         AdhCrossWindowMessagingModule.moduleName,
+        AdhDebateWorkbenchModule.moduleName,
         AdhEmbedModule.moduleName,
         AdhMeinberlinModule.moduleName,
         AdhResourceAreaModule.moduleName,
@@ -162,7 +164,7 @@ export var init = (config : AdhConfig.IService, metaApi) => {
         });
     }]);
 
-    // register workbench
+    // configure workbench
     app.config(["adhProcessProvider", (adhProcessProvider : AdhProcess.Provider) => {
         adhProcessProvider.templateFactories[RIEngagementLandschaftProcess.content_type] = ["$q", ($q : angular.IQService) => {
             return $q.when("<adh-debate-workbench></adh-debate-workbench>");
@@ -183,6 +185,7 @@ export var init = (config : AdhConfig.IService, metaApi) => {
     AdhBadgeModule.register(angular);
     AdhCommentModule.register(angular);
     AdhCrossWindowMessagingModule.register(angular, config.trusted_domains !== []);
+    AdhDebateWorkbenchModule.register(angular);
     AdhDateTimeModule.register(angular);
     AdhDocumentModule.register(angular);
     AdhDoneModule.register(angular);
