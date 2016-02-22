@@ -90,6 +90,7 @@ export var init = (config : AdhConfig.IService, metaApi) => {
         "duScroll",
         "flow",
         AdhCommentModule.moduleName,
+        AdhConfigModule.moduleName,
         AdhCrossWindowMessagingModule.moduleName,
         AdhEmbedModule.moduleName,
         AdhMercatorModule.moduleName,
@@ -161,11 +162,11 @@ export var init = (config : AdhConfig.IService, metaApi) => {
     app.value("moment", moment);
 
     // register our modules
-    app.value("adhConfig", config);
     AdhAbuseModule.register(angular);
     AdhBadgeModule.register(angular);
     AdhBlogModule.register(angular);
     AdhCommentModule.register(angular);
+    AdhConfigModule.register(angular, config);
     AdhCrossWindowMessagingModule.register(angular, config.trusted_domains !== []);
     AdhDateTimeModule.register(angular);
     AdhDoneModule.register(angular);
