@@ -27,6 +27,7 @@ import * as AdhAngularHelpersModule from "./Packages/AngularHelpers/Module";
 import * as AdhBadgeModule from "./Packages/Badge/Module";
 import * as AdhBlogModule from "./Packages/Blog/Module";
 import * as AdhCommentModule from "./Packages/Comment/Module";
+import * as AdhConfigModule from "./Packages/Config/Module";
 import * as AdhCrossWindowMessagingModule from "./Packages/CrossWindowMessaging/Module";
 import * as AdhDateTimeModule from "./Packages/DateTime/Module";
 import * as AdhDoneModule from "./Packages/Done/Module";
