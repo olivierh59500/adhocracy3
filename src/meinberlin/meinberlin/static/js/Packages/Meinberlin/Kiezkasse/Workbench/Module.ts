@@ -52,7 +52,5 @@ export var register = (angular) => {
         .directive("adhMeinberlinKiezkasseProposalCreateColumn", ["adhConfig", Workbench.kiezkasseProposalCreateColumnDirective])
         .directive("adhMeinberlinKiezkasseProposalEditColumn", ["adhConfig", Workbench.kiezkasseProposalEditColumnDirective])
         .directive("adhMeinberlinKiezkasseDetailColumn", ["adhConfig", Workbench.kiezkasseDetailColumnDirective])
-        .directive("adhMeinberlinKiezkasseEditColumn", ["adhConfig", Workbench.kiezkasseEditColumnDirective])
-        .directive("adhMeinberlinKiezkasseAddProposalButton", [
-            "adhConfig", "adhPermissions", "adhTopLevelState", Workbench.addProposalButton]);
+        .directive("adhMeinberlinKiezkasseEditColumn", ["adhConfig", Workbench.kiezkasseEditColumnDirective]);
 };
