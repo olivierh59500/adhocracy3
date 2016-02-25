@@ -28,7 +28,7 @@ export class Provider implements angular.IServiceProvider {
         type? : string;
     }};
     public templates : {[embedContext : string]: any};
-    public customHeaders : {[processType : string]: any};
+    public customHeaders : {[processType : string]: string};
 
     constructor() {
         var self = this;
