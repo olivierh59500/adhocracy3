@@ -16,7 +16,7 @@
                 {{data.finance.requestedFunding | number}} &euro;
             </li>
             <li class="meta-list-item meta-list-item-rate">
-                <adh-like data-refers-to="{{path}}" data-disabled="data.currentPhase != 'participate'"></adh-like>
+                <adh-like data-refers-to="{{path}}" data-disabled="data.currentPhase != 'participate' && data.currentPhase != 'evaluate' "></adh-like>
             </li>
         </ul>
 
@@ -360,7 +360,7 @@
                 <footer class="mercator-proposal-detail-footer">
                     <a class="button-back-to-top" data-du-smooth-scroll="" href="#section-jump-top">
                     <i class="icon-back-to-top"></i> {{ "TR__BACK_TO_TOP" | translate }}</a>
-                    <adh-like data-refers-to="{{path}}" data-disabled="processState != 'participate'"></adh-like>
+                    <adh-like data-refers-to="{{path}}" data-disabled="processState != 'participate' && processState != 'evaluate' "></adh-like>
                 </footer>
             </div>
         </div>
