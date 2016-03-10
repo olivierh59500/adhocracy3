@@ -1010,7 +1010,7 @@ export var detailDirective = (
             adhPermissions.bindScope(scope, () => scope.path);
             // FIXME, waa
             scope.isModerator = scope.options.PUT;
-
+            scope.$on("$destroy", adhTopLevelState.bind("processState", scope));
             get($q, adhHttp, adhTopLevelState, adhGetBadges)(scope.path).then((data) => {
                 scope.data = data;
             });
