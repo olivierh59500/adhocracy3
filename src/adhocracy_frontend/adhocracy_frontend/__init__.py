@@ -1,5 +1,7 @@
 """Frontend view and simple pyramid app configurations."""
 import pkg_resources
+from urllib.parse import urlparse
+from urllib.parse import urlunparse
 
 from pyramid.renderers import render
 from pyramid.config import Configurator
@@ -11,6 +13,12 @@ from pyramid.settings import asbool
 from pyramid.settings import aslist
 
 from adhocracy_core.rest.subscriber import add_cors_headers
+
+
+def url_origin(url):
+    """Return the origin part of an url (schema, host, port)."""
+    o = urlparse(url)
+    return urlunparse((o.scheme, o.netloc, '', '', '', ''))
 
 
 def config_view(request):
