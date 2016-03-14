@@ -109,6 +109,17 @@ def require_config_view(request):
     return response
 
 
+def adhocracy_auth_view(request):
+    """Return embeddable code optimized for authentication."""
+    config = config_view(request)
+    result = render(
+        'adhocracy_frontend:build/js/AdhocracyAuth.html.mako', {
+            'canonical_origin': url_origin(config['canonical_url']),
+        }, request=request)
+    response = Response(result)
+    return response
+
+
 def root_view(request):
     """Return the embeddee HTML."""
     if not hasattr(request, 'cachebusted_url'):  # ease testing
@@ -181,6 +192,8 @@ def includeme(config):
     # AdhocracySDK shall not be cached the way other static files are cached
     config.add_route('adhocracy_sdk', 'AdhocracySDK.js')
     config.add_view(adhocracy_sdk_view, route_name='adhocracy_sdk')
+    config.add_route('adhocracy_auth', 'AdhocracyAuth.html')
+    config.add_view(adhocracy_auth_view, route_name='adhocracy_auth')
     config.add_static_view('static', 'adhocracy_frontend:build/',
                            cache_max_age=cache_max_age)
     config.add_subscriber(add_cors_headers, NewResponse)
