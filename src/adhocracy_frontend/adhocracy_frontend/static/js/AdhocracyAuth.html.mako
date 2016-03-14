@@ -49,5 +49,6 @@ var sendLoginState = function() {
     }
 };
 
+window.addEventListener("storage", sendLoginState);
 sendLoginState();
 </script>
