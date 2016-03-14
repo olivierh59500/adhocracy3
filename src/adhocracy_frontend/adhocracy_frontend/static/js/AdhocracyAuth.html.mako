@@ -51,4 +51,8 @@ var sendLoginState = function() {
 
 window.addEventListener("storage", sendLoginState);
 sendLoginState();
+
+onMessage("logout", function() {
+    localStorage.removeItem("user-session");
+});
 </script>
