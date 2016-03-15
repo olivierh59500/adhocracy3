@@ -15,12 +15,12 @@ from pyramid.paster import bootstrap
 from pyramid.traversal import find_interface
 from substanced.util import find_service
 from adhocracy_core.utils import create_filename
+from adhocracy_core.utils import get_sheet_field
 
 from adhocracy_core.interfaces import IItem
 from adhocracy_core.interfaces import search_query
 
 from pyramid.traversal import resource_path
-from pyramid.traversal import get_current_registry
 
 from adhocracy_core.sheets.title import ITitle
 from adhocracy_core.sheets.comment import IComment
@@ -103,8 +103,7 @@ def _get_proposal_url(registry: Registry,
 
 
 def _get_sheet_field(sheet, field, resource):
-    registry = get_current_registry(resource)
-    return registry.content.get_sheet_field(resource, sheet, field)
+    return get_sheet_field(resource, sheet, field)
 
 
 def _get_comments(proposal):
