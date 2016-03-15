@@ -1,58 +1,63 @@
 <script>
-var canonicalOrigin = "${canonical_origin}";
+(function() {
+    "use strict"
 
-var http = function(url, cb) {
-    var req = new XMLHttpRequest();
+    var canonicalOrigin = "${canonical_origin}";
 
-    req.onreadystatechange = function(e) {
-        if (req.readyState === 4 && req.status < 400) {
-            cb(e.target.response);
-        }
-    }
+    var http = function(url, cb) {
+        var req = new XMLHttpRequest();
 
-    req.open('GET', url, true)
-    req.send(null);
-};
-
-var postMessage = function(data) {
-    window.parent.postMessage(JSON.stringify(data), canonicalOrigin);
-};
-
-var onMessage = function(name, cb) {
-    window.addEventListener("message", function(event) {
-        if (event.origin === canonicalOrigin) {
-            var message = JSON.parse(event.data);
-            if (message.name === name) {
-                cb(message);
+        req.onreadystatechange = function(e) {
+            if (req.readyState === 4 && req.status < 400) {
+                cb(e.target.response);
             }
         }
-    });
-}
 
-var sendLoginState = function() {
-    var sessionValue = localStorage.getItem("user-session");
-    if (sessionValue) {
-        var session = JSON.parse(sessionValue);
-        var path = session["user-path"];
+        req.open('GET', url, true)
+        req.send(null);
+    };
 
-        http(path, function(response) {
-            var data = JSON.parse(response);
-            var userName = data.data["adhocracy_core.sheets.principal.IUserBasic"].name;
+    var postMessage = function(data) {
+        console.log(data);
+        window.parent.postMessage(JSON.stringify(data), canonicalOrigin);
+    };
 
-            postMessage({
-                name: "userName",
-                data: userName
-            });
+    var onMessage = function(name, cb) {
+        window.addEventListener("message", function(event) {
+            if (event.origin === canonicalOrigin) {
+                var message = JSON.parse(event.data);
+                if (message.name === name) {
+                    cb(message);
+                }
+            }
         });
-    } else {
-        postMessage({name: "logout"});
     }
-};
 
-window.addEventListener("storage", sendLoginState);
-sendLoginState();
+    var sendLoginState = function() {
+        var sessionValue = localStorage.getItem("user-session");
+        if (sessionValue) {
+            var session = JSON.parse(sessionValue);
+            var path = session["user-path"];
 
-onMessage("logout", function() {
-    localStorage.removeItem("user-session");
-});
+            http(path, function(response) {
+                var data = JSON.parse(response);
+                var userName = data.data["adhocracy_core.sheets.principal.IUserBasic"].name;
+
+                postMessage({
+                    name: "userName",
+                    data: userName
+                });
+            });
+        } else {
+            postMessage({name: "logout"});
+        }
+    };
+
+    window.addEventListener("storage", sendLoginState);
+    sendLoginState();
+
+    onMessage("logout", function() {
+        localStorage.removeItem("user-session");
+    });
+})();
 </script>
