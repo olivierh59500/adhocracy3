@@ -256,6 +256,7 @@ class ResourceMetadata(namedtuple('ResourceMetadata',
                                    'element_types',
                                    'workflow_name',
                                    'item_type',
+                                   'sdi_addable'
                                    ])):
     """Metadata to register Resource Types.
 
@@ -290,6 +291,8 @@ class ResourceMetadata(namedtuple('ResourceMetadata',
     use_autonaming_random:
         Use random the name if the new content object is added to the parent.
         You can enable only one, autonaming or random autonaming.
+    sdi_addable:
+        Make this resource type automatically addable with the admin interface.
 
     IPool fields:
     -------------

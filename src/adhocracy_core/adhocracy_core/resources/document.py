@@ -51,6 +51,7 @@ document_meta = item_meta._replace(
     permission_create='create_document',
     is_implicit_addable=True,
     autonaming_prefix='document_',
+    sdi_addable=True,
 )._add(after_creation=(
     add_commentsservice,
     add_ratesservice,

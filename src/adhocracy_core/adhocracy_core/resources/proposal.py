@@ -49,6 +49,7 @@ proposal_meta = item_meta._replace(
     is_implicit_addable=True,
     autonaming_prefix='proposal_',
     permission_create='create_proposal',
+    sdi_addable=True,
 )._add(after_creation=(
     add_commentsservice,
     add_ratesservice,

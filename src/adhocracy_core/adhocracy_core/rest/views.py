@@ -85,6 +85,18 @@ from adhocracy_core.workflows.schemas import create_workflow_meta_schema
 logger = getLogger(__name__)
 
 
+@view_config(context=IRootPool,
+             renderer='adhocracy_frontend:build/root.html.mako')
+def root_view(context, request):
+    """Return the embeddee HTML."""
+    return {'css': [],
+            'js': [],
+            'meta_api': '/static/meta_api.json',
+            'config': '/config.json',
+            }
+
+
+
 def respond_if_blocked(context, request):
     """
     Set 410 Gone and construct response if resource is deleted or hidden.
@@ -363,6 +375,7 @@ def _get_schema_and_validators(view_class, request: Request) -> tuple:
 @view_defaults(
     renderer='json',
     context=IResource,
+    route_name='substanced_api',
 )
 class ResourceRESTView(RESTView):
     """Default view for Resources, implements get and options."""
@@ -491,6 +504,7 @@ class ResourceRESTView(RESTView):
 @view_defaults(
     renderer='json',
     context=ISimple,
+    route_name='substanced_api',
 )
 class SimpleRESTView(ResourceRESTView):
     """View for simples (non versionable), implements get, options and put."""
@@ -521,6 +535,7 @@ class SimpleRESTView(ResourceRESTView):
 @view_defaults(
     renderer='json',
     context=IPool,
+    route_name='substanced_api',
 )
 class PoolRESTView(SimpleRESTView):
     """View for Pools, implements get, options, put and post."""
@@ -597,6 +612,7 @@ class PoolRESTView(SimpleRESTView):
 @view_defaults(
     renderer='json',
     context=IItem,
+    route_name='substanced_api',
 )
 class ItemRESTView(PoolRESTView):
     """View for Items and ItemVersions, overwrites GET and  POST handling."""
@@ -672,6 +688,7 @@ class ItemRESTView(PoolRESTView):
 @view_defaults(
     renderer='json',
     context=IBadgeAssignmentsService,
+    route_name='substanced_api',
 )
 class BadgeAssignmentsRESTView(PoolRESTView):
     """REST view for the badge assignment."""
@@ -708,6 +725,7 @@ class BadgeAssignmentsRESTView(PoolRESTView):
 @view_defaults(
     renderer='json',
     context=IUsersService,
+    route_name='substanced_api',
 )
 class UsersRESTView(PoolRESTView):
     """View the IUsersService pool overwrites POST handling."""
@@ -725,6 +743,7 @@ class UsersRESTView(PoolRESTView):
 @view_defaults(
     renderer='json',
     context=IAssetsService,
+    route_name='substanced_api',
 )
 class AssetsServiceRESTView(PoolRESTView):
     """View allowing multipart requests for asset upload."""
@@ -742,6 +761,7 @@ class AssetsServiceRESTView(PoolRESTView):
 @view_defaults(
     renderer='json',
     context=IAsset,
+    route_name='substanced_api',
 )
 class AssetRESTView(SimpleRESTView):
     """View for assets, allows PUTting new versions via multipart."""
@@ -759,6 +779,7 @@ class AssetRESTView(SimpleRESTView):
 @view_defaults(
     renderer='json',
     context=IAssetDownload,
+    route_name='substanced_api',
 )
 class AssetDownloadRESTView(ResourceRESTView):
     """View for downloading assets as binary blobs."""
@@ -781,7 +802,8 @@ class AssetDownloadRESTView(ResourceRESTView):
 @view_defaults(
     renderer='json',
     context=IRootPool,
-    name='meta_api'
+    name='meta_api',
+    route_name='substanced_api',
 )
 class MetaApiView(RESTView):
     """Access to metadata about the API specification of this installation.

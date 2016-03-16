@@ -184,7 +184,10 @@ class CanRateSchema(colander.MappingSchema):
 
 
 can_rate_meta = sheet_meta._replace(isheet=ICanRate,
-                                    schema_class=CanRateSchema)
+                                    schema_class=CanRateSchema,
+                                    editable=False,
+                                    creatable=False,
+                                    )
 
 
 class RateableSchema(colander.MappingSchema):

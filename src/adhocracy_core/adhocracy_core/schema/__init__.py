@@ -19,6 +19,7 @@ from substanced.util import get_dotted_name
 from substanced.util import find_service
 from zope.interface.interfaces import IInterface
 import colander
+import deform
 import pytz
 
 from adhocracy_core.utils import normalize_to_tuple
@@ -43,6 +44,7 @@ class AdhocracySchemaNode(colander.SchemaNode):
     def deserialize(self, cstruct=colander.null):
         """Deserialize the :term:`cstruct` into an :term:`appstruct`."""
         if self.readonly and cstruct != colander.null:
+            import bpdb;bpdb.set_trace()
             raise colander.Invalid(self, 'This field is ``readonly``.')
         return super().deserialize(cstruct)
 
@@ -580,6 +582,24 @@ class References(Resources):
     reftype = SheetReference
     backref = False
     validator = colander.All(_validate_reftypes)
+    choices_getter = None
+
+    def _get_choices(self):
+        context = self.bindings['context']
+        request = self.bindings['request']
+        return self.choices_getter(context, request)
+
+    @property
+    def widget(self):
+        if self.choices_getter:
+            values = self._get_choices()
+        else:
+            values = []
+        return deform.widget.Select2Widget(
+            values=values,
+            multiple=True
+            )
+
 
 
 class UniqueReferences(References):

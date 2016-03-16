@@ -1,5 +1,6 @@
 """Principal types (user/group) and helpers to search/get user information."""
 from logging import getLogger
+import pytz
 
 from pyramid.registry import Registry
 from pyramid.traversal import find_resource
@@ -7,11 +8,13 @@ from pyramid.traversal import get_current_registry
 from pyramid.request import Request
 from pyramid.i18n import TranslationStringFactory
 from substanced.util import find_service
+from substanced.util import find_objectmap
 from substanced.stats import statsd_incr
 from substanced.stats import statsd_timer
 from zope.interface import Attribute
 from zope.interface import Interface
 from zope.interface import implementer
+import substanced.principal as sd_principals
 
 from adhocracy_core.authorization import set_acl
 from adhocracy_core.interfaces import IPool
@@ -43,7 +46,7 @@ _ = TranslationStringFactory('adhocracy')
 logger = getLogger(__name__)
 
 
-class IPrincipalsService(IServicePool):
+class IPrincipalsService(IServicePool, sd_principals.IPrincipals):
     """Service Pool representing a collection of principals.
 
     If the object is created via
@@ -79,7 +82,7 @@ principals_meta = service_meta._replace(
                        add_badges_service))
 
 
-class IUser(IPool):
+class IUser(IPool, sd_principals.IUser):
     """User resource.
 
     This inherits from IPool in order to allow to use this resource as a
@@ -119,6 +122,10 @@ class User(Pool):
         """Readonly :term:`group_id`s for this user."""
         self.hidden = True
 
+    @property
+    def timezone(self):
+        return pytz.timezone(self.tzname)
+
     def activate(self, active: bool=True):
         """
         Activate or deactivate the user.
@@ -132,6 +139,10 @@ class User(Pool):
         appstruct['hidden'] = not active
         statsd_incr('users.activated', 1)
         sheet.set(appstruct)
+
+    check_password = sd_principals.User.check_password
+
+    email_password_reset = sd_principals.User.email_password_reset
 
 
 user_meta = pool_meta._replace(
@@ -153,10 +164,11 @@ user_meta = pool_meta._replace(
     element_types=(),  # we don't want the frontend to post resources here
     use_autonaming=True,
     permission_create='create_user',
+    sdi_addable=True,
 )
 
 
-class IUsersService(IServicePool):
+class IUsersService(IServicePool, sd_principals.IUsers):
     """Service Pool for Users."""
 
 
@@ -172,7 +184,7 @@ users_meta = service_meta._replace(
 )
 
 
-class IGroup(IPool):
+class IGroup(IPool, sd_principals.IGroup):
     """Group for Users."""
 
 
@@ -193,10 +205,11 @@ group_meta = pool_meta._replace(
                      ),
     element_types=(),  # we don't want the frontend to post resources here
     permission_create='create_group',
+    sdi_addable=True,
 )
 
 
-class IGroupsService(IServicePool):
+class IGroupsService(IServicePool, sd_principals.IGroups):
     """Pool for Groups."""
 
 
@@ -221,7 +234,7 @@ def hide(context: IResource, registry: Registry, options: dict):
     metadata.set({'hidden': True})
 
 
-class IPasswordReset(IResource):
+class IPasswordReset(IResource, sd_principals.IPasswordReset):
     """Resource to do one user password reset."""
 
 
@@ -252,7 +265,7 @@ passwordreset_meta = resource_meta._replace(
 )
 
 
-class IPasswordResetsService(IServicePool):
+class IPasswordResetsService(IServicePool, sd_principals.IPasswordResets):
     """Service Pool for Password Resets."""
 
 
@@ -373,6 +386,9 @@ class UserLocatorAdapter(object):
 def groups_and_roles_finder(userid: str, request: Request) -> list:
     """A Pyramid authentication policy groupfinder callback."""
     with statsd_timer('authentication.groups', rate=.1):
+        if isinstance(userid, int):
+            om = find_objectmap(request.context)
+            userid = '/'.join(om.path_for(userid))
         userlocator = request.registry.getMultiAdapter((request.context,
                                                         request),
                                                        IRolesUserLocator)

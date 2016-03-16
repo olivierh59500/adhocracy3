@@ -40,6 +40,7 @@ resource_meta = ResourceMetadata(content_name='',
                                  element_types=(),
                                  workflow_name='',
                                  item_type=False,
+                                 sdi_addable=False,
                                  )
 
 
@@ -64,7 +65,16 @@ def add_resource_type_to_registry(metadata: ResourceMetadata,
     resources_meta[metadata.iresource] = metadata
     iresource = metadata.iresource
     name = metadata.content_name or iresource.__identifier__
-    meta = {'content_name': name}
+    meta = {'content_name': name,
+            }
+    from adhocracy_core.sdi.views import register_add_view
+    from adhocracy_core.sdi.views import binder_columns
+    if metadata.sdi_addable:
+        add_view = 'add_' + iresource.__identifier__
+        meta['add_view'] = add_view
+        register_add_view(IPool, metadata.iresource, config, add_view)
+    if iresource.isOrExtends(IPool):
+        meta['columns'] = binder_columns
     add_content_type(config, iresource.__identifier__,
                      ResourceFactory(metadata),
                      factory_type=iresource.__identifier__, **meta)
@@ -244,6 +254,8 @@ class ResourceFactory:
 
 def includeme(config):
     """Include resource types and subscribers."""
+    from substanced.sdi import add_mgmt_view
+    config.add_directive('add_mgmt_view', add_mgmt_view, action_wrap=False)
     config.include('.simple')
     config.include('.item')
     config.include('.itemversion')

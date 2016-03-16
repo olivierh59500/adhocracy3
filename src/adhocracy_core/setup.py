@@ -15,6 +15,7 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_exclog',
     'pyramid_bpython',
+    'pyramid_authstack',
     'gunicorn',
     'substanced',
     'pyramid_tm',
@@ -26,6 +27,7 @@ requires = [
     'pyrsistent',
     'multipledispatch',
     'PyYAML',
+
 ]
 
 if sys.version_info < (3, 4):

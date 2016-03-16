@@ -77,7 +77,10 @@ class StateData(MappingSchema):
     """Resource specific data for a workflow state."""
 
     missing = drop
-    default = None
+
+    @deferred
+    def default(self, kw):
+        return {}
 
     name = StateName()
     description = Text(missing='',

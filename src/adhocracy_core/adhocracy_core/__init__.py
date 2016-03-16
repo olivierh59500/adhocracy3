@@ -1,6 +1,9 @@
 """Configure, add dependency packages/modules, start application."""
 from pyramid.config import Configurator
+from pyramid.session import UnencryptedCookieSessionFactoryConfig
+from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid_zodbconn import get_connection
+from pyramid_authstack import AuthenticationStackPolicy
 from substanced.db import RootAdded
 from logging import getLogger
 
@@ -12,7 +15,6 @@ from adhocracy_core.resources.root import IRootPool
 from adhocracy_core.resources.principal import groups_and_roles_finder
 from adhocracy_core.auditing import set_auditlog
 from adhocracy_core.auditing import get_auditlog
-
 
 logger = getLogger(__name__)
 
@@ -96,11 +98,22 @@ def includeme(config):
     config.set_authorization_policy(authz_policy)
     authn_secret = settings.get('substanced.secret')
     authn_timeout = 60 * 60 * 24 * 30
-    authn_policy = TokenHeaderAuthenticationPolicy(
+    token_policy = TokenHeaderAuthenticationPolicy(
         authn_secret,
         groupfinder=groups_and_roles_finder,
         timeout=authn_timeout)
-    config.set_authentication_policy(authn_policy)
+    auth_policy = AuthenticationStackPolicy()
+    auth_policy.add_policy('token',
+                           token_policy)
+    secret = settings.get('substanced.secret')
+    session_factory = UnencryptedCookieSessionFactoryConfig(secret)
+    config.set_session_factory(session_factory)
+    session_policy = AuthTktAuthenticationPolicy(
+        secret,
+        callback=groups_and_roles_finder)
+    auth_policy.add_policy('session',
+                            session_policy)
+    config.set_authentication_policy(auth_policy)
     config.include('.renderers')
     config.include('.authentication')
     config.include('.authorization')
@@ -118,6 +131,7 @@ def includeme(config):
     config.include('.websockets')
     config.include('.rest')
     config.include('.stats')
+    config.include('.sdi')
     if settings.get('adhocracy.add_test_users', False):
         from adhocracy_core.testing import add_create_test_users_subscriber
         add_create_test_users_subscriber(config)

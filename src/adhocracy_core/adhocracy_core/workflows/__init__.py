@@ -8,6 +8,7 @@ from pyrsistent import freeze
 from pyrsistent import PMap
 from substanced.workflow import ACLWorkflow
 from substanced.workflow import WorkflowError
+from substanced.workflow import _WorkflowedPredicate
 from zope.deprecation import deprecated
 from zope.interface import implementer
 from zope.interface import Interface
@@ -166,8 +167,26 @@ def match_permission(acm, state, permission):
     return matcher
 
 
+class WorkflowedPredicate(object):
+
+    def __init__(self, val, config):
+        self.val = bool(val)
+        self.registry = config.registry
+
+    def text(self):
+        return 'workflowed = %s' % self.val
+
+    phash = text
+
+    def __call__(self, context, request):
+        workflow = self.registry.content.get_workflow(context)
+        return bool(workflow) == self.val
+
+#
+
 def includeme(config):  # pragma: no cover
     """Include workflows and add 'add_workflow' config directive."""
+    config.add_view_predicate('workflowed', WorkflowedPredicate)
     config.add_directive('add_workflow', add_workflow_directive)
     config.include('.sample')
     config.include('.standard')

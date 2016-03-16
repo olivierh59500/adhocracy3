@@ -1,5 +1,6 @@
 """Sheets for :term:`principal`s."""
 import colander
+import deform.widget
 import requests
 
 from cryptacular.bcrypt import BCRYPTPasswordManager
@@ -234,6 +235,16 @@ def deferred_roles_and_group_roles(node: colander.SchemaNode, kw: dict)\
     return sorted(list(roles_and_group_roles))
 
 
+def get_all_groups(context, request):
+    from substanced.util import find_service
+    from adhocracy_core.interfaces import search_query
+    from adhocracy_core.resources.principal import IGroup
+    catalogs = find_service(context, 'catalogs')
+    groups = catalogs.search(search_query._replace(interfaces=IGroup,
+                                                   resolve=True)).elements
+    return [(resource_path(g), g.__name__) for g in groups]
+
+
 class PermissionsSchema(colander.MappingSchema):
     """Permissions sheet data structure.
 
@@ -241,9 +252,12 @@ class PermissionsSchema(colander.MappingSchema):
     """
 
     roles = Roles()
-    groups = UniqueReferences(reftype=PermissionsGroupsReference)
+    groups = UniqueReferences(reftype=PermissionsGroupsReference,
+                              choices_getter=get_all_groups,
+                              )
     roles_and_group_roles = Roles(readonly=True,
-                                  default=deferred_roles_and_group_roles)
+                                  default=deferred_roles_and_group_roles,
+                                  )
 
 
 class PermissionsAttributeResourceSheet(AttributeResourceSheet):
@@ -277,7 +291,8 @@ class PasswordAuthenticationSchema(colander.MappingSchema):
     `password`: plaintext password :class:`adhocracy_core.schema.Password`.
     """
 
-    password = Password(missing=colander.required)
+    password = Password(missing=colander.required,
+                        widget=deform.widget.PasswordWidget())
 
 
 class PasswordAuthenticationSheet(AnnotationRessourceSheet):

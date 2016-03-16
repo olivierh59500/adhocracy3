@@ -1,0 +1,65 @@
+Update substanced:
+------------------
+
+- remove _is_service_ attribute
+- fix evolve scripts: add parameter registry
+- refactor: use 'request.user' to get authenticated user resource
+
+Substanced "frontend" features:
+-------------------------------
+
+- serverside rendering: prototype works
+- serverside routing (currently in adhocracy_frontend): easy
+
+Substanced admin interface (SDI) features:
+-------------------------------------------
+
+(prototype: ca. 300 lines additional code)
+
+
+- login with existing users: prototype works
+- logout: just works
+- reset own password: easy
+
+- create/edit substanced documents: easy 
+- upload substanced files: easy
+
+- edit resource sheets: prototype works mostly
+    - Fix cannot reset workflows state: easy
+    - Fix bug when using datetime widget:
+    - add nice names to sheets?: easy
+    - add locking?: easy
+    - autocomplete for references: easy
+    - !permission checks when editing groups / roles: middle
+
+- create process: porototype works
+- edit process: prototype works (date entries with workaroud
+- create user: prototype works (!activation missing)
+- edit user: prototype works
+- reset password user: middle
+- create group: prototype works
+- edit group: prototype works
+
+- rename resources: just works
+- copy/move resources: just works
+- list resources: just works
+- undo: just works (disabled because its dangerous)
+- reorder resources: prototype (initial set_order call needed)
+
+- reindex catalog index: just works
+- reindex resource: just works
+
+- auditing: middle 
+- Sever Sent Events: big
+
+- pack databse / flush cache: just works
+- statistics database: just works
+- manage evolve scripts: just works (!not all evolve scripts repeatable)
+
+- do workflow transition: use workflow assignmet sheet
+
+- list permissions: prototype works
+- add local permission: easy (need to register all available permissions)
+- add local role: middle
+
+

@@ -20,6 +20,7 @@ process_meta = pool_meta._replace(
                     add_badges_service,
                     ),
     workflow_name='sample',
+    sdi_addable=True,
 )._add(basic_sheets=(IHasAssetPool,
                      IHasBadgesPool,
                      IDescription,))

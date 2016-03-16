@@ -200,6 +200,8 @@ class TokenHeaderAuthenticationPolicy(CallbackAuthenticationPolicy):
 
     def remember(self, request, userid, **kw) -> [tuple]:
         """Create persistent user session and return authentication headers."""
+        if not isinstance(userid, str):
+            return [] # FIXME
         tokenmanager = self.get_tokenmanager(request)
         if tokenmanager:  # for testing
             token = tokenmanager.create_token(userid,

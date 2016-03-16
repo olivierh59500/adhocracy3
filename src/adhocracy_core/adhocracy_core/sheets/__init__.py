@@ -45,6 +45,7 @@ class BaseResourceSheet:
         self.request = request
         self.creating = creating
         self.schema = meta.schema_class()
+        self.extra_js_url = ''  # substanced sdi support
 
     def get_schema_with_bindings(self) -> colander.MappingSchema:
         schema = self.schema.bind(request=self.request,
@@ -245,7 +246,7 @@ class BaseResourceSheet:
 
     def after_set(self, changed: bool):
         """Hook to run after setting data. Not used."""
-        raise NotImplementedError
+        pass
 
 
 @implementer(IResourceSheet)

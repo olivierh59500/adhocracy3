@@ -1,5 +1,6 @@
 """Description Sheet."""
 import colander
+import deform
 
 from adhocracy_core.interfaces import ISheet
 from adhocracy_core.interfaces import ISheetReferenceAutoUpdateMarker
@@ -20,7 +21,9 @@ class DescriptionSchema(colander.MappingSchema):
     """
 
     short_description = Text()
-    description = Text()
+    description = Text(widget=deform.widget.RichTextWidget(options={
+        'plugins': ['autolink', 'link', 'image', 'lists', 'charmap']
+    }))
 
 
 description_meta = sheet_meta._replace(isheet=IDescription,
