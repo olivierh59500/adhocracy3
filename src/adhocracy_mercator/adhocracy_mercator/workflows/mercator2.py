@@ -24,12 +24,6 @@ mercator2_meta = standard_meta \
                             {'principals':                    ['participant', 'moderator', 'creator', 'initiator'],
                              'permissions':
                              [['edit',                          None,          None,       'Deny',     None],
-                              # hack for unplanned mercator2 state where users can vote but not submit proposals
-                              ['create_comment',               'Allow',       'Allow',      None,     'Allow'],
-                              ['edit_comment',                  None,          None,       'Allow',    None],
-                              ['create_rate',                  'Allow',        None,        None,      None],
-                              ['edit_rate',                     None,          None,       'Allow',    None],
-
                               ['view_mercator2_extra_funding', 'Deny',        'Allow',      None,      None],
                               ['view_mercator2_winnerinfo',    'Deny',        'Allow',      None,      None],
                               ['edit_mercator2_winnerinfo',    'Deny',        'Allow',      None,      None]
