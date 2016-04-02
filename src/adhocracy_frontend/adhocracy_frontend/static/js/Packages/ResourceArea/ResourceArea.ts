@@ -5,6 +5,8 @@ import * as ResourcesBase from "../../ResourcesBase";
 import * as AdhConfig from "../Config/Config";
 import * as AdhEmbed from "../Embed/Embed";
 import * as AdhHttp from "../Http/Http";
+import * as AdhMetaApi from "../MetaApi/MetaApi";
+import * as AdhResourceUtil from "../Util/ResourceUtil";
 import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 import * as AdhUtil from "../Util/Util";
 
@@ -37,7 +39,7 @@ export class Provider implements angular.IServiceProvider {
         this.specifics = {};
         this.templates = {};
         this.customHeaders = {};
-        this.$get = ["$q", "$injector", "$location", "adhHttp", "adhConfig", "adhEmbed", "adhResourceUrlFilter",
+        this.$get = ["$q", "$injector", "$location", "adhHttp", "adhConfig", "adhEmbed", "adhMetaApi", "adhResourceUrlFilter",
             (...args) => AdhUtil.construct(Service, [self].concat(args))];
     }
 
@@ -185,6 +187,7 @@ export class Service implements AdhTopLevelState.IAreaInput {
         private adhHttp : AdhHttp.Service<any>,
         private adhConfig : AdhConfig.IService,
         private adhEmbed : AdhEmbed.Service,
+        private adhMetaApi : AdhMetaApi.Service,
         private adhResourceUrlFilter
     ) {
         this.template = "<adh-resource-area></adh-resource-area>";
@@ -248,7 +251,7 @@ export class Service implements AdhTopLevelState.IAreaInput {
             return this.adhHttp.get(this.adhConfig.rest_url + path);
         })).then((resources : ResourcesBase.Resource[]) => {
             for (var i = 0; i < resources.length; i++) {
-                if (resources[i].isInstanceOf(RIProcess.content_type)) {
+                if (AdhResourceUtil.isInstanceOf(resources[i], RIProcess.content_type, this.adhMetaApi)) {
                     return resources[i];
                 }
             }
