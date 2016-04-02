@@ -323,7 +323,7 @@ export var postEdit = (
     }
 
     var commit = () => {
-        return adhHttp.deepPost(_.flatten<ResourcesBase.Resource>([documentVersion, paragraphItems, paragraphVersions]))
+        return adhHttp.deepPost(_.flatten<ResourcesBase.IResource>([documentVersion, paragraphItems, paragraphVersions]))
             .then((result) => result[0]);
     };
 
