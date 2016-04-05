@@ -197,7 +197,7 @@ export class Service implements AdhTopLevelState.IAreaInput {
         private $location : angular.ILocationService,
         private adhHttp : AdhHttp.Service<any>,
         private adhConfig : AdhConfig.IService,
-        private adhcredentials : AdhCredentials.Service,
+        private adhCredentials : AdhCredentials.Service,
         private adhEmbed : AdhEmbed.Service,
         private adhMetaApi : AdhMetaApi.Service,
         private adhResourceUrlFilter
@@ -392,7 +392,7 @@ export class Service implements AdhTopLevelState.IAreaInput {
 
             _.forEach(errors, (error) => {
                 if (error.code === 403) {
-                    if (self.adhcredentials.loggedIn) {
+                    if (self.adhCredentials.loggedIn) {
                         throw 403;
                     } else {
                         throw 401;
