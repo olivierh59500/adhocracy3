@@ -10,8 +10,9 @@ export var register = () => {
         describe("Service", () => {
             var providerMock;
             var adhHttpMock;
-            var adhEmbedMock;
             var adhConfigMock;
+            var adhCredentialsMock;
+            var adhEmbedMock;
             var $injectorMock;
             var $locationMock;
             var adhResourceUrlFilterMock;
@@ -40,6 +41,8 @@ export var register = () => {
                     rest_url: "rest_url"
                 };
 
+                adhCredentialsMock = jasmine.createSpyObj("adhCredentialsMock", ["loggedIn"]);
+
                 adhEmbedMock = jasmine.createSpyObj("adhEmbed", ["getContext"]);
                 adhEmbedMock.getContext.and.returnValue("");
 
@@ -52,6 +55,7 @@ export var register = () => {
                     $locationMock,
                     adhHttpMock,
                     adhConfigMock,
+                    adhCredentialsMock,
                     adhEmbedMock,
                     null,
                     adhResourceUrlFilterMock);

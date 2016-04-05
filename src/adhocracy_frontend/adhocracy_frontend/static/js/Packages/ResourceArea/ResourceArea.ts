@@ -5,10 +5,12 @@ import * as ResourcesBase from "../../ResourcesBase";
 import * as AdhConfig from "../Config/Config";
 import * as AdhEmbed from "../Embed/Embed";
 import * as AdhHttp from "../Http/Http";
+import * as AdhHttpError from "../Http/Error";
 import * as AdhMetaApi from "../MetaApi/MetaApi";
 import * as AdhResourceUtil from "../Util/ResourceUtil";
 import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 import * as AdhUtil from "../Util/Util";
+import * as AdhCredentials from "../User/Credentials";
 
 import RIProcess from "../../Resources_/adhocracy_core/resources/process/IProcess";
 import * as SITags from "../../Resources_/adhocracy_core/sheets/tags/ITags";
@@ -39,7 +41,16 @@ export class Provider implements angular.IServiceProvider {
         this.specifics = {};
         this.templates = {};
         this.customHeaders = {};
-        this.$get = ["$q", "$injector", "$location", "adhHttp", "adhConfig", "adhEmbed", "adhMetaApi", "adhResourceUrlFilter",
+        this.$get = [
+            "$q",
+            "$injector",
+            "$location",
+            "adhHttp",
+            "adhConfig",
+            "adhCredentials",
+            "adhEmbed",
+            "adhMetaApi",
+            "adhResourceUrlFilter",
             (...args) => AdhUtil.construct(Service, [self].concat(args))];
     }
 
@@ -186,6 +197,7 @@ export class Service implements AdhTopLevelState.IAreaInput {
         private $location : angular.ILocationService,
         private adhHttp : AdhHttp.Service<any>,
         private adhConfig : AdhConfig.IService,
+        private adhcredentials : AdhCredentials.Service,
         private adhEmbed : AdhEmbed.Service,
         private adhMetaApi : AdhMetaApi.Service,
         private adhResourceUrlFilter
@@ -347,8 +359,8 @@ export class Service implements AdhTopLevelState.IAreaInput {
             self.getProcess(resourceUrl, false),
             self.conditionallyRedirectVersionToLast(resourceUrl)
         ]).then((values : any[]) => {
-            var resource : ResourcesBase.IResource = values[0];
-            var process : ResourcesBase.IResource = values[1];
+            var resource : ResourcesBase.Resource = values[0];
+            var process : ResourcesBase.Resource = values[1];
             var hasRedirected : boolean = values[2];
 
             var processType = process ? process.content_type : "";
@@ -376,7 +388,17 @@ export class Service implements AdhTopLevelState.IAreaInput {
 
                 return _.extend(defaults, meta, specifics, search);
             });
-        }, () => {
+        }, (errors : AdhHttpError.IBackendErrorItem[]) => {
+
+            _.forEach(errors, (error) => {
+                if (error.code === 403) {
+                    if (self.adhcredentials.loggedIn) {
+                        throw 403;
+                    } else {
+                        throw 401;
+                    }
+                }
+            });
             throw 404;
         });
     }
