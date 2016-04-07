@@ -44,7 +44,6 @@ class AdhocracySchemaNode(colander.SchemaNode):
     def deserialize(self, cstruct=colander.null):
         """Deserialize the :term:`cstruct` into an :term:`appstruct`."""
         if self.readonly and cstruct != colander.null:
-            import bpdb;bpdb.set_trace()
             raise colander.Invalid(self, 'This field is ``readonly``.')
         return super().deserialize(cstruct)
 
