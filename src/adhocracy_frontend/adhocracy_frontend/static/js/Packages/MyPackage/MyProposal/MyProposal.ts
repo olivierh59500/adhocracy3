@@ -10,12 +10,15 @@ var bindPath = (
     scope,
     pathKey = "path"
 ) => {
-    var path = scope[pathKey];
-    adhHttp.get(path).then((resource) => {
-        scope.data = {
-            title: resource.data[SITitle.nick].title,
-            description: resource.data[SIDescription.nick].description,
-        };
+    scope.$watch(pathKey, (path) => {
+        if (path) {
+            adhHttp.get(path).then((resource) => {
+                scope.data = {
+                    title: resource.data[SITitle.nick].title,
+                    description: resource.data[SIDescription.nick].description,
+                };
+            });
+        }
     });
 };
 
