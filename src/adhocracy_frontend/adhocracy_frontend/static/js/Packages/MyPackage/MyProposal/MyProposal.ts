@@ -1,16 +1,29 @@
+/// <reference path="../../../../lib2/types/angular.d.ts"/>
+
+import * as AdhConfig from "../../Config/Config";
+import * as AdhHttp from "../../Http/Http";
+
 import * as SIDescription from "../../../Resources_/adhocracy_core/sheets/description/IDescription";
 import * as SITitle from "../../../Resources_/adhocracy_core/sheets/title/ITitle";
 
 var pkgLocation = "/MyPackage/MyProposal";
 
 
+export interface IScope extends angular.IScope {
+    data : {
+        title : string;
+        description : string;
+    };
+}
+
+
 var bindPath = (
-    adhHttp
+    adhHttp : AdhHttp.Service<any>
 ) => (
-    scope,
-    pathKey = "path"
+    scope : IScope,
+    pathKey : string = "path"
 ) => {
-    scope.$watch(pathKey, (path) => {
+    scope.$watch(pathKey, (path : string) => {
         if (path) {
             adhHttp.get(path).then((resource) => {
                 scope.data = {
@@ -24,8 +37,8 @@ var bindPath = (
 
 
 export var detailDirective = (
-    adhConfig,
-    adhHttp
+    adhConfig : AdhConfig.IService,
+    adhHttp : AdhHttp.Service<any>
 ) => {
     return {
         restrict: "E",
@@ -33,7 +46,7 @@ export var detailDirective = (
         scope: {
             path: "@"
         },
-        link: (scope) => {
+        link: (scope : IScope) => {
             bindPath(adhHttp)(scope);
         }
     };
