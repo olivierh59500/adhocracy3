@@ -1,3 +1,4 @@
+import * as AdhHttpModule from "../../Http/Module";
 import * as AdhListingModule from "../../Listing/Module";
 import * as AdhMovingColumnsModule from "../../MovingColumns/Module";
 import * as AdhPermissionsModule from "../../Permissions/Module";
@@ -19,6 +20,7 @@ export var moduleName = "adhMyPackageMyWorkbench";
 export var register = (angular) => {
     angular
         .module(moduleName, [
+            AdhHttpModule.moduleName,
             AdhListingModule.moduleName,
             AdhMovingColumnsModule.moduleName,
             AdhPermissionsModule.moduleName,

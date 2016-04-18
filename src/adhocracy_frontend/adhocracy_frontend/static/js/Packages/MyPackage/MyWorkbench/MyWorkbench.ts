@@ -1,4 +1,5 @@
 import * as AdhConfig from "../../Config/Config";
+import * as AdhHttp from "../../Http/Http";
 import * as AdhMovingColumns from "../../MovingColumns/MovingColumns";
 import * as AdhPermissions from "../../Permissions/Permissions";
 import * as AdhResourceArea from "../../ResourceArea/ResourceArea";
@@ -82,6 +83,17 @@ export var registerRoutes = (
             space: "content",
             movingColumns: "is-show-hide-hide"
         })
+        .specific(RIProcess, "create_proposal", processType, context, ["adhHttp", (adhHttp : AdhHttp.Service<any>) => {
+            return (resource : RIProcess) => {
+                return adhHttp.options(resource.path).then((options : AdhHttp.IOptions) => {
+                    if (!options.POST) {
+                        throw 401;
+                    } else {
+                        return {};
+                    }
+                });
+            };
+        }])
 
         .defaultVersionable(RIProposal, RIProposalVersion, "", processType, context, {
             space: "content",
