@@ -38,6 +38,7 @@ import * as AdhLocaleModule from "./Packages/Locale/Module";
 import * as AdhMappingModule from "./Packages/Mapping/Module";
 import * as AdhMarkdownModule from "./Packages/Markdown/Module";
 import * as AdhMovingColumnsModule from "./Packages/MovingColumns/Module";
+import * as AdhMyPackage from "./Packages/MyPackage/Module";
 import * as AdhPermissionsModule from "./Packages/Permissions/Module";
 import * as AdhPreliminaryNamesModule from "./Packages/PreliminaryNames/Module";
 import * as AdhProcessModule from "./Packages/Process/Module";
@@ -87,6 +88,7 @@ export var init = (config : AdhConfig.IService, metaApi) => {
         AdhConfigModule.moduleName,
         AdhCrossWindowMessagingModule.moduleName,
         AdhEmbedModule.moduleName,
+        AdhMyPackage.moduleName,
         AdhResourceAreaModule.moduleName,
         AdhTrackingModule.moduleName,
         AdhUserViewsModule.moduleName
@@ -167,6 +169,7 @@ export var init = (config : AdhConfig.IService, metaApi) => {
     AdhMappingModule.register(angular);
     AdhMarkdownModule.register(angular);
     AdhMovingColumnsModule.register(angular);
+    AdhMyPackage.register(angular);
     AdhPermissionsModule.register(angular);
     AdhPreliminaryNamesModule.register(angular);
     AdhProcessModule.register(angular);
