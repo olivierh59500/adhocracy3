@@ -22,5 +22,6 @@ export var register = (angular) => {
         }])
         .directive("adhMyProposalDetail", ["adhConfig", "adhHttp", MyProposal.detailDirective])
         .directive("adhMyProposalListItem", ["adhConfig", "adhHttp", MyProposal.listItemDirective])
-        .directive("adhMyProposalCreate", ["adhConfig", "adhHttp", "adhPreliminaryNames", MyProposal.createDirective]);
+        .directive("adhMyProposalCreate", [
+            "$location", "adhConfig", "adhHttp", "adhPreliminaryNames", "adhResourceUrlFilter", MyProposal.createDirective]);
 };

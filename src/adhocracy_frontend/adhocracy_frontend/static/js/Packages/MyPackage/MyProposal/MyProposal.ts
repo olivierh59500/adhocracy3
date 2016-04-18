@@ -66,7 +66,10 @@ var postCreate = (
         description: scope.data.description
     });
 
-    return adhHttp.deepPost([item, version]);
+    return adhHttp.deepPost([item, version]).then((responses) => {
+        var itemResponse = responses[0];
+        return itemResponse.path;
+    });
 };
 
 
@@ -103,9 +106,11 @@ export var listItemDirective = (
 };
 
 export var createDirective = (
+    $location : angular.ILocationService,
     adhConfig : AdhConfig.IService,
     adhHttp : AdhHttp.Service<any>,
-    adhPreliminaryNames : AdhPreliminaryNames.Service
+    adhPreliminaryNames : AdhPreliminaryNames.Service,
+    adhResourceUrlFilter
 ) => {
     return {
         restrict: "E",
@@ -115,7 +120,9 @@ export var createDirective = (
         },
         link: (scope : IFormScope) => {
             scope.submit = () => {
-                postCreate(adhHttp, adhPreliminaryNames)(scope.poolPath, scope);
+                postCreate(adhHttp, adhPreliminaryNames)(scope.poolPath, scope).then((path) => {
+                    $location.path(adhResourceUrlFilter(path));
+                });
             };
         }
     };
