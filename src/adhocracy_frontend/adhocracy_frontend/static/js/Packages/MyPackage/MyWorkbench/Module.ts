@@ -1,8 +1,10 @@
 import * as AdhMovingColumnsModule from "../../MovingColumns/Module";
 import * as AdhProcessModule from "../../Process/Module";
+import * as AdhResourceAreaModule from "../../ResourceArea/Module";
 import * as AdhTopLevelStateModule from "../../TopLevelState/Module";
 
 import * as AdhProcess from "../../Process/Process";
+import * as AdhResourceArea from "../../ResourceArea/ResourceArea";
 
 import RIProcess from "../../../Resources_/adhocracy_core/resources/process/IProcess";
 
@@ -16,12 +18,16 @@ export var register = (angular) => {
         .module(moduleName, [
             AdhMovingColumnsModule.moduleName,
             AdhProcessModule.moduleName,
+            AdhResourceAreaModule.moduleName,
             AdhTopLevelStateModule.moduleName
         ])
         .config(["adhProcessProvider", (adhProcessProvider : AdhProcess.Provider) => {
             adhProcessProvider.templateFactories[RIProcess.content_type] = ["$q", ($q : angular.IQService) => {
                 return $q.when("<adh-my-workbench></adh-my-workbench>");
             }];
+        }])
+        .config(["adhResourceAreaProvider", (adhResourceAreaProvider : AdhResourceArea.Provider) => {
+            MyWorkbench.registerRoutes(RIProcess.content_type)(adhResourceAreaProvider);
         }])
         .directive("adhMyWorkbench", ["adhConfig", "adhTopLevelState", MyWorkbench.workbenchDirective])
         .directive("adhMyWorkbenchProposalDetailColumn", ["adhConfig", MyWorkbench.proposalDetailColumnDirective])
