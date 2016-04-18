@@ -86,6 +86,22 @@ export var detailDirective = (
     };
 };
 
+export var listItemDirective = (
+    adhConfig : AdhConfig.IService,
+    adhHttp : AdhHttp.Service<any>
+) => {
+    return {
+        restrict: "E",
+        templateUrl: adhConfig.pkg_path + pkgLocation + "/ListItem.html",
+        scope: {
+            path: "@"
+        },
+        link: (scope : IScope) => {
+            bindPath(adhHttp)(scope);
+        }
+    };
+};
+
 export var createDirective = (
     adhConfig : AdhConfig.IService,
     adhHttp : AdhHttp.Service<any>,

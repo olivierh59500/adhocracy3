@@ -1,3 +1,4 @@
+import * as AdhListingModule from "../../Listing/Module";
 import * as AdhMovingColumnsModule from "../../MovingColumns/Module";
 import * as AdhProcessModule from "../../Process/Module";
 import * as AdhResourceAreaModule from "../../ResourceArea/Module";
@@ -16,6 +17,7 @@ export var moduleName = "adhMyPackageMyWorkbench";
 export var register = (angular) => {
     angular
         .module(moduleName, [
+            AdhListingModule.moduleName,
             AdhMovingColumnsModule.moduleName,
             AdhProcessModule.moduleName,
             AdhResourceAreaModule.moduleName,

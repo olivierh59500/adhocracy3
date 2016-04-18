@@ -61,6 +61,7 @@ export var proposalListingColumnDirective = (
         require: "^adhMovingColumn",
         link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl"]);
+            scope.contentType = RIProposalVersion.content_type;
         }
     };
 };
