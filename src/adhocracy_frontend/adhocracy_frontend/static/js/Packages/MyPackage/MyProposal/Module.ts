@@ -1,5 +1,8 @@
 import * as AdhEmbedModule from "../../Embed/Module";
 import * as AdhHttpModule from "../../Http/Module";
+import * as AdhPreliminaryNamesModule from "../../PreliminaryNames/Module";
+
+import * as AdhEmbed from "../../Embed/Embed";
 
 import * as MyProposal from "./MyProposal";
 
@@ -11,9 +14,12 @@ export var register = (angular) => {
         .module(moduleName, [
             AdhEmbedModule.moduleName,
             AdhHttpModule.moduleName,
+            AdhPreliminaryNamesModule.moduleName,
         ])
         .config(["adhEmbedProvider", (adhEmbedProvider : AdhEmbed.Provider) => {
             adhEmbedProvider.registerDirective("my-proposal-detail");
+            adhEmbedProvider.registerDirective("my-proposal-create");
         }])
-        .directive("adhMyProposalDetail", ["adhConfig", "adhHttp", MyProposal.detailDirective]);
+        .directive("adhMyProposalDetail", ["adhConfig", "adhHttp", MyProposal.detailDirective])
+        .directive("adhMyProposalCreate", ["adhConfig", "adhHttp", "adhPreliminaryNames", MyProposal.createDirective]);
 };
