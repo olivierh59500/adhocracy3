@@ -12,7 +12,7 @@ exports.config = {
     getPageTimeout: 30000,
     directConnect: true,
     capabilities: {
-        "browserName": "chrome"
+      browserName: "firefox"
     },
     beforeLaunch: function() {
         exec("bin/supervisord");
