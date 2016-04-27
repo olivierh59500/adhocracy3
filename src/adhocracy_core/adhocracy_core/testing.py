@@ -246,6 +246,7 @@ def request_():
     request = DummyRequest()
     request.registry.settings = {}
     request.user = None
+    request.scheme = 'http'
     return request
 
 
