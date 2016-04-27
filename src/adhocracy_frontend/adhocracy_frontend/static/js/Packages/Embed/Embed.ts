@@ -132,7 +132,7 @@ export class Service {
                 template = "<div class=\"l-center m-embed\">" + template + "</div>";
             }
 
-            template = "<adh-header></adh-header>" + template;
+            template = "<adh-default-header></adh-default-header>" + template;
 
             return {
                 template: template
