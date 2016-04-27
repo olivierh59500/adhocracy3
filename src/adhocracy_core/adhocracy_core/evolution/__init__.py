@@ -666,6 +666,13 @@ def remove_is_service_attribute(root, registry):  # pragma: no cover
             delattr(service, '__is_service__')
 
 
+@log_migration
+def remove_token_storage(root, registry):  # pragma: no cover
+    """Remove storage for authentication tokens, not used anymore."""
+    if hasattr(root, '_tokenmanager_storage'):
+        delattr(root, '_tokenmanager_storage')
+
+
 def includeme(config):  # pragma: no cover
     """Register evolution utilities and add evolution steps."""
     config.add_directive('add_evolution_step', add_evolution_step)
@@ -699,3 +706,4 @@ def includeme(config):  # pragma: no cover
     config.add_evolution_step(add_image_reference_to_proposals)
     config.add_evolution_step(reset_comment_count)
     config.add_evolution_step(remove_is_service_attribute)
+    config.add_evolution_step(remove_token_storage)
