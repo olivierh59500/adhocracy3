@@ -7,6 +7,8 @@ import * as AdhMeinberlinAlexanderplatzWorkbenchModule from "../Alexanderplatz/W
 import * as AdhMeinberlinBuergerhaushaltWorkbenchModule from "../Buergerhaushalt/Workbench/Module";
 import * as AdhMeinberlinKiezkasseWorkbenchModule from "../Kiezkasse/Workbench/Module";
 
+
+import * as AdhConfig from "../../Config/Config";
 import * as AdhEmbed from "../../Embed/Embed";
 import * as AdhResourceArea from "../../ResourceArea/ResourceArea";
 
@@ -24,6 +26,7 @@ import * as AdhMeinberlinDe from "./MeinberlinDe";
 
 
 export var moduleName = "adhMeinberlinDe";
+export var pkgLocation = "/Meinberlin/MeinberlinDe";
 
 export var register = (angular) => {
     angular
@@ -38,6 +41,7 @@ export var register = (angular) => {
         ])
         .config(["adhEmbedProvider", (adhEmbedProvider: AdhEmbed.Provider) => {
             adhEmbedProvider.registerContext("mein.berlin.de");
+            adhEmbedProvider.headerUrl = AdhConfig.pkg_path + pkgLocation + "/Header.html";
         }])
         .config(["adhResourceAreaProvider", (adhResourceAreaProvider: AdhResourceArea.Provider) => {
             adhResourceAreaProvider
