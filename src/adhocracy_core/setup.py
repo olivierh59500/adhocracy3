@@ -41,6 +41,7 @@ test_requires = [
     'pytest-pyramid',
     'pytest-timeout',
     'pytest-mock',
+    'pytest-localserver',
     'coverage',
     'python-coveralls',
     'babel',

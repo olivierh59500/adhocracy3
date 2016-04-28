@@ -54,6 +54,17 @@ For testing, we import the needed stuff and start the Adhocracy app::
     >>> from pprint import pprint
     >>> admin = getfixture('app_admin_filestorage')
 
+And an http server to test image download:
+
+    >>> import os
+    >>> import adhocracy_core
+    >>> httpserver = getfixture('httpserver')
+    >>> base_path = adhocracy_core.__path__[0]
+    >>> test_image_path = os.path.join(base_path, '../', 'docs', 'test_image.png')
+    >>> httpserver.serve_content(open(test_image_path, 'rb').read())
+    >>> httpserver.headers['ContentType'] = 'image/png'
+    >>> test_image_url = httpserver.url
+
 We need a pool with an asset pool::
 
     >>> data = {'content_type': 'adhocracy_core.resources.process.IProcess',
@@ -235,6 +246,8 @@ proposal version::
     [...0/VERSION_0000001/']
 
 
+
+
 Replacing Assets
 ----------------
 
@@ -301,3 +314,34 @@ Deleting and Hiding Assets
 
 Assets can be deleted or censored ("hidden") in the usual way, see
 :doc:`deletion`.
+
+
+Referring to external images
+----------------------------
+
+The image reference sheet also allows to refer to an external image url.
+
+    >>> resp = admin.get(prop_v1_path).json
+    >>> resp['data']['adhocracy_core.sheets.image.IImageReference']['picture']
+    '.../process/assets/0000000/'
+    >>> resp['data']['adhocracy_core.sheets.image.IImageReference']['external_picture_url']
+    ''
+
+If we set this field
+
+    >>> vers_data = {'content_type': 'adhocracy_core.resources.document.IDocumentVersion',
+    ...              'data': {'adhocracy_core.sheets.image.IImageReference': {
+    ...                          'external_picture_url': test_image_url},
+    ...                       'adhocracy_core.sheets.versions.IVersionable': {
+    ...                          'follows': [prop_v1_path]}}}
+    >>> resp = admin.post(prop_path, vers_data)
+    >>> prop_v2_path = resp.json["path"]
+    >>> resp = admin.get(prop_v2_path).json
+    >>> resp['data']['adhocracy_core.sheets.image.IImageReference']['external_picture_url']
+    'http:/...
+
+the backend downloads and references the given image url. The old picture
+reference is replaced with the newly created image.
+
+    >>> resp['data']['adhocracy_core.sheets.image.IImageReference']['picture']
+    '.../process/assets/0000001/'

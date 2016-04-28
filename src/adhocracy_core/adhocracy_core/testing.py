@@ -17,7 +17,6 @@ from pyramid.traversal import find_resource
 from pyramid.scripting import get_root
 from pyramid_mailer.mailer import DummyMailer
 from pytest import fixture
-from ZODB import FileStorage
 from testfixtures import LogCapture
 from webtest import TestApp
 from webtest import TestResponse
@@ -671,26 +670,32 @@ def make_configurator(app_settings: dict, package) -> Configurator:
 
 
 @fixture(scope='class')
-def app_with_filestorage(app_settings: dict) -> Router:
-    """
-    Return the adhocracy test wsgi application using a DB with file storage.
-
-    Any DB contents are cleared by this fixture.
-    """
+def app_router_filestorage(app_settings_filestorage: dict) -> Router:
+    """Return the adhocracy test wsgi application using file storage db."""
     import adhocracy_core
-    db_file = 'var/db/test/Data.fs'
-    blob_dir = 'var/db/test/blobs'
-    # Delete old content
-    storage = FileStorage.FileStorage(db_file, blob_dir=blob_dir)
-    storage.cleanup()
-    # This doesn't seem to clear the blob_dir, hence we do so manually
-    rmtree(blob_dir, ignore_errors=True)
-    our_settings = app_settings.copy()
-    our_settings['zodbconn.uri'] = 'file://{}?blobstorage_dir={}'.format(
-        db_file, blob_dir)
-    configurator = make_configurator(our_settings, adhocracy_core)
+    configurator = make_configurator(app_settings_filestorage, adhocracy_core)
     app_router = configurator.make_wsgi_app()
     return app_router
+
+
+@fixture(scope='class')
+def app_settings_filestorage(request, app_settings: dict) -> dict:
+    """Add zodb connection with filestorage, add finalizer to cleanup files."""
+    db_test_dir = 'var/db/test/'
+    db_file = db_test_dir + 'Data.fs'
+    blobs_dir = db_test_dir + 'blobs'
+    uri = 'file://{}?blobstorage_dir={}'.format(db_file, blobs_dir)
+    app_settings['zodbconn.uri'] = uri
+
+    def remove_test_db():
+        os.remove(db_file)
+        os.remove(db_file + '.lock')
+        os.remove(db_file + '.tmp')
+        os.remove(db_file + '.index')
+        rmtree(blobs_dir, ignore_errors=True)
+    request.addfinalizer(remove_test_db)
+
+    return app_settings
 
 
 @fixture(scope='class')
@@ -955,9 +960,9 @@ def app_admin(app_router):
 
 
 @fixture(scope='class')
-def app_admin_filestorage(app_with_filestorage):
+def app_admin_filestorage(app_router_filestorage):
     """Return backend test app wrapper with admin authentication."""
-    return AppUser(app_with_filestorage,
+    return AppUser(app_router_filestorage,
                    user_login=admin_login,
                    user_password=admin_password,
                    user_path=admin_path)
