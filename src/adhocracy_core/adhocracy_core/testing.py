@@ -226,6 +226,7 @@ def request_():
     """
     request = DummyRequest()
     request.registry.settings = {}
+    request.remote_addr = ''
     return request
 
 

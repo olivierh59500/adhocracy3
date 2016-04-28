@@ -64,6 +64,34 @@ class TestTokenHeaderAuthenticationPolicy:
         token = jwt.decode(header[1], 'secret')
         assert token
 
+    def test_unauthenticated_userid_return_none_if_no_token(
+        self, inst, request_):
+        assert inst.unauthenticated_userid(request_) is None
+
+    def test_unauthenticated_userid_return_none_if_invalid_jwt_token(
+        self, inst, request_, mocker):
+        from jwt import InvalidTokenError
+        from . import UserTokenHeader
+        mocker.patch('jwt.decode', side_effect=InvalidTokenError)
+        request_.headers[UserTokenHeader] = 'tokenhash'
+        assert inst.unauthenticated_userid(request_) is None
+
+    def test_unauthenticated_userid_return_none_if_not_jwt_token(
+        self, inst, request_, mocker):
+        from jwt import DecodeError
+        from . import UserTokenHeader
+        mocker.patch('jwt.decode', side_effect=DecodeError)
+        request_.headers[UserTokenHeader] = 'tokenhash'
+        assert inst.unauthenticated_userid(request_) is None
+
+    def test_unauthenticated_userid_return_userid_if_valid_jwt_token(
+        self, inst, request_, mocker):
+        from . import UserTokenHeader
+        payload = {'sub': 'userid'}
+        mocker.patch('jwt.decode', return_value = payload)
+        request_.headers[UserTokenHeader] = 'tokenhash'
+        assert inst.unauthenticated_userid(request_) == 'userid'
+
 
 class TokenHeaderAuthenticationPolicyIntegrationTest(unittest.TestCase):
 
