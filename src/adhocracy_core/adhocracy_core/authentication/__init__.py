@@ -19,7 +19,7 @@ class TokenHeaderAuthenticationPolicy(JWTAuthenticationPolicy):
     The init parameters are restricted to default parameters for
     :class:`pyramid.security.CallbackAuthenticationPolicy`.
 
-    The following methods are extendend:
+    The following methods are extended:
 
     * `remember` return a list with the header/value to authenticate
 
