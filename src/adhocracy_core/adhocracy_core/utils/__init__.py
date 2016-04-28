@@ -437,3 +437,28 @@ def create_schema(schema_class, context, request, **kwargs) -> Schema:
     bindings.update(**kwargs)
     schema = schema_class().bind(**bindings)
     return schema
+
+from adhocracy_core.interfaces import search_query
+from adhocracy_core.sheets.workflow import IWorkflowAssignment
+from substanced.util import find_service
+
+
+def _has_workflow(resource, name, registry):
+    if not IWorkflowAssignment.providedBy(resource):
+        return False
+    sheet = registry.content.get_sheet(resource, IWorkflowAssignment)
+    workflow = sheet.get()['workflow']
+    return workflow and workflow.type == name
+
+
+def find_resources_by_workflow(root: IResource,
+                               iface: IInterface,
+                               workflow_name: str,
+                               registry: Registry) -> [IResource]:
+    """Find all resources having a specific interface and workflow."""
+    catalogs = find_service(root, 'catalogs')
+    query = search_query._replace(interfaces=iface)
+    resources = catalogs.search(query).elements
+    workflows = (r for r in resources
+                 if _has_workflow(r, workflow_name, registry))
+    return workflows

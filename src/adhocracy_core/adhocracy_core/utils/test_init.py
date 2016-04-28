@@ -519,3 +519,33 @@ def test_has_annotation_sheet_data_resource_with_data(context):
     from . import has_annotation_sheet_data
     context._sheet_xcv = {}
     assert has_annotation_sheet_data(context) is True
+
+
+class TestFindResourcesByWorkflow:
+
+    @fixture
+    def mock_catalogs(self, monkeypatch, mock_catalogs) -> Mock:
+        from .. import utils
+        monkeypatch.setattr(utils, 'find_service',
+                            lambda x, y: mock_catalogs)
+        return mock_catalogs
+
+    def call_fut(self, *args):
+        from . import find_resources_by_workflow
+        return find_resources_by_workflow(*args)
+
+    def test_workflow_present(self, mock_catalogs, mock_sheet, registry_with_content):
+        from adhocracy_core.sheets.workflow import IWorkflowAssignment
+        from adhocracy_core.resources.process import IProcess
+        from adhocracy_core.interfaces import search_result
+        dummy_resource1 = testing.DummyResource()
+        dummy_resource2 = testing.DummyResource(__provides__=(IWorkflowAssignment))
+        mock_catalogs.search.return_value = search_result._replace(
+            elements=[dummy_resource1, dummy_resource2])
+        dummy_workflow = testing.DummyResource()
+        dummy_workflow.type = 'standard'
+        mock_sheet.get.return_value = {'workflow': dummy_workflow}
+        registry_with_content.content.get_sheet.return_value = mock_sheet
+        root = testing.DummyResource()
+        res = self.call_fut(root, IProcess, 'standard', registry_with_content)
+        assert list(res) == [dummy_resource2]
