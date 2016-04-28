@@ -133,15 +133,24 @@ export class Service {
 
         this.adhConfig.custom["hide_header"] = this.adhConfig.custom["hide_header"] || search.hasOwnProperty("noheader");
 
-        if (this.provider.hasDirective(directiveName)) {
-            this.widget = directiveName;
-            var template = this.location2template(directiveName, search);
+        if (this.provider.hasDirective(directiveName) || this.provider.hasContext(contextName)) {
+
+            var template = "";
+
+            if (this.provider.hasDirective(directiveName)) {
+                this.widget = directiveName;
+                template = this.location2template(directiveName, search);
+            }
 
             if (!search.hasOwnProperty("nocenter")) {
                 template = "<div class=\"l-center m-embed\">" + template + "</div>";
             }
 
-            template = "<adh-default-header></adh-default-header>" + template;
+            if (this.provider.hasContext(contextName) && this.provider.contextHeaders[contextName] !== "") {
+                template = this.provider.contextHeaders[contextName] + template;
+            } else {
+                template = "<adh-default-header></adh-default-header>" + template;
+            }
 
             return {
                 template: template
