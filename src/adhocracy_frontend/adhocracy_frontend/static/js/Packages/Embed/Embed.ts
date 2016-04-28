@@ -19,6 +19,7 @@ export class Provider {
     protected contextAliases : {[key : string]: string};
     protected directiveAliases : {[key : string]: string};
     public $get;
+    public contextHeaders: {[context: string]: string};
 
     /**
      * List of directive names that can be embedded.  names must be in
@@ -30,6 +31,7 @@ export class Provider {
             "document-workbench",
             "paragraph-version-detail",
             "comment-listing",
+            "context-header",
             "create-or-show-comment-listing",
             "login",
             "register",
@@ -44,6 +46,8 @@ export class Provider {
         this.contextAliases = {};
 
         this.$get = ["adhConfig", (adhConfig) => new Service(this, adhConfig)];
+
+        this.contextHeaders = {};
     }
 
     public registerDirective(name : string, aliases : string[] = []) : Provider {
@@ -78,6 +82,11 @@ export class Provider {
 
     public hasContext(name : string) {
         return _.includes(this.contexts,  name);
+    }
+
+    public contextHeader(context : string, template : string) : Provider {
+        this.contextHeaders[context] = template;
+        return this;
     }
 }
 
