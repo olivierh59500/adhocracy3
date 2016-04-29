@@ -8,7 +8,6 @@ import * as AdhMeinberlinBuergerhaushaltWorkbenchModule from "../Buergerhaushalt
 import * as AdhMeinberlinKiezkasseWorkbenchModule from "../Kiezkasse/Workbench/Module";
 
 
-import * as AdhConfig from "../../Config/Config";
 import * as AdhEmbed from "../../Embed/Embed";
 import * as AdhResourceArea from "../../ResourceArea/ResourceArea";
 
@@ -39,9 +38,10 @@ export var register = (angular) => {
             AdhResourceAreaModule.moduleName,
             AdhTopLevelStateModule.moduleName
         ])
-        .config(["adhEmbedProvider", (adhEmbedProvider: AdhEmbed.Provider) => {
+        .config(["adhEmbedProvider", "adhConfigProvider", (adhEmbedProvider: AdhEmbed.Provider, adhConfigProvider) => {
+            var adhConfig = adhConfigProvider.config;
             adhEmbedProvider.registerContext("mein.berlin.de");
-            adhEmbedProvider.headerUrl = AdhConfig.pkg_path + pkgLocation + "/Header.html";
+            adhEmbedProvider.headerUrl = adhConfig.pkg_path + pkgLocation + "/Header.html";
         }])
         .config(["adhResourceAreaProvider", (adhResourceAreaProvider: AdhResourceArea.Provider) => {
             adhResourceAreaProvider
