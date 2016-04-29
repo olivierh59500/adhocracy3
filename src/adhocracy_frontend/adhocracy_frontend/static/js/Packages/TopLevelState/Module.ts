@@ -1,5 +1,4 @@
 import * as AdhCredentialsModule from "../User/Module";
-import * as AdhEmbed from "../Embed/Embed";
 import * as AdhEventManagerModule from "../EventManager/Module";
 import * as AdhTrackingModule from "../Tracking/Module";
 
