@@ -643,6 +643,12 @@ class TextUnitTest(unittest.TestCase):
         with raises(colander.Invalid):
             inst.deserialize(1)
 
+    def test_bind_and_setup_text_widget(self):
+        from deform.widget import TextAreaWidget
+        inst = self.make_one().bind()
+        widget = inst.widget
+        assert isinstance(widget, TextAreaWidget)
+
 
 class PasswordUnitTest(unittest.TestCase):
 

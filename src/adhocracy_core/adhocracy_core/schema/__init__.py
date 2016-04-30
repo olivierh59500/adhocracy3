@@ -24,6 +24,7 @@ from colander import deferred
 from colander import drop
 from colander import null
 from deform.widget import DateTimeInputWidget
+from deform.widget import TextAreaWidget
 from pyramid.path import DottedNameResolver
 from pyramid.traversal import find_resource
 from pyramid.traversal import resource_path
@@ -632,6 +633,11 @@ class Text(SchemaNode):
     schema_type = StringType
     default = ''
     missing = drop
+
+    @deferred
+    def widget(self, kw: dict) -> TextAreaWidget:
+        widget = TextAreaWidget(rows=10, cols=60)
+        return widget
 
 
 class Password(SchemaNode):
