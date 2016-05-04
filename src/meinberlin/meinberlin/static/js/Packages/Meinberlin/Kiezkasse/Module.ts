@@ -28,7 +28,7 @@ export var register = (angular) => {
         .config(["adhEmbedProvider", (adhEmbedProvider : AdhEmbed.Provider) => {
             adhEmbedProvider.registerContext("kiezkasse", ["kiezkassen"]);
         }])
-        .config(["adhResourceAreaProvider", "adhConfig", (adhResourceAreaProvider : AdhResourceArea.Provider, adhConfig) => {
+        .config(["adhResourceAreaProvider", (adhResourceAreaProvider : AdhResourceArea.Provider) => {
             var registerRoutes = AdhMeinberlinIdeaCollection.registerRoutesFactory(processType);
             registerRoutes(processType)(adhResourceAreaProvider);
             registerRoutes(processType, "kiezkasse")(adhResourceAreaProvider);
@@ -40,6 +40,9 @@ export var register = (angular) => {
             adhProcessProvider.templateFactories[processType] = ["$q", ($q : angular.IQService) => {
                 return $q.when("<adh-meinberlin-idea-collection-workbench data-is-kiezkasse=\"true\">" +
                     "</adh-meinberlin-idea-collection-workbench>");
+            }];
+            adhProcessProvider.processButtonSlots[processType] = ["$q", ($q: angular.IQService) => {
+                return $q.when("<adh-meinberlin-idea-collection-add-proposal-button></adh-meinberlin-idea-collection-add-proposal-button>");
             }];
         }]);
 };
