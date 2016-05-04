@@ -41,5 +41,8 @@ export var register = (angular) => {
                 return $q.when("<adh-meinberlin-idea-collection-workbench data-is-buergerhaushalt=\"true\">" +
                     "</adh-meinberlin-idea-collection-workbench>");
             }];
+            adhProcessProvider.processButtonSlots[processType] = ["$q", ($q: angular.IQService) => {
+                return $q.when("<adh-meinberlin-idea-collection-add-proposal-button></adh-meinberlin-idea-collection-add-proposal-button>");
+            }];
         }]);
 };
