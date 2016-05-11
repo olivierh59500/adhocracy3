@@ -57,12 +57,12 @@ export var register = (angular) => {
                 return $q.when("<adh-meinberlin-idea-collection-workbench data-is-buergerhaushalt=\"true\">" +
                     "</adh-meinberlin-idea-collection-workbench>");
             }];
-            adhProcessProvider.templateFactories[RIKiezkasseProcess.content_type] = ["$q", ($q : angular.IQService) => {
-                return $q.when("<adh-meinberlin-idea-collection-workbench data-is-kiezkasse=\"true\">" +
+            adhProcessProvider.templateFactories[RIIdeaCollectionProcess.content_type] = ["$q", ($q : angular.IQService) => {
+                return $q.when("<adh-meinberlin-idea-collection-workbench>" +
                     "</adh-meinberlin-idea-collection-workbench>");
             }];
             adhProcessProvider.templateFactories[RIKiezkasseProcess.content_type] = ["$q", ($q: angular.IQService) => {
-                return $q.when("<adh-meinberlin-idea-collection-workbench>" +
+                return $q.when("<adh-meinberlin-idea-collection-workbench data-is-kiezkasse=\"true\">" +
                     "</adh-meinberlin-idea-collection-workbench>");
             }];
         }])
