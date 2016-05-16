@@ -26,8 +26,8 @@ exports.config = {
         exec("src/current/current/tests/acceptance/setup_test.sh");
     },
     afterLaunch: function() {
-        exec("rm -rf var/test_zeodata/Data.fs* var/test_zeodata/blobs");
         exec("bin/supervisorctl stop adhocracy_test:");
+        exec("rm -rf var/db/test/Data.fs* var/db/test/blobs/* var/mail/new/* ");
     },
     onPrepare: function() {
         var getMailQueuePath = function() {

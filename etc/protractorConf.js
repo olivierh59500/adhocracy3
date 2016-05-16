@@ -16,11 +16,11 @@ exports.config = {
     },
     beforeLaunch: function() {
         exec("bin/supervisord");
-        exec("bin/supervisorctl restart  adhocracy_test:test_zeo test_backend_with_ws adhocracy_test:test_autobahn adhocracy_test:test_frontend");
+        exec("bin/supervisorctl restart adhocracy_test:");
         exec("src/current/current/tests/acceptance/setup_tests.sh");
     },
     afterLaunch: function() {
-        exec("bin/supervisorctl stop adhocracy_test:test_zeo test_backend_with_ws adhocracy_test:test_autobahn adhocracy_test:test_frontend");
+        exec("bin/supervisorctl stop adhocracy_test:");
         exec("rm -rf var/db/test/Data.fs* var/db/test/blobs/* var/mail/new/* ");
     },
     onPrepare: function() {
