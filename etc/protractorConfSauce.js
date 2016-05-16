@@ -22,16 +22,16 @@ exports.config = {
     },
     beforeLaunch: function() {
         exec("bin/supervisord");
-        exec("bin/supervisorctl restart adhocracy_test:test_zeo test_backend_with_ws adhocracy_test:test_autobahn adhocracy_test:test_frontend");
+        exec("bin/supervisorctl restart adhocracy_test:");
         exec("src/current/current/tests/acceptance/setup_test.sh");
     },
     afterLaunch: function() {
-        exec("bin/supervisorctl stop adhocracy_test:test_zeo test_backend_with_ws adhocracy_test:test_autobahn adhocracy_test:test_frontend");
         exec("rm -rf var/test_zeodata/Data.fs* var/test_zeodata/blobs");
+        exec("bin/supervisorctl stop adhocracy_test:");
     },
     onPrepare: function() {
         var getMailQueuePath = function() {
-            var testConf = ini.parse(fs.readFileSync("etc/test_with_ws.ini", "utf-8"));
+            var testConf = ini.parse(fs.readFileSync("etc/test.ini", "utf-8"));
             return testConf["app:main"]["mail.queue_path"]
                    .replace("%(here)s", process.cwd() + "/etc");
         };
