@@ -60,8 +60,10 @@ describe("comments", function() {
         var page = new EmbeddedCommentsPage("c10").get();
         var parent = page.createComment("comment 1");
         var reply = page.createReply(parent, "comment 1.1");
-        var changedReply = page.editComment(reply, ["b"]);
-        var changedParent = page.editComment(parent, ["b"]);
+        browser.driver.sleep(0.5); // timing issues when running all tests
+        reply = page.editComment(reply, ["b"]);
+        browser.driver.sleep(0.5);
+        parent = page.editComment(parent, ["b"]);
         expect(page.getCommentText(parent)).toEqual("comment 1b");
         expect(page.getCommentText(reply)).toEqual("comment 1.1b");
     });
@@ -93,9 +95,9 @@ describe("comments", function() {
 });
 
 describe("comments of other user", function() {
-    
+
     var page;
-    
+
     beforeAll( function () {
         shared.loginParticipant();
         page = new EmbeddedCommentsPage("c6").get();
@@ -103,7 +105,7 @@ describe("comments of other user", function() {
         shared.logout();
         shared.loginOtherParticipant();
     });
-    
+
     it("can not be edited", function() {
         page.get();
         var comment = page.getFirstComment();
