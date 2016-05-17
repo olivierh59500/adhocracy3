@@ -40,12 +40,11 @@ exports.config = {
             queue_path: getMailQueuePath()
         }
     },
-    allScriptsTimeout: 21000,
-    getPageTimeout: 20000,
+    getPageTimeout: 30000,
     framework: "jasmine",
     jasmineNodeOpts: {
         showColors: true,
-        defaultTimeoutInterval: 120000,
+        defaultTimeoutInterval: 30000,
         isVerbose: true,
         includeStackTrace: true
     }
