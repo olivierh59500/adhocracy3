@@ -15,10 +15,10 @@ exports.config = {
     sauceKey: "77600374-1617-4d7b-b1b6-9fd82ddfe89c",
 
     capabilities: {
-        "browserName": "chrome",
+        browserName: "chrome",
         "tunnel-identifier": process.env.TRAVIS_JOB_NUMBER,
-        "build": process.env.TRAVIS_BUILD_NUMBER,
-        "name": name
+        build: process.env.TRAVIS_BUILD_NUMBER,
+        name: name
     },
     beforeLaunch: function() {
         exec("bin/supervisord");
@@ -42,6 +42,7 @@ exports.config = {
     },
     allScriptsTimeout: 21000,
     getPageTimeout: 20000,
+    framework: "jasmine",
     jasmineNodeOpts: {
         showColors: true,
         defaultTimeoutInterval: 120000,

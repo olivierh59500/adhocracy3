@@ -10,9 +10,10 @@ exports.config = {
     },
     baseUrl: "http://localhost:9090",
     getPageTimeout: 30000,
+    framework: "jasmine",
     directConnect: true,
     capabilities: {
-        "browserName": "chrome"
+        browserName: "chrome"
     },
     beforeLaunch: function() {
         exec("bin/supervisord");
@@ -29,7 +30,6 @@ exports.config = {
             return testConf["app:main"]["mail.queue_path"]
                    .replace("%(here)s", process.cwd() + "/etc");
         };
-
         browser.params.mail = {
             queue_path: getMailQueuePath()
         }
