@@ -41,5 +41,8 @@ setup(name='adhocracy_euth',
       entry_points="""\
       [paste.app_factory]
       main = adhocracy_euth:main
+      [console_scripts]
+      ad_fixtures =\
+        adhocracy_euth.fixtures:fixtures_main
       """,
       )
