@@ -44,7 +44,6 @@ describe("user page", function() {
             var lastMail = newMails.length - 1
             var mailpath = browser.params.mail.queue_path + "/new/" + newMails[lastMail];
             shared.parseEmail(mailpath, function(mail) {
-                //console.log('mail', mail);
                 expect(mail.text).toContain(content);
                 expect(mail.subject).toContain(subject);
                 expect(mail.from[0].address).toContain("noreply");
