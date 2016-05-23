@@ -346,7 +346,7 @@ class TestImportFixture:
 
     def test_import_workflow_state(self, asset, mocker, context, registry):
         import_data = 'process/proposal:announce->participate'
-        import_file = self.create_import_file(asset, 'states', import_data)
+        self.create_import_file(asset, 'states', import_data)
         mock = mocker.patch('adhocracy_core.scripts._set_workflow_state')
         self.call_fut(asset, context, registry)
         mock.assert_called_with(context, registry, 'process/proposal',
