@@ -39,6 +39,16 @@ export var detailDirective = (
         },
         require: "^adhMovingColumn",
         link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+            scope.facets = [{
+                key: "badge",
+                name: "TR__MEINBERLIN_IDEA_COLLECTION_CATEGORIES_LABEL",
+                items: [
+                    { key: "strengths", name: "TR__MEINBERLIN_IDEA_COLLECTION_CATEGORIES_STRENGTHS" },
+                    { key: "weaknesses", name: "TR__MEINBERLIN_IDEA_COLLECTION_CATEGORIES_WEAKNESSES" },
+                    { key: "proposals", name: "TR__MEINBERLIN_IDEA_COLLECTION_CATEGORIES_PROPOSALS" },
+                    { key: "visions", name: "TR__MEINBERLIN_IDEA_COLLECTION_CATEGORIES_VISIONS" }
+                ]
+            }];
             scope.sorts = [{
                 key: "rates",
                 name: "TR__RATES",
