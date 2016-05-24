@@ -60,9 +60,7 @@ describe("comments", function() {
         var page = new EmbeddedCommentsPage("c10").get();
         var parent = page.createComment("comment 1");
         var reply = page.createReply(parent, "comment 1.1");
-        browser.driver.sleep(0.5); // timing issues when running all tests
         reply = page.editComment(reply, ["b"]);
-        browser.driver.sleep(0.5);
         parent = page.editComment(parent, ["b"]);
         expect(page.getCommentText(parent)).toEqual("comment 1b");
         expect(page.getCommentText(reply)).toEqual("comment 1.1b");
