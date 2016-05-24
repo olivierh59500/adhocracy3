@@ -8,6 +8,7 @@
             <adh-listing
                 data-content-type="{{contentType}}"
                 data-custom="{
+                    hasSwotLabels: hasSwotLabels,
                     isBuergerhaushalt: isBuergerhaushalt,
                     isKiezkasse: isKiezkasse,
                 }"
@@ -20,6 +21,7 @@
                 data-sorts="sorts">
                 <adh-meinberlin-proposal-list-item
                     data-path="{{element}}"
+                    data-has-swot-labels="custom.hasSwotLabels"
                     data-is-buergerhaushalt="custom.isBuergerhaushalt"
                     data-is-kiezkasse="custom.isKiezkasse">
                 </adh-meinberlin-proposal-list-item>
@@ -36,6 +38,7 @@
                 <adh-map-listing
                     data-content-type="{{contentType}}"
                     data-custom="{
+                        hasSwotLabels: hasSwotLabels,
                         isBuergerhaushalt: isBuergerhaushalt,
                         isKiezkasse: isKiezkasse,
                     }"
@@ -49,6 +52,7 @@
                     data-sorts="sorts">
                     <adh-meinberlin-proposal-map-list-item
                         data-path="{{item}}"
+                        data-has-swot-labels="custom.hasSwotLabels"
                         data-is-buergerhaushalt="custom.isBuergerhaushalt"
                         data-is-kiezkasse="custom.isKiezkasse">
                     </adh-meinberlin-proposal-map-list-item>
