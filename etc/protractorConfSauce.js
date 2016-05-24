@@ -30,17 +30,12 @@ exports.config = {
         exec("rm -rf var/db/test/Data.fs* var/db/test/blobs/* var/mail/new/* ");
     },
     onPrepare: function() {
-         // explicit timeouts to be extra sure
-        // the angular app has enough time to get ready
-        browser.manage().timeouts().pageLoadTimeout(30000);
-        browser.manage().timeouts().implicitlyWait(25000);
-        
-        // setup mail queue path
         var getMailQueuePath = function() {
             var testConf = ini.parse(fs.readFileSync("etc/test.ini", "utf-8"));
             return testConf["app:main"]["mail.queue_path"]
                    .replace("%(here)s", process.cwd() + "/etc");
         };
+
         browser.params.mail = {
             queue_path: getMailQueuePath()
         }
