@@ -31,6 +31,8 @@ var EmbeddedCommentsPage = function(referer) {
     this.createComment = function(content) {
         this.fillComment(content);
         this.submitButton.click();
+        var new_comment = element(by.cssContainingText('.comment-content', content));
+        browser.wait(new_comment.isDisplayed);
         // FIXME: Return created comment
         return this.listing.element(by.xpath("(//adh-comment)[1]"));
 
@@ -43,10 +45,15 @@ var EmbeddedCommentsPage = function(referer) {
         //                   })
         //        });
     };
+
+     this.createEmptyComment = function() {
+         this.submitButton.click();
+         return this.listing.element(by.xpath("(//adh-comment)[1]"));
+     }
     
     this.getFirstComment = function() {
         return this.listing.element(by.xpath("(//adh-comment)[1]"));
-    } 
+    }
 
     this.getReplyLink = function(comment) {
         return comment.element(by.css(".icon-reply"));
