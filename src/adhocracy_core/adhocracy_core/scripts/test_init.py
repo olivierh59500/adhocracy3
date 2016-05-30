@@ -360,3 +360,10 @@ class TestImportFixture:
                                 absolute=True,
                                 reset=True)
 
+    def test_ignore_if_empty_workflow_state(
+        self, asset, mocker, context, registry):
+        os.mkdir(asset + '/' + 'states')
+        mock = mocker.patch('adhocracy_core.scripts._set_workflow_state')
+        self.call_fut(asset, context, registry)
+        assert not mock.called
+

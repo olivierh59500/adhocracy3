@@ -13,7 +13,7 @@ from . import import_fixture
 logger = logging.getLogger(__name__)
 
 
-def import_fixtures():
+def import_fixtures():  # pragma: no cover
     args = _argparse()
     env = bootstrap(args.ini_file)
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -22,7 +22,6 @@ def import_fixtures():
                      all=args.import_all,
                      custom=args.import_custom,
                      )
-    #transaction.commit()
     env['closer']()
 
 
