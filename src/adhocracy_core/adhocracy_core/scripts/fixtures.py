@@ -2,6 +2,7 @@
 import argparse
 import logging
 import sys
+import transaction
 
 from pyramid.paster import bootstrap
 
@@ -18,9 +19,10 @@ def import_fixtures():
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
     _import_fixtures(env['root'],
                      env['registry'],
-                     list_only=args.list_only,
+                     all=args.import_all,
                      custom=args.import_custom,
                      )
+    #transaction.commit()
     env['closer']()
 
 
@@ -30,31 +32,32 @@ def _argparse():
                         help='path to the adhocracy backend ini file',
                         default='etc/development.ini',
                         nargs='?')
-    parser.add_argument('-l',
-                        '--list_only',
-                        help='List all registered fixture directories.',
+    parser.add_argument('-a',
+                        '--import_all',
+                        help='Import all registered fixture directories.',
                         action='store_true')
     parser.add_argument('-c',
                         '--import_custom',
-                        help='Custom fixture name or file system path')
+                        help='Import custom fixture name or file system path')
     return parser.parse_args()
 
 
 def _import_fixtures(root,
                      registry,
-                     import_all=True,
+                     all=False,
                      custom='',
-                     list_only=False):
+                     ):
     assets = [x[0] for x in registry.getUtilitiesFor(IFixtureAsset)]
-    if list_only:
-        print('The following fixture directories are registered')
-        for asset in assets:
-            print(asset)
-    elif custom:
-        print('Importing fixture {}'.format(custom))
-        import_fixture(custom, root, registry)
-    elif import_all:
-        for asset in assets:
-            print('Importing fixture {}'.format(asset))
-            import_fixture(asset, root, registry)
+    log_only = False
+    if custom:
+        print('\nImport custom fixture:\n')
+        assets = [custom]
+    elif all:
+        print('\nImport all fixtures:\n')
+    else:
+        print('\nThe following fixture directories are registered:')
+        log_only = True
+    for asset in assets:
+        print('\nFixture {}'.format(asset))
+        import_fixture(asset, root, registry, log_only=log_only)
 

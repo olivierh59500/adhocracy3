@@ -280,9 +280,9 @@ def test_get_sheet_field_for_partial(context, registry, mocker):
 @mark.usefixtures('integration')
 class TestImportFixture:
 
-    def call_fut(self, *args):
+    def call_fut(self, *args, **kwargs):
         from . import import_fixture
-        return import_fixture(*args)
+        return import_fixture(*args, **kwargs)
 
     @fixture
     def asset(self, tmpdir) -> str:
@@ -320,19 +320,25 @@ class TestImportFixture:
         with raises(ConfigurationError):
             self.call_fut(asset, None, None)
 
-    def test_import_groups(self, asset, mocker, context, registry):
+    def test_ignore_if_log_only(self, asset, mocker, context, registry, log):
+        import_file = self.create_import_file(asset, 'groups')
+        mock = mocker.patch('adhocracy_core.scripts._import_groups')
+        self.call_fut(asset, context, registry, log_only=True)
+        assert not mock.called
+
+    def test_import_groups(self, asset, mocker, context, registry, log):
         import_file = self.create_import_file(asset, 'groups')
         mock = mocker.patch('adhocracy_core.scripts._import_groups')
         self.call_fut(asset, context, registry)
         mock.assert_called_with(context, registry, import_file)
 
-    def test_import_users(self, asset, mocker, context, registry):
+    def test_import_users(self, asset, mocker, context, registry, log):
         import_file = self.create_import_file(asset, 'users')
         mock = mocker.patch('adhocracy_core.scripts._import_users')
         self.call_fut(asset, context, registry)
         mock.assert_called_with(context, registry, import_file)
 
-    def test_import_local_groups(self, asset, mocker, context, registry):
+    def test_import_local_groups(self, asset, mocker, context, registry, log):
         import_file = self.create_import_file(asset, 'local_roles')
         mock = mocker.patch('adhocracy_core.scripts.import_local_roles')
         self.call_fut(asset, context, registry)

@@ -181,12 +181,15 @@ def get_sheet_field_for_partial(sheet: ISheet,
     return registry.content.get_sheet_field(resource, sheet, field)
 
 
-def import_fixture(asset: str, root: IPool, registry: Registry):
+def import_fixture(asset: str, root: IPool, registry: Registry,
+                   log_only=False):
     """Import files in fixture directory defined by :term:`asset` ."""
     fixture = _asset_to_fixture(asset)
     imports = _get_import_files(fixture)
     for import_type, import_file in imports:
-        logger.info('Importing {} from {}'.format(import_type, import_file))
+        print('Import type "{}" file "{}"'.format(import_type, import_file))
+        if log_only:
+            continue
         if import_type == 'groups':
             _import_groups(root, registry, import_file)
             # TODO don't use private functions
@@ -215,14 +218,16 @@ def _asset_to_fixture(asset: str) -> Path:
 
 
 def _get_import_files(fixture: Path) -> [tuple]:
-    import_types = ['groups', 'users', 'resources', 'local_roles', 'states']
+    allowed_types = ['groups', 'users', 'resources', 'local_roles', 'states']
+    import_files = []
     for sub_dir in fixture.iterdir():
-        if sub_dir.name in import_types:
+        if sub_dir.name in allowed_types:
             for import_file in sub_dir.iterdir():
-                yield (sub_dir.name, str(import_file))
+                import_files.append((sub_dir.name, str(import_file)))
         else:
             msg = 'This is not a valid type directory {}'.format(sub_dir)
             raise ConfigurationError(details=msg)
+    return sorted(import_files, key=lambda x: allowed_types.index(x[0]))
 
 
 def _import_workflow_states(root: IResource, registry: Registry,

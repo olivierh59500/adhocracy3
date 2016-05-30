@@ -11,12 +11,17 @@ class TestImportFixture:
         self.call_fut(context, registry)
         assert not mock.called
 
-    def test_ignore_if_list_only(self, mocker, context, registry):
+    def test_list_registered_fixtures(self, mocker, context, registry, capfd,
+                                      log):
+        from mock import call
         from adhocracy_core.interfaces import IFixtureAsset
         mock = mocker.patch('adhocracy_core.scripts.fixtures.import_fixture')
         registry.registerUtility('', IFixtureAsset, name='adhocracy_core:fixt')
-        self.call_fut(context, registry, list_only=True)
-        assert not mock.called
+        self.call_fut(context, registry)
+        out, err = capfd.readouterr()
+        assert out.startswith('\nThe following')
+        assert call('adhocracy_core:fixt', context, registry, log_only=True)\
+               in mock.call_args_list
 
     def test_import_registered_fixtures(self, mocker, context, registry):
         from mock import call
@@ -24,10 +29,10 @@ class TestImportFixture:
         mock = mocker.patch('adhocracy_core.scripts.fixtures.import_fixture')
         registry.registerUtility('', IFixtureAsset, name='adhocracy_core:fixt')
         registry.registerUtility('', IFixtureAsset, name='adhocracy_core:test')
-        self.call_fut(context, registry, )
-        assert call('adhocracy_core:fixt', context, registry)\
+        self.call_fut(context, registry, all=True)
+        assert call('adhocracy_core:fixt', context, registry, log_only=False)\
                in mock.call_args_list
-        assert call('adhocracy_core:test', context, registry)\
+        assert call('adhocracy_core:test', context, registry, log_only=False)\
                in mock.call_args_list
 
     def test_import_custom_fixture(self, mocker, context, registry):
@@ -36,8 +41,8 @@ class TestImportFixture:
         mock = mocker.patch('adhocracy_core.scripts.fixtures.import_fixture')
         registry.registerUtility('', IFixtureAsset, name='adhocracy_core:fixt')
         self.call_fut(context, registry, custom='/absolute/path/fixture')
-        assert call('adhocracy_core:fixt', context, registry)\
+        assert call('adhocracy_core:fixt', context, registry, log_only=False)\
                not in mock.call_args_list
-        assert call('/absolute/path/fixture', context, registry)\
+        assert call('/absolute/path/fixture', context, registry, log_only=False)\
                in mock.call_args_list
 
