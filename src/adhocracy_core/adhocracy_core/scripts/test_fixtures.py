@@ -23,7 +23,7 @@ class TestImportFixture:
         assert call('adhocracy_core:fixt', context, registry, log_only=True)\
                in mock.call_args_list
 
-    def test_import_registered_fixtures(self, mocker, context, registry):
+    def test_import_registered_fixtures(self, mocker, context, registry, log):
         from mock import call
         from adhocracy_core.interfaces import IFixtureAsset
         mock = mocker.patch('adhocracy_core.scripts.fixtures.import_fixture')
@@ -35,7 +35,7 @@ class TestImportFixture:
         assert call('adhocracy_core:test', context, registry, log_only=False)\
                in mock.call_args_list
 
-    def test_import_custom_fixture(self, mocker, context, registry):
+    def test_import_custom_fixture(self, mocker, context, registry, log):
         from mock import call
         from adhocracy_core.interfaces import IFixtureAsset
         mock = mocker.patch('adhocracy_core.scripts.fixtures.import_fixture')
