@@ -38,10 +38,8 @@ export var register = (angular) => {
                 return $q.when("<adh-meinberlin-alexanderplatz-add-proposal-button></adh-meinberlin-alexanderplatz-add-proposal-button>");
             }];
         }])
-        .config(["adhResourceAreaProvider", "adhConfig", (adhResourceAreaProvider, adhConfig) => {
+        .config(["adhResourceAreaProvider", (adhResourceAreaProvider) => {
             var processType = RIAlexanderplatzProcess.content_type;
-            var customHeader = adhConfig.pkg_path + Workbench.pkgLocation + "/CustomHeader.html";
-            adhResourceAreaProvider.customHeader(processType, customHeader);
             Workbench.registerRoutes(processType)(adhResourceAreaProvider);
         }])
         .directive("adhMeinberlinAlexanderplatzWorkbench", [
