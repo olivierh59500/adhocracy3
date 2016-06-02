@@ -35,7 +35,7 @@ export var register = (angular) => {
                 return $q.when("<adh-meinberlin-alexanderplatz-workbench></adh-meinberlin-alexanderplatz-workbench>");
             }];
             adhProcessProvider.processButtonSlots[processType] = ["$q", ($q: angular.IQService) => {
-                return $q.when("<adh-meinberlin-alexanderplatz-add-proposal-button></adh-meinberlin-alexanderplatz-add-proposal-button>");
+                return $q.when("<adh-meinberlin-add-proposal-button></adh-meinberlin-add-proposal-button>");
             }];
         }])
         .config(["adhResourceAreaProvider", "adhConfig", (adhResourceAreaProvider, adhConfig) => {
@@ -64,7 +64,5 @@ export var register = (angular) => {
         .directive("adhMeinberlinAlexanderplatzDocumentEditColumn", [
             "adhConfig", "adhHttp", "adhTopLevelState", "adhResourceUrlFilter", Workbench.documentEditColumnDirective])
         .directive("adhMeinberlinAlexanderplatzProposalEditColumn", [
-            "adhConfig", "adhTopLevelState", "adhResourceUrlFilter", Workbench.proposalEditColumnDirective])
-        .directive("adhMeinberlinAlexanderplatzAddProposalButton", [
-            "adhConfig", "adhPermissions", "adhTopLevelState", Workbench.addProposalButtonDirective]);
+            "adhConfig", "adhTopLevelState", "adhResourceUrlFilter", Workbench.proposalEditColumnDirective]);
 };
