@@ -45,9 +45,8 @@ export var register = (angular) => {
             }];
         }])
         .config(["adhProcessProvider", (adhProcessProvider: AdhProcess.Provider) => {
-            adhProcessProvider.processButtonSlots[processType] = ["$q", ($q : angular.IQService) => {
-                return $q.when("<adh-mercator-2015-add-proposal-button></adh-mercator-2015-add-proposal-button>");
-            }];
+            adhProcessProvider.processButtonSlots[processType] = "<adh-mercator-2015-add-proposal-button>" +
+                "</adh-mercator-2015-add-proposal-button>";
         }])
         .directive("adhMercator2016Workbench", ["adhConfig", "adhTopLevelState", Workbench.workbenchDirective])
         .directive("adhMercator2016ProposalCreateColumn", [

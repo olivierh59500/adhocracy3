@@ -73,9 +73,8 @@ export var register = (angular) => {
             };
         }])
         .config(["adhProcessProvider", (adhProcessProvider: AdhProcess.Provider) => {
-            adhProcessProvider.processButtonSlots[processType] = ["$q", ($q : angular.IQService) => {
-                return $q.when("<adh-mercator-2015-add-proposal-button></adh-mercator-2015-add-proposal-button>");
-            }];
+            adhProcessProvider.processButtonSlots[processType] = "<adh-mercator-2015-add-proposal-button>" +
+                "</adh-mercator-2015-add-proposal-button>";
         }])
         // NOTE: we do not use a Widget based directive here for performance reasons
         .directive("adhMercator2015Proposal", ["adhConfig", "adhHttp", "adhTopLevelState", "adhGetBadges", Proposal.listItem])

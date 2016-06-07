@@ -36,7 +36,7 @@ export var getStateData = (sheet : SIWorkflow.Sheet, name : string) : IStateData
 
 export class Provider implements angular.IServiceProvider {
     public templateFactories : {[processType : string]: any};
-    public processButtonSlots : {[processType : string]: any};
+    public processButtonSlots : {[processType : string]: string};
     public $get;
 
     constructor () {
@@ -64,13 +64,11 @@ export class Service {
         return this.$injector.invoke(fn);
     }
 
-    public getProcessButtonSlot(processType : string) : angular.IPromise<string> {
+    public getProcessButtonSlot(processType : string) : string {
         if (!this.provider.processButtonSlots.hasOwnProperty(processType)) {
-            return;
+            return "";
         }
-
-        var fn = this.provider.processButtonSlots[processType];
-        return this.$injector.invoke(fn);
+        return this.provider.processButtonSlots[processType];
     }
 }
 
@@ -155,14 +153,13 @@ export var processButtonSlot = (
 
             adhTopLevelState.on("processType", (processType) => {
                 if (processType) {
-                    adhProcess.getProcessButtonSlot(processType).then((template) => {
-                        if (childScope) {
-                            childScope.$destroy();
-                        }
-                        childScope = scope.$new();
-                        element.html(template);
-                        $compile(element.contents())(childScope);
-                    });
+                    var template : string = adhProcess.getProcessButtonSlot(processType);
+                    if (childScope) {
+                        childScope.$destroy();
+                    }
+                    childScope = scope.$new();
+                    element.html(template);
+                    $compile(element.contents())(childScope);
                 }
             });
         }
