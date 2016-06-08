@@ -108,17 +108,7 @@ export var documentDetailColumnDirective = (
                 adhTopLevelState.setCameFrom();
             };
 
-            scope.hide = () => {
-                return $translate("TR__ASK_TO_CONFIRM_HIDE_ACTION").then((question) => {
-                    if ($window.confirm(question)) {
-                        var itemPath = AdhUtil.parentPath(scope.documentUrl);
-                        adhHttp.hide(itemPath, RIGeoDocument.content_type)
-                            .then(() => {
-                                $location.url(adhResourceUrl(scope.processUrl));
-                            });
-                    }
-                });
-            };
+            scope.contentType = RIGeoDocument.content_type;
         }
     };
 };
