@@ -65,7 +65,7 @@ export var register = (angular) => {
                 return $q.when("<adh-meinberlin-idea-collection-workbench>" +
                     "</adh-meinberlin-idea-collection-workbench>");
             }];
-            adhProcessProvider.processButtonSlots[processType] = "<adh-meinberlin-add-proposal-button>" +
+            adhProcessProvider.buttonFactories[processType] = "<adh-meinberlin-add-proposal-button>" +
                 "</adh-meinberlin-add-proposal-button>";
         }]);
 };

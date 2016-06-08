@@ -34,7 +34,7 @@ export var register = (angular) => {
             adhProcessProvider.templateFactories[processType] = ["$q", ($q : angular.IQService) => {
                 return $q.when("<adh-meinberlin-alexanderplatz-workbench></adh-meinberlin-alexanderplatz-workbench>");
             }];
-            adhProcessProvider.processButtonSlots[processType] = "<adh-meinberlin-add-proposal-button>" +
+            adhProcessProvider.buttonFactories[processType] = "<adh-meinberlin-add-proposal-button>" +
                 "</adh-meinberlin-add-proposal-button>";
         }])
         .config(["adhResourceAreaProvider", (adhResourceAreaProvider) => {

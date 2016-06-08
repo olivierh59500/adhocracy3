@@ -36,12 +36,12 @@ export var getStateData = (sheet : SIWorkflow.Sheet, name : string) : IStateData
 
 export class Provider implements angular.IServiceProvider {
     public templateFactories : {[processType : string]: any};
-    public processButtonSlots : {[processType : string]: string};
+    public buttonFactories : {[processType : string]: string};
     public $get;
 
     constructor () {
         this.templateFactories = {};
-        this.processButtonSlots = {};
+        this.buttonFactories = {};
 
         this.$get = ["$injector", ($injector) => {
             return new Service(this, $injector);
@@ -64,11 +64,11 @@ export class Service {
         return this.$injector.invoke(fn);
     }
 
-    public getProcessButtonSlot(processType : string) : string {
-        if (!this.provider.processButtonSlots.hasOwnProperty(processType)) {
+    public getButton(processType : string) : string {
+        if (!this.provider.buttonFactories.hasOwnProperty(processType)) {
             return "";
         }
-        return this.provider.processButtonSlots[processType];
+        return this.provider.buttonFactories[processType];
     }
 }
 
@@ -151,7 +151,7 @@ export var processButtonSlot = (
         link: (scope, element) => {
             adhTopLevelState.on("processType", (processType) => {
                 if (processType) {
-                    var template : string = adhProcess.getProcessButtonSlot(processType);
+                    var template : string = adhProcess.getButton(processType);
                     element.html(template);
                     $compile(element.contents())(scope);
                 }
