@@ -72,15 +72,15 @@ export var bindPath = (
 
 
 export var detailDirective = (
-    $q : angular.IQService,
-    $window : angular.IWindowService,
     adhConfig : AdhConfig.IService,
     adhHttp : AdhHttp.Service<any>,
     adhPermissions : AdhPermissions.Service,
     adhPreliminaryNames : AdhPreliminaryNames.Service,
     adhShowError,
     adhSubmitIfValid,
-    adhUploadImage
+    adhUploadImage,
+    $q: angular.IQService,
+    $window: angular.IWindowService,
     $translate
 ) => {
     return {
