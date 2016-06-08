@@ -149,17 +149,11 @@ export var processButtonSlot = (
     return {
         restrict: "E",
         link: (scope, element) => {
-            var childScope : angular.IScope;
-
             adhTopLevelState.on("processType", (processType) => {
                 if (processType) {
                     var template : string = adhProcess.getProcessButtonSlot(processType);
-                    if (childScope) {
-                        childScope.$destroy();
-                    }
-                    childScope = scope.$new();
                     element.html(template);
-                    $compile(element.contents())(childScope);
+                    $compile(element.contents())(scope);
                 }
             });
         }
