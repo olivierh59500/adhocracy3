@@ -19,9 +19,15 @@
             data-edit="true"
             data-report="true"
             data-share="true"
-            data-delete="true"
-            data-print="true"></adh-resource-actions>
-
+            data-print="true">
+        </adh-resource-actions>
+        <adh-hide-action
+            data-ng-if="proposalUrl && proposalItemOptions.hide"
+            data-class="action-bar-item"
+            data-parent-path="true"
+            data-resource-path="{{proposalUrl}}"
+            data-content-type="{{contentType}}">
+        </adh-hide-action>
         <adh-document-create data-path="{{processUrl}}" data-has-map="true" data-has-image="true" data-polygon="polygon"></adh-document-create>
         <adh-resource-wrapper>
             <adh-mercator-2015-proposal-detail-view data-ng-if="proposalUrl" data-path="{{proposalUrl}}"></adh-mercator-2015-proposal-detail-view>
