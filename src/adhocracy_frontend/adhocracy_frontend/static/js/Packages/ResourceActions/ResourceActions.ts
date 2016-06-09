@@ -63,24 +63,6 @@ export var shareActionDirective = () => {
     };
 };
 
-export var deleteActionDirective = () => {
-    return {
-        restrict: "E",
-        template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"delete();\">{{ 'TR__DELETE' | translate }}</a>",
-        require: "^adhMovingColumn",
-        scope: {
-            resourcePath: "@",
-            parentPath: "=?",
-            class: "@"
-        },
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
-            scope.delete = () => {
-                column.$broadcast("triggerDelete", scope.resourcePath);
-            };
-        }
-    };
-};
-
 export var printActionDirective = (
     adhTopLevelState : AdhTopLevelState.Service,
     $window : Window
