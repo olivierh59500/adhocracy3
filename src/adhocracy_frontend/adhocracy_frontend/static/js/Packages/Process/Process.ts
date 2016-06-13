@@ -114,7 +114,7 @@ export var workflowSwitchDirective = (
     };
 };
 
-export var processViewDirective = (
+export var viewDirective = (
     adhTopLevelState : AdhTopLevelState.Service,
     adhProcess : Service,
     $compile : angular.ICompileService
@@ -141,7 +141,7 @@ export var processViewDirective = (
 };
 
 
-export var processButtonSlot = (
+export var buttonSlotDirective = (
     adhTopLevelState : AdhTopLevelState.Service,
     adhProcess : Service,
     $compile : angular.ICompileService
