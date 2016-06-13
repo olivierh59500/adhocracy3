@@ -34,11 +34,9 @@ export var register = (angular) => {
             registerRoutes(processType, "buergerhaushalt")(adhResourceAreaProvider);
         }])
         .config(["adhProcessProvider", (adhProcessProvider : AdhProcess.Provider) => {
-            adhProcessProvider.templateFactories[processType] = ["$q", ($q : angular.IQService) => {
-                return $q.when("<adh-meinberlin-idea-collection-workbench data-is-buergerhaushalt=\"true\">" +
-                    "</adh-meinberlin-idea-collection-workbench>");
-            }];
-            adhProcessProvider.buttonFactories[processType] = "<adh-meinberlin-add-proposal-button>"
+            adhProcessProvider.templates[processType] =
+                "<adh-meinberlin-idea-collection-workbench data-is-buergerhaushalt=\"true\"></adh-meinberlin-idea-collection-workbench>";
+            adhProcessProvider.buttons[processType] = "<adh-meinberlin-add-proposal-button>"
                 + "</adh-meinberlin-add-proposal-button>";
         }]);
 };

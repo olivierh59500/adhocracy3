@@ -61,11 +61,9 @@ export var register = (angular) => {
             registerRoutes(processType)(adhResourceAreaProvider);
         }])
         .config(["adhProcessProvider", (adhProcessProvider : AdhProcess.Provider) => {
-            adhProcessProvider.templateFactories[processType] = ["$q", ($q : angular.IQService) => {
-                return $q.when("<adh-meinberlin-idea-collection-workbench>" +
-                    "</adh-meinberlin-idea-collection-workbench>");
-            }];
-            adhProcessProvider.buttonFactories[processType] = "<adh-meinberlin-add-proposal-button>" +
+            adhProcessProvider.templates[processType] =
+                "<adh-meinberlin-idea-collection-workbench></adh-meinberlin-idea-collection-workbench>";
+            adhProcessProvider.buttons[processType] = "<adh-meinberlin-add-proposal-button>" +
                 "</adh-meinberlin-add-proposal-button>";
         }]);
 };

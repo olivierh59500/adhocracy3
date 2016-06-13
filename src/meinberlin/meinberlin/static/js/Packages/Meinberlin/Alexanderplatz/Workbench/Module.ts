@@ -31,10 +31,9 @@ export var register = (angular) => {
             AdhTopLevelStateModule.moduleName
         ])
         .config(["adhProcessProvider", (adhProcessProvider : AdhProcess.Provider) => {
-            adhProcessProvider.templateFactories[processType] = ["$q", ($q : angular.IQService) => {
-                return $q.when("<adh-meinberlin-alexanderplatz-workbench></adh-meinberlin-alexanderplatz-workbench>");
-            }];
-            adhProcessProvider.buttonFactories[processType] = "<adh-meinberlin-add-proposal-button>" +
+            adhProcessProvider.templates[processType] =
+                "<adh-meinberlin-alexanderplatz-workbench></adh-meinberlin-alexanderplatz-workbench>";
+            adhProcessProvider.buttons[processType] = "<adh-meinberlin-add-proposal-button>" +
                 "</adh-meinberlin-add-proposal-button>";
         }])
         .config(["adhResourceAreaProvider", (adhResourceAreaProvider) => {
