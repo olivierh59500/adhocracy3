@@ -20,7 +20,7 @@ def includeme(config):
     config.include('.evolution')
     config.add_translation_dirs('adhocracy_core:locale/')
     config.registry.registerUtility('', IFixtureAsset,
-                                    name='adhocracy_euth:fixture')
+                                    name='adhocracy_mercator:fixture')
 
 
 def main(global_config, **settings):
