@@ -1,0 +1,313 @@
+<!doctype html>
+<html class="styleguide-html">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+
+        <title>Adhocracy 3 Styleguide - Layout</title>
+
+        <!-- assets -->
+        <link rel="stylesheet" href="styleguide.css">
+        <link rel="stylesheet" href="github.css">
+
+        <script src="../lib/jquery/dist/jquery.js"></script>
+        <script src="styleguide.js"></script>
+
+        <!-- generated style -->
+        <link rel="stylesheet" href="../stylesheets/a3.css">
+    </head>
+    <body>
+
+        <header id="header">
+            <div class="page_wrapper">
+                <h1>Adhocracy 3 Styleguide</h1>
+
+                <nav class="styleguide-nav">
+                    <ul>
+                        
+                        <li><a href="widgets.html">Widgets</a></li>
+                        
+                        <li><a href="index.html">Type</a></li>
+                        
+                        <li><a href="widgets.html">widgets</a></li>
+                        
+                        <li><a href="buttons.html">Buttons</a></li>
+                        
+                        <li><a href="variables.html">Variables</a></li>
+                        
+                        <li><a href="debug.html">Debug</a></li>
+                        
+                        <li><a href="inputs.html">Inputs</a></li>
+                        
+                        <li><a href="layout.html">Layout</a></li>
+                        
+                        <li><a href="print.html">Print</a></li>
+                        
+                        <li><a href="compability.html">Compability</a></li>
+                        
+                        <li><a href="proposal.html">Proposal</a></li>
+                        
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main id="main">
+            <div class="page_wrapper">
+                <ul>
+                    
+                    <li><a href="#l-header">Header</a></li>
+                    
+                    <li><a href="#moving-columns">Moving Columns</a></li>
+                    
+                    <li><a href="#moving-column">Moving Column</a></li>
+                    
+                    <li><a href="#moving-column-alerts">Moving Column Alerts</a></li>
+                    
+                    <li><a href="#moving-column-menu">Moving Column Menu</a></li>
+                    
+                    <li><a href="#standalone-wrapper">Standalone Wrapper</a></li>
+                    
+                </ul>
+
+                <div class="components">
+<h1 id="l-header" class="styleguide">Header</h1>
+<p class="styleguide">Most views in adhocracy have a header. But this header is very flexible and
+depends on a lot of factors:</p><ul class="styleguide"><li>  Areas that are typically accessed via links from emails (<code class="styleguide">activate</code>,
+<code class="styleguide">password_reset</code>) do not have a header.</li>
+<li>  Areas related to user management (<code class="styleguide">login</code>, <code class="styleguide">register</code>,
+<code class="styleguide">create_password_reset</code>) have a simplified header.</li>
+<li>  The header in the resource area may have additional, process related
+functionality.</li>
+<li>  The header in the resource area may contain a space switcher.</li>
+<li>  Embed contexts may have different headers.</li>
+<li>  All headers contain a user indicator.</li>
+</ul><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="l-header">
+    <div class="l-header-left placeholder">left</div>
+    <div class="l-header-center placeholder">center</div>
+    <div class="l-header-right placeholder">right</div>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"l-header"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"l-header-left placeholder"</span><span class="nt">&gt;</span>left<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"l-header-center placeholder"</span><span class="nt">&gt;</span>center<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"l-header-right placeholder"</span><span class="nt">&gt;</span>right<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="moving-columns" class="styleguide">Moving Columns</h1>
+<p class="styleguide">This widget represents a major design concept in Adhocracy 3.
+It contains a list of columns which may slide to either side to reveal
+new columns with additional functionality. Each column can be shown, collapsed
+or hidden completely.</p><p class="styleguide">States:</p><ul class="styleguide"><li>  is-show-hide-hide</li>
+<li>  is-collapse-show-hide</li>
+<li>  is-collapse-show-collapse</li>
+<li>  is-collapse-collapse-show</li>
+<li>  is-show-collapse-collapse</li>
+<li>  is-collapse-show-show</li>
+<li>  is-show-show-collapse</li>
+</ul><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="moving-columns" style="height: 10em; position: relative;">
+    <div class="moving-column moving-column-structure">
+        <div class="debug-placeholder moving-column-menu">
+            <a>action</a>
+        </div>
+        <div class="debug-placeholder moving-column-body">structure column
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+        </div>
+    </div>
+    <div class="moving-column moving-column-content">
+        <div class="debug-placeholder moving-column-menu">menu</div>
+        <div class="debug-placeholder moving-column-body">content column</div>
+    </div>
+    <div class="moving-column moving-column-content2">
+        <div class="debug-placeholder moving-column-menu">menu</div>
+        <div class="debug-placeholder moving-column-body">secondary-content-column</div>
+    </div>
+</div>
+<a onclick="$('.moving-columns').toggleClass('is-collapse-show-show')">click me</a>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"moving-columns"</span> <span class="na">style=</span><span class="s">"height: 10em; position: relative;"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"moving-column moving-column-structure"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"debug-placeholder moving-column-menu"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;a&gt;</span>action<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"debug-placeholder moving-column-body"</span><span class="nt">&gt;</span>structure column
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+            this is scrolling
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"moving-column moving-column-content"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"debug-placeholder moving-column-menu"</span><span class="nt">&gt;</span>menu<span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"debug-placeholder moving-column-body"</span><span class="nt">&gt;</span>content column<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"moving-column moving-column-content2"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"debug-placeholder moving-column-menu"</span><span class="nt">&gt;</span>menu<span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"debug-placeholder moving-column-body"</span><span class="nt">&gt;</span>secondary-content-column<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">onclick=</span><span class="s">"$('.moving-columns').toggleClass('is-collapse-show-show')"</span><span class="nt">&gt;</span>click me<span class="nt">&lt;/a&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h2 id="moving-column" class="styleguide">Moving Column</h2>
+<p class="styleguide">States:</p><ul class="styleguide"><li>  <code class="styleguide">is-show</code> (<em>default</em>)</li>
+<li>  <code class="styleguide">is-hidden</code></li>
+<li>  <code class="styleguide">is-collapsed</code></li>
+</ul><p class="styleguide">Each moving column has a menu. The menu may contain some arbitrary control
+elements.  Many columns do also have control elements to close (hide) or
+collapse the column.</p><p class="styleguide">The menu is fixed to the top of the column.</p><p class="styleguide">The menu should always have the same state as its columns.</p>
+<h2 id="moving-column-alerts" class="styleguide">Moving Column Alerts</h2>
+<p class="styleguide">A list of alert messages to notify users in the moving column</p><div class="codeExample">
+  <div class="exampleOutput">
+    <ul class="moving-column-alerts static-example">
+    <li class="moving-column-alert m-error">Error</li>
+    <li class="moving-column-alert m-warning">Warning</li>
+    <li class="moving-column-alert m-info">Info</li>
+    <li class="moving-column-alert m-success">Success</li>
+</ul>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"moving-column-alerts static-example"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"moving-column-alert m-error"</span><span class="nt">&gt;</span>Error<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"moving-column-alert m-warning"</span><span class="nt">&gt;</span>Warning<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"moving-column-alert m-info"</span><span class="nt">&gt;</span>Info<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"moving-column-alert m-success"</span><span class="nt">&gt;</span>Success<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h2 id="moving-column-menu" class="styleguide">Moving Column Menu</h2>
+<p class="styleguide">States:</p><ul class="styleguide"><li>  <code class="styleguide">is-show</code> (<em>default</em>)</li>
+<li>  <code class="styleguide">is-hidden</code></li>
+<li>  <code class="styleguide">is-collapsed</code></li>
+</ul><p class="styleguide"><strong>Warning</strong>: This widget currently has a fixed height.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="moving-column-menu">
+    <span class="debug-placeholder">icon</span>
+    <span class="debug-placeholder">button</span>
+    <span class="debug-placeholder">button</span>
+    <span class="debug-placeholder">button</span>
+    <span class="debug-placeholder">button</span>
+    <span class="debug-placeholder">icon</span>
+    <span class="debug-placeholder">icon</span>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"moving-column-menu"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"debug-placeholder"</span><span class="nt">&gt;</span>icon<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"debug-placeholder"</span><span class="nt">&gt;</span>button<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"debug-placeholder"</span><span class="nt">&gt;</span>button<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"debug-placeholder"</span><span class="nt">&gt;</span>button<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"debug-placeholder"</span><span class="nt">&gt;</span>button<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"debug-placeholder"</span><span class="nt">&gt;</span>icon<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"debug-placeholder"</span><span class="nt">&gt;</span>icon<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="standalone-wrapper" class="styleguide">Standalone Wrapper</h1>
+<p class="styleguide">A wrapper for pages that are not embedded in the application such as pages that
+are opened when you follow an Adhocracy link from your email. Could contain
+branding.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="standalone-wrapper">
+    <h1 class="standalone-wrapper-title">Some title</h1>
+
+    <label>
+        <span class="label-text">write something</span>
+        <input type="text" />
+    </label>
+
+    <p>You have activated your account, well done!</p>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"standalone-wrapper"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">"standalone-wrapper-title"</span><span class="nt">&gt;</span>Some title<span class="nt">&lt;/h1&gt;</span>
+
+    <span class="nt">&lt;label&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"label-text"</span><span class="nt">&gt;</span>write something<span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/label&gt;</span>
+
+    <span class="nt">&lt;p&gt;</span>You have activated your account, well done!<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+                </div>
+            </div>
+        </main>
+        <footer id="footer">
+            <div class="page_wrapper">
+                <p>This documentation generated using <a href="http://github.com/trulia/hologram">Hologram</a>
+            </div>
+        </footer>
+    </body>
+</html>

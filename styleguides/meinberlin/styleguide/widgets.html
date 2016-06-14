@@ -1,0 +1,1366 @@
+<!doctype html>
+<html class="styleguide-html">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+
+        <title>Adhocracy 3 Styleguide - Widgets</title>
+
+        <!-- assets -->
+        <link rel="stylesheet" href="styleguide.css">
+        <link rel="stylesheet" href="github.css">
+
+        <script src="../lib/jquery/dist/jquery.js"></script>
+        <script src="styleguide.js"></script>
+
+        <!-- generated style -->
+        <link rel="stylesheet" href="../stylesheets/a3.css">
+    </head>
+    <body>
+
+        <header id="header">
+            <div class="page_wrapper">
+                <h1>Adhocracy 3 Styleguide</h1>
+
+                <nav class="styleguide-nav">
+                    <ul>
+                        
+                        <li><a href="widgets.html">Widgets</a></li>
+                        
+                        <li><a href="index.html">Type</a></li>
+                        
+                        <li><a href="widgets.html">widgets</a></li>
+                        
+                        <li><a href="buttons.html">Buttons</a></li>
+                        
+                        <li><a href="variables.html">Variables</a></li>
+                        
+                        <li><a href="debug.html">Debug</a></li>
+                        
+                        <li><a href="inputs.html">Inputs</a></li>
+                        
+                        <li><a href="layout.html">Layout</a></li>
+                        
+                        <li><a href="print.html">Print</a></li>
+                        
+                        <li><a href="meinberlin.html">meinberlin</a></li>
+                        
+                        <li><a href="compability.html">Compability</a></li>
+                        
+                        <li><a href="proposal.html">Proposal</a></li>
+                        
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main id="main">
+            <div class="page_wrapper">
+                <ul>
+                    
+                    <li><a href="#action-section">Action section</a></li>
+                    
+                    <li><a href="#action-section-button-mixin">Action section button mixin</a></li>
+                    
+                    <li><a href="#annotated-section">Annotated section</a></li>
+                    
+                    <li><a href="#busy-bar">busy bar</a></li>
+                    
+                    <li><a href="#chapter">Chapter</a></li>
+                    
+                    <li><a href="#comment">Comment</a></li>
+                    
+                    <li><a href="#comment-create-form">Comment Create Form</a></li>
+                    
+                    <li><a href="#comment-main">Comment Main</a></li>
+                    
+                    <li><a href="#document-form">Document form</a></li>
+                    
+                    <li><a href="#image-upload">Image Upload</a></li>
+                    
+                    <li><a href="#jump-navigation">Jump Navigation</a></li>
+                    
+                    <li><a href="#like">Like</a></li>
+                    
+                    <li><a href="#listing">Listing</a></li>
+                    
+                    <li><a href="#login">Login</a></li>
+                    
+                    <li><a href="#map">map</a></li>
+                    
+                    <li><a href="#map-info">map info</a></li>
+                    
+                    <li><a href="#map-info-persistant">persistant map info</a></li>
+                    
+                    <li><a href="#meta-list">Meta List</a></li>
+                    
+                    <li><a href="#navbar">Navigation Bar</a></li>
+                    
+                    <li><a href="#rate">Rate</a></li>
+                    
+                    <li><a href="#opionion">Opinion</a></li>
+                    
+                    <li><a href="#section-jump">Section Jump</a></li>
+                    
+                    <li><a href="#textbox">textbox</a></li>
+                    
+                    <li><a href="#unsupported-browser">Unsupported Browser</a></li>
+                    
+                    <li><a href="#user-indicator">User Indicator</a></li>
+                    
+                    <li><a href="#user-list-item">User list item</a></li>
+                    
+                    <li><a href="#user-message">User Message</a></li>
+                    
+                </ul>
+
+                <div class="components">
+<h1 id="action-section" class="styleguide">Action section</h1>
+<p class="styleguide">A section of any content with a corresponding &#39;action button&#39; EG Show Comments
+or Delete Section</p><p class="styleguide">Some sections have no action within a block of action sections, these can be
+marked for consistent styling and highlighting.</p><p class="styleguide">States:</p><ul class="styleguide"><li>  is-selected</li>
+<li>  is-not-selected</li>
+</ul><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="action-section">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.</p>
+    <a class="action-section-button"><i class="icon-speechbubble"></i>Comments</a>
+</div>
+
+<div class="non-action-section">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.</p>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"action-section"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-section-button"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-speechbubble"</span><span class="nt">&gt;&lt;/i&gt;</span>Comments<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"non-action-section"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="action-section-button-mixin" class="styleguide">Action section button mixin</h1>
+<p class="styleguide">A mixin to style a button used with a section</p><div class="codeExample">
+  <div class="exampleOutput">
+    <a class="action-section-button"><i class="icon-speechbubble"></i>12</a>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-section-button"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-speechbubble"</span><span class="nt">&gt;&lt;/i&gt;</span>12<span class="nt">&lt;/a&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="annotated-section" class="styleguide">Annotated section</h1>
+<p class="styleguide">A section with a additional annotation, typically displayed in a second column.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <section class="annotated-section">
+    <div class="annotated-section-body">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam
+        lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam
+        viverra nec consectetur ante hendrerit.
+    </div>
+    <div class="annotated-section-annotation">
+        Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit
+        amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia
+        consectetur.
+    </div>
+</section>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">"annotated-section"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"annotated-section-body"</span><span class="nt">&gt;</span>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam
+        lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam
+        viverra nec consectetur ante hendrerit.
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"annotated-section-annotation"</span><span class="nt">&gt;</span>
+        Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit
+        amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia
+        consectetur.
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/section&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="busy-bar" class="styleguide">busy bar</h1>
+<p class="styleguide">The busy bar shows up whenever the frontend is busy requesting something from
+the backend. This way it gives instant visual feedback to user actions.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div style="position: relative; height: 2em;">
+    <div class="busy-bar"></div>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">"position: relative; height: 2em;"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"busy-bar"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="chapter" class="styleguide">Chapter</h1>
+<p class="styleguide">A high-level section of a document with its own heading.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="chapter-wrapper">
+    <section class="chapter">
+        <h3 class="chapter-header">Introduction</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.</p>
+    </section>
+    <section class="chapter">
+        <h3 class="chapter-header m-counted active">First Chapter</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.</p>
+    </section>
+    <section class="chapter">
+        <h3 class="chapter-header m-counted">Second Chapter</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.</p>
+    </section>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"chapter-wrapper"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">"chapter"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">"chapter-header"</span><span class="nt">&gt;</span>Introduction<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/section&gt;</span>
+    <span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">"chapter"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">"chapter-header m-counted active"</span><span class="nt">&gt;</span>First Chapter<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/section&gt;</span>
+    <span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">"chapter"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">"chapter-header m-counted"</span><span class="nt">&gt;</span>Second Chapter<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/section&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="comment" class="styleguide">Comment</h1>
+<p class="styleguide">A comment widget consists of a comment-main widget and a list of child
+comments (replies). There is a form for creating new replies.</p><p class="styleguide">The comment may have the states <code class="styleguide">is-selected</code> or <code class="styleguide">is-not-selected</code> where
+the latter one is used if a different comment is selected. If no comment
+is selected, no state is applied.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="comment">
+    <div class="comment-main debug-placeholder">Comment Main</div>
+
+    <div class="comment-children-create-form debug-placeholder">
+        Comment Create Form
+    </div>
+
+    <div class="comment-children">
+        <div class="comment">
+            <div class="comment-main debug-placeholder">Comment Main</div>
+
+            <div class="comment-children">
+            </div>
+        </div>
+        <div class="comment">
+            <div class="comment-main debug-placeholder">Comment Main</div>
+
+            <div class="comment-children-create-form debug-placeholder">
+                Comment Create Form
+            </div>
+
+            <div class="comment-children"></div>
+        </div>
+    </div>
+</div>
+<div class="comment">
+    <div class="comment-main debug-placeholder">Comment Main</div>
+
+    <div class="comment-children"></div>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-main debug-placeholder"</span><span class="nt">&gt;</span>Comment Main<span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-children-create-form debug-placeholder"</span><span class="nt">&gt;</span>
+        Comment Create Form
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-children"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-main debug-placeholder"</span><span class="nt">&gt;</span>Comment Main<span class="nt">&lt;/div&gt;</span>
+
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-children"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-main debug-placeholder"</span><span class="nt">&gt;</span>Comment Main<span class="nt">&lt;/div&gt;</span>
+
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-children-create-form debug-placeholder"</span><span class="nt">&gt;</span>
+                Comment Create Form
+            <span class="nt">&lt;/div&gt;</span>
+
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-children"</span><span class="nt">&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-main debug-placeholder"</span><span class="nt">&gt;</span>Comment Main<span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-children"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h2 id="comment-create-form" class="styleguide">Comment Create Form</h2>
+<div class="codeExample">
+  <div class="exampleOutput">
+    <form class="comment-create-form">
+    <textarea class="comment-create-form-text"></textarea>
+    <footer class="form-footer">
+        <input class="comment-create-form-button-submit button-cta form-footer-button-cta" type="submit" value="Submit">
+    </footer>
+</form>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">"comment-create-form"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;textarea</span> <span class="na">class=</span><span class="s">"comment-create-form-text"</span><span class="nt">&gt;&lt;/textarea&gt;</span>
+    <span class="nt">&lt;footer</span> <span class="na">class=</span><span class="s">"form-footer"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">class=</span><span class="s">"comment-create-form-button-submit button-cta form-footer-button-cta"</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Submit"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/footer&gt;</span>
+<span class="nt">&lt;/form&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h2 id="comment-main" class="styleguide">Comment Main</h2>
+<div class="codeExample">
+  <div class="exampleOutput">
+    <div class="comment-main">
+    <div class="comment-header">
+        <div class="comment-header-column1">
+            <span class="comment-header-creator">
+                <a href="">god</a>
+            </span>
+            <span class="comment-header-date">
+                25 minutes ago
+            </span>
+        </div>
+        <div class="comment-header-column2">
+            <span class="comment-header-links">
+                <a href="" class="comment-header-link" title="Reply">
+                    <i class="comment-header-icon icon-reply"></i>
+                </a>
+                <a href="" class="comment-header-link ng-scope" title="Edit">
+                    <i class="comment-header-icon icon-pencil"></i>
+                </a>
+                <a href="" class="comment-header-link ng-scope" title="Report">
+                    <i class="comment-header-icon icon-ban-circle"></i>
+                </a>
+                <a href="" class="comment-header-link ng-scope" title="Delete">
+                    <i class="comment-header-icon icon-x"></i>
+                </a>
+            </span>
+            <div class="rate">
+                <span class="rate-difference is-positive">+1</span>
+                    <a href="" class="rate-pro is-rate-button-active"><i class="icon-vote-up" title="Vote up"></i></a>
+                    <a href="" class="rate-contra"><i class="icon-vote-down" title="Vote down"></i></a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="comment-content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue.</p>
+        <p>Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est.</p>
+    </div>
+</div>
+
+<div class="comment-main">
+    <div class="comment-header">
+        <div class="comment-header-column1">
+            <span class="comment-header-creator">
+                <a href="">god</a>
+            </span>
+            <span class="comment-header-date">
+                25 minutes ago
+            </span>
+        </div>
+        <div class="comment-header-column2">
+            <span class="comment-header-links">
+                <a href="" class="comment-header-link" title="Reply">
+                    <i class="comment-header-icon icon-reply"></i>
+                </a>
+                <a href="" class="comment-header-link" title="Edit">
+                    <i class="comment-header-icon icon-pencil"></i>
+                </a>
+                <a href="" class="comment-header-link comment-header-link-report" title="Report">
+                    <i class="comment-header-icon icon-flag"></i>
+                </a>
+                <a href="" class="comment-header-link" title="Delete">
+                    <i class="comment-header-icon icon-x"></i>
+                </a>
+            </span>
+            <div class="rate">
+                <span class="rate-difference is-positive">+1</span>
+                    <a href="" class="rate-pro is-rate-button-active"><i class="icon-vote-up" title="Vote up"></i></a>
+                    <a href="" class="rate-contra"><i class="icon-vote-down" title="Vote down"></i></a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="comment-children-edit-form">
+        <textarea class="comment-edit-form-text"></textarea>
+        <footer class="form-footer">
+            <input class="comment-create-form-button-submit button-cta form-footer-button-cta" type="submit" value="Submit">
+            <a href="" class="button form-footer-button">CANCEL</a>
+        </footer>
+    </div>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-main"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-header"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-header-column1"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"comment-header-creator"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>god<span class="nt">&lt;/a&gt;</span>
+            <span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"comment-header-date"</span><span class="nt">&gt;</span>
+                25 minutes ago
+            <span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-header-column2"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"comment-header-links"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"comment-header-link"</span> <span class="na">title=</span><span class="s">"Reply"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"comment-header-icon icon-reply"</span><span class="nt">&gt;&lt;/i&gt;</span>
+                <span class="nt">&lt;/a&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"comment-header-link ng-scope"</span> <span class="na">title=</span><span class="s">"Edit"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"comment-header-icon icon-pencil"</span><span class="nt">&gt;&lt;/i&gt;</span>
+                <span class="nt">&lt;/a&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"comment-header-link ng-scope"</span> <span class="na">title=</span><span class="s">"Report"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"comment-header-icon icon-ban-circle"</span><span class="nt">&gt;&lt;/i&gt;</span>
+                <span class="nt">&lt;/a&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"comment-header-link ng-scope"</span> <span class="na">title=</span><span class="s">"Delete"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"comment-header-icon icon-x"</span><span class="nt">&gt;&lt;/i&gt;</span>
+                <span class="nt">&lt;/a&gt;</span>
+            <span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"rate"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-difference is-positive"</span><span class="nt">&gt;</span>+1<span class="nt">&lt;/span&gt;</span>
+                    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-pro is-rate-button-active"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-up"</span> <span class="na">title=</span><span class="s">"Vote up"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+                    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-contra"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-down"</span> <span class="na">title=</span><span class="s">"Vote down"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+                <span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-content"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue.<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;p&gt;</span>Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-main"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-header"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-header-column1"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"comment-header-creator"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>god<span class="nt">&lt;/a&gt;</span>
+            <span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"comment-header-date"</span><span class="nt">&gt;</span>
+                25 minutes ago
+            <span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-header-column2"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"comment-header-links"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"comment-header-link"</span> <span class="na">title=</span><span class="s">"Reply"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"comment-header-icon icon-reply"</span><span class="nt">&gt;&lt;/i&gt;</span>
+                <span class="nt">&lt;/a&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"comment-header-link"</span> <span class="na">title=</span><span class="s">"Edit"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"comment-header-icon icon-pencil"</span><span class="nt">&gt;&lt;/i&gt;</span>
+                <span class="nt">&lt;/a&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"comment-header-link comment-header-link-report"</span> <span class="na">title=</span><span class="s">"Report"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"comment-header-icon icon-flag"</span><span class="nt">&gt;&lt;/i&gt;</span>
+                <span class="nt">&lt;/a&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"comment-header-link"</span> <span class="na">title=</span><span class="s">"Delete"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"comment-header-icon icon-x"</span><span class="nt">&gt;&lt;/i&gt;</span>
+                <span class="nt">&lt;/a&gt;</span>
+            <span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"rate"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-difference is-positive"</span><span class="nt">&gt;</span>+1<span class="nt">&lt;/span&gt;</span>
+                    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-pro is-rate-button-active"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-up"</span> <span class="na">title=</span><span class="s">"Vote up"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+                    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-contra"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-down"</span> <span class="na">title=</span><span class="s">"Vote down"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+                <span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"comment-children-edit-form"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;textarea</span> <span class="na">class=</span><span class="s">"comment-edit-form-text"</span><span class="nt">&gt;&lt;/textarea&gt;</span>
+        <span class="nt">&lt;footer</span> <span class="na">class=</span><span class="s">"form-footer"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span> <span class="na">class=</span><span class="s">"comment-create-form-button-submit button-cta form-footer-button-cta"</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Submit"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"button form-footer-button"</span><span class="nt">&gt;</span>CANCEL<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/footer&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="document-form" class="styleguide">Document form</h1>
+<p class="styleguide">A form for creating documents. This contains a <a href="#section-jump">section jump</a> widget</p><div class="codeExample">
+  <div class="exampleOutput">
+    <form class="document-form">
+<div class="section-jump" id="section-jump-top">
+    <div class="section-jump-cover">
+        <label>
+            <input type="text" placeholder="Add a title here." class="m-title">
+        </label>
+    </div>
+    <div class="section-jump-body">
+        <nav class="section-jump-navigation jump-navigation m-narrow m-unnumbered">
+            <ol>
+                <li>
+                    <a href="#section-jump-chapter-0">1</a>
+                </li>
+            </ol>
+        </nav>
+        <div class="section-jump-main chapter-wrapper">
+            <section id="section-jump-chapter-0">
+                <label>
+                    <textarea></textarea>
+                </label>
+            </section>
+            <footer class="form-footer">
+                <a href="" class="button-cta-secondary m-add document-form-add-paragraph-button">add paragraph</a>
+                <input type="submit" name="submit" value="Submit" class="button-cta form-footer-button-cta document-form-submit-button">
+                <a class="button form-footer-button">Cancel</a>
+            </footer>
+        </div>
+    </div>
+</div>
+</form>
+
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">"document-form"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"section-jump"</span> <span class="na">id=</span><span class="s">"section-jump-top"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"section-jump-cover"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;label&gt;</span>
+            <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">placeholder=</span><span class="s">"Add a title here."</span> <span class="na">class=</span><span class="s">"m-title"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"section-jump-body"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">"section-jump-navigation jump-navigation m-narrow m-unnumbered"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;ol&gt;</span>
+                <span class="nt">&lt;li&gt;</span>
+                    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#section-jump-chapter-0"</span><span class="nt">&gt;</span>1<span class="nt">&lt;/a&gt;</span>
+                <span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;/ol&gt;</span>
+        <span class="nt">&lt;/nav&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"section-jump-main chapter-wrapper"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;section</span> <span class="na">id=</span><span class="s">"section-jump-chapter-0"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;label&gt;</span>
+                    <span class="nt">&lt;textarea&gt;&lt;/textarea&gt;</span>
+                <span class="nt">&lt;/label&gt;</span>
+            <span class="nt">&lt;/section&gt;</span>
+            <span class="nt">&lt;footer</span> <span class="na">class=</span><span class="s">"form-footer"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"button-cta-secondary m-add document-form-add-paragraph-button"</span><span class="nt">&gt;</span>add paragraph<span class="nt">&lt;/a&gt;</span>
+                <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">name=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Submit"</span> <span class="na">class=</span><span class="s">"button-cta form-footer-button-cta document-form-submit-button"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"button form-footer-button"</span><span class="nt">&gt;</span>Cancel<span class="nt">&lt;/a&gt;</span>
+            <span class="nt">&lt;/footer&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/form&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="image-upload" class="styleguide">Image Upload</h1>
+
+<div class="image-upload">
+    <button type="button" class="button-cta-secondary image-upload-button">Change image</button>
+    <a  href="#" class="button image-upload-reset">reset</a>
+    <img src="../images/sample.jpg" class="image-upload-preview" width="200" alt="" />
+</div>
+
+<h1 id="jump-navigation" class="styleguide">Jump Navigation</h1>
+<p class="styleguide">A navigation list containing hash tag links</p><div class="codeExample">
+  <div class="exampleOutput">
+    <strong>Numbered</strong>
+<nav class="jump-navigation">
+    <ol>
+        <li><a>Element</a></li>
+        <li class="active"><a>Element (LI Active)</a></li>
+        <li><a class="active">Element (A active)</a></li>
+    </ol>
+</nav>
+
+<strong>Unumbered</strong>
+<nav class="jump-navigation m-unnumbered">
+    <ol>
+        <li><a>Element</a></li>
+        <li class="active"><a>Element (LI Active)</a></li>
+        <li><a class="active">Element (A active)</a></li>
+    </ol>
+</nav>
+
+<strong>Narrow</strong>
+<nav class="jump-navigation m-narrow">
+    <ol>
+        <li><a>Element</a></li>
+        <li class="active"><a>Element (LI Active)</a></li>
+        <li><a class="active">Element (A active)</a></li>
+    </ol>
+</nav>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;strong&gt;</span>Numbered<span class="nt">&lt;/strong&gt;</span>
+<span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">"jump-navigation"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ol&gt;</span>
+        <span class="nt">&lt;li&gt;&lt;a&gt;</span>Element<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"active"</span><span class="nt">&gt;&lt;a&gt;</span>Element (LI Active)<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">class=</span><span class="s">"active"</span><span class="nt">&gt;</span>Element (A active)<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;/ol&gt;</span>
+<span class="nt">&lt;/nav&gt;</span>
+
+<span class="nt">&lt;strong&gt;</span>Unumbered<span class="nt">&lt;/strong&gt;</span>
+<span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">"jump-navigation m-unnumbered"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ol&gt;</span>
+        <span class="nt">&lt;li&gt;&lt;a&gt;</span>Element<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"active"</span><span class="nt">&gt;&lt;a&gt;</span>Element (LI Active)<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">class=</span><span class="s">"active"</span><span class="nt">&gt;</span>Element (A active)<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;/ol&gt;</span>
+<span class="nt">&lt;/nav&gt;</span>
+
+<span class="nt">&lt;strong&gt;</span>Narrow<span class="nt">&lt;/strong&gt;</span>
+<span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">"jump-navigation m-narrow"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ol&gt;</span>
+        <span class="nt">&lt;li&gt;&lt;a&gt;</span>Element<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"active"</span><span class="nt">&gt;&lt;a&gt;</span>Element (LI Active)<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">class=</span><span class="s">"active"</span><span class="nt">&gt;</span>Element (A active)<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;/ol&gt;</span>
+<span class="nt">&lt;/nav&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="like" class="styleguide">Like</h1>
+<p class="styleguide">A like-button with counter.</p><p class="styleguide">The button has the is-rate-button-active state.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="like" style="margin-bottom: 10px">
+    <span class="like-difference">+4</span>
+    <a class="like-button">Like</a>
+</div>
+<div class="like">
+    <span class="like-difference">+4</span>
+    <a class="like-button is-disabled">Like</a>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"like"</span> <span class="na">style=</span><span class="s">"margin-bottom: 10px"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"like-difference"</span><span class="nt">&gt;</span>+4<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"like-button"</span><span class="nt">&gt;</span>Like<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"like"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"like-difference"</span><span class="nt">&gt;</span>+4<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"like-button is-disabled"</span><span class="nt">&gt;</span>Like<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="listing" class="styleguide">Listing</h1>
+<p class="styleguide">A Listing represents a list of elements that may be filtered and/or sorted.
+It is generic because it can be used with very different kinds of elements.</p><p class="styleguide">Apart from the list of elements the listing optionally contains
+a form for creating new elements. This form is then always visible.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="listing">
+    <form class="listing-create-form debug-placeholder">
+        Create Form
+    </form>
+    <ol class="listing-elements">
+        <li class="listing-element debug-placeholder">Element1</li>
+        <li class="listing-element debug-placeholder">Element2</li>
+    </ol>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"listing"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">"listing-create-form debug-placeholder"</span><span class="nt">&gt;</span>
+        Create Form
+    <span class="nt">&lt;/form&gt;</span>
+    <span class="nt">&lt;ol</span> <span class="na">class=</span><span class="s">"listing-elements"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"listing-element debug-placeholder"</span><span class="nt">&gt;</span>Element1<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"listing-element debug-placeholder"</span><span class="nt">&gt;</span>Element2<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ol&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="login" class="styleguide">Login</h1>
+<p class="styleguide">Dialog for login related flow (login, register, password reset).</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="login">
+    <h1 class="login-title">Log in!</h1>
+
+    <form class="login-form">
+        <label>
+            <span class="label-text">email or username</span>
+            <input type="text" name="name" />
+        </label>
+        <label>
+            <span class="label-text">password</span>
+            <input type="password" name="password" />
+        </label>
+
+        <label class="login-check">
+            <div class="login-check-input">
+                <input type="checkbox" /> I really want to login
+            </div>
+            <span class="input-error">
+                Required
+            </span>
+        </label>
+
+        <input type="submit" class="button-cta" value="login" />
+
+        <div class="login-info">
+            <p class="ng-binding">Or register <a href="">here</a></p>
+        </div>
+    </form>
+
+    <a class="login-cancel" href="">Cancel</a>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"login"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">"login-title"</span><span class="nt">&gt;</span>Log in!<span class="nt">&lt;/h1&gt;</span>
+
+    <span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">"login-form"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;label&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"label-text"</span><span class="nt">&gt;</span>email or username<span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"name"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/label&gt;</span>
+        <span class="nt">&lt;label&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"label-text"</span><span class="nt">&gt;</span>password<span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"password"</span> <span class="na">name=</span><span class="s">"password"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/label&gt;</span>
+
+        <span class="nt">&lt;label</span> <span class="na">class=</span><span class="s">"login-check"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"login-check-input"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="nt">/&gt;</span> I really want to login
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"input-error"</span><span class="nt">&gt;</span>
+                Required
+            <span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;/label&gt;</span>
+
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">class=</span><span class="s">"button-cta"</span> <span class="na">value=</span><span class="s">"login"</span> <span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"login-info"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"ng-binding"</span><span class="nt">&gt;</span>Or register <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>here<span class="nt">&lt;/a&gt;&lt;/p&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"login-cancel"</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>Cancel<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="map" class="styleguide">map</h1>
+
+<h2 id="map-info" class="styleguide">map info</h2>
+<p class="styleguide">Map info is used to show action-related information in the context of a map.
+It is different from <code class="styleguide">map-info-persistant</code> in that it should only be used for
+information that is related to a user action and that is not shown all the
+time.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="map-info">
+    Some information with a <a href="#">link</a>.
+</div>
+<div class="map-info ng-invalid">
+    Some error with a <a href="#">link</a>.
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"map-info"</span><span class="nt">&gt;</span>
+    Some information with a <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>link<span class="nt">&lt;/a&gt;</span>.
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"map-info ng-invalid"</span><span class="nt">&gt;</span>
+    Some error with a <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>link<span class="nt">&lt;/a&gt;</span>.
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h2 id="map-info-persistant" class="styleguide">persistant map info</h2>
+<p class="styleguide">Persistant map info is used to show general information in the context of a
+map.  It is different from <code class="styleguide">map-info</code> in that it should be show all the time
+rather than in response to user action.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="map-info-persistent">
+    Some information with a <a href="#">link</a>.
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"map-info-persistent"</span><span class="nt">&gt;</span>
+    Some information with a <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>link<span class="nt">&lt;/a&gt;</span>.
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="meta-list" class="styleguide">Meta List</h1>
+<p class="styleguide">A Meta list of items, often with icons</p><div class="codeExample">
+  <div class="exampleOutput">
+    <ul class="meta-list">
+    <li class="meta-list-item">
+        <i class="icon-speechbubbles"></i>
+        12 Comments
+    </li>
+    <li class="meta-list-item">
+        <i class="icon-calendar"></i>
+        3/6/2015
+    </li>
+    <li class="meta-list-item">
+        <i class="icon-pig"></i>
+        20,000 €
+    </li>
+</ul>
+Vertical
+<ul class="meta-list m-vertical">
+    <li class="meta-list-item">
+        <i class="icon-speechbubbles"></i>
+        12 Comments
+    </li>
+    <li class="meta-list-item">
+        <i class="icon-calendar"></i>
+        3/6/2015
+    </li>
+    <li class="meta-list-item">
+        <i class="icon-pig"></i>
+        20,000 €
+    </li>
+</ul>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"meta-list"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"meta-list-item"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"icon-speechbubbles"</span><span class="nt">&gt;&lt;/i&gt;</span>
+        12 Comments
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"meta-list-item"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"icon-calendar"</span><span class="nt">&gt;&lt;/i&gt;</span>
+        3/6/2015
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"meta-list-item"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"icon-pig"</span><span class="nt">&gt;&lt;/i&gt;</span>
+        20,000 €
+    <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+Vertical
+<span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"meta-list m-vertical"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"meta-list-item"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"icon-speechbubbles"</span><span class="nt">&gt;&lt;/i&gt;</span>
+        12 Comments
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"meta-list-item"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"icon-calendar"</span><span class="nt">&gt;&lt;/i&gt;</span>
+        3/6/2015
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"meta-list-item"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"icon-pig"</span><span class="nt">&gt;&lt;/i&gt;</span>
+        20,000 €
+    <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="navbar" class="styleguide">Navigation Bar</h1>
+<p class="styleguide">A bar with multpile items. The items are aligned either to the left
+(<code class="styleguide">navbar-left</code>) or to the right (<code class="styleguide">navbar-right</code>).</p><p class="styleguide">Note that the items thet are aligned to the right will be sorted starting from
+the right which might be the opposite of what you expect.</p><p class="styleguide">If there is not enough space to display all items, the leftmost of the right
+aligned ones will wrap.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="navbar">
+    <div class="navbar-left debug-placeholder">Sort</div>
+    <div class="navbar-left debug-placeholder">View</div>
+    <div class="navbar-right debug-placeholder">Meta</div>
+    <a class="navbar-right button">Button</a>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"navbar"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"navbar-left debug-placeholder"</span><span class="nt">&gt;</span>Sort<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"navbar-left debug-placeholder"</span><span class="nt">&gt;</span>View<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"navbar-right debug-placeholder"</span><span class="nt">&gt;</span>Meta<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"navbar-right button"</span><span class="nt">&gt;</span>Button<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="rate" class="styleguide">Rate</h1>
+<p class="styleguide">Rate up or down with counter</p><p class="styleguide">The button has the <code class="styleguide">is-rate-button-active</code> state.
+rate-difference has the <code class="styleguide">is-positive</code> state. Can be <code class="styleguide">is-negative</code>.</p><p class="styleguide">The whole widget may be disabled, in which case itself and both buttons have
+the <code class="styleguide">is-disabled</code> state.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="rate">
+    <span class="rate-difference is-positive">3</span>
+    <span class="rate-button-container">
+        <a href="" class="rate-pro is-rate-button-active"><i class="icon-vote-up" title="Vote up"></i></a>
+        <span class="rate-results">+6</span>
+    </span>
+    <span class="rate-button-container">
+        <a href="" class="rate-contra"><i class="icon-vote-down" title="Vote down"></i></a>
+        <span class="rate-results">-3</span>
+    </span>
+</div>
+
+<div class="rate is-disabled">
+    <span class="rate-difference is-positive">3</span>
+    <span class="rate-button-container">
+        <a href="" class="rate-pro is-rate-button-active"><i class="icon-vote-up" title="Vote up"></i></a>
+        <span class="rate-results">+6</span>
+    </span>
+    <span class="rate-button-container">
+        <a href="" class="rate-contra is-disabled"><i class="icon-vote-down" title="Vote down"></i></a>
+        <span class="rate-results">-3</span>
+    </span>
+</div>
+
+<div class="rate m-show-results-persist">
+    <span class="rate-difference is-positive">3</span>
+    <span class="rate-button-container">
+        <a href="" class="rate-pro is-rate-button-active"><i class="icon-vote-up" title="Vote up"></i></a>
+        <span class="rate-results">+6</span>
+    </span>
+    <span class="rate-button-container">
+        <a href="" class="rate-contra"><i class="icon-vote-down" title="Vote down"></i></a>
+        <span class="rate-results">-3</span>
+    </span>
+</div>
+
+<div class="rate m-show-results-hover">
+    <span class="rate-difference is-positive">3</span>
+    <span class="rate-button-container">
+        <a href="" class="rate-pro is-rate-button-active"><i class="icon-vote-up" title="Vote up"></i></a>
+        <span class="rate-results">+6</span>
+    </span>
+    <span class="rate-button-container">
+        <a href="" class="rate-contra"><i class="icon-vote-down" title="Vote down"></i></a>
+        <span class="rate-results">-3</span>
+    </span>
+</div>
+Hover show results
+<div class="rate is-cast m-show-results-click">
+    <span class="rate-difference is-positive">3</span>
+    <span class="rate-button-container">
+        <a href="" class="rate-pro is-rate-button-active"><i class="icon-vote-up" title="Vote up"></i></a>
+        <span class="rate-results">+6</span>
+    </span>
+    <span class="rate-button-container">
+        <a href="" class="rate-contra"><i class="icon-vote-down" title="Vote down"></i></a>
+        <span class="rate-results">-3</span>
+    </span>
+</div>
+Click show results
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"rate"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-difference is-positive"</span><span class="nt">&gt;</span>3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-pro is-rate-button-active"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-up"</span> <span class="na">title=</span><span class="s">"Vote up"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-results"</span><span class="nt">&gt;</span>+6<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-contra"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-down"</span> <span class="na">title=</span><span class="s">"Vote down"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-results"</span><span class="nt">&gt;</span>-3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"rate is-disabled"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-difference is-positive"</span><span class="nt">&gt;</span>3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-pro is-rate-button-active"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-up"</span> <span class="na">title=</span><span class="s">"Vote up"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-results"</span><span class="nt">&gt;</span>+6<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-contra is-disabled"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-down"</span> <span class="na">title=</span><span class="s">"Vote down"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-results"</span><span class="nt">&gt;</span>-3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"rate m-show-results-persist"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-difference is-positive"</span><span class="nt">&gt;</span>3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-pro is-rate-button-active"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-up"</span> <span class="na">title=</span><span class="s">"Vote up"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-results"</span><span class="nt">&gt;</span>+6<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-contra"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-down"</span> <span class="na">title=</span><span class="s">"Vote down"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-results"</span><span class="nt">&gt;</span>-3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"rate m-show-results-hover"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-difference is-positive"</span><span class="nt">&gt;</span>3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-pro is-rate-button-active"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-up"</span> <span class="na">title=</span><span class="s">"Vote up"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-results"</span><span class="nt">&gt;</span>+6<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-contra"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-down"</span> <span class="na">title=</span><span class="s">"Vote down"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-results"</span><span class="nt">&gt;</span>-3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+Hover show results
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"rate is-cast m-show-results-click"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-difference is-positive"</span><span class="nt">&gt;</span>3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-pro is-rate-button-active"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-up"</span> <span class="na">title=</span><span class="s">"Vote up"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-results"</span><span class="nt">&gt;</span>+6<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span> <span class="na">class=</span><span class="s">"rate-contra"</span><span class="nt">&gt;&lt;i</span> <span class="na">class=</span><span class="s">"icon-vote-down"</span> <span class="na">title=</span><span class="s">"Vote down"</span><span class="nt">&gt;&lt;/i&gt;&lt;/a&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"rate-results"</span><span class="nt">&gt;</span>-3<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+Click show results</pre>
+    </div>
+  </div>
+</div>
+
+<h2 id="opionion" class="styleguide">Opinion</h2>
+<p class="styleguide">The Opinion widget is very similar in functionaility to the Rate widget, but it
+is bigger and exposes more details.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="opinion">
+    <span class="opinion-button-container">
+        <a href="#" class="opinion-yes opinion-button">yes</a>
+    </span>
+    <span class="opinion-button-container">
+        <a href="#" class="opinion-no opinion-button">no</a>
+    </span>
+    <a href="#" class="opinion-result-toggle">show results</a>
+</div>
+
+<div class="opinion">
+    <span class="opinion-results">
+        <span class="opinion-bar-container">
+            <span
+                class="opinion-bar opinion-bar-yes"
+                style="width: 19%"></span>
+        </span>
+        <span class="opinion-result-numerics">
+            <span class="opinion-result-yes">
+                <strong>YES</strong>
+                19
+                <span class="opinion-result-absolute">(6 votes)</span>
+            </span>
+            <span class="opinion-result-total">32 total votes</span>
+            <span class="opinion-result-no">
+                <span class="opinion-result-absolute">(26 votes)</span>
+                81
+                <strong>NO</strong>
+            </span>
+        </span>
+    </span>
+    <a href="#" class="opinion-result-toggle">vote</a>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"opinion"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"opinion-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"opinion-yes opinion-button"</span><span class="nt">&gt;</span>yes<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"opinion-button-container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"opinion-no opinion-button"</span><span class="nt">&gt;</span>no<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"opinion-result-toggle"</span><span class="nt">&gt;</span>show results<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"opinion"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"opinion-results"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"opinion-bar-container"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span</span>
+                <span class="na">class=</span><span class="s">"opinion-bar opinion-bar-yes"</span>
+                <span class="na">style=</span><span class="s">"width: 19%"</span><span class="nt">&gt;&lt;/span&gt;</span>
+        <span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"opinion-result-numerics"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"opinion-result-yes"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;strong&gt;</span>YES<span class="nt">&lt;/strong&gt;</span>
+                19
+                <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"opinion-result-absolute"</span><span class="nt">&gt;</span>(6 votes)<span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"opinion-result-total"</span><span class="nt">&gt;</span>32 total votes<span class="nt">&lt;/span&gt;</span>
+            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"opinion-result-no"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"opinion-result-absolute"</span><span class="nt">&gt;</span>(26 votes)<span class="nt">&lt;/span&gt;</span>
+                81
+                <span class="nt">&lt;strong&gt;</span>NO<span class="nt">&lt;/strong&gt;</span>
+            <span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"opinion-result-toggle"</span><span class="nt">&gt;</span>vote<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="section-jump" class="styleguide">Section Jump</h1>
+<p class="styleguide">A widget with a header, a left navigation and a main section. Often used in
+combination with <code class="styleguide">.jump-navigation.m-narrow.m-unnumbered</code>.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="section-jump" id="section-jump-top">
+    <div class="section-jump-cover">
+        <h1 class="section-jump-cover-header">Section Jump header</h1>
+    </div>
+
+    <div class="section-jump-body">
+        <nav class="section-jump-navigation">
+            1.
+        </nav>
+
+        <div class="section-jump-main">
+            <div style="padding: 1em">
+                Lorem ipsum Ullamco laboris commodo sit commodo nulla adipisicing in fugiat nostrud mollit irure esse velit reprehenderit commodo dolor.
+                Lorem ipsum Ullamco laboris commodo sit commodo nulla adipisicing in fugiat nostrud mollit irure esse velit reprehenderit commodo dolor.
+                Lorem ipsum Ullamco laboris commodo sit commodo nulla adipisicing in fugiat nostrud mollit irure esse velit reprehenderit commodo dolor.
+                Lorem ipsum Ullamco laboris commodo sit commodo nulla adipisicing in fugiat nostrud mollit irure esse velit reprehenderit commodo dolor.
+            </div>
+        </div>
+    </div>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"section-jump"</span> <span class="na">id=</span><span class="s">"section-jump-top"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"section-jump-cover"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">"section-jump-cover-header"</span><span class="nt">&gt;</span>Section Jump header<span class="nt">&lt;/h1&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"section-jump-body"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">"section-jump-navigation"</span><span class="nt">&gt;</span>
+            1.
+        <span class="nt">&lt;/nav&gt;</span>
+
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"section-jump-main"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">"padding: 1em"</span><span class="nt">&gt;</span>
+                Lorem ipsum Ullamco laboris commodo sit commodo nulla adipisicing in fugiat nostrud mollit irure esse velit reprehenderit commodo dolor.
+                Lorem ipsum Ullamco laboris commodo sit commodo nulla adipisicing in fugiat nostrud mollit irure esse velit reprehenderit commodo dolor.
+                Lorem ipsum Ullamco laboris commodo sit commodo nulla adipisicing in fugiat nostrud mollit irure esse velit reprehenderit commodo dolor.
+                Lorem ipsum Ullamco laboris commodo sit commodo nulla adipisicing in fugiat nostrud mollit irure esse velit reprehenderit commodo dolor.
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="textbox" class="styleguide">textbox</h1>
+<p class="styleguide">A simple box containing text.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="textbox">
+    <p>textbox</p>
+</div>
+<div class="textbox m-unobtrusive">
+    <p>unobtrusive textbox</p>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"textbox"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>textbox<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"textbox m-unobtrusive"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>unobtrusive textbox<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="unsupported-browser" class="styleguide">Unsupported Browser</h1>
+<p class="styleguide">Banner showing up if the browser is not supported.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="unsupported-browser">
+    <img src="../icons/png/attention.png"/>
+    <div lang="en" class="language-block">
+        <h1>Non-supported browser!</h1>
+        <p>We're sorry your browser is unsupported. Please either upgrade your Internet Explorer,
+        but we recommend
+        <a href="http://chromium.woolyss.com/">Chromium</a> or
+        <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>.</p>
+    </div>
+    <img src="../icons/png/attention.png"/>
+    <div lang="de" class="language-block">
+        <h1>Browser wird nicht unterstützt!</h1>
+        <p>Es tut uns leid, aber deine Suche wird nicht unterstützt. Bitte aktualisiere die Version deines
+        Internet Explorers oder verwende
+        <a href="http://chromium.woolyss.com/">Chromium</a> oder
+        <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>.</p>
+    </div>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"unsupported-browser"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"../icons/png/attention.png"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">lang=</span><span class="s">"en"</span> <span class="na">class=</span><span class="s">"language-block"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h1&gt;</span>Non-supported browser!<span class="nt">&lt;/h1&gt;</span>
+        <span class="nt">&lt;p&gt;</span>We're sorry your browser is unsupported. Please either upgrade your Internet Explorer,
+        but we recommend
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://chromium.woolyss.com/"</span><span class="nt">&gt;</span>Chromium<span class="nt">&lt;/a&gt;</span> or
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"https://www.mozilla.org/en-US/firefox/new/"</span><span class="nt">&gt;</span>Firefox<span class="nt">&lt;/a&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"../icons/png/attention.png"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">lang=</span><span class="s">"de"</span> <span class="na">class=</span><span class="s">"language-block"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h1&gt;</span>Browser wird nicht unterstützt!<span class="nt">&lt;/h1&gt;</span>
+        <span class="nt">&lt;p&gt;</span>Es tut uns leid, aber deine Suche wird nicht unterstützt. Bitte aktualisiere die Version deines
+        Internet Explorers oder verwende
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://chromium.woolyss.com/"</span><span class="nt">&gt;</span>Chromium<span class="nt">&lt;/a&gt;</span> oder
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"https://www.mozilla.org/en-US/firefox/new/"</span><span class="nt">&gt;</span>Firefox<span class="nt">&lt;/a&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="user-indicator" class="styleguide">User Indicator</h1>
+<p class="styleguide">This Widget can be used to display the state of the currently logged in user.
+It is usually used in the header bar.</p>
+<h1 id="user-list-item" class="styleguide">User list item</h1>
+<p class="styleguide">A user list item within a listing widget</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="listing">
+    <ol class="listing-elements">
+        <li class="listing-element">
+            <div class="user-list-item">
+                <a class="user-list-item-link " href="#" class="m-me">
+                    <span class="user-list-item-name">Me</span>
+                    <span class="user-list-item-button">Profil anzeigen</span>
+                </a>
+            </div>
+        </li>
+        <li class="listing-element>
+            <div class="user-list-item">
+                <a class="user-list-item-link" href="#">
+                    <span class="user-list-item-name">Another User</span>
+                    <span class="user-list-item-button">Profil anzeigen</span>
+                </a>
+            </div>
+        </li>
+    </ol>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"listing"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ol</span> <span class="na">class=</span><span class="s">"listing-elements"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"listing-element"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"user-list-item"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"user-list-item-link "</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"m-me"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"user-list-item-name"</span><span class="nt">&gt;</span>Me<span class="nt">&lt;/span&gt;</span>
+                    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"user-list-item-button"</span><span class="nt">&gt;</span>Profil anzeigen<span class="nt">&lt;/span&gt;</span>
+                <span class="nt">&lt;/a&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"listing-element&gt;
+            &lt;div class="</span><span class="na">user-list-item</span><span class="err">"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"user-list-item-link"</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"user-list-item-name"</span><span class="nt">&gt;</span>Another User<span class="nt">&lt;/span&gt;</span>
+                    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"user-list-item-button"</span><span class="nt">&gt;</span>Profil anzeigen<span class="nt">&lt;/span&gt;</span>
+                <span class="nt">&lt;/a&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ol&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="user-message" class="styleguide">User Message</h1>
+<p class="styleguide">A form for sending messages to other users</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="static-example">
+    <div class="user-message">
+        <form>
+            <p class="ng-binding">Message to Username</p>
+            <input class="user-message-subject" type="text">
+            <textarea class="user-message-text"></textarea>
+            <input class="user-message-button-submit" type="submit" value="Send">
+            <a href="">Cancel</a>
+        </form>
+    </div>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"static-example"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"user-message"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;form&gt;</span>
+            <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"ng-binding"</span><span class="nt">&gt;</span>Message to Username<span class="nt">&lt;/p&gt;</span>
+            <span class="nt">&lt;input</span> <span class="na">class=</span><span class="s">"user-message-subject"</span> <span class="na">type=</span><span class="s">"text"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;textarea</span> <span class="na">class=</span><span class="s">"user-message-text"</span><span class="nt">&gt;&lt;/textarea&gt;</span>
+            <span class="nt">&lt;input</span> <span class="na">class=</span><span class="s">"user-message-button-submit"</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Send"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">""</span><span class="nt">&gt;</span>Cancel<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/form&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+                </div>
+            </div>
+        </main>
+        <footer id="footer">
+            <div class="page_wrapper">
+                <p>This documentation generated using <a href="http://github.com/trulia/hologram">Hologram</a>
+            </div>
+        </footer>
+    </body>
+</html>
