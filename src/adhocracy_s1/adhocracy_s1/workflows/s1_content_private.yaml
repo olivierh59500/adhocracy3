@@ -1,0 +1,14 @@
+defaults: s1_content
+states:
+  proposed: {}
+  voteable: {}
+  selected:
+    acm:
+      principals:               [everyone, participant, moderator, creator, initiator, admin]
+      permissions:
+        - [view,                 D,         A,           A,         A,       A,         A]
+  rejected:
+    acm:
+      principals:               [everyone, participant, moderator, creator, initiator, admin]
+      permissions:
+        - [view,                 D,         A,           A,         A,       A,         A]
