@@ -1,6 +1,7 @@
 import * as AdhAbuseModule from "../../Abuse/Module";
 import * as AdhBadgeModule from "../../Badge/Module";
 import * as AdhCommentModule from "../../Comment/Module";
+import * as AdhEmbedModule from "../../Embed/Module";
 import * as AdhHttpModule from "../../Http/Module";
 import * as AdhMovingColumnsModule from "../../MovingColumns/Module";
 import * as AdhPermissionsModule from "../../Permissions/Module";
@@ -31,6 +32,7 @@ export var register = (angular) => {
             AdhAbuseModule.moduleName,
             AdhBadgeModule.moduleName,
             AdhCommentModule.moduleName,
+            AdhEmbedModule.moduleName,
             AdhHttpModule.moduleName,
             AdhMeinberlinIdeaCollectionProcessModule.moduleName,
             AdhMeinberlinProposalModule.moduleName,
@@ -42,7 +44,7 @@ export var register = (angular) => {
             AdhTopLevelStateModule.moduleName
         ])
         .directive("adhMeinberlinIdeaCollectionWorkbench", [
-            "adhTopLevelState", "adhConfig", "adhHttp", IdeaCollection.workbenchDirective])
+            "adhTopLevelState", "adhConfig", "adhHttp", "adhEmbed", IdeaCollection.workbenchDirective])
         .directive("adhMeinberlinIdeaCollectionProposalDetailColumn", [
             "adhConfig",
             "adhHttp",
