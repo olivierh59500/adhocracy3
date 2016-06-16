@@ -1,6 +1,7 @@
 /// <reference path="../../../../lib2/types/angular.d.ts"/>
 
 import * as AdhConfig from "../../Config/Config";
+import * as AdhEmbed from "../../Embed/Embed";
 import * as AdhHttp from "../../Http/Http";
 import * as AdhPermissions from "../../Permissions/Permissions";
 import * as AdhProcess from "../../Process/Process";
@@ -31,7 +32,9 @@ export var pkgLocation = "/Meinberlin/IdeaCollection";
 export var workbenchDirective = (
     adhTopLevelState : AdhTopLevelState.Service,
     adhConfig : AdhConfig.IService,
-    adhHttp : AdhHttp.Service<any>
+    adhHttp : AdhHttp.Service<any>,
+    adhEmbed : AdhEmbed.Service,
+    $location: angular.ILocationService
 ) => {
     return {
         restrict: "E",
@@ -64,6 +67,8 @@ export var workbenchDirective = (
                 proposal: "default",
                 comment: "default"
             };
+
+            scope.context = adhEmbed.getContext();
 
             scope.$watchGroup(["contentType", "view"], (values) => {
                 var contentType = values[0];
@@ -242,6 +247,14 @@ export var registerRoutesFactory = (
         proposalVersionType = RIBuergerhaushaltProposalVersion;
     }
 
+    var proposalColumns = "is-show-show-hide";
+    var commentsColumns = "is-collapse-show-show";
+
+    if (context === "mein.berlin.de") {
+        proposalColumns = "is-show-hide-hide";
+        commentsColumns = "is-show-hide-hide";
+    }
+
     adhResourceAreaProvider
         .default(ideaCollectionType, "", processType, context, {
             space: "content",
@@ -263,7 +276,7 @@ export var registerRoutesFactory = (
             }])
         .default(ideaCollectionType, "create_proposal", processType, context, {
             space: "content",
-            movingColumns: "is-show-show-hide"
+            movingColumns: proposalColumns
         })
         .specific(ideaCollectionType, "create_proposal", processType, context, [
             "adhHttp", (adhHttp : AdhHttp.Service<any>) => (resource) => {
@@ -277,7 +290,7 @@ export var registerRoutesFactory = (
             }])
         .defaultVersionable(proposalType, proposalVersionType, "edit", processType, context, {
             space: "content",
-            movingColumns: "is-show-show-hide"
+            movingColumns: proposalColumns
         })
         .specificVersionable(proposalType, proposalVersionType, "edit", processType, context, [
             "adhHttp", (adhHttp : AdhHttp.Service<any>) => (item, version) => {
@@ -293,7 +306,7 @@ export var registerRoutesFactory = (
             }])
         .defaultVersionable(proposalType, proposalVersionType, "", processType, context, {
             space: "content",
-            movingColumns: "is-show-show-hide"
+            movingColumns: proposalColumns
         })
         .specificVersionable(proposalType, proposalVersionType, "", processType, context, [
             () => (item, version) => {
@@ -303,7 +316,7 @@ export var registerRoutesFactory = (
             }])
         .defaultVersionable(proposalType, proposalVersionType, "comments", processType, context, {
             space: "content",
-            movingColumns: "is-collapse-show-show"
+            movingColumns: commentsColumns
         })
         .specificVersionable(proposalType, proposalVersionType, "comments", processType, context, [
             () => (item, version) => {
@@ -315,7 +328,7 @@ export var registerRoutesFactory = (
             }])
         .defaultVersionable(RIComment, RICommentVersion, "", processType, context, {
             space: "content",
-            movingColumns: "is-collapse-show-show"
+            movingColumns: commentsColumns
         })
         .specificVersionable(RIComment, RICommentVersion, "", processType, context, ["adhHttp", "$q", (
             adhHttp : AdhHttp.Service<any>,
