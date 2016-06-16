@@ -12,6 +12,5 @@ export var register = (angular) => {
             AdhTopLevelStateModule.moduleName,
             AdhShareSocialModule.moduleName
         ])
-        .directive("adhMovingColumn", ["adhConfig", AdhMovingColumns.movingColumnDirective])
         .directive("adhMovingColumns", ["adhTopLevelState", "$timeout", "$window", AdhMovingColumns.movingColumns]);
 };
