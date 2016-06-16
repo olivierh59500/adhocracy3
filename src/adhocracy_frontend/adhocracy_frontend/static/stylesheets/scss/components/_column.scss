@@ -1,0 +1,102 @@
+/*doc
+---
+title: Column Alerts
+name: column-alerts
+parent: columns
+---
+
+A list of alert messages to notify users in the moving column
+
+```html_example
+<ul class="column-alerts static-example">
+    <li class="column-alert m-error">Error</li>
+    <li class="column-alert m-warning">Warning</li>
+    <li class="column-alert m-info">Info</li>
+    <li class="column-alert m-success">Success</li>
+</ul>
+```
+*/
+
+.column-overlay,
+.column-alerts,
+.column-mask {
+    position: absolute;
+    top: $moving-column-menu-height;
+    left: 0;
+    right: 0;
+    overflow-y: auto;
+}
+
+.column-mask {
+    @include opacity(0.5);
+    bottom: 0;
+    background-color: $color-background-mask;
+    z-index: 2;
+
+    @media print {
+        display: none;
+    }
+}
+
+.column-alerts {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    z-index: 3;
+
+    @media print {
+        display: none;
+    }
+}
+
+.column-alert {
+    @include rem(padding, 1rem);
+    background: $color-structure-normal;
+    text-align: center;
+
+    &.m-error {
+        background: $color-function-invalid;
+    }
+
+    &.m-warning {
+        background: mix($color-function-invalid, $color-structure-normal);
+    }
+
+    &.m-success {
+        background: $color-function-valid;
+    }
+}
+
+.column-overlay {
+    @include clearfix;
+    @include rem(padding, 1rem);
+    background: $color-structure-normal;
+    border-top: 1px solid $color-structure-introvert;
+    // .leaflet-top has 1000
+    z-index: 1000;
+    max-height: 80%;
+    overflow-y: auto;
+
+    textarea,
+    input[type="text"] {
+        background: $color-background-base;
+    }
+
+    &.ng-enter, &.ng-leave {
+        @include transition(opacity 0.5s);
+    }
+
+    &.ng-enter,
+    &.ng-leave.ng-leave-active {
+        @include opacity(0);
+    }
+
+    &.ng-leave,
+    &.ng-enter.ng-enter-active {
+        @include opacity(1);
+    }
+
+    @media print {
+        display: none;
+    }
+}
