@@ -2,8 +2,8 @@
 
 import * as AdhConfig from "../Config/Config";
 import * as AdhHttp from "../Http/Http";
-import * as AdhMovingColumns from "../MovingColumns/MovingColumns";
 import * as AdhPermissions from "../Permissions/Permissions";
+import * as AdhProcess from "../Process/Process";
 import * as AdhResourceArea from "../ResourceArea/ResourceArea";
 import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 import * as AdhUtil from "../Util/Util";
@@ -43,8 +43,8 @@ export var documentDetailColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/DocumentDetailColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl", "documentUrl"]);
             adhPermissions.bindScope(scope, () => scope.documentUrl && AdhUtil.parentPath(scope.documentUrl), "proposalItemOptions");
         }
@@ -57,8 +57,8 @@ export var documentCreateColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/DocumentCreateColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl"]);
         }
     };
@@ -70,8 +70,8 @@ export var documentEditColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/DocumentEditColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl", "documentUrl"]);
         }
     };
@@ -84,8 +84,8 @@ export var processDetailColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/ProcessDetailColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl"]);
             adhPermissions.bindScope(scope, () => scope.processUrl, "processOptions");
         }

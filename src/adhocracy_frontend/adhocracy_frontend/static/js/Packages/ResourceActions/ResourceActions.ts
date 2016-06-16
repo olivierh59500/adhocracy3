@@ -1,6 +1,6 @@
 import * as AdhConfig from "../Config/Config";
-import * as AdhMovingColumns from "../MovingColumns/MovingColumns";
 import * as AdhPermissions from "../Permissions/Permissions";
+import * as AdhProcess from "../Process/Process";
 import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 import * as AdhUtil from "../Util/Util";
 
@@ -34,11 +34,11 @@ export var reportActionDirective = () => {
     return {
         restrict: "E",
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"report();\">{{ 'TR__REPORT' | translate }}</a>",
-        require: "^adhMovingColumn",
+        require: "^adhColumn",
         scope: {
             class: "@"
         },
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             scope.report = () => {
                 column.toggleOverlay("abuse");
             };
@@ -50,11 +50,11 @@ export var shareActionDirective = () => {
     return {
         restrict: "E",
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"report();\">{{ 'TR__SHARE' | translate }}</a>",
-        require: "^adhMovingColumn",
+        require: "^adhColumn",
         scope: {
             class: "@"
         },
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             scope.report = () => {
                 column.toggleOverlay("share");
             };
@@ -66,13 +66,13 @@ export var deleteActionDirective = () => {
     return {
         restrict: "E",
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"delete();\">{{ 'TR__DELETE' | translate }}</a>",
-        require: "^adhMovingColumn",
+        require: "^adhColumn",
         scope: {
             resourcePath: "@",
             parentPath: "=?",
             class: "@"
         },
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             scope.delete = () => {
                 column.$broadcast("triggerDelete", scope.resourcePath);
             };
@@ -87,11 +87,11 @@ export var printActionDirective = (
     return {
         restrict: "E",
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"print();\">{{ 'TR__PRINT' | translate }}</a>",
-        require: "^adhMovingColumn",
+        require: "^adhColumn",
         scope: {
             class: "@"
         },
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             scope.print = () => {
                 // only the focused column is printed
                 column.focus();
@@ -109,7 +109,7 @@ export var editActionDirective = (
     return {
         restrict: "E",
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"edit();\">{{ 'TR__EDIT' | translate }}</a>",
-        require: "^adhMovingColumn",
+        require: "^adhColumn",
         scope: {
             resourcePath: "@",
             parentPath: "=?",
@@ -133,7 +133,7 @@ export var moderateActionDirective = (
     return {
         restrict: "E",
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"moderate();\">{{ 'TR__MODERATE' | translate }}</a>",
-        require: "^adhMovingColumn",
+        require: "^adhColumn",
         scope: {
             resourcePath: "@",
             parentPath: "=?",

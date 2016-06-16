@@ -8,7 +8,7 @@ import * as AdhCredentials from "../User/Credentials";
 import * as AdhHttp from "../Http/Http";
 import * as AdhPermissions from "../Permissions/Permissions";
 import * as AdhPreliminaryNames from "../PreliminaryNames/PreliminaryNames";
-import * as AdhMovingColumns from "../MovingColumns/MovingColumns";
+import * as AdhProcess from "../Process/Process";
 import * as AdhUtil from "../Util/Util";
 
 import RIBadgeAssignment from "../../Resources_/adhocracy_core/resources/badge/IBadgeAssignment";
@@ -160,12 +160,12 @@ export var badgeAssignment = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/Assignment.html",
-        require: "^adhMovingColumn",
+        require: "^adhColumn",
         scope: {
             path: "@",
             showDescription: "=?"
         },
-        link: (scope, element, attrs, column: AdhMovingColumns.MovingColumnController) => {
+        link: (scope, element, attrs, column: AdhProcess.ColumnController) => {
             scope.badgeablePath = scope.path;
             scope.data = {};
 

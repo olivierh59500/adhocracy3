@@ -9,12 +9,12 @@
             <adh-s1-archive-column data-ng-switch-when="archive"></adh-s1-archive-column>
         </div>
         <adh-s1-proposal-create-column data-ng-if="view === 'create-proposal'"></adh-s1-proposal-create-column>
-    </adh-moving-column>
-    <adh-moving-column>
+    </adh-column>
+    <adh-column>
         <adh-s1-proposal-detail-column data-ng-if="view !== 'edit'"></adh-s1-proposal-detail-column>
         <adh-s1-proposal-edit-column data-ng-if="view === 'edit'"></adh-s1-proposal-edit-column>
-    </adh-moving-column>
-    <adh-moving-column>
+    </adh-column>
+    <adh-column>
         <adh-comment-column></adh-comment-column>
-    </adh-moving-column>
+    </adh-column>
 </div>

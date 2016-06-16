@@ -2,8 +2,8 @@
 
 import * as AdhConfig from "../../../Config/Config";
 import * as AdhHttp from "../../../Http/Http";
-import * as AdhMovingColumns from "../../../MovingColumns/MovingColumns";
 import * as AdhPermissions from "../../../Permissions/Permissions";
+import * as AdhProcess from "../Process/Process";
 import * as AdhResourceArea from "../../../ResourceArea/ResourceArea";
 import * as AdhTopLevelState from "../../../TopLevelState/TopLevelState";
 import * as AdhUtil from "../../../Util/Util";
@@ -56,8 +56,8 @@ export var processDetailColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/ProcessDetailColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl"]);
             scope.$on("$destroy", adhTopLevelState.bind("tab", scope));
             adhPermissions.bindScope(scope, () => scope.processUrl, "processOptions");
@@ -99,8 +99,8 @@ export var documentDetailColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/DocumentDetailColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl", "documentUrl"]);
             adhPermissions.bindScope(scope, () => AdhUtil.parentPath(scope.documentUrl), "documentItemOptions");
 
@@ -131,8 +131,8 @@ export var proposalDetailColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/ProposalDetailColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl", "proposalUrl"]);
             adhPermissions.bindScope(scope, () => AdhUtil.parentPath(scope.proposalUrl), "proposalItemOptions");
 
@@ -152,8 +152,8 @@ export var documentCreateColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/DocumentCreateColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl"]);
             scope.$watch("processUrl", (processUrl) => {
                 if (processUrl) {
@@ -180,8 +180,8 @@ export var documentEditColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/DocumentEditColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl", "documentUrl"]);
             scope.$watch("processUrl", (processUrl) => {
                 if (processUrl) {
@@ -207,8 +207,8 @@ export var proposalCreateColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/ProposalCreateColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl"]);
 
             scope.cancel = () => {
@@ -227,8 +227,8 @@ export var proposalEditColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/ProposalEditColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["processUrl", "proposalUrl"]);
 
             scope.cancel = () => {

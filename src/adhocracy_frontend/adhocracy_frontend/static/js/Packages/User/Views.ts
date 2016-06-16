@@ -6,8 +6,8 @@ import * as _ from "lodash";
 import * as AdhBadge from "../Badge/Badge";
 import * as AdhConfig from "../Config/Config";
 import * as AdhHttp from "../Http/Http";
-import * as AdhMovingColumns from "../MovingColumns/MovingColumns";
 import * as AdhPermissions from "../Permissions/Permissions";
+import * as AdhProcess from "../Process/Process";
 import * as AdhResourceArea from "../ResourceArea/ResourceArea";
 import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 import * as AdhEmbed from "../Embed/Embed";
@@ -657,11 +657,11 @@ export var userProfileDirective = (
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/UserProfile.html",
         transclude: true,
-        require: "^adhMovingColumn",
+        require: "^adhColumn",
         scope: {
             path: "@"
         },
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             adhPermissions.bindScope(scope, adhConfig.rest_url + "/message_user", "messageOptions");
 
             scope.showMessaging = () => {
@@ -695,7 +695,7 @@ export var userMessageDirective = (adhConfig : AdhConfig.IService, adhHttp : Adh
         scope: {
             recipientUrl: "@"
         },
-        require: "^adhMovingColumn",
+        require: "^adhColumn",
         link: (scope, element, attrs, column)  => {
             adhHttp.get(scope.recipientUrl).then((recipient : RIUser) => {
                 scope.recipientName = recipient.data[SIUserBasic.nick].name;
@@ -729,8 +729,8 @@ export var userDetailColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/UserDetailColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["userUrl"]);
             adhPermissions.bindScope(scope, adhConfig.rest_url + "/message_user", "messageOptions");
         }

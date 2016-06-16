@@ -3,9 +3,9 @@ import * as _ from "lodash";
 import * as AdhConfig from "../Config/Config";
 import * as AdhCredentials from "../User/Credentials";
 import * as AdhHttp from "../Http/Http";
-import * as AdhMovingColumns from "../MovingColumns/MovingColumns";
 import * as AdhPermissions from "../Permissions/Permissions";
 import * as AdhPreliminaryNames from "../PreliminaryNames/PreliminaryNames";
+import * as AdhProcess from "../Process/Process";
 import * as AdhResourceUtil from "../Util/ResourceUtil";
 import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 import * as AdhUtil from "../Util/Util";
@@ -181,7 +181,7 @@ export var commentDetailDirective = (
     var _update = update(adhHttp, $q);
     var _postEdit = postEdit(adhHttp, adhPreliminaryNames);
 
-    var link = (scope : ICommentResourceScope, element, attrs, column? : AdhMovingColumns.MovingColumnController) => {
+    var link = (scope : ICommentResourceScope, element, attrs, column? : AdhProcess.ColumnController) => {
         if (column) {
             scope.report = () => {
                 column.$scope.shared.abuseUrl = scope.data.path;
@@ -263,7 +263,7 @@ export var commentDetailDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/Detail.html",
-        require: "?^adhMovingColumn",
+        require: "?^adhColumn",
         scope: {
             path: "@",
             onSubmit: "=?"
@@ -434,8 +434,8 @@ export var commentColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/Column.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             column.bindVariablesAndClear(scope, ["commentCloseUrl", "commentableUrl"]);
         }
     };

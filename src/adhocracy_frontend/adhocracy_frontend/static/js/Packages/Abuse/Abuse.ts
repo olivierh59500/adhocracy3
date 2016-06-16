@@ -1,6 +1,6 @@
 import * as AdhConfig from "../Config/Config";
 import * as AdhHttp from "../Http/Http";
-import * as AdhMovingColumns from "../MovingColumns/MovingColumns";
+import * as AdhProcess from "../Process/Process";
 
 var pkgLocation = "/Abuse";
 
@@ -12,8 +12,8 @@ export var reportAbuseDirective = (adhHttp : AdhHttp.Service<any>, adhConfig : A
         scope: {
             url: "@"  // frontend URL
         },
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
+        require: "^adhColumn",
+        link: (scope, element, attrs, column : AdhProcess.ColumnController) => {
             scope.netiquette_url = adhConfig.netiquette_url;
             scope.submit = () => {
                 return adhHttp.postRaw(adhConfig.rest_url + "/report_abuse", {
