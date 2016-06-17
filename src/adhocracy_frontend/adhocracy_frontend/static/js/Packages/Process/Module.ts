@@ -15,5 +15,6 @@ export var register = (angular) => {
         .directive("adhProcessView", ["adhTopLevelState", "adhProcess", "$compile", AdhProcess.processViewDirective])
         .directive("adhProcessListItem", AdhProcess.listItemDirective)
         .directive("adhProcessListing", ["adhConfig", AdhProcess.listingDirective])
-        .directive("adhColumn", ["adhConfig", AdhProcess.columnDirective]);
+        .directive("adhColumn", ["adhConfig", AdhProcess.columnDirective])
+        .directive("adhShowColumn", ["adhTopLevelState", "$timeout", "$window", AdhProcess.showColumn]);
 };
