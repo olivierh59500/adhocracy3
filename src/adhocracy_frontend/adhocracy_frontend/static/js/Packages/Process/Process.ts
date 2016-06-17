@@ -424,9 +424,6 @@ export var showColumn = (
             };
 
             scope.$on("$destroy", adhTopLevelState.on("movingColumns", move));
-            scope.$on("$destroy", adhTopLevelState.on("focus", resize));
-            scope.$on("$destroy", adhTopLevelState.on("space", () => _.defer(resizeNoTransition)));
-            scope.$watch(() => element.find(".moving-column").length, resize);
         }
     };
 };
