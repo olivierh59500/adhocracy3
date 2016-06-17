@@ -306,10 +306,7 @@ export var showColumn = (
 
             var clearStates = (element) => {
                 element.removeClass("is-show");
-                element.removeClass("is-collapse");
                 element.removeClass("is-hide");
-                element.removeClass("is-first-visible-child");
-                element.removeClass("is-last-visible-child");
                 element.removeClass("has-focus");
             };
 
@@ -373,10 +370,6 @@ export var showColumn = (
                         offset += spacing;
                     }
                 }
-
-                element.find(".moving-column:not(.is-hide):first-child").addClass("is-first-visible-child");
-                element.find(".moving-column:not(.is-hide):last").addClass("is-last-visible-child");
-
             };
 
             var resizeNoTransition = () => {
