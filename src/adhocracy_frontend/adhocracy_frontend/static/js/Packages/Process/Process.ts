@@ -298,7 +298,6 @@ export var showColumn = (
                 maxWidth = parseInt(attrs.maxWidth, 10);
             }
             var maxShowWidth = maxWidth * fontSize;
-            var collapseWidth = 2 * fontSize;
             var spacing = Math.ceil(0.3 * fontSize);
             if (typeof attrs.spacing !== "undefined") {
                 spacing = parseInt(attrs.spacing, 10);
@@ -320,23 +319,12 @@ export var showColumn = (
             };
 
             var resize = (): void => {
-                if (typeof cls === "undefined") {
-                    return;
-                }
-
                 var parts = cls.split("-");
                 var focus = getFocus(cls);
 
-                var collapseCount: number = parts.filter((v) => v === "collapse").length;
-                var showCount: number = parts.filter((v) => v === "show").length;
-                var totalWidth: number = element.outerWidth();
-                var totalCollapseWidth: number = collapseCount * collapseWidth;
-                var totalSpacingWidth: number = (collapseCount + showCount - 1) * spacing;
-                var showWidth: number = (totalWidth - totalCollapseWidth - totalSpacingWidth) / showCount;
-                showWidth = Math.min(showWidth, maxShowWidth);
-
-                var totalShowWidthWithSpacing = showCount * showWidth + (showCount - 1) * spacing;
-                var offset: number = (totalWidth - totalShowWidthWithSpacing) / 2 - collapseCount * (collapseWidth + spacing);
+                var totalWidth : number = element.outerWidth();
+                var showWidth : number = Math.min(totalWidth, maxShowWidth);
+                var offset : number = (totalWidth - showWidth) / 2;
                 offset = Math.max(offset, 0);
 
                 var columns = element.find(".moving-column");
@@ -351,12 +339,6 @@ export var showColumn = (
                             child.attr("aria-visible", "true");
                             child.outerWidth(showWidth);
                             offset += showWidth;
-                            break;
-                        case "collapse":
-                            child.addClass("is-collapse");
-                            child.attr("aria-visible", "false");
-                            child.width(collapseWidth);
-                            offset += collapseWidth;
                             break;
                         case "hide":
                             child.addClass("is-hide");
