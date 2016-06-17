@@ -298,7 +298,6 @@ export var showColumn = (
                 maxWidth = parseInt(attrs.maxWidth, 10);
             }
             var maxShowWidth = maxWidth * fontSize;
-            var minShowWidth = 35 * fontSize;
             var collapseWidth = 2 * fontSize;
             var spacing = Math.ceil(0.3 * fontSize);
             if (typeof attrs.spacing !== "undefined") {
@@ -323,34 +322,12 @@ export var showColumn = (
                 return focus;
             };
 
-            // if there is not enough space, collapse all but one column.
-            var responsiveClass = (cls: string): string => {
-                if ($($window).width() < 2 * minShowWidth + collapseWidth) {
-                    var s = "is";
-                    var focus = getFocus(cls);
-
-                    for (var i = 0; i < 3; i++) {
-                        if (i > focus) {
-                            s += "-hide";
-                        } else if (i === focus) {
-                            s += "-show";
-                        } else {
-                            s += "-collapse";
-                        }
-                    }
-
-                    return s;
-                } else {
-                    return cls;
-                }
-            };
-
             var resize = (): void => {
                 if (typeof cls === "undefined") {
                     return;
                 }
 
-                var parts = responsiveClass(cls).split("-");
+                var parts = cls.split("-");
                 var focus = getFocus(cls);
 
                 var collapseCount: number = parts.filter((v) => v === "collapse").length;
