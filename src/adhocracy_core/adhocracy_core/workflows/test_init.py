@@ -187,6 +187,14 @@ class TestAddWorkflow:
         assert workflow._states['draft'].local_roles is None
         assert states[1]['initial'] is True
 
+    def test_create_and_add_states_with_local_roles(self, registry, mock_meta):
+        from adhocracy_core.interfaces import DEFAULT_USER_GROUP_NAME
+        mock_meta.return_value['add_local_role_participant_to_default_group'] = True
+        self.call_fut(registry, 'package:dummy.yaml', 'dummy')
+        workflow = registry.content.workflows['dummy']
+        assert workflow._states['draft'].local_roles == \
+               {'group:' + DEFAULT_USER_GROUP_NAME: {'role:' + 'participant'}}
+
     def test_create_and_add_transitions(self, registry, mock_meta):
         self.call_fut(registry, 'package:dummy.yaml', 'dummy')
         workflow = registry.content.workflows['dummy']

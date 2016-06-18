@@ -15,7 +15,9 @@ from zope.interface import implementer
 from zope.interface import Interface
 from adhocracy_core.authorization import acm_to_acl
 from adhocracy_core.authorization import create_fake_god_request
+from adhocracy_core.authorization import add_local_roles
 from adhocracy_core.exceptions import ConfigurationError
+from adhocracy_core.interfaces import DEFAULT_USER_GROUP_NAME
 from adhocracy_core.interfaces import IAdhocracyWorkflow
 from adhocracy_core.interfaces import IPool
 from adhocracy_core.interfaces import search_query
@@ -125,7 +127,8 @@ def _add_defaults(appstruct: PMap, registry: Registry) -> PMap:
         return appstruct
     updated = registry.content.workflows_meta[default_name]
     for key, value in appstruct.items():
-        if key in ['initial_state', 'defaults', 'auto_transition']:
+        if key in ['initial_state', 'defaults', 'auto_transition',
+                   'add_local_role_participant_to_default_group']:
             updated = updated.transform([key], value)
         elif key == 'transitions':
             for transition_name, transition in value.items():
@@ -155,10 +158,16 @@ def _create_workflow(appstruct: PMap,
                      name: str) -> Workflow:
     initial_state = appstruct['initial_state']
     workflow = ACLLocalRolesWorkflow(initial_state=initial_state, type=name)
+    if appstruct.get('add_local_role_participant_to_default_group', False):
+        group = 'group:' + DEFAULT_USER_GROUP_NAME
+        local_roles = {group: {'role:participant'}}
+    else:
+        local_roles = None
     for name, data in appstruct['states'].items():
         acm = data.get('acm', {})
         acl = acm and acm_to_acl(acm) or []
-        workflow.add_state(name, callback=None, acl=acl)
+        workflow.add_state(name, callback=None, acl=acl,
+                           local_roles=local_roles)
     for name, data in appstruct['transitions'].items():
         workflow.add_transition(name, **data)
     try:
