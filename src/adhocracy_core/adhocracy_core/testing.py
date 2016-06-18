@@ -350,8 +350,8 @@ def mock_objectmap() -> Mock:
 @fixture
 def mock_workflow() -> Mock:
     """Mock :class:`adhocracy_core.workflows.AdhocracyACLWorkflow`."""
-    from adhocracy_core.workflows import AdhocracyACLWorkflow
-    mock = Mock(spec=AdhocracyACLWorkflow)
+    from adhocracy_core.workflows import ACLLocalRolesWorkflow
+    mock = Mock(spec=ACLLocalRolesWorkflow)
     mock._states = {}
     mock.get_next_states.return_value = []
     mock.state_of.return_value = None

@@ -6,13 +6,13 @@ from pyramid.renderers import render
 from pyramid.request import Request
 from pyrsistent import freeze
 from pyrsistent import PMap
-from substanced.workflow import ACLWorkflow
+from substanced.workflow import Workflow
 from substanced.workflow import WorkflowError
 from substanced.util import find_service
+from substanced.util import set_acl
 from zope.deprecation import deprecated
 from zope.interface import implementer
 from zope.interface import Interface
-
 from adhocracy_core.authorization import acm_to_acl
 from adhocracy_core.authorization import create_fake_god_request
 from adhocracy_core.exceptions import ConfigurationError
@@ -30,9 +30,32 @@ class ISample(Interface):
 deprecated('ISample', 'Backward compatible code, remove after migration')
 
 
+class ACLLocalRolesState(dict):
+    """Workflow state setting :term:`acl` and adding :term:`local_roles`."""
+
+    def __init__(self, acl: list=None, local_roles: dict=None, **kw):
+        self.acl = acl
+        """:term:`acl` set for `context`"""
+        self.local_roles = local_roles
+        """:class:`adhocracy_core.schema.LocalRoles` added to
+        :term:`local_roles` of `context.`
+        """
+
+    def __call__(self, context, request, transition, workflow):
+        registry = getattr(request, 'registry', None)
+        if self.acl is not None:
+            set_acl(context, self.acl, registry=registry)
+        if self.local_roles is not None:
+            add_local_roles(context,
+                            self.local_roles,
+                            registry=registry)
+
+
 @implementer(IAdhocracyWorkflow)
-class AdhocracyACLWorkflow(ACLWorkflow):
-    """Workflow that sets the :term:`acl` when entering a State."""
+class ACLLocalRolesWorkflow(Workflow):
+    """Workflow using `ACLLocalRolesState` to setup states."""
+
+    _state_factory = ACLLocalRolesState
 
     def get_next_states(self, context, request: IRequest) -> list:
         """Get states you can trigger a transition to."""
@@ -129,9 +152,9 @@ def _add_defaults(appstruct: PMap, registry: Registry) -> PMap:
 
 
 def _create_workflow(appstruct: PMap,
-                     name: str) -> ACLWorkflow:
+                     name: str) -> Workflow:
     initial_state = appstruct['initial_state']
-    workflow = AdhocracyACLWorkflow(initial_state=initial_state, type=name)
+    workflow = ACLLocalRolesWorkflow(initial_state=initial_state, type=name)
     for name, data in appstruct['states'].items():
         acm = data.get('acm', {})
         acl = acm and acm_to_acl(acm) or []
