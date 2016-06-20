@@ -107,6 +107,10 @@ export var documentDetailColumnDirective = (
             scope.setCameFrom = () => {
                 adhTopLevelState.setCameFrom();
             };
+
+            scope.setCameFromToProcess = () => {
+                adhTopLevelState.setCameFrom(adhResourceUrlFilter(scope.processUrl));
+            };
         }
     };
 };
