@@ -91,7 +91,7 @@ export var documentDetailColumnDirective = (
     adhPermissions : AdhPermissions.Service,
     adhTopLevelState : AdhTopLevelState.Service,
     adhHttp : AdhHttp.Service<any>,
-    adhResourceUrl,
+    adhResourceUrlFilter,
     $location : angular.ILocationService,
     $window : angular.IWindowService,
     $translate
