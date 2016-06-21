@@ -575,7 +575,7 @@ def _is_running(path_to_pid_file) -> bool:
 def add_create_test_users_subscriber(configurator):
     """Register a subscriber to import the test fixture to create users."""
     import_test_fixture = partial(import_fixture,
-                                  'adhocracy_core:test_fixture',
+                                  'adhocracy_core:test_users_fixture',
                                   print_stdout=False)
 
     configurator.add_subscriber(lambda event:
