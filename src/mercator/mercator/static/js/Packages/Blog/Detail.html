@@ -6,7 +6,7 @@
 
             <div class="blog-post-actions">
                 <a href="" data-ng-if="itemOptions.POST" data-ng-click="edit()" class="blog-post-actions-item"><i class="icon-pencil"></i> {{ "TR__EDIT" | translate }}</a>
-                <a href="" data-ng-if="options.DELETE" data-ng-click="delete()" class="blog-post-actions-item"><i class="icon-trash"></i> {{ "TR__DELETE" | translate }}</a>
+                <adh-delete-action data-ng-if="options.DELETE" class="blog-post-actions-item"></adh-delete-action>
             </div>
         </header>
 
