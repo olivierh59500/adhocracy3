@@ -148,15 +148,15 @@ This mixin allows to set attributes to placeholders in several browser.
 }
 @font-face {
   font-family: "adhocracy3-icons";
-  src: url('../fonts/adhocracy3-icons.eot?1456924276');
-  src: url('../fonts/adhocracy3-icons.eot?&1456924276#iefix') format("embedded-opentype"), url('../fonts/adhocracy3-icons.woff?1456924276') format("woff"), url('../fonts/adhocracy3-icons.ttf?1456924276') format("truetype"), url('../fonts/adhocracy3-icons.svg?1456924276#adhocracy3-icons') format("svg");
+  src: url('../fonts/adhocracy3-icons.eot?1466593646');
+  src: url('../fonts/adhocracy3-icons.eot?&1466593646#iefix') format("embedded-opentype"), url('../fonts/adhocracy3-icons.woff?1466593646') format("woff"), url('../fonts/adhocracy3-icons.ttf?1466593646') format("truetype"), url('../fonts/adhocracy3-icons.svg?1466593646#adhocracy3-icons') format("svg");
   font-weight: normal;
   font-style: normal;
 }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   @font-face {
     font-family: "adhocracy3-icons";
-    src: url('../fonts/adhocracy3-icons.svg?1456924276#adhocracy3-icons') format("svg");
+    src: url('../fonts/adhocracy3-icons.svg?1466593646#adhocracy3-icons') format("svg");
   }
 }
 /* line 23, scss/third_party/_adhocracy3-icons-rails.scss */
@@ -914,19 +914,19 @@ category: Variables
         <td colspan="3"><strong>Functional colors</strong></td>
     </tr>
     <tr>
-        <td><div class="example-color color-function-valid"></div></td>
-        <td><code>color-function-valid</code></td>
-        <td>For valid content</td>
+        <td><div class="example-color color-function-positive"></div></td>
+        <td><code>color-function-positive</code></td>
+        <td>For approved content, e.g. proposals that are realized, pro-rates</td>
     </tr>
     <tr>
-        <td><div class="example-color color-function-invalid"></div></td>
-        <td><code>color-function-invalid</code></td>
-        <td>For invalid content</td>
+        <td><div class="example-color color-function-negative"></div></td>
+        <td><code>color-function-negative</code></td>
+        <td>For negative content, e.g. proposals that aren't realized, wrong input</td>
     </tr>
     <tr>
         <td><div class="example-color color-function-neutral"></div></td>
         <td><code>color-function-neutral</code></td>
-        <td>For neutral (neither valid nor invalid) content</td>
+        <td>For neutral (neither positive nor negative) content, e.g. badges saying 'on test'</td>
     </tr>
     <tr>
         <td colspan="3"><strong>Structural colors</strong></td>
@@ -1053,7 +1053,7 @@ category: Variables
 
 /* line 187, scss/general/_variables_doc.scss */
 .color-text-extrovert {
-  background-color: #2b2b2b;
+  background-color: #090909;
 }
 
 /* line 188, scss/general/_variables_doc.scss */
@@ -1077,18 +1077,18 @@ category: Variables
 }
 
 /* line 193, scss/general/_variables_doc.scss */
-.color-function-valid {
-  background-color: #73bf44;
+.color-function-neutral {
+  background-color: #fdd216;
 }
 
 /* line 194, scss/general/_variables_doc.scss */
-.color-function-invalid {
-  background-color: #f00;
+.color-function-negative {
+  background-color: #c72e51;
 }
 
 /* line 195, scss/general/_variables_doc.scss */
-.color-function-neutral {
-  background-color: #f6d02b;
+.color-function-positive {
+  background-color: #00af5d;
 }
 
 /* line 197, scss/general/_variables_doc.scss */
@@ -1299,9 +1299,9 @@ body {
 @media print {
   /* line 24, scss/components/_type.scss */
   *:not([class^=leaflet]) {
-    background-color: #fff !important;
-    border-color: #000 !important;
-    color: #000 !important;
+    background-color: initial !important;
+    border-color: initial !important;
+    color: inherit !important;
   }
 }
 /*doc
@@ -1323,7 +1323,7 @@ category: Type
 /* line 49, scss/components/_type.scss */
 h1, h2, h3, h4, h5, h6 {
   text-rendering: optimizelegibility;
-  color: #2b2b2b;
+  color: #090909;
 }
 
 /*doc
@@ -1619,7 +1619,7 @@ parent: inline
 /* line 325, scss/components/_type.scss */
 del {
   text-decoration: line-through;
-  color: #f00;
+  color: #c72e51;
 }
 
 /*doc
@@ -1636,7 +1636,7 @@ parent: inline
 /* line 341, scss/components/_type.scss */
 ins {
   text-decoration: underline;
-  color: #73bf44;
+  color: #00af5d;
 }
 
 /*doc
@@ -1800,9 +1800,9 @@ Badges for labeling things
   margin-right: 0.41667rem;
   font-size: 9px;
   font-size: 0.75rem;
-  background: #e6e6e6;
-  color: #333;
-  line-height: 1.36364;
+  background: #29abe2;
+  color: white;
+  line-height: 2;
   text-transform: uppercase;
 }
 
@@ -1986,9 +1986,9 @@ textarea.ng-dirty.ng-invalid, .ng-submitted input[type="text"].ng-invalid,
 .ng-submitted div.ng-invalid,
 .ng-submitted select.ng-invalid,
 .ng-submitted textarea.ng-invalid {
-  border-color: #f00;
-  color: #f00;
-  outline: 1px solid #f00;
+  border-color: #c72e51;
+  color: #c72e51;
+  outline: 1px solid #c72e51;
 }
 
 /* line 100, scss/components/_forms.scss */
@@ -2080,7 +2080,21 @@ textarea.m-title {
   font-size: 18px;
   font-size: 1.5rem;
 }
-/* line 130, scss/components/_forms.scss */
+/* line 126, scss/components/_forms.scss */
+input[type="text"].ng-dirty.ng-invalid,
+input[type="url"].ng-dirty.ng-invalid,
+input[type="password"].ng-dirty.ng-invalid,
+input[type="email"].ng-dirty.ng-invalid,
+input[type="date"].ng-dirty.ng-invalid,
+input[type="time"].ng-dirty.ng-invalid,
+input[type="number"].ng-dirty.ng-invalid,
+select.ng-dirty.ng-invalid,
+textarea.ng-dirty.ng-invalid {
+  border-color: #c72e51;
+  color: #c72e51;
+  outline: 1px solid #c72e51;
+}
+/* line 133, scss/components/_forms.scss */
 input[type="text"].ng-disabled, input[type="text"]:disabled,
 input[type="url"].ng-disabled,
 input[type="url"]:disabled,
@@ -2102,11 +2116,11 @@ textarea:disabled {
   outline: 1px solid #e6e6e6;
 }
 
-/* line 157, scss/components/_forms.scss */
+/* line 159, scss/components/_forms.scss */
 textarea {
   resize: vertical;
 }
-/* line 160, scss/components/_forms.scss */
+/* line 162, scss/components/_forms.scss */
 textarea.ng-disabled, textarea:disabled {
   resize: none;
 }
@@ -2140,7 +2154,7 @@ Class to add styling to a label when the label itself is used as a container.
 </label>
 ```
 */
-/* line 197, scss/components/_forms.scss */
+/* line 199, scss/components/_forms.scss */
 .label-text {
   display: inline-block;
   vertical-align: middle;
@@ -2151,12 +2165,14 @@ Class to add styling to a label when the label itself is used as a container.
   padding-bottom: 0.5rem;
 }
 
-/* line 202, scss/components/_forms.scss */
+/* line 204, scss/components/_forms.scss */
 .input-error {
   font-size: 10px;
   font-size: 0.83333rem;
+  padding-top: 10px;
+  padding-top: 0.83333rem;
   display: block;
-  color: #f00;
+  color: #c72e51;
 }
 
 /*doc
@@ -2245,7 +2261,7 @@ This error concerns the whole form.
 </div>
 ```
 */
-/* line 298, scss/components/_forms.scss */
+/* line 301, scss/components/_forms.scss */
 .form-error {
   margin: 12px 0;
   margin: 1rem 0;
@@ -2297,22 +2313,22 @@ A generic form footer containing one CTA and a regular button
 </footer>
 ```
 */
-/* line 349, scss/components/_forms.scss */
+/* line 352, scss/components/_forms.scss */
 .form-footer {
   overflow: hidden;
   *zoom: 1;
   width: 100%;
 }
-/* line 353, scss/components/_forms.scss */
+/* line 356, scss/components/_forms.scss */
 .form-footer .form-footer-button-cta {
   float: right;
 }
-/* line 356, scss/components/_forms.scss */
+/* line 359, scss/components/_forms.scss */
 .form-footer .form-footer-button-cta + [class^="button"] {
   margin-right: 10px;
   margin-right: 0.83333rem;
 }
-/* line 361, scss/components/_forms.scss */
+/* line 364, scss/components/_forms.scss */
 .form-footer .form-footer-button {
   float: left;
 }
@@ -2852,17 +2868,18 @@ aligned ones will wrap.
   padding: 0 0.58333rem;
   background: #e6e6e6;
   width: 100%;
+  margin-bottom: 1px;
 }
-/* line 34, scss/components/_action_bar.scss */
+/* line 35, scss/components/_action_bar.scss */
 .action-bar .map-switch {
   float: right;
 }
-/* line 38, scss/components/_action_bar.scss */
+/* line 39, scss/components/_action_bar.scss */
 .action-bar .map-switch-item {
   margin: 0 0 0 5px;
   margin: 0 0 0 0.41667rem;
 }
-/* line 43, scss/components/_action_bar.scss */
+/* line 44, scss/components/_action_bar.scss */
 .action-bar .map-switch-item.m-selected:after {
   margin-right: -4.5px;
   margin-right: -0.375rem;
@@ -3263,13 +3280,12 @@ A list of alert messages to notify users in the moving column
 ```html_example
 <ul class="moving-column-alerts static-example">
     <li class="moving-column-alert m-error">Error</li>
-    <li class="moving-column-alert m-warning">Warning</li>
     <li class="moving-column-alert m-info">Info</li>
     <li class="moving-column-alert m-success">Success</li>
 </ul>
 ```
 */
-/* line 340, scss/components/_moving_columns.scss */
+/* line 339, scss/components/_moving_columns.scss */
 .moving-column-alerts {
   margin: 0;
   padding: 0;
@@ -3277,33 +3293,31 @@ A list of alert messages to notify users in the moving column
   z-index: 3;
 }
 @media print {
-  /* line 340, scss/components/_moving_columns.scss */
+  /* line 339, scss/components/_moving_columns.scss */
   .moving-column-alerts {
     display: none;
   }
 }
 
-/* line 351, scss/components/_moving_columns.scss */
+/* line 350, scss/components/_moving_columns.scss */
 .moving-column-alert {
   padding: 12px;
   padding: 1rem;
-  background: #e6e6e6;
+  background: #fdd216;
+  color: #333;
   text-align: center;
 }
 /* line 356, scss/components/_moving_columns.scss */
 .moving-column-alert.m-error {
-  background: #f00;
+  background: #c72e51;
+  color: white;
 }
-/* line 360, scss/components/_moving_columns.scss */
-.moving-column-alert.m-warning {
-  background: #f37373;
-}
-/* line 364, scss/components/_moving_columns.scss */
+/* line 361, scss/components/_moving_columns.scss */
 .moving-column-alert.m-success {
-  background: #73bf44;
+  background: #00af5d;
 }
 
-/* line 369, scss/components/_moving_columns.scss */
+/* line 366, scss/components/_moving_columns.scss */
 .moving-column-overlay {
   overflow: hidden;
   *zoom: 1;
@@ -3315,36 +3329,36 @@ A list of alert messages to notify users in the moving column
   max-height: 80%;
   overflow-y: auto;
 }
-/* line 379, scss/components/_moving_columns.scss */
+/* line 376, scss/components/_moving_columns.scss */
 .moving-column-overlay textarea,
 .moving-column-overlay input[type="text"] {
   background: white;
 }
-/* line 384, scss/components/_moving_columns.scss */
+/* line 381, scss/components/_moving_columns.scss */
 .moving-column-overlay.ng-enter, .moving-column-overlay.ng-leave {
   -moz-transition: opacity 0.5s;
   -o-transition: opacity 0.5s;
   -webkit-transition: opacity 0.5s;
   transition: opacity 0.5s;
 }
-/* line 388, scss/components/_moving_columns.scss */
+/* line 385, scss/components/_moving_columns.scss */
 .moving-column-overlay.ng-enter, .moving-column-overlay.ng-leave.ng-leave-active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
 }
-/* line 393, scss/components/_moving_columns.scss */
+/* line 390, scss/components/_moving_columns.scss */
 .moving-column-overlay.ng-leave, .moving-column-overlay.ng-enter.ng-enter-active {
   filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
   opacity: 1;
 }
 @media print {
-  /* line 369, scss/components/_moving_columns.scss */
+  /* line 366, scss/components/_moving_columns.scss */
   .moving-column-overlay {
     display: none;
   }
 }
 
-/* line 403, scss/components/_moving_columns.scss */
+/* line 400, scss/components/_moving_columns.scss */
 .moving-column-tab {
   float: left;
 }
@@ -3518,8 +3532,13 @@ time.
 }
 /* line 53, scss/components/_map.scss */
 .map-info.ng-invalid {
-  background: #f00;
+  background: #c72e51;
   font-weight: 900;
+}
+/* line 57, scss/components/_map.scss */
+.map-info.ng-invalid a {
+  color: inherit;
+  text-decoration: underline;
 }
 
 /*doc
@@ -3539,7 +3558,7 @@ rather than in response to user action.
 </div>
 ```
 */
-/* line 76, scss/components/_map.scss */
+/* line 81, scss/components/_map.scss */
 .map-info-persistent {
   font-size: 10px;
   font-size: 0.83333rem;
@@ -3548,7 +3567,7 @@ rather than in response to user action.
   background: #f2f2f2;
 }
 
-/* line 82, scss/components/_map.scss */
+/* line 87, scss/components/_map.scss */
 .leaflet-marker-icon {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -3560,45 +3579,45 @@ rather than in response to user action.
   color: white;
   text-align: center;
 }
-/* line 89, scss/components/_map.scss */
+/* line 94, scss/components/_map.scss */
 .leaflet-marker-icon.is-active, .leaflet-marker-icon:hover, .leaflet-marker-icon:focus {
   background: #e6e6e6;
 }
-/* line 93, scss/components/_map.scss */
+/* line 98, scss/components/_map.scss */
 .leaflet-marker-icon.marker-cluster {
   display: table;
 }
-/* line 96, scss/components/_map.scss */
+/* line 101, scss/components/_map.scss */
 .leaflet-marker-icon.marker-cluster div {
   display: table-cell;
   vertical-align: middle;
 }
 
-/* line 103, scss/components/_map.scss */
+/* line 108, scss/components/_map.scss */
 .map-list-container,
 .map-list-map-container {
   position: relative;
 }
 
-/* line 108, scss/components/_map.scss */
+/* line 113, scss/components/_map.scss */
 .map-list-zoom {
   bottom: 0;
   left: 0;
   position: absolute;
 }
 
-/* line 114, scss/components/_map.scss */
+/* line 119, scss/components/_map.scss */
 .map-list-navigate {
   font-size: 12px;
   font-size: 1rem;
   font-weight: bold;
 }
-/* line 118, scss/components/_map.scss */
+/* line 123, scss/components/_map.scss */
 .map-list-navigate:hover, .map-list-navigate:focus {
   text-decoration: none;
 }
 
-/* line 123, scss/components/_map.scss */
+/* line 128, scss/components/_map.scss */
 .map-list-navigate-container {
   margin-top: -12px;
   margin-top: -1rem;
@@ -3607,33 +3626,33 @@ rather than in response to user action.
   position: absolute;
   top: 50%;
 }
-/* line 129, scss/components/_map.scss */
+/* line 134, scss/components/_map.scss */
 .map-list-navigate-container p {
   line-height: 12px;
   line-height: 1rem;
 }
 
-/* line 134, scss/components/_map.scss */
+/* line 139, scss/components/_map.scss */
 .map-list-navigate-container-prev {
   left: 10px;
   left: 0.83333rem;
   text-align: left;
 }
 
-/* line 139, scss/components/_map.scss */
+/* line 144, scss/components/_map.scss */
 .map-list-navigate-container-next {
   right: 10px;
   right: 0.83333rem;
   text-align: right;
 }
 
-/* line 144, scss/components/_map.scss */
+/* line 149, scss/components/_map.scss */
 .map-list-scroll-container {
   padding: 0 40px;
   padding: 0 3.33333rem;
 }
 
-/* line 148, scss/components/_map.scss */
+/* line 153, scss/components/_map.scss */
 .map-list-scroll-container-inner {
   margin: 15px 0 0;
   margin: 1.25rem 0 0;
@@ -3642,12 +3661,12 @@ rather than in response to user action.
   vertical-align: top;
   white-space: nowrap;
 }
-/* line 155, scss/components/_map.scss */
+/* line 160, scss/components/_map.scss */
 .map-list-scroll-container-inner * {
   white-space: normal;
 }
 
-/* line 160, scss/components/_map.scss */
+/* line 165, scss/components/_map.scss */
 .map-list-item {
   display: inline-block;
   vertical-align: middle;
@@ -3657,17 +3676,17 @@ rather than in response to user action.
   vertical-align: middle;
   width: 100%;
 }
-/* line 165, scss/components/_map.scss */
+/* line 170, scss/components/_map.scss */
 .map-list-item.m-empty {
   font-weight: bold;
   text-align: center;
 }
 
-/* line 172, scss/components/_map.scss */
+/* line 177, scss/components/_map.scss */
 .map-switch .map-switch-item {
   color: #333;
 }
-/* line 175, scss/components/_map.scss */
+/* line 180, scss/components/_map.scss */
 .map-switch .map-switch-item.is-selected {
   color: #7fcdee;
 }
@@ -4129,7 +4148,7 @@ parent: comment
 }
 /* line 248, scss/components/_comment.scss */
 .comment-header .comment-header-link.comment-header-link-report {
-  color: #f00;
+  color: #c72e51;
 }
 /* line 253, scss/components/_comment.scss */
 .comment-header .comment-header-column1,
@@ -4637,7 +4656,7 @@ combination with `.jump-navigation.m-narrow.m-unnumbered`.
 .section-jump-cover-header {
   font-size: 18px;
   font-size: 1.5rem;
-  color: #2b2b2b;
+  color: #090909;
   font-weight: normal;
   margin: 0;
 }
@@ -5037,11 +5056,11 @@ The button has the is-rate-button-active state.
 }
 /* line 81, scss/components/_rate.scss */
 .like-button:active, .like-button.is-rate-button-active {
-  background: #73bf44;
+  background: #00af5d;
 }
 /* line 85, scss/components/_rate.scss */
 .like-button:active:before, .like-button.is-rate-button-active:before {
-  border-right-color: #73bf44;
+  border-right-color: #00af5d;
 }
 /* line 91, scss/components/_rate.scss */
 .like-button:active:hover, .like-button.is-rate-button-active:hover {
@@ -5174,19 +5193,19 @@ Click show results
 }
 /* line 224, scss/components/_rate.scss */
 .rate .rate-pro.is-rate-button-active, .rate .rate-pro:hover:not(.is-disabled), .rate .rate-pro:focus:not(.is-disabled), .rate .rate-pro:active:not(.is-disabled) {
-  color: #73bf44;
+  color: #00af5d;
 }
 /* line 233, scss/components/_rate.scss */
 .rate .rate-contra.is-rate-button-active, .rate .rate-contra:hover:not(.is-disabled), .rate .rate-contra:focus:not(.is-disabled), .rate .rate-contra:active:not(.is-disabled) {
-  color: #f00;
+  color: #c72e51;
 }
 /* line 242, scss/components/_rate.scss */
 .rate .rate-difference.is-positive {
-  color: #73bf44;
+  color: #00af5d;
 }
 /* line 246, scss/components/_rate.scss */
 .rate .rate-difference.is-negative {
-  color: #f00;
+  color: #c72e51;
 }
 
 /*doc
@@ -6855,7 +6874,7 @@ cta button variant
 
 /* line 1, scss/components/_meta_list_theme.scss */
 .s1-proposal-list-item-meta {
-  color: #2b2b2b;
+  color: #090909;
 }
 /* line 4, scss/components/_meta_list_theme.scss */
 .s1-proposal-list-item-meta .meta-list-item {
@@ -6964,15 +6983,15 @@ cta button variant
 
 /* line 2, scss/components/_rate_theme.scss */
 .rate .rate-pro {
-  color: #73bf44;
+  color: #00af5d;
 }
 /* line 13, scss/components/_rate_theme.scss */
 .rate .rate-pro.is-rate-button-active:hover {
-  color: #f00;
+  color: #c72e51;
 }
 /* line 17, scss/components/_rate_theme.scss */
 .rate .rate-pro.is-rate-button-active:active {
-  color: #73bf44;
+  color: #00af5d;
 }
 
 /* line 1, scss/components/_s1_header.scss */
