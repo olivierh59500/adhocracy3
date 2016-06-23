@@ -29,21 +29,12 @@
                         title="{{ 'TR__EDIT' | translate }}">
                         <i class="comment-header-icon icon-pencil"></i>
                     </a>
-                    <adh-hide-action
-                        data-ng-if="poolOptions.hide"
-                        data-modals="column"
-                        data-class="comment-header-link"
-                        data-parent-path="true"
-                        data-resource-path="{{data.path}}"
+                    <adh-resource-actions
+                        data-resource-path="{{path}}"
                         data-content-type="{{contentType}}"
-                        ></adh-hide-action>
-                    <adh-report-action
-                        data-modals="column"
-                        data-class="comment-header-link"
                         data-parent-path="true"
-                        data-resource-path="{{data.path}}"
-                        data-content-type="{{contentType}}"
-                        ></adh-report-action>
+                        data-report="true"
+                        data-hide="true"></adh-resource-actions>
                 </span>
                 <adh-recompile-on-change data-value="{{data.path}}">
                     <adh-rate data-refers-to="{{data.path}}"></adh-rate>

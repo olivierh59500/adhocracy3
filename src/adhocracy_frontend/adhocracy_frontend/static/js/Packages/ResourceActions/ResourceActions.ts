@@ -64,6 +64,7 @@ export var resourceActionsDirective = (
             resourcePath: "@",
             parentPath: "=?",
             deleteRedirectUrl: "@?",
+            contentType: "@?",
             share: "=?",
             hide: "=?",
             resourceWidgetDelete: "=?",
@@ -86,7 +87,7 @@ export var reportActionDirective = () => {
     return {
         restrict: "E",
         template: "<a data-ng-if=\"!commentTemplate\" class=\"{{class}}\" href=\"\" data-ng-click=\"report();\">" +
-            "{{ 'TR__REPORT' | translate }}</a><a data-ng-if=\"commentTemplate\" class=\"{{class}}\" href=\"\"" +
+            "{{ 'TR__REPORT' | translate }}</a><a data-ng-if=\"commentTemplate\" class=\"comment-header-link\" href=\"\"" +
             "data-ng-click=\"report();\"><i class=\"comment-header-icon icon-flag\"></i></a>",
         scope: {
             class: "@",
@@ -128,7 +129,7 @@ export var hideActionDirective = (
     return {
         restrict: "E",
         template: "<a data-ng-if=\"!commentTemplate\" class=\"{{class}}\" href=\"\" data-ng-click=\"hide();\">" +
-            "{{ 'TR__HIDE' | translate }}</a><a data-ng-if=\"commentTemplate\" class=\"{{class}}\" href=\"\"" +
+            "{{ 'TR__HIDE' | translate }}</a><a data-ng-if=\"commentTemplate\" class=\"comment-header-link\" href=\"\"" +
             "data-ng-click=\"hide();\"><i class=\"comment-header-icon icon-x\"></i></a>",
         scope: {
             resourcePath: "@",

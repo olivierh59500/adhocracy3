@@ -235,7 +235,6 @@ export var commentDetailDirective = (
             });
         };
 
-        scope.column = column;
         scope.contentType = RIComment.content_type;
 
         adhPermissions.bindScope(scope, () => scope.data && scope.data.replyPoolPath, "poolOptions");
