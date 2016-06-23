@@ -24,6 +24,8 @@ var pkgLocation = "/Comment";
 
 export interface ICommentResourceScope extends angular.IScope {
     path : string;
+    column? : AdhMovingColumns.MovingColumnController;
+    contentType : string;
     submit : () => any;
     hide : () => angular.IPromise<void>;
     refersTo : string;
@@ -182,12 +184,6 @@ export var commentDetailDirective = (
     var _postEdit = postEdit(adhHttp, adhPreliminaryNames);
 
     var link = (scope : ICommentResourceScope, element, attrs, column? : AdhMovingColumns.MovingColumnController) => {
-        if (column) {
-            scope.report = () => {
-                column.$scope.shared.abuseUrl = scope.data.path;
-                column.toggleOverlay("abuse");
-            };
-        }
 
         scope.$on("$destroy", adhTopLevelState.on("commentUrl", (commentVersionUrl) => {
             if (!commentVersionUrl) {
@@ -252,6 +248,9 @@ export var commentDetailDirective = (
                 }
             });
         };
+
+        scope.column = column;
+        scope.contentType = RIComment.content_type;
 
         adhPermissions.bindScope(scope, () => scope.data && scope.data.replyPoolPath, "poolOptions");
         adhPermissions.bindScope(scope, () => scope.data && scope.data.itemPath, "commentItemOptions");

@@ -5,6 +5,8 @@ import * as AdhPermissions from "../Permissions/Permissions";
 import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 import * as AdhUtil from "../Util/Util";
 
+import RIComment from "../../Resources_/adhocracy_core/resources/comment/IComment";
+
 var pkgLocation = "/ResourceActions";
 
 
@@ -83,12 +85,16 @@ export var resourceActionsDirective = (
 export var reportActionDirective = () => {
     return {
         restrict: "E",
-        template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"report();\">{{ 'TR__REPORT' | translate }}</a>",
+        template: "<a data-ng-if=\"!commentTemplate\" class=\"{{class}}\" href=\"\" data-ng-click=\"report();\">" +
+            "{{ 'TR__REPORT' | translate }}</a><a data-ng-if=\"commentTemplate\" class=\"{{class}}\" href=\"\"" +
+            "data-ng-click=\"report();\"><i class=\"comment-header-icon icon-flag\"></i></a>",
         scope: {
             class: "@",
+            contentType: "@?",
             modals: "=",
         },
         link: (scope) => {
+            scope.commentTemplate = scope.contentType === RIComment.content_type;
             scope.report = () => {
                 scope.modals.toggleOverlay("abuse");
             };

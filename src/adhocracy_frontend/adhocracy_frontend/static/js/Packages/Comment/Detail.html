@@ -37,13 +37,13 @@
                         title="{{ 'TR__HIDE' | translate }}">
                         <i class="comment-header-icon icon-x"></i>
                     </a>
-                    <a href=""
-                        data-ng-click="report()"
-                        data-ng-if="report"
-                        class="comment-header-link comment-header-link-report"
-                        title="{{ 'TR__REPORT' | translate }}">
-                        <i class="comment-header-icon icon-flag"></i>
-                    </a>
+                    <adh-report-action
+                        data-modals="column"
+                        data-class="comment-header-link"
+                        data-parent-path="true"
+                        data-resource-path="{{data.path}}"
+                        data-content-type="{{contentType}}"
+                        ></adh-report-action>
                 </span>
                 <adh-recompile-on-change data-value="{{data.path}}">
                     <adh-rate data-refers-to="{{data.path}}"></adh-rate>
