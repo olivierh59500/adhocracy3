@@ -127,14 +127,18 @@ export var hideActionDirective = (
 ) => {
     return {
         restrict: "E",
-        template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"hide();\">{{ 'TR__HIDE' | translate }}</a>",
+        template: "<a data-ng-if=\"!commentTemplate\" class=\"{{class}}\" href=\"\" data-ng-click=\"hide();\">" +
+            "{{ 'TR__HIDE' | translate }}</a><a data-ng-if=\"commentTemplate\" class=\"{{class}}\" href=\"\"" +
+            "data-ng-click=\"hide();\"><i class=\"comment-header-icon icon-x\"></i></a>",
         scope: {
             resourcePath: "@",
             parentPath: "=?",
             class: "@",
+            contentType: "@?",
             redirectUrl: "@?",
         },
         link: (scope, element) => {
+            scope.commentTemplate = scope.contentType === RIComment.content_type;
             scope.hide = () => {
                 return $translate("TR__ASK_TO_CONFIRM_HIDE_ACTION").then((question) => {
                     var path = scope.parentPath ? AdhUtil.parentPath(scope.resourcePath) : scope.resourcePath;

@@ -30,13 +30,14 @@
                         <i class="comment-header-icon icon-pencil"></i>
 
                     </a>
-                    <a href=""
-                        data-ng-click="hide()"
-                        data-ng-if="versionOptions.hide"
-                        class="comment-header-link"
-                        title="{{ 'TR__HIDE' | translate }}">
-                        <i class="comment-header-icon icon-x"></i>
-                    </a>
+                    <adh-hide-action
+                        data-ng-if="poolOptions.hide"
+                        data-modals="column"
+                        data-class="comment-header-link"
+                        data-parent-path="true"
+                        data-resource-path="{{data.path}}"
+                        data-content-type="{{contentType}}"
+                        ></adh-hide-action>
                     <adh-report-action
                         data-modals="column"
                         data-class="comment-header-link"
