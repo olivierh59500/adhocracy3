@@ -732,9 +732,10 @@ def add_local_roles_for_workflow_state(root,
     resources = _search_for_interfaces(catalogs, IProcess)
     count = len(resources)
     for index, resource in enumerate(resources):
-        workflow = registry.content.get_sheet_field(resource,
-                                                    IWorkflowAssignment,
-                                                    'workflow')
+        workflow_name = registry.content.get_sheet_field(resource,
+                                                         IWorkflowAssignment,
+                                                         'workflow')
+        workflow = registry.content.workflows[workflow_name]
         state_name = workflow.state_of(resource)
         local_roles = workflow._states[state_name].local_roles
         logger.info('Update workflow local roles for resource {0} - {1} of {2}'
