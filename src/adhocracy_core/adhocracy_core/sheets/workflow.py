@@ -190,10 +190,10 @@ class WorkflowAssignmentSheet(AnnotationRessourceSheet):
         workflow = self.registry.content.workflows.get(name, None)
         return workflow
 
-    def _store_data(self, appstruct: dict):
+    def _store_data(self, appstruct: dict, initialize_workflow=True):
         if 'workflow' in appstruct and 'workflow_state' in appstruct:
             del appstruct['workflow_state']  # we cannot change both
-        if 'workflow' in appstruct:
+        if 'workflow' in appstruct and initialize_workflow:
             self._initialize(appstruct['workflow'])
         elif 'workflow_state' in appstruct:
             self._do_transition_to(appstruct['workflow_state'])
