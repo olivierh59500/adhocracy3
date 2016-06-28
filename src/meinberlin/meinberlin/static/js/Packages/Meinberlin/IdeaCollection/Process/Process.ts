@@ -102,7 +102,7 @@ export var editDirective = (
         scope: {
             path: "@"
         },
-        link: (scope) => {
+        link: (scope, element) => {
             var process;
             scope.data = {};
             scope.showError = adhShowError;
