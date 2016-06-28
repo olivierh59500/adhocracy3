@@ -438,7 +438,6 @@ export var commentColumnDirective = (
         link: (scope) => {
             scope.$on("$destroy", adhTopLevelState.bind("commentCloseUrl", scope));
             scope.$on("$destroy", adhTopLevelState.bind("commentableUrl", scope));
-            scope.column = column;
         }
     };
 };
