@@ -8,7 +8,7 @@
         <a
             class="moving-column-menu-button"
             data-ng-if="badgeAssignmentPoolOptions.POST"
-            data-ng-click="ctrl.toggleOverlay('badges')"
+            data-ng-click="report()"
             href="">{{ "TR__MANAGE_BADGE_ASSIGNMENTS" | translate }}</a>
 
         <div class="moving-column-menu-nav">
@@ -31,10 +31,18 @@
         </adh-euth-proposal-detail>
     </adh-recompile-on-change>
 
-    <adh-badge-assignment
-        data-ng-switch-when="overlays"
-        data-ng-if="overlay === 'badges'"
-        data-modals="column"
-        data-path="{{proposalUrl}}">
-    </adh-badge-assignment>
+    <ul class="moving-column-alerts">
+        <li data-ng-repeat="(id, alert) in modals.alerts" class="moving-column-alert m-{{alert.mode}}" data-ng-click="modals.removeAlert(id)">
+            {{ alert.message | translate }}
+        </li>
+    </ul>
+
+    <div class="action-bar-modal" data-ng-if="modals.overlay">
+        <adh-report-abuse
+            data-ng-if="modals.overlay === 'badges'"
+            data-modals="modals"
+            data-url="{{proposalUrl}}">
+        </adh-report-abuse>
+    </div>
+
 </div>

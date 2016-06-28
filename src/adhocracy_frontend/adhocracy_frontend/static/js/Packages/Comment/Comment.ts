@@ -186,7 +186,6 @@ export var commentDetailDirective = (
 
     var link = (scope : ICommentResourceScope) => {
         scope.modals = new AdhResourceActions.Modals($timeout);
-
         scope.report = () => {
             scope.modals.toggleOverlay("abuse");
         };

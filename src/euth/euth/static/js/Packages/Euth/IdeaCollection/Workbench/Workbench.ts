@@ -2,6 +2,7 @@ import * as AdhConfig from "../../Config/Config";
 import * as AdhHttp from "../../Http/Http";
 import * as AdhMovingColumns from "../../MovingColumns/MovingColumns";
 import * as AdhPermissions from "../../Permissions/Permissions";
+import * as AdhResourceActions from "../../../ResourceActions/ResourceActions";
 import * as AdhResourceArea from "../../ResourceArea/ResourceArea";
 import * as AdhTopLevelState from "../../TopLevelState/TopLevelState";
 import * as AdhUtil from "../../../Util/Util";
@@ -34,6 +35,7 @@ export var workbenchDirective = (
 };
 
 export var proposalDetailColumnDirective = (
+    $timeout,
     adhConfig : AdhConfig.IService,
     adhHttp : AdhHttp.Service<any>,
     adhPermissions : AdhPermissions.Service
@@ -41,12 +43,13 @@ export var proposalDetailColumnDirective = (
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/ProposalDetailColumn.html",
-        require: "^adhMovingColumn",
-        link: (scope, element, attrs, column : AdhMovingColumns.MovingColumnController) => {
-            column.bindVariablesAndClear(scope, ["processUrl", "proposalUrl"]);
+        require: "?^adhMovingColumn",
+        link: (scope, element, attrs, column? : AdhMovingColumns.MovingColumnController) => {
+            if (column) {
+                column.bindVariablesAndClear(scope, ["processUrl", "proposalUrl"]);
+            }
             adhPermissions.bindScope(scope, () => scope.proposalUrl && AdhUtil.parentPath(scope.proposalUrl), "proposalItemOptions");
 
-            scope.column = column;
             var badgeAssignmentPoolPath;
             scope.$watch("proposalUrl", (proposalUrl) => {
                 if (proposalUrl) {
@@ -56,6 +59,10 @@ export var proposalDetailColumnDirective = (
                 }
             });
             adhPermissions.bindScope(scope, () => badgeAssignmentPoolPath, "badgeAssignmentPoolOptions");
+            scope.modals = new AdhResourceActions.Modals($timeout);
+            scope.report = () => {
+                scope.modals.toggleOverlay("abuse");
+            };
         }
     };
 };
