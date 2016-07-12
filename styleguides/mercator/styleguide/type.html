@@ -29,8 +29,6 @@
                         
                         <li><a href="index.html">Type</a></li>
                         
-                        <li><a href="widgets.html">widgets</a></li>
-                        
                         <li><a href="buttons.html">Buttons</a></li>
                         
                         <li><a href="variables.html">Variables</a></li>
@@ -38,6 +36,8 @@
                         <li><a href="debug.html">Debug</a></li>
                         
                         <li><a href="inputs.html">Inputs</a></li>
+                        
+                        <li><a href="meinberlin.html">meinberlin</a></li>
                         
                         <li><a href="layout.html">Layout</a></li>
                         
@@ -58,14 +58,6 @@
                     
                     <li><a href="#address">Address</a></li>
                     
-                    <li><a href="#badge">Badges</a></li>
-                    
-                    <li><a href="#badge-description">Badge description</a></li>
-                    
-                    <li><a href="#has-rosette">Rosettes</a></li>
-                    
-                    <li><a href="#badge-modifiers">Badge modfiers</a></li>
-                    
                     <li><a href="#blockqoute">Blockquote</a></li>
                     
                     <li><a href="#disguised-link">Disguised link mixin</a></li>
@@ -83,8 +75,6 @@
                     <li><a href="#ins">Inserted</a></li>
                     
                     <li><a href="#time">Time</a></li>
-                    
-                    <li><a href="#inline-box">Inline boxes mixin</a></li>
                     
                     <li><a href="#link">link</a></li>
                     
@@ -122,82 +112,6 @@
     123 Main Street<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
     Anywhere, ST 12345
 <span class="nt">&lt;/address&gt;</span></pre>
-    </div>
-  </div>
-</div>
-
-<h1 id="badge" class="styleguide">Badges</h1>
-<p class="styleguide">Badges for labeling things</p><div class="codeExample">
-  <div class="exampleOutput">
-    <p>I am a normal user <span class="badge">Normal User</span></p>
-
-<p>Two badges with whitespace in between: <span class="badge">one</span> <span class="badge">two</span></p>
-
-<p>Two badges without whitespace in between: <span class="badge">one</span><span class="badge">two</span></p>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;p&gt;</span>I am a normal user <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"badge"</span><span class="nt">&gt;</span>Normal User<span class="nt">&lt;/span&gt;&lt;/p&gt;</span>
-
-<span class="nt">&lt;p&gt;</span>Two badges with whitespace in between: <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"badge"</span><span class="nt">&gt;</span>one<span class="nt">&lt;/span&gt;</span> <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"badge"</span><span class="nt">&gt;</span>two<span class="nt">&lt;/span&gt;&lt;/p&gt;</span>
-
-<span class="nt">&lt;p&gt;</span>Two badges without whitespace in between: <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"badge"</span><span class="nt">&gt;</span>one<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"badge"</span><span class="nt">&gt;</span>two<span class="nt">&lt;/span&gt;&lt;/p&gt;</span></pre>
-    </div>
-  </div>
-</div>
-
-<h2 id="badge-description" class="styleguide">Badge description</h2>
-<p class="styleguide">The description of a badge assignment. The same modifiers as for <code class="styleguide">badge</code> apply.</p><div class="codeExample">
-  <div class="exampleOutput">
-    <div class="badge-description">
-    <p>Simple badge description</p>
-</div>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"badge-description"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Simple badge description<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;/div&gt;</span></pre>
-    </div>
-  </div>
-</div>
-
-<h2 id="has-rosette" class="styleguide">Rosettes</h2>
-<p class="styleguide">Add a winning rosette or similar to an element. Must have a position:relative or absolute container.</p><div class="codeExample">
-  <div class="exampleOutput">
-    <ol class="listing-elements">
-    <li class="listing-element debug-placeholder has-rosette m-winner" style="min-height:75px; position: relative">Winner</li>
-    <li class="listing-element debug-placeholder has-rosette m-community-award" style="min-height:75px; position: relative">Community Winner</li>
-</ol>
-
-<div class="debug-placeholder has-rosette m-winner" style="position: relative; height:100px; width: 200px">Winner</div>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;ol</span> <span class="na">class=</span><span class="s">"listing-elements"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"listing-element debug-placeholder has-rosette m-winner"</span> <span class="na">style=</span><span class="s">"min-height:75px; position: relative"</span><span class="nt">&gt;</span>Winner<span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"listing-element debug-placeholder has-rosette m-community-award"</span> <span class="na">style=</span><span class="s">"min-height:75px; position: relative"</span><span class="nt">&gt;</span>Community Winner<span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ol&gt;</span>
-
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"debug-placeholder has-rosette m-winner"</span> <span class="na">style=</span><span class="s">"position: relative; height:100px; width: 200px"</span><span class="nt">&gt;</span>Winner<span class="nt">&lt;/div&gt;</span></pre>
-    </div>
-  </div>
-</div>
-
-<h1 id="badge-modifiers" class="styleguide">Badge modfiers</h1>
-<p class="styleguide">Proposal modifiers for badges</p><div class="codeExample">
-  <div class="exampleOutput">
-    <span class="badge m-winner">Winner</span>
-<span class="badge m-community-award">Community Award</span>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"badge m-winner"</span><span class="nt">&gt;</span>Winner<span class="nt">&lt;/span&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"badge m-community-award"</span><span class="nt">&gt;</span>Community Award<span class="nt">&lt;/span&gt;</span></pre>
     </div>
   </div>
 </div>
@@ -324,31 +238,6 @@ When is a <span class="nt">&lt;a</span> <span class="na">href=</span><span class
   <div class="codeBlock">
     <div class="highlight">
       <pre><span class="nt">&lt;time</span> <span class="na">datetime=</span><span class="s">"2013-04-18T13:50:47+02:00"</span><span class="nt">&gt;</span>18. April 2013 13:50<span class="nt">&lt;/time&gt;</span></pre>
-    </div>
-  </div>
-</div>
-
-<h1 id="inline-box" class="styleguide">Inline boxes mixin</h1>
-<div class="codeExample">
-  <div class="exampleOutput">
-    <span class="inline-box">Inline box 1</span>
-<span class="inline-box">Inline box 2</span>
-
-<ul class="inline-boxes">
-    <li>Inline box 1</li>
-    <li>Inline box 2</li>
-</ul>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"inline-box"</span><span class="nt">&gt;</span>Inline box 1<span class="nt">&lt;/span&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"inline-box"</span><span class="nt">&gt;</span>Inline box 2<span class="nt">&lt;/span&gt;</span>
-
-<span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"inline-boxes"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li&gt;</span>Inline box 1<span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;</span>Inline box 2<span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></pre>
     </div>
   </div>
 </div>

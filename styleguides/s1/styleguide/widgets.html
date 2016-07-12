@@ -29,8 +29,6 @@
                         
                         <li><a href="index.html">Type</a></li>
                         
-                        <li><a href="widgets.html">widgets</a></li>
-                        
                         <li><a href="buttons.html">Buttons</a></li>
                         
                         <li><a href="variables.html">Variables</a></li>
@@ -38,6 +36,8 @@
                         <li><a href="debug.html">Debug</a></li>
                         
                         <li><a href="inputs.html">Inputs</a></li>
+                        
+                        <li><a href="meinberlin.html">meinberlin</a></li>
                         
                         <li><a href="layout.html">Layout</a></li>
                         
@@ -56,11 +56,17 @@
             <div class="page_wrapper">
                 <ul>
                     
+                    <li><a href="#action-bar">Action Bar</a></li>
+                    
                     <li><a href="#action-section">Action section</a></li>
                     
                     <li><a href="#action-section-button-mixin">Action section button mixin</a></li>
                     
                     <li><a href="#annotated-section">Annotated section</a></li>
+                    
+                    <li><a href="#badge">Badges</a></li>
+                    
+                    <li><a href="#badge-description">Badge description</a></li>
                     
                     <li><a href="#busy-bar">busy bar</a></li>
                     
@@ -92,15 +98,21 @@
                     
                     <li><a href="#meta-list">Meta List</a></li>
                     
+                    <li><a href="#modal">Modal</a></li>
+                    
+                    <li><a href="#alerts">Alerts</a></li>
+                    
                     <li><a href="#navbar">Navigation Bar</a></li>
                     
                     <li><a href="#rate">Rate</a></li>
                     
                     <li><a href="#opionion">Opinion</a></li>
                     
-                    <li><a href="#section-jump">Section Jump</a></li>
+                    <li><a href="#resource-header">Resource Header</a></li>
                     
-                    <li><a href="#textbox">textbox</a></li>
+                    <li><a href="#resource-header.m-image">image modifier</a></li>
+                    
+                    <li><a href="#section-jump">Section Jump</a></li>
                     
                     <li><a href="#unsupported-browser">Unsupported Browser</a></li>
                     
@@ -113,6 +125,109 @@
                 </ul>
 
                 <div class="components">
+<h1 id="action-bar" class="styleguide">Action Bar</h1>
+<p class="styleguide">A bar with items that trigger actions. Use this widget to provide a
+consistent interface for actions like edit, delete, report, print, and share.
+It is typically located at the top of a larger widget, e.g. a proposal detail.</p><p class="styleguide">Elements of the action bar are called action bar items (<code class="styleguide">action-bar-item</code>).
+They can have the <code class="styleguide">m-selected</code> modifier.</p><p class="styleguide">An action can trigger showing a modal below the action bar.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="action-bar">
+    <a class="action-bar-item">edit</a>
+    <a class="action-bar-item m-selected">delete</a>
+    <a class="action-bar-item">report</a>
+</div>
+<div class="modal">
+    <form>
+        <input type="text" />
+        <input type="submit" class="button-cta" />
+    </form>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"action-bar"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>edit<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item m-selected"</span><span class="nt">&gt;</span>delete<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>report<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;form&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">class=</span><span class="s">"button-cta"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+<div class="codeExample">
+  <div class="exampleOutput">
+    <div class="action-bar">
+    <a class="action-bar-item">edit</a>
+    <a class="action-bar-item">delete</a>
+    <a class="action-bar-item">report</a>
+</div>
+<div class="action-bar">
+    <a class="action-bar-item">edit</a>
+    <a class="action-bar-item">delete</a>
+    <a class="action-bar-item">report</a>
+</div>
+<div class="action-bar">
+</div>
+<div class="action-bar">
+    <a class="action-bar-item">edit</a>
+    <a class="action-bar-item">delete</a>
+    <a class="action-bar-item">report</a>
+    <a class="action-bar-item">edit</a>
+    <a class="action-bar-item">delete</a>
+    <a class="action-bar-item">report</a>
+    <a class="action-bar-item">edit</a>
+    <a class="action-bar-item">delete</a>
+    <a class="action-bar-item">report</a>
+    <a class="action-bar-item">edit</a>
+    <a class="action-bar-item">delete</a>
+    <a class="action-bar-item">report</a>
+    <a class="action-bar-item">edit</a>
+    <a class="action-bar-item">delete</a>
+    <a class="action-bar-item">report</a>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"action-bar"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>edit<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>delete<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>report<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"action-bar"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>edit<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>delete<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>report<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"action-bar"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"action-bar"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>edit<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>delete<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>report<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>edit<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>delete<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>report<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>edit<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>delete<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>report<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>edit<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>delete<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>report<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>edit<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>delete<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>report<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
 <h1 id="action-section" class="styleguide">Action section</h1>
 <p class="styleguide">A section of any content with a corresponding &#39;action button&#39; EG Show Comments
 or Delete Section</p><p class="styleguide">Some sections have no action within a block of action sections, these can be
@@ -188,6 +303,44 @@ marked for consistent styling and highlighting.</p><p class="styleguide">States:
         consectetur.
     <span class="nt">&lt;/div&gt;</span>
 <span class="nt">&lt;/section&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h1 id="badge" class="styleguide">Badges</h1>
+<p class="styleguide">Badges for labeling things</p><div class="codeExample">
+  <div class="exampleOutput">
+    <p>I am a normal user <span class="badge">Normal User</span></p>
+
+<p>Two badges with whitespace in between: <span class="badge">one</span> <span class="badge">two</span></p>
+
+<p>Two badges without whitespace in between: <span class="badge">one</span><span class="badge">two</span></p>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;p&gt;</span>I am a normal user <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"badge"</span><span class="nt">&gt;</span>Normal User<span class="nt">&lt;/span&gt;&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>Two badges with whitespace in between: <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"badge"</span><span class="nt">&gt;</span>one<span class="nt">&lt;/span&gt;</span> <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"badge"</span><span class="nt">&gt;</span>two<span class="nt">&lt;/span&gt;&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>Two badges without whitespace in between: <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"badge"</span><span class="nt">&gt;</span>one<span class="nt">&lt;/span&gt;&lt;span</span> <span class="na">class=</span><span class="s">"badge"</span><span class="nt">&gt;</span>two<span class="nt">&lt;/span&gt;&lt;/p&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h2 id="badge-description" class="styleguide">Badge description</h2>
+<p class="styleguide">The description of a badge assignment. The same modifiers as for <code class="styleguide">badge</code> apply.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="badge-description">
+    <p>Simple badge description</p>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"badge-description"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Simple badge description<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
     </div>
   </div>
 </div>
@@ -907,6 +1060,63 @@ Vertical
   </div>
 </div>
 
+<h1 id="modal" class="styleguide">Modal</h1>
+<p class="styleguide">A modal contains optional interaction (e.g. a form) that is hidden by default
+and will only show up if triggered by an user action.</p><p class="styleguide">Modals are displayed below the element where they were triggered. They should
+open/close with a sliding animation.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="action-bar">
+    <a class="action-bar-item">edit</a>
+    <a class="action-bar-item m-selected">delete</a>
+    <a class="action-bar-item">report</a>
+</div>
+<div class="modal">
+    <form>
+        <input type="text" />
+        <input type="submit" class="button-cta" />
+    </form>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"action-bar"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>edit<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item m-selected"</span><span class="nt">&gt;</span>delete<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"action-bar-item"</span><span class="nt">&gt;</span>report<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;form&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">class=</span><span class="s">"button-cta"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h2 id="alerts" class="styleguide">Alerts</h2>
+<p class="styleguide">A list of alert messages to notify users of the result of a modal action.</p><p class="styleguide">The messages are informational by default, but can have the modifieres
+<code class="styleguide">m-error</code> and <code class="styleguide">m-success</code>.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <ul class="alerts static-example">
+    <li class="alerts-message">Info</li>
+    <li class="alerts-message m-error">Error</li>
+    <li class="alerts-message m-success">Success</li>
+</ul>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"alerts static-example"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"alerts-message"</span><span class="nt">&gt;</span>Info<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"alerts-message m-error"</span><span class="nt">&gt;</span>Error<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"alerts-message m-success"</span><span class="nt">&gt;</span>Success<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
 <h1 id="navbar" class="styleguide">Navigation Bar</h1>
 <p class="styleguide">A bar with multpile items. The items are aligned either to the left
 (<code class="styleguide">navbar-left</code>) or to the right (<code class="styleguide">navbar-right</code>).</p><p class="styleguide">Note that the items thet are aligned to the right will be sorted starting from
@@ -1144,6 +1354,103 @@ is bigger and exposes more details.</p><div class="codeExample">
   </div>
 </div>
 
+<h1 id="resource-header" class="styleguide">Resource Header</h1>
+<p class="styleguide">The resource header should be used as a consitent header for resources such as
+processes, proposals or documents. It contains a title, some meta-information,
+a primary action (e.g. create proposal or like) and a dropdown with resource
+actions (edit, share, report, print, ...).</p><div class="codeExample">
+  <div class="exampleOutput">
+    <header class="resource-header">
+    <div class="resource-header-navigation">
+        <div class="resource-header-breadcrumbs">
+            <a href="#">← to process</a>
+        </div>
+        <a href="#" class="resource-header-actions">…</a>
+    </div>
+    <div class="resource-header-main">
+        <h1 class="resource-header-title">Johannisthal</h1>
+        <ul class="resource-header-meta">
+            <li>Bebauungsplanverfahren 184a</li>
+            <li>Öffentliche auslegung</li>
+            <li>22.9.-22.10.15</li>
+        </ul>
+        <div class="resource-header-action"><a href="#" class="button-cta">Create proposal</a></div>
+    </div>
+</header>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;header</span> <span class="na">class=</span><span class="s">"resource-header"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"resource-header-navigation"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"resource-header-breadcrumbs"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>← to process<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"resource-header-actions"</span><span class="nt">&gt;</span>…<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"resource-header-main"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">"resource-header-title"</span><span class="nt">&gt;</span>Johannisthal<span class="nt">&lt;/h1&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"resource-header-meta"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;li&gt;</span>Bebauungsplanverfahren 184a<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>Öffentliche auslegung<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>22.9.-22.10.15<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;/ul&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"resource-header-action"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"button-cta"</span><span class="nt">&gt;</span>Create proposal<span class="nt">&lt;/a&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/header&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
+<h2 id="resource-header.m-image" class="styleguide">image modifier</h2>
+<p class="styleguide">Resource headers can have a background image.</p><div class="codeExample">
+  <div class="exampleOutput">
+    <div class="resource-header-wrapper" style="background-image: url('../images/sample.jpg')">
+    <header class="resource-header m-image">
+        <div class="resource-header-navigation">
+            <div class="resource-header-breadcrumbs">
+                <a href="#">← to process</a>
+            </div>
+            <a href="#" class="resource-header-actions">…</a>
+        </div>
+        <div class="resource-header-main">
+            <h1 class="resource-header-title">Johannisthal</h1>
+            <ul class="resource-header-meta">
+                <li>Bebauungsplanverfahren 184a</li>
+                <li>Öffentliche auslegung</li>
+                <li>22.9.-22.10.15</li>
+            </ul>
+            <div class="resource-header-action"><a href="#" class="button-cta">Create proposal</a></div>
+        </div>
+    </header>
+</div>
+
+  </div>
+  <div class="codeBlock">
+    <div class="highlight">
+      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"resource-header-wrapper"</span> <span class="na">style=</span><span class="s">"background-image: url('../images/sample.jpg')"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;header</span> <span class="na">class=</span><span class="s">"resource-header m-image"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"resource-header-navigation"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"resource-header-breadcrumbs"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>← to process<span class="nt">&lt;/a&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"resource-header-actions"</span><span class="nt">&gt;</span>…<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"resource-header-main"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">"resource-header-title"</span><span class="nt">&gt;</span>Johannisthal<span class="nt">&lt;/h1&gt;</span>
+            <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"resource-header-meta"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;li&gt;</span>Bebauungsplanverfahren 184a<span class="nt">&lt;/li&gt;</span>
+                <span class="nt">&lt;li&gt;</span>Öffentliche auslegung<span class="nt">&lt;/li&gt;</span>
+                <span class="nt">&lt;li&gt;</span>22.9.-22.10.15<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;/ul&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"resource-header-action"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"button-cta"</span><span class="nt">&gt;</span>Create proposal<span class="nt">&lt;/a&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/header&gt;</span>
+<span class="nt">&lt;/div&gt;</span></pre>
+    </div>
+  </div>
+</div>
+
 <h1 id="section-jump" class="styleguide">Section Jump</h1>
 <p class="styleguide">A widget with a header, a left navigation and a main section. Often used in
 combination with <code class="styleguide">.jump-navigation.m-narrow.m-unnumbered</code>.</p><div class="codeExample">
@@ -1191,29 +1498,6 @@ combination with <code class="styleguide">.jump-navigation.m-narrow.m-unnumbered
             <span class="nt">&lt;/div&gt;</span>
         <span class="nt">&lt;/div&gt;</span>
     <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span></pre>
-    </div>
-  </div>
-</div>
-
-<h1 id="textbox" class="styleguide">textbox</h1>
-<p class="styleguide">A simple box containing text.</p><div class="codeExample">
-  <div class="exampleOutput">
-    <div class="textbox">
-    <p>textbox</p>
-</div>
-<div class="textbox m-unobtrusive">
-    <p>unobtrusive textbox</p>
-</div>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"textbox"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;p&gt;</span>textbox<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"textbox m-unobtrusive"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;p&gt;</span>unobtrusive textbox<span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;/div&gt;</span></pre>
     </div>
   </div>
