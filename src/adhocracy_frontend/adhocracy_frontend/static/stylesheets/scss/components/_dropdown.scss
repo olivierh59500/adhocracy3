@@ -32,12 +32,9 @@ Resource headers can have a background image.
 
 // The dropdown wrapper (div)
 .dropdown {
-    position: relative;
+    position: absolute;
     right: 0;
-}
-
-// Prevent the focus on the dropdown toggle when closing dropdowns
-.dropdown-toggle:focus {
+    cursor: pointer;
     outline: 0;
 }
 
