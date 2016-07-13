@@ -1,6 +1,6 @@
 <div class="dropdown">
-    <div class="btn btn-default dropdown-toggle" aria-haspopup="isShowDropdown" aria-expanded="isShowDropdown">
-        <i class="icon-document moving-column-icon" data-ng-click="toggleDropdown()"></i>
+    <div aria-haspopup="isShowDropdown" aria-expanded="isShowDropdown">
+        <i class="icon-three-dots dropdown-icon" data-ng-if="!data.modals.modal" data-ng-click="data.toggleDropdown()"></i>
     </div>
     <ul class="dropdown-menu dropdown-menu-right" data-ng-if="isShowDropdown" aria-labelledby="dropdownMenu1">
         <adh-view-action
