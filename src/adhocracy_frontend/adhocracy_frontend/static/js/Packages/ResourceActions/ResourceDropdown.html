@@ -1,6 +1,6 @@
 <div class="dropdown">
     <div class="btn btn-default dropdown-toggle" aria-haspopup="isShowDropdown" aria-expanded="isShowDropdown">
-        <i class="icon-document moving-column-icon" data-ng-click="toggleDropdown()"></i>
+        <i class="icon-document moving-column-icon" data-ng-if="!data.modals.modal" data-ng-click="data.toggleDropdown()"></i>
     </div>
     <ul class="dropdown-menu dropdown-menu-right" data-ng-if="isShowDropdown" aria-labelledby="dropdownMenu1">
         <adh-view-action
@@ -21,12 +21,14 @@
             data-ng-if="data.assignBadges && data.resourcePath"
             data-modals="data.modals"
             data-resource-with-badges-url="{{data.resourceWithBadgesUrl}}"
-            data-resource-path="{{data.resourcePath}}"></adh-assign-badges-action>
+            data-resource-path="{{data.resourcePath}}"
+            data-toggle-dropdown="data.toggleDropdown"></adh-assign-badges-action>
         <adh-modal-action
             data-ng-if="data.report"
             data-modals="data.modals"
             data-modal="abuse"
-            data-label="TR__REPORT"></adh-modal-action>
+            data-label="TR__REPORT"
+            data-toggle-dropdown="data.toggleDropdown"></adh-modal-action>
         <adh-modal-action
             data-ng-if="data.share"
             data-modals="data.modals"
