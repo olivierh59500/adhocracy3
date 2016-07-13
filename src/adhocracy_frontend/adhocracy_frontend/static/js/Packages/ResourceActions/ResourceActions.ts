@@ -95,6 +95,59 @@ export var resourceActionsDirective = (
     };
 };
 
+export var resourceDropdownDirective = (
+    $timeout : angular.ITimeoutService,
+    adhConfig : AdhConfig.IService,
+    adhPermissions : AdhPermissions.Service
+) => {
+    return {
+        restrict: "E",
+        scope: {
+            resourcePath: "@",
+            resourceWithBadgesUrl: "@?",
+            deleteRedirectUrl: "@?",
+            assignBadges: "=?",
+            share: "=?",
+            hide: "=?",
+            resourceWidgetDelete: "=?",
+            print: "=?",
+            report: "=?",
+            cancel: "=?",
+            edit: "=?",
+            moderate: "=?",
+            modals: "=?"
+        },
+        templateUrl: adhConfig.pkg_path + pkgLocation + "/ResourceDropdown.html",
+        link: (scope, element) => {
+            scope.data = {
+                resourcePath: scope.resourcePath,
+                resourceWithBadgesUrl: scope.resourceWithBadgesUrl,
+                deleteRedirectUrl: scope.deleteRedirectUrl,
+                assignBadges: scope.assignBadges,
+                share: scope.share,
+                hide: scope.hide,
+                resourceWidgetDelete: scope.resourceWidgetDelete,
+                print: scope.print,
+                report: scope.report,
+                cancel: scope.cancel,
+                edit: scope.edit,
+                moderate: scope.moderate,
+                modals: scope.modals
+            };
+            scope.data.modals = new Modals($timeout);
+            adhPermissions.bindScope(scope, scope.data.resourcePath, "options");
+
+            scope.$watch("resourcePath", () => {
+                scope.data.modals.clear();
+            });
+
+            scope.toggleDropdown = () => {
+                scope.isShowDropdown = !scope.isShowDropdown;
+            };
+        }
+    };
+};
+
 export var modalActionDirective = () => {
     return {
         restrict: "E",
