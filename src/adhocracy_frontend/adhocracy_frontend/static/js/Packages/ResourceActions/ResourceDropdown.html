@@ -3,49 +3,78 @@
         <i class="icon-document moving-column-icon" data-ng-if="!data.modals.modal" data-ng-click="data.toggleDropdown()"></i>
     </div>
     <ul class="dropdown-menu dropdown-menu-right" data-ng-if="isShowDropdown" aria-labelledby="dropdownMenu1">
-        <adh-view-action
-            data-ng-if="data.edit && data.resourcePath && options.PUT"
-            data-view="edit"
-            data-label="TR__EDIT"
-            data-resource-path="{{data.resourcePath}}"></adh-view-action>
-        <adh-view-action data-ng-if="data.image && data.resourcePath && options.PUT"
-            data-view="image"
-            data-label="TR__IMAGE_UPLOAD"
-            data-resource-path="{{data.resourcePath}}"></adh-view-action>
-        <adh-view-action
-            data-ng-if="data.moderate && data.resourcePath"
-            data-view="moderate"
-            data-label="TR__MODERATE"
-            data-resource-path="{{resourcePath}}"></adh-view-action>
-        <adh-assign-badges-action
-            data-ng-if="data.assignBadges && data.resourcePath"
-            data-modals="data.modals"
-            data-resource-with-badges-url="{{data.resourceWithBadgesUrl}}"
-            data-resource-path="{{data.resourcePath}}"
-            data-toggle-dropdown="data.toggleDropdown"></adh-assign-badges-action>
-        <adh-modal-action
-            data-ng-if="data.report"
-            data-modals="data.modals"
-            data-modal="abuse"
-            data-label="TR__REPORT"
-            data-toggle-dropdown="data.toggleDropdown"></adh-modal-action>
-        <adh-modal-action
-            data-ng-if="data.share"
-            data-modals="data.modals"
-            data-modal="share"
-            data-label="TR__SHARE"></adh-modal-action>
-        <adh-hide-action
-            data-ng-if="data.hide && data.resourcePath && options.hide"
-            data-redirect-url="{{data.deleteRedirectUrl}}"
-            data-resource-path="{{data.resourcePath}}"></adh-hide-action>
-        <adh-resource-widget-delete-action
-            data-ng-if="data.resourceWidgetDelete && data.resourcePath && options.hide"
-            data-resource-path="{{data.resourcePath}}"></adh-resource-widget-delete-action>
-        <adh-print-action
-            data-ng-if="data.print"></adh-print-action>
-        <adh-cancel-action
-            data-ng-if="data.cancel && data.resourcePath"
-            data-resource-path="{{data.resourcePath}}"></adh-cancel-action>
+        <li data-ng-if="data.edit && data.resourcePath && options.PUT">
+            <adh-view-action
+                data-view="edit"
+                data-label="TR__EDIT"
+                data-resource-path="{{data.resourcePath}}">
+                <i class="icon-pencil dropdown-icon"></i>
+            </adh-view-action>
+        </li>
+        <li data-ng-if="data.image && data.resourcePath && options.PUT">
+            <adh-view-action
+                data-view="image"
+                data-label="TR__IMAGE_UPLOAD"
+                data-resource-path="{{data.resourcePath}}">
+                <i class="icon-picture-file dropdown-icon"></i>
+            </adh-view-action>
+        </li>
+        <li data-ng-if="data.moderate && data.resourcePath">
+            <adh-view-action
+                data-view="moderate"
+                data-label="TR__MODERATE"
+                data-resource-path="{{resourcePath}}">
+                <i class="icon-picture-file dropdown-icon"></i>
+            </adh-view-action>
+        </li>
+        <li data-ng-if="data.assignBadges && data.resourcePath">
+            <adh-assign-badges-action
+                data-modals="data.modals"
+                data-resource-with-badges-url="{{data.resourceWithBadgesUrl}}"
+                data-resource-path="{{data.resourcePath}}"
+                data-toggle-dropdown="data.toggleDropdown">
+                <i class="icon-tags dropdown-icon"></i>
+            </adh-assign-badges-action>
+        </li>
+        <li data-ng-if="data.report">
+            <adh-modal-action
+                data-modals="data.modals"
+                data-modal="abuse"
+                data-label="TR__REPORT"
+                data-toggle-dropdown="data.toggleDropdown">
+                <i class="icon-flag dropdown-icon"></i>
+            </adh-modal-action>
+        </li>
+        <li data-ng-if="data.share">
+            <adh-modal-action
+                data-modals="data.modals"
+                data-modal="share"
+                data-label="TR__SHARE">
+                <i class="icon-share dropdown-icon"></i>
+            </adh-modal-action>
+        </li>
+        <li data-ng-if="data.hide && data.resourcePath && options.hide">
+            <adh-hide-action
+                data-redirect-url="{{data.deleteRedirectUrl}}"
+                data-resource-path="{{data.resourcePath}}">
+                <i class="icon-trash dropdown-icon"></i>
+            </adh-hide-action>
+        </li>
+        <li data-ng-if="data.resourceWidgetDelete && data.resourcePath && options.hide">
+            <adh-resource-widget-delete-action data-resource-path="{{data.resourcePath}}">
+                <i class="icon-trash dropdown-icon"></i>
+            </adh-resource-widget-delete-action>
+        </li>
+        <li data-ng-if="data.print">
+            <adh-print-action>
+                <i class="icon-print dropdown-icon"></i>
+            </adh-print-action>
+        </li>
+        <li data-ng-if="data.cancel && data.resourcePath">
+            <adh-cancel-action data-resource-path="{{data.resourcePath}}">
+                <i class="icon-x dropdown-icon"></i>
+            </adh-cancel-action>
+        </li>
     </ul>
 </div>
 
