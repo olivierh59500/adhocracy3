@@ -151,6 +151,7 @@ export var resourceDropdownDirective = (
 export var modalActionDirective = () => {
     return {
         restrict: "E",
+        transclude: true,
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"toggle();\">{{ label | translate }}</a>",
         scope: {
             class: "@",
@@ -175,8 +176,9 @@ export var assignBadgesActionDirective = (
 ) => {
     return {
         restrict: "E",
-        template: "<a data-ng-if=\"badgesExist && badgeAssignmentPoolOptions.PUT\" class=\"{{class}}\""
-            + "href=\"\" data-ng-click=\"assignBadges();\">{{ 'TR__MANAGE_BADGE_ASSIGNMENTS' | translate }}</a>",
+        transclude: true,
+        template: "<a data-ng-if=\"badgesExist && badgeAssignmentPoolOptions.PUT\" class=\"{{class}}\" href=\"\"" +
+            "data-ng-click=\"assignBadges();\">{{ 'TR__MANAGE_BADGE_ASSIGNMENTS' | translate }}</a>",
         scope: {
             resourcePath: "@",
             resourceWithBadgesUrl: "@?",
@@ -219,6 +221,7 @@ export var hideActionDirective = (
 ) => {
     return {
         restrict: "E",
+        transclude: true,
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"hide();\">{{ 'TR__HIDE' | translate }}</a>",
         scope: {
             resourcePath: "@",
@@ -247,6 +250,7 @@ export var hideActionDirective = (
 export var resourceWidgetDeleteActionDirective = () => {
     return {
         restrict: "E",
+        transclude: true,
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"delete();\">{{ 'TR__DELETE' | translate }}</a>",
         require: "^adhMovingColumn",
         scope: {
@@ -267,6 +271,7 @@ export var printActionDirective = (
 ) => {
     return {
         restrict: "E",
+        transclude: true,
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"print();\">{{ 'TR__PRINT' | translate }}</a>",
         require: "?^adhMovingColumn",
         scope: {
@@ -291,6 +296,7 @@ export var viewActionDirective = (
 ) => {
     return {
         restrict: "E",
+        transclude: true,
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"link();\">{{ label | translate }}</a>",
         scope: {
             resourcePath: "@",
@@ -314,6 +320,7 @@ export var cancelActionDirective = (
 ) => {
     return {
         restrict: "E",
+        transclude: true,
         template: "<a class=\"{{class}}\" href=\"\" data-ng-click=\"cancel();\">{{ 'TR__CANCEL' | translate }}</a>",
         scope: {
             resourcePath: "@",
