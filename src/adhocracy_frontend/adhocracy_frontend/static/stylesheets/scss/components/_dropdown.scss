@@ -62,7 +62,7 @@ A basic dropdown that is currently used for resource actions.
 
 .dropdown-icon {
     @include rem(margin-right, 3px);
-    @include rem(font-size, 17px);
+    @include rem(font-size, $font-size-normal);
     line-height: (24 / 17);
     vertical-align: middle;
 }
@@ -73,21 +73,21 @@ A basic dropdown that is currently used for resource actions.
 
 // The dropdown menu (ul)
 .dropdown-menu {
-    border-radius: 3px;
+    border-radius: 2px;
     float: left;
     min-width: 120px;
     padding: 0;
     margin: 5px 0 0;
     background-color: $color-text-inverted;
-    border: 1px solid $color-text-introvert;
+    border: 0.5px solid $color-structure-normal;
     list-style: none;
 
     // Links within the dropdown menu
     li {
         display: block;
-        padding: 5px;
+        padding: 8px;
         color: $color-text-normal;
-        border: 1px solid $color-text-introvert;
+        border: 0.5px solid $color-structure-normal;
         white-space: nowrap;
 
         a {
