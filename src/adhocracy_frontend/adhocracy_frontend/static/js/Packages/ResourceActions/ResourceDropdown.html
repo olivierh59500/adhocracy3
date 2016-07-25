@@ -1,6 +1,6 @@
 <div class="dropdown" click-somewhere-else="data.toggleDropdown()" is-active="isShowDropdown">
-    <div aria-haspopup="isShowDropdown" aria-expanded="isShowDropdown">
-        <i class="icon-three-dots dropdown-icon dropdown-header-icon" data-ng-if="!data.modals.modal" data-ng-click="data.toggleDropdown()"></i>
+    <div tabindex="0" aria-haspopup="isShowDropdown" aria-expanded="isShowDropdown" data-ng-if="!data.modals.modal" data-ng-click="data.toggleDropdown()">
+        <i class="icon-three-dots dropdown-icon dropdown-header-icon"></i>
     </div>
     <ul class="dropdown-menu dropdown-menu-right" data-ng-if="isShowDropdown" aria-labelledby="dropdownMenu1">
         <li data-ng-if="data.edit && data.resourcePath && options.PUT">

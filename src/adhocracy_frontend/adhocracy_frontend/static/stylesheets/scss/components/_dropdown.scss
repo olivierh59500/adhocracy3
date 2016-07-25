@@ -9,8 +9,8 @@ A basic dropdown that is currently used for resource actions.
 
 ```html_example
 <div class="dropdown">
-    <div aria-haspopup="isShowDropdown" aria-expanded="isShowDropdown">
-        <i class="icon-three-dots dropdown-icon dropdown-header-icon" role="button" style="display: block;"></i>
+    <div tabindex="0" aria-haspopup="isShowDropdown" aria-expanded="isShowDropdown" role="button" style="display: block;">
+        <i class="icon-three-dots dropdown-icon dropdown-header-icon"></i>
     </div>
     <ul class="dropdown-menu dropdown-menu-right" data-ng-if="isShowDropdown" aria-labelledby="dropdownMenu1" style="display: block;">
         <li>
@@ -68,6 +68,7 @@ A basic dropdown that is currently used for resource actions.
 }
 
 .dropdown-header-icon {
+    @include rem(font-size, $font-size-plus);
     float: right;
 }
 
