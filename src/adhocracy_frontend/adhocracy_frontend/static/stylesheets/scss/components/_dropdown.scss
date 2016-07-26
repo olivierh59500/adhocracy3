@@ -53,12 +53,7 @@ A basic dropdown that is currently used for resource actions.
 
 // The dropdown wrapper (div)
 .dropdown {
-    @include clearfix;
-    position: absolute;
-    top: $padding-small;
-    right: $padding-small;
     cursor: pointer;
-    z-index: 1;
 }
 
 .dropdown-icon {
@@ -70,34 +65,38 @@ A basic dropdown that is currently used for resource actions.
 
 .dropdown-header-icon {
     @include rem(font-size, $font-size-plus);
-    float: right;
     color: $color-text-normal;
 }
 
 // The dropdown menu (ul)
 .dropdown-menu {
+    position: absolute;
     border-radius: 2px;
-    float: left;
-    min-width: 120px;
+    min-width: 10em;
     padding: 0;
     margin: 5px 0 0;
     background-color: $color-text-inverted;
-    border: 0.5px solid $color-structure-normal;
+    border: 1px solid $color-structure-normal;
     list-style: none;
+    z-index: 1;
 
     // Links within the dropdown menu
     a {
         display: block;
         padding: 8px;
         color: $color-text-normal;
-        border: 0.5px solid $color-structure-normal;
+        border-bottom: 1px solid $color-structure-normal;
         white-space: nowrap;
 
         &:hover,
         &:focus {
             text-decoration: none;
             color: $color-brand-two-normal;
-            background-color: $color-structure-normal;
+            background-color: $color-background-base-introvert;
+        }
+
+        :last-of-type {
+            border-bottom: none;
         }
     }
 }
@@ -110,7 +109,7 @@ A basic dropdown that is currently used for resource actions.
         color: $color-brand-two-normal;
         text-decoration: none;
         outline: 0;
-        background-color: $color-structure-normal;
+        background-color: $color-background-base-introvert;
     }
 }
 
