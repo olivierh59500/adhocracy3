@@ -9,9 +9,9 @@ A basic dropdown that is currently used for resource actions.
 
 ```html_example
 <div class="dropdown">
-    <div tabindex="0" aria-haspopup="isShowDropdown" aria-expanded="isShowDropdown" role="button" style="display: block;">
+    <a class="dropdown-button" href="" tabindex="0" aria-haspopup="isShowDropdown" aria-expanded="isShowDropdown" role="button" style="display: block;">
         <i class="icon-three-dots dropdown-icon dropdown-header-icon"></i>
-    </div>
+    </a>
     <ul class="dropdown-menu dropdown-menu-right" data-ng-if="isShowDropdown" aria-labelledby="dropdownMenu1" style="display: block;">
         <li>
             <a class="" href="">
