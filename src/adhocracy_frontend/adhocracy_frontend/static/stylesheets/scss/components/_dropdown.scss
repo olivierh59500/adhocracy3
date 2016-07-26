@@ -86,16 +86,12 @@ A basic dropdown that is currently used for resource actions.
     list-style: none;
 
     // Links within the dropdown menu
-    li {
+    a {
         display: block;
         padding: 8px;
         color: $color-text-normal;
         border: 0.5px solid $color-structure-normal;
         white-space: nowrap;
-
-        a {
-            color: inherit;
-        }
 
         &:hover,
         &:focus {
@@ -107,7 +103,7 @@ A basic dropdown that is currently used for resource actions.
 }
 
 // Active state
-.dropdown-menu .active > li {
+.dropdown-menu .active > a {
     &,
     &:hover,
     &:focus {
