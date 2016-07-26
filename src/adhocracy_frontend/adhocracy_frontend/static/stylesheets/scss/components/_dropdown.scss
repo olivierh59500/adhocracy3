@@ -53,6 +53,7 @@ A basic dropdown that is currently used for resource actions.
 
 // The dropdown wrapper (div)
 .dropdown {
+    @include clearfix;
     position: absolute;
     top: $padding-small;
     right: $padding-small;
@@ -70,6 +71,7 @@ A basic dropdown that is currently used for resource actions.
 .dropdown-header-icon {
     @include rem(font-size, $font-size-plus);
     float: right;
+    color: $color-text-normal;
 }
 
 // The dropdown menu (ul)
