@@ -70,7 +70,7 @@
 </div>
 
 <ul class="alerts">
-    <li data-ng-repeat="(id, alert) in modals.alerts" class="alerts-message m-{{alert.mode}}" data-ng-click="modals.removeAlert(id)">
+    <li data-ng-repeat="(id, alert) in data.modals.alerts" class="alerts-message m-{{alert.mode}}" data-ng-click="data.modals.removeAlert(id)">
         {{ alert.message | translate }}
     </li>
 </ul>
