@@ -147,7 +147,9 @@ export var resourceDropdownDirective = (
 
             // some jQuery that closes the dropdown when the user clicks somewhere else:
             element.focusout(() => {
-                $timeout(scope.data.toggleDropdown);
+                $timeout(() => {
+                    scope.isShowDropdown = false;
+                });
             });
             scope.$on("$delete", () => {
                 element.off("focusout");
