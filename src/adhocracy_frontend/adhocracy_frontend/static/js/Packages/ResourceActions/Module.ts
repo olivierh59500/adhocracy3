@@ -13,7 +13,6 @@ export var register = (angular) => {
             AdhResourceAreaModule.moduleName,
             AdhMovingColumnsModule.moduleName
         ])
-        .directive("clickSomewhereElse", ["$document", AdhResourceActions.clickSomewhereElse])
         .directive("adhResourceActions", [
             "$timeout", "adhConfig", "adhPermissions", AdhResourceActions.resourceActionsDirective])
         .directive("adhResourceDropdown", [
