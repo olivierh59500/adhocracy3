@@ -174,7 +174,6 @@ export var modalActionDirective = () => {
         link: (scope) => {
             scope.toggle = () => {
                 scope.modals.toggleModal(scope.modal);
-                scope.toggleDropdown();
             };
         }
     };
