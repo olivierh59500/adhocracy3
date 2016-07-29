@@ -2,9 +2,9 @@
     <header class="resource-header" data-ng-class="{'m-image': data.picture}">
         <div class="resource-header-navigation">
             <adh-resource-dropdown
-                data-resource-path="{{proposalUrl | adhParentPath}}"
+                data-resource-path="{{path | adhParentPath}}"
                 data-resource-with-badges-url="{{processUrl}}"
-                data-ng-if="proposalUrl"
+                data-ng-if="path"
                 data-edit="true"
                 data-image="processOptions.hasImage"
                 data-assign-badges="true"
