@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width" />
 
-        <title>Adhocracy 3 Styleguide - </title>
+        <title>Adhocracy 3 Styleguide - Base</title>
 
         <!-- assets -->
         <link rel="stylesheet" href="styleguide.css">
@@ -25,25 +25,21 @@
                 <nav class="styleguide-nav">
                     <ul>
                         
-                        <li><a href="widgets.html">Widgets</a></li>
+                        <li><a href="components.html">Components</a></li>
                         
-                        <li><a href="index.html">Type</a></li>
+                        <li><a href="base.html">Base</a></li>
                         
                         <li><a href="buttons.html">Buttons</a></li>
                         
                         <li><a href="variables.html">Variables</a></li>
                         
-                        <li><a href="debug.html">Debug</a></li>
-                        
                         <li><a href="inputs.html">Inputs</a></li>
-                        
-                        <li><a href="meinberlin.html">meinberlin</a></li>
                         
                         <li><a href="layout.html">Layout</a></li>
                         
-                        <li><a href="print.html">Print</a></li>
+                        <li><a href="navigation.html">Navigation</a></li>
                         
-                        <li><a href="compability.html">Compability</a></li>
+                        <li><a href="print.html">Print</a></li>
                         
                         <li><a href="proposal.html">Proposal</a></li>
                         
@@ -56,8 +52,6 @@
             <div class="page_wrapper">
                 <ul>
                     
-                    <li><a href="#address">Address</a></li>
-                    
                     <li><a href="#blockqoute">Blockquote</a></li>
                     
                     <li><a href="#disguised-link">Disguised link mixin</a></li>
@@ -68,15 +62,9 @@
                     
                     <li><a href="#code">Code</a></li>
                     
-                    <li><a href="#del">Deleted</a></li>
-                    
                     <li><a href="#em">Emphasis</a></li>
                     
-                    <li><a href="#ins">Inserted</a></li>
-                    
-                    <li><a href="#time">Time</a></li>
-                    
-                    <li><a href="#link">link</a></li>
+                    <li><a href="#link">Link</a></li>
                     
                     <li><a href="#lists">Lists</a></li>
                     
@@ -88,34 +76,13 @@
                     
                     <li><a href="#p">Paragraph</a></li>
                     
-                    <li><a href="#pre">Preformated</a></li>
+                    <li><a href="#pre">Preformatted</a></li>
                     
                     <li><a href="#table">Table</a></li>
                     
                 </ul>
 
                 <div class="components">
-<h1 id="address" class="styleguide">Address</h1>
-<div class="codeExample">
-  <div class="exampleOutput">
-    <address>
-    John Q. Public<br />
-    123 Main Street<br />
-    Anywhere, ST 12345
-</address>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;address&gt;</span>
-    John Q. Public<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-    123 Main Street<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-    Anywhere, ST 12345
-<span class="nt">&lt;/address&gt;</span></pre>
-    </div>
-  </div>
-</div>
-
 <h1 id="blockqoute" class="styleguide">Blockquote</h1>
 <div class="codeExample">
   <div class="exampleOutput">
@@ -188,19 +155,6 @@ When is a <span class="nt">&lt;a</span> <span class="na">href=</span><span class
   </div>
 </div>
 
-<h2 id="del" class="styleguide">Deleted</h2>
-<div class="codeExample">
-  <div class="exampleOutput">
-    <del>Example Text</del>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;del&gt;</span>Example Text<span class="nt">&lt;/del&gt;</span></pre>
-    </div>
-  </div>
-</div>
-
 <h2 id="em" class="styleguide">Emphasis</h2>
 <div class="codeExample">
   <div class="exampleOutput">
@@ -216,33 +170,7 @@ When is a <span class="nt">&lt;a</span> <span class="na">href=</span><span class
   </div>
 </div>
 
-<h2 id="ins" class="styleguide">Inserted</h2>
-<div class="codeExample">
-  <div class="exampleOutput">
-    <ins>Example Text</ins>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;ins&gt;</span>Example Text<span class="nt">&lt;/ins&gt;</span></pre>
-    </div>
-  </div>
-</div>
-
-<h2 id="time" class="styleguide">Time</h2>
-<div class="codeExample">
-  <div class="exampleOutput">
-    <time datetime="2013-04-18T13:50:47+02:00">18. April 2013 13:50</time>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;time</span> <span class="na">datetime=</span><span class="s">"2013-04-18T13:50:47+02:00"</span><span class="nt">&gt;</span>18. April 2013 13:50<span class="nt">&lt;/time&gt;</span></pre>
-    </div>
-  </div>
-</div>
-
-<h1 id="link" class="styleguide">link</h1>
+<h1 id="link" class="styleguide">Link</h1>
 <p class="styleguide">A hyperlink. It may have the following states:</p><ul class="styleguide"><li>  :hover</li>
 <li>  :focus</li>
 </ul><div class="codeExample">
@@ -339,7 +267,7 @@ When is a <span class="nt">&lt;a</span> <span class="na">href=</span><span class
   </div>
 </div>
 
-<h1 id="pre" class="styleguide">Preformated</h1>
+<h1 id="pre" class="styleguide">Preformatted</h1>
 <div class="codeExample">
   <div class="exampleOutput">
     <pre>def hello_world(name):
@@ -429,7 +357,7 @@ When is a <span class="nt">&lt;a</span> <span class="na">href=</span><span class
         </main>
         <footer id="footer">
             <div class="page_wrapper">
-                <p>This documentation generated using <a href="http://github.com/trulia/hologram">Hologram</a>
+                <p>This documentation was generated using <a href="http://github.com/trulia/hologram">Hologram</a>
             </div>
         </footer>
     </body>

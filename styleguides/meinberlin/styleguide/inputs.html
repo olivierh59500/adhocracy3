@@ -25,25 +25,21 @@
                 <nav class="styleguide-nav">
                     <ul>
                         
-                        <li><a href="widgets.html">Widgets</a></li>
+                        <li><a href="components.html">Components</a></li>
                         
-                        <li><a href="index.html">Type</a></li>
+                        <li><a href="base.html">Base</a></li>
                         
                         <li><a href="buttons.html">Buttons</a></li>
                         
                         <li><a href="variables.html">Variables</a></li>
                         
-                        <li><a href="debug.html">Debug</a></li>
-                        
                         <li><a href="inputs.html">Inputs</a></li>
-                        
-                        <li><a href="meinberlin.html">meinberlin</a></li>
                         
                         <li><a href="layout.html">Layout</a></li>
                         
-                        <li><a href="print.html">Print</a></li>
+                        <li><a href="navigation.html">Navigation</a></li>
                         
-                        <li><a href="compability.html">Compability</a></li>
+                        <li><a href="print.html">Print</a></li>
                         
                         <li><a href="proposal.html">Proposal</a></li>
                         
@@ -62,25 +58,21 @@
                     
                     <li><a href="#input-error">Input Error</a></li>
                     
-                    <li><a href="#form-footer">Form footer</a></li>
+                    <li><a href="#form-footer">Form Footer</a></li>
                     
-                    <li><a href="#input">input</a></li>
+                    <li><a href="#input">Input</a></li>
                     
-                    <li><a href="#checkbox">checkbox</a></li>
+                    <li><a href="#checkbox">Checkbox</a></li>
                     
-                    <li><a href="#error-text">error text</a></li>
+                    <li><a href="#label-text">Label Text</a></li>
                     
-                    <li><a href="#label-text">label text</a></li>
+                    <li><a href="#radio">Radio Button</a></li>
                     
-                    <li><a href="#radio">radio button</a></li>
+                    <li><a href="#textinput">Textinput</a></li>
                     
-                    <li><a href="#textinput">textinput</a></li>
+                    <li><a href="#textinput.m-title">Title Modifier</a></li>
                     
-                    <li><a href="#textinput.m-title">Title modifier</a></li>
-                    
-                    <li><a href="#textinput.textarea">Textareas</a></li>
-                    
-                    <li><a href="#label">label</a></li>
+                    <li><a href="#textinput.textarea">Textarea</a></li>
                     
                 </ul>
 
@@ -149,7 +141,7 @@
   </div>
 </div>
 
-<h1 id="form-footer" class="styleguide">Form footer</h1>
+<h1 id="form-footer" class="styleguide">Form Footer</h1>
 <p class="styleguide">A generic form footer containing one CTA and a regular button</p><div class="codeExample">
   <div class="exampleOutput">
     
@@ -175,7 +167,7 @@
   </div>
 </div>
 
-<h1 id="input" class="styleguide">input</h1>
+<h1 id="input" class="styleguide">Input</h1>
 <p class="styleguide">Inputs are all elements that allow users to input data.</p><p class="styleguide">They can have the following states:</p><ul class="styleguide"><li>  ng-invalid</li>
 <li>  ng-disabled or :disabled</li>
 <li>  ng-dirty</li>
@@ -205,7 +197,7 @@ it is also dirty or the form has been submitted.</p><div class="codeExample">
   </div>
 </div>
 
-<h2 id="checkbox" class="styleguide">checkbox</h2>
+<h2 id="checkbox" class="styleguide">Checkbox</h2>
 <p class="styleguide">A checkbox has two states: is-checked and is-unchecked. It may be required to
 be checked, w.g. for accepting terms of service.</p><div class="codeExample">
   <div class="exampleOutput">
@@ -225,20 +217,7 @@ be checked, w.g. for accepting terms of service.</p><div class="codeExample">
   </div>
 </div>
 
-<h2 id="error-text" class="styleguide">error text</h2>
-<p class="styleguide">When text is in error it shows in an invalid color state</p><div class="codeExample">
-  <div class="exampleOutput">
-    <span class="input-error">Please enter your first name</span>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"input-error"</span><span class="nt">&gt;</span>Please enter your first name<span class="nt">&lt;/span&gt;</span></pre>
-    </div>
-  </div>
-</div>
-
-<h2 id="label-text" class="styleguide">label text</h2>
+<h2 id="label-text" class="styleguide">Label Text</h2>
 <p class="styleguide">Class to add styling to a label when the label itself is used as a container.</p><div class="codeExample">
   <div class="exampleOutput">
     <label>
@@ -257,7 +236,7 @@ be checked, w.g. for accepting terms of service.</p><div class="codeExample">
   </div>
 </div>
 
-<h2 id="radio" class="styleguide">radio button</h2>
+<h2 id="radio" class="styleguide">Radio Button</h2>
 <p class="styleguide">A radio button, like a checkbox, has the two states: is-checked and
 is-unchecked.  Of a group of radio buttons, none or a single one can be
 checked. &quot;required&quot; in this context means that any of the buttons must be
@@ -287,7 +266,7 @@ checked.</p><div class="codeExample">
   </div>
 </div>
 
-<h2 id="textinput" class="styleguide">textinput</h2>
+<h2 id="textinput" class="styleguide">Textinput</h2>
 <p class="styleguide">Element to enter one line of text. It is used e.g. for login, register,
 creating/editing comments, or creating/editing proposals.</p><p class="styleguide">In fact, there are multiple variants of this already defined in HTML.
 They should all look and behave similarily.</p><p class="styleguide">Input fields need sufficient contrast to the background, ideally with a
@@ -326,7 +305,7 @@ surfaces with background color <code class="styleguide">color-background-base</c
   </div>
 </div>
 
-<h3 id="textinput.m-title" class="styleguide">Title modifier</h3>
+<h3 id="textinput.m-title" class="styleguide">Title Modifier</h3>
 <p class="styleguide">Textinput that represents a title.</p><div class="codeExample">
   <div class="exampleOutput">
     <input type="text" placeholder="title" class="m-title"/>
@@ -339,7 +318,7 @@ surfaces with background color <code class="styleguide">color-background-base</c
   </div>
 </div>
 
-<h3 id="textinput.textarea" class="styleguide">Textareas</h3>
+<h3 id="textinput.textarea" class="styleguide">Textarea</h3>
 <p class="styleguide">Textareas behave exactly like text inputs however they are resizeable when
 enabled in modern browsers.</p><div class="codeExample">
   <div class="exampleOutput">
@@ -354,31 +333,12 @@ enabled in modern browsers.</p><div class="codeExample">
     </div>
   </div>
 </div>
-
-<h1 id="label" class="styleguide">label</h1>
-<p class="styleguide">A label can be used to describe an input.</p><div class="codeExample">
-  <div class="exampleOutput">
-    <label>
-    <input type="text" />
-    description
-</label>
-
-  </div>
-  <div class="codeBlock">
-    <div class="highlight">
-      <pre><span class="nt">&lt;label&gt;</span>
-    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="nt">/&gt;</span>
-    description
-<span class="nt">&lt;/label&gt;</span></pre>
-    </div>
-  </div>
-</div>
                 </div>
             </div>
         </main>
         <footer id="footer">
             <div class="page_wrapper">
-                <p>This documentation generated using <a href="http://github.com/trulia/hologram">Hologram</a>
+                <p>This documentation was generated using <a href="http://github.com/trulia/hologram">Hologram</a>
             </div>
         </footer>
     </body>
