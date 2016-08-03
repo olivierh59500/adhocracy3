@@ -108,6 +108,10 @@ An action can trigger showing a modal below the action bar.
         }
     }
 
+    &.m-only-right-end {
+        display: block;
+    }
+
     @media print {
         display: none;
     }
