@@ -4,32 +4,27 @@
             data-print="true">
         </adh-resource-dropdown>
     </div>
-    <header class="resource-header" data-ng-class="{'m-image': data.picture}">
-        <adh-background-image
-            data-no-fallback="true"
-            data-path="{{data.picture}}">
-            <div class="resource-header-main-wrapper">
-                <div class="resource-header-main">
+    <adh-background-image
+        data-no-fallback="true"
+        data-path="{{data.picture}}">
+        <header class="resource-header" data-ng-class="{'m-image': data.picture}">
+            <h1 class="resource-header-title">{{ data.title }}</h1>
 
-                    <h1 class="resource-header-title">{{ data.title }}</h1>
-
-                    <ul class="resource-header-meta">
-                        <li>
-                            {{ "TR__BY" | translate }} <adh-user-meta data-path="{{data.creator}}" data-ng-if="data.creator"></adh-user-meta>
-                        </li>
-                        <li>
-                            {{ "TR__ON" | translate }} <adh-time data-datetime="data.creationDate" data-format="L"></adh-time>
-                        </li>
-                    </ul>
-                    <ul class="resource-header-meta">
-                        <li>
-                            <i class="icon-pin-detail"></i> {{data.description}}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </adh-background-image>
-    </header>
+            <ul class="resource-header-meta">
+                <li>
+                    {{ "TR__BY" | translate }} <adh-user-meta data-path="{{data.creator}}" data-ng-if="data.creator"></adh-user-meta>
+                </li>
+                <li>
+                    {{ "TR__ON" | translate }} <adh-time data-datetime="data.creationDate" data-format="L"></adh-time>
+                </li>
+            </ul>
+            <ul class="resource-header-meta">
+                <li>
+                    <i class="icon-pin-detail"></i> {{data.description}}
+                </li>
+            </ul>
+        </header>
+    </adh-background-image>
     <div class="action-bar m-only-right-end">
         <adh-map-switch data-ng-if="processProperties.hasLocation" data-model="data.isShowMap"></adh-map-switch>
     </div>
