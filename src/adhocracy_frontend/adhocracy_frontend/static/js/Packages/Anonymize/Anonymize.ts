@@ -1,4 +1,5 @@
 import * as AdhConfig from "../Config/Config";
+import * as AdhHttp from "../Http/Http";
 import * as AdhUser from "../User/User";
 
 var pkgLocation = "/Anonymize";
@@ -12,22 +13,30 @@ export var getAnonymizeDefault = (
 };
 
 export var getAnonymizeOptional = (
-    $q : angular.IQService
+    adhHttp : AdhHttp.Service
+) => (
+    url : string,
+    method : string
 ) => {
-    return $q.when(true);
-    // scope.isOptional = rawOptions.data[verb].request_headers.hasOwnProperty("X-Anonymize");
+    return adhHttp.options(url, {importOptions: false}).then((rawOptions) => {
+        return (<any>rawOptions).data[method].request_headers.hasOwnProperty("X-Anonymize");
+    });
 };
 
 export var anonymizeDirective = (
     adhConfig : AdhConfig.IService,
+    adhHttp : AdhHttp.Service,
     adhUser : AdhUser.Service,
     $q : angular.IQService
 ) => {
+    var _getAnonymizeOptional = getAnonymizeOptional(adhHttp);
+
     return {
         restrict: "E",
         templateUrl: adhConfig.pkg_path + pkgLocation + "/Anonymize.html",
         scope: {
-            options: "=",
+            url: "@",
+            method: "@",
             model: "=",
         },
         link: (scope) => {
@@ -40,7 +49,7 @@ export var anonymizeDirective = (
 
                 $q.all([
                     getAnonymizeDefault(adhUser),
-                    getAnonymizeOptional($q)
+                    _getAnonymizeOptional(scope.url, scope.method)
                 ]).then((args) => {
                     scope.data.model = args[0];
                     scope.isOptional = args[1];
