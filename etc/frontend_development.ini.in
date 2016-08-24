@@ -42,6 +42,8 @@ adhocracy.frontend.support_email = support@unconfigured.domain
 adhocracy.frontend.support_url =
 # Default frontend locale
 adhocracy.frontend.locale = de
+# Enable anonymization
+adhocracy.anonymize.enabled = false
 # Enable debugging mode
 adhocracy.frontend.debug = true
 
