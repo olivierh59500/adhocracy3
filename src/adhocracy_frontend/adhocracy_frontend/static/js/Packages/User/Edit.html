@@ -64,7 +64,8 @@
 	            type="submit"
 	            name="submit"
 	            value="{{ 'TR__PUBLISH' | translate }}"
-	            class="button-cta form-footer-button-cta" />
+	            class="button-cta form-footer-button-cta"
+                data-ng-disabled="data.password.$dirty && data.password !== data.passwordRepeat" />
         </div>
         <div class="form-footer-left">
 	        <a
