@@ -32,6 +32,7 @@ export interface IScope extends angular.IScope {
         title : string;
         description : string;
         rateCount : number;
+        create? : boolean;
         creator : string;
         creationDate : string;
         commentCount : number;
@@ -96,6 +97,7 @@ var bindPath = (
                         title: titleSheet.title,
                         description: descriptionSheet.description,
                         rateCount: ratesPro - ratesContra,
+                        create: false,
                         creator: metadataSheet.creator,
                         creationDate: metadataSheet.item_creation_date,
                         commentCount: version.data[SICommentable.nick].comments_count,
@@ -241,6 +243,7 @@ export var createDirective = (
             scope.errors = [];
             scope.data = <any>{};
             scope.showError = adhShowError;
+            scope.data.create = true;
 
             scope.submit = () => {
                 return adhSubmitIfValid(scope, element, scope.S1ProposalForm, () => {
@@ -335,6 +338,46 @@ export var listingDirective = (
             if (scope.decisionDate) {
                 scope.params.decision_date = scope.decisionDate;
             }
+        }
+    };
+};
+
+
+export var renominateProposalDirective = (
+    adhConfig : AdhConfig.IService,
+    adhHttp : AdhHttp.Service,
+    $window : angular.IWindowService
+) => {
+    return {
+        restrict: "E",
+        templateUrl: adhConfig.pkg_path + pkgLocation + "/Renominate.html",
+        scope: {
+            proposalUrl: "=",
+        },
+        link: (scope) => {
+            scope.$watch("proposalUrl", (proposalUrl) => {
+                adhHttp.get(proposalUrl).then((proposal) => {
+                    var workflow = proposal.data[SIWorkflowAssignment.nick];
+                    scope.isRejected = "rejected" === workflow.workflow_state;
+                });
+            });
+            scope.renominate = () => {
+                if ( ! $window.confirm("Do you want to renominate this proposal? (Page will reload)")) {
+                    return;
+                }
+                adhHttp.get(scope.proposalUrl).then((proposal) => {
+                    var patch = {
+                        content_type: proposal.content_type,
+                        data: {}
+                    };
+                    patch.data[SIWorkflowAssignment.nick] = {
+                        workflow_state: "proposed"
+                    };
+                    return adhHttp.put(proposal.path, patch).then(() => {
+                        $window.parent.location.reload();
+                    });
+                });
+            };
         }
     };
 };
