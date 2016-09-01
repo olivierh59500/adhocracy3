@@ -6,6 +6,7 @@ import * as AdhPermissions from "../Permissions/Permissions";
 import * as AdhUtil from "../Util/Util";
 import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 
+import * as SIDescription from "../../Resources_/adhocracy_core/sheets/description/IDescription";
 import * as SIName from "../../Resources_/adhocracy_core/sheets/name/IName";
 import * as SIWorkflow from "../../Resources_/adhocracy_core/sheets/workflow/IWorkflowAssignment";
 import RIProcess from "../../Resources_/adhocracy_core/resources/process/IProcess";
@@ -150,13 +151,22 @@ export var processViewDirective = (
     };
 };
 
-export var listItemDirective = () => {
+export var listItemDirective = (
+    adhConfig : AdhConfig.IService,
+    adhHttp : AdhHttp.Service
+) => {
     return {
         restrict: "E",
+        templateUrl: adhConfig.pkg_path + pkgLocation + "/ListItem.html",
         scope: {
             path: "@"
         },
-        template: "<a data-ng-href=\"{{ path | adhResourceUrl }}\">{{path}}</a>"
+        link: (scope) => {
+            adhHttp.get(scope.path).then((process) => {
+                scope.title = process.data[SITitle.nick].title;
+                scope.shortDesc = process.data[SIDescription.nick].short_description;
+            });
+        }
     };
 };
 
