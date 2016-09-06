@@ -7,6 +7,7 @@ import * as AdhUtil from "../Util/Util";
 import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 
 import * as SIDescription from "../../Resources_/adhocracy_core/sheets/description/IDescription";
+import * as SIImageReference from "../../Resources_/adhocracy_core/sheets/image/IImageReference";
 import * as SIName from "../../Resources_/adhocracy_core/sheets/name/IName";
 import * as SIWorkflow from "../../Resources_/adhocracy_core/sheets/workflow/IWorkflowAssignment";
 import RIProcess from "../../Resources_/adhocracy_core/resources/process/IProcess";
@@ -48,6 +49,16 @@ export var getStateData = (sheet : SIWorkflow.Sheet, name : string) : IStateData
         description: null,
         start_date: null
     };
+};
+
+var getDate = (utcDate : string) : string => {
+    var date = new Date(utcDate),
+        year = date.getFullYear(),
+        month = ('0' + (date.getMonth() + 1)).slice(-2),
+        day = ('0' + date.getDate()).slice(-2),
+        hour  = ('0' + date.getHours()).slice(-2),
+        minute = ('0' + date.getMinutes()).slice(-2);
+    return day + "." + month + "." + year;
 };
 
 
@@ -163,7 +174,11 @@ export var listItemDirective = (
         },
         link: (scope) => {
             adhHttp.get(scope.path).then((process) => {
+                scope.picture = process.data[SIImageReference.nick].picture;
                 scope.title = process.data[SITitle.nick].title;
+                var workflow = process.data[SIWorkflow.nick];
+                scope.participationStartDate = getDate(getStateData(workflow, "participate").start_date);
+                scope.participationEndDate = getDate(getStateData(workflow, "evaluate").start_date);
                 scope.shortDesc = process.data[SIDescription.nick].short_description;
             });
         }
