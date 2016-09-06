@@ -1,4 +1,9 @@
-<a colspan="3" href="{{path | adhResourceUrl}}">
-    <h3 class="title">{{ title }}</h3>
-    <p class="info">{{ shortDesc }}</p>
+<a class="list-item {{selectedState}}" href="{{path | adhResourceUrl}}">
+    <div class="list-item-body">
+        <h3 class="list-item-title">{{title}}</h3>
+	    <span class="list-item-text">
+			<p>{{ shortDesc }}</p>
+		</span>
+	    <span class="action-bar">→ go to Process</span>
+	</div>
 </a>
