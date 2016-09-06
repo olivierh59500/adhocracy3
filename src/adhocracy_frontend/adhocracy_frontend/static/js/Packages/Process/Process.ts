@@ -12,7 +12,6 @@ import RICollaborativeText from "../../Resources_/adhocracy_meinberlin/resources
 import RIKiezkasse from "../../Resources_/adhocracy_meinberlin/resources/kiezkassen/IProcess";
 import RIIdeaCollection from "../../Resources_/adhocracy_meinberlin/resources/idea_collection/IProcess";
 import RIPoll from "../../Resources_/adhocracy_meinberlin/resources/stadtforum/IPoll";
-import RIProcess from "../../Resources_/adhocracy_core/resources/process/IProcess";
 
 import * as SIDescription from "../../Resources_/adhocracy_core/sheets/description/IDescription";
 import * as SIImageReference from "../../Resources_/adhocracy_core/sheets/image/IImageReference";
@@ -21,7 +20,7 @@ import * as SIName from "../../Resources_/adhocracy_core/sheets/name/IName";
 import * as SIWorkflow from "../../Resources_/adhocracy_core/sheets/workflow/IWorkflowAssignment";
 import * as SITitle from "../../Resources_/adhocracy_core/sheets/title/ITitle";
 
-var pkgLocation = "/Process";
+export var pkgLocation = "/Process";
 
 
 // mirrors adhocracy_core.sheets.workflow.StateData
@@ -220,9 +219,17 @@ export var listingDirective = (adhConfig : AdhConfig.IService) => {
         scope: {},
         templateUrl: adhConfig.pkg_path + pkgLocation + "/Listing.html",
         link: (scope) => {
-            scope.contentType = RIProcess.content_type;
+            var contentType = "\[\"any\", \[\""
+                + RIBPlan.content_type + "\", \""
+                + RIBuergerhaushalt.content_type + "\", \""
+                + RICollaborativeText.content_type + "\", \""
+                + RIIdeaCollection.content_type + "\", \""
+                + RIKiezkasse.content_type + "\", \""
+                + RIPoll.content_type
+                + "\"\]\]";
             scope.params = {
-                depth: "all"
+                depth: "all",
+                content_type: contentType
             };
         }
     };
