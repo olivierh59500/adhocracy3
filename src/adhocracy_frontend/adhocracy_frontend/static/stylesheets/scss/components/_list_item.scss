@@ -112,6 +112,19 @@ $thumbnail-width: 105px;
     float: right;
 }
 
+.list-item-breadcrumbs {
+    color: inherit;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: $font-size-small;
+    font-weight: bold;
+    margin-right: 1em;
+
+    &:before {
+        content: "→ ";
+    }
+}
+
 .process-list-item {
     @include container;
     @include rem(padding, 1.25em $padding);
