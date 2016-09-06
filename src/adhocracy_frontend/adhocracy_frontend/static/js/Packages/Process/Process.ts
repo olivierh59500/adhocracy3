@@ -16,6 +16,7 @@ import RIProcess from "../../Resources_/adhocracy_core/resources/process/IProces
 
 import * as SIDescription from "../../Resources_/adhocracy_core/sheets/description/IDescription";
 import * as SIImageReference from "../../Resources_/adhocracy_core/sheets/image/IImageReference";
+import * as SILocationReference from "../../Resources_/adhocracy_core/sheets/geo/ILocationReference";
 import * as SIName from "../../Resources_/adhocracy_core/sheets/name/IName";
 import * as SIWorkflow from "../../Resources_/adhocracy_core/sheets/workflow/IWorkflowAssignment";
 import * as SITitle from "../../Resources_/adhocracy_core/sheets/title/ITitle";
@@ -199,6 +200,11 @@ export var listItemDirective = (
                 scope.picture = process.data[SIImageReference.nick].picture;
                 scope.title = process.data[SITitle.nick].title;
                 scope.processName = getName(process.content_type);
+                if (process.data[SILocationReference.nick]) {
+                    adhHttp.get(process.data[SILocationReference.nick].location).then((loc) => {
+                        scope.locationText = loc.data[SITitle.nick].title;
+                    });
+                }
                 var workflow = process.data[SIWorkflow.nick];
                 scope.participationStartDate = getDate(getStateData(workflow, "participate").start_date);
                 scope.participationEndDate = getDate(getStateData(workflow, "evaluate").start_date);
