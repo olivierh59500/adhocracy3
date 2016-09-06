@@ -10,6 +10,7 @@
 	            <li class="meta-list-item">{{processName | translate}}</li><br/>
 				<li class="meta-list-item">{{ "TR__PARTICIPATION_IS_POSSIBLE" | translate }} {{ "TR__FROM" | translate }} {{participationStartDate }} {{ "TR__UNTIL" | translate }} {{ participationEndDate }}</li>
 	        </ul><br/>
+	            <li class="meta-list-item" data-ng-if="locationText"><i class="meta-list-meta-item-icon icon-pin-detail"></i> {{locationText | translate }}</li><br/>
 		</span>
 	    <span class="list-item-text">
 			<p>{{ shortDesc }}</p>

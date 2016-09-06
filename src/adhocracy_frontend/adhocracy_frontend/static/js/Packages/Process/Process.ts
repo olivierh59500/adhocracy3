@@ -16,6 +16,7 @@ import RIProcess from "../../Resources_/adhocracy_core/resources/process/IProces
 
 import * as SIDescription from "../../Resources_/adhocracy_core/sheets/description/IDescription";
 import * as SIImageReference from "../../Resources_/adhocracy_core/sheets/image/IImageReference";
+import * as SILocationReference from "../../Resources_/adhocracy_core/sheets/geo/ILocationReference";
 import * as SIName from "../../Resources_/adhocracy_core/sheets/name/IName";
 import * as SIWorkflow from "../../Resources_/adhocracy_core/sheets/workflow/IWorkflowAssignment";
 import * as SITitle from "../../Resources_/adhocracy_core/sheets/title/ITitle";
@@ -196,12 +197,19 @@ export var listItemDirective = (
         },
         link: (scope) => {
             adhHttp.get(scope.path).then((process) => {
-                scope.picture = process.data[SIImageReference.nick].picture;
+                if (process.data[SIImageReference.nick] && process.data[SIImageReference.nick].picture) {
+                    scope.picture = process.data[SIImageReference.nick].picture;
+                }
                 scope.title = process.data[SITitle.nick].title;
                 scope.processName = getName(process.content_type);
+                if (process.data[SILocationReference.nick] && process.data[SILocationReference.nick].location) {
+                    adhHttp.get(process.data[SILocationReference.nick].location).then((loc) => {
+                        scope.locationText = loc.data[SITitle.nick].title;
+                    });
+                }
                 var workflow = process.data[SIWorkflow.nick];
                 scope.participationStartDate = getDate(getStateData(workflow, "participate").start_date);
-                scope.participationEndDate = getDate(getStateData(workflow, "evaluate").start_date);
+                scope.participationEndDate = getDate(getStateData(workflow, "closed").start_date);
                 scope.shortDesc = process.data[SIDescription.nick].short_description;
             });
         }
