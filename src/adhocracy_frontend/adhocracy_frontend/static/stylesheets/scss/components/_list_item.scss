@@ -111,3 +111,24 @@ $thumbnail-width: 105px;
 .list-item-badges {
     float: right;
 }
+
+.process-list-item {
+    @include container;
+    @include rem(padding, 1.25em $padding);
+    @include rem(margin, 3em);
+    display: block;
+    position: relative;
+    background: $color-background-base-introvert;
+    box-shadow: 8px 5px 5px $color-structure-introvert;
+
+    // reset link styling
+    &, &:hover, &:focus {
+        color: inherit;
+        text-decoration: inherit;
+    }
+
+    &:hover, &:focus {
+        background: $color-background-base;
+    }
+}
+
