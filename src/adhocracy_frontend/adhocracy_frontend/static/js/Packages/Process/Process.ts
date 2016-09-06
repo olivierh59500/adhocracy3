@@ -6,11 +6,18 @@ import * as AdhPermissions from "../Permissions/Permissions";
 import * as AdhUtil from "../Util/Util";
 import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 
+import RIBPlan from "../../Resources_/adhocracy_meinberlin/resources/bplan/IProcess";
+import RIBuergerhaushalt from "../../Resources_/adhocracy_meinberlin/resources/burgerhaushalt/IProcess";
+import RICollaborativeText from "../../Resources_/adhocracy_meinberlin/resources/collaborative_text/IProcess";
+import RIKiezkasse from "../../Resources_/adhocracy_meinberlin/resources/kiezkassen/IProcess";
+import RIIdeaCollection from "../../Resources_/adhocracy_meinberlin/resources/idea_collection/IProcess";
+import RIPoll from "../../Resources_/adhocracy_meinberlin/resources/stadtforum/IPoll";
+import RIProcess from "../../Resources_/adhocracy_core/resources/process/IProcess";
+
 import * as SIDescription from "../../Resources_/adhocracy_core/sheets/description/IDescription";
 import * as SIImageReference from "../../Resources_/adhocracy_core/sheets/image/IImageReference";
 import * as SIName from "../../Resources_/adhocracy_core/sheets/name/IName";
 import * as SIWorkflow from "../../Resources_/adhocracy_core/sheets/workflow/IWorkflowAssignment";
-import RIProcess from "../../Resources_/adhocracy_core/resources/process/IProcess";
 import * as SITitle from "../../Resources_/adhocracy_core/sheets/title/ITitle";
 
 var pkgLocation = "/Process";
@@ -54,11 +61,26 @@ export var getStateData = (sheet : SIWorkflow.Sheet, name : string) : IStateData
 var getDate = (utcDate : string) : string => {
     var date = new Date(utcDate),
         year = date.getFullYear(),
-        month = ('0' + (date.getMonth() + 1)).slice(-2),
-        day = ('0' + date.getDate()).slice(-2),
-        hour  = ('0' + date.getHours()).slice(-2),
-        minute = ('0' + date.getMinutes()).slice(-2);
+        month = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
     return day + "." + month + "." + year;
+};
+
+var getName = (backendName : string) : string => {
+    switch (backendName) {
+        case RIBPlan.content_type:
+            return "TR__BPLAN_PROCESS";
+        case RIBuergerhaushalt.content_type:
+            return "TR__BUERGERHAUSHALT";
+        case RICollaborativeText.content_type:
+            return "TR__COLLABORATIVE_TEXT_EDITING";
+        case RIIdeaCollection.content_type:
+            return "TR__IDEA_COLLECTION";
+        case RIKiezkasse.content_type:
+            return "TR__KIEZKASSE";
+        case RIPoll.content_type:
+            return "TR__POLL";
+    }
 };
 
 
@@ -176,6 +198,7 @@ export var listItemDirective = (
             adhHttp.get(scope.path).then((process) => {
                 scope.picture = process.data[SIImageReference.nick].picture;
                 scope.title = process.data[SITitle.nick].title;
+                scope.processName = getName(process.content_type);
                 var workflow = process.data[SIWorkflow.nick];
                 scope.participationStartDate = getDate(getStateData(workflow, "participate").start_date);
                 scope.participationEndDate = getDate(getStateData(workflow, "evaluate").start_date);
