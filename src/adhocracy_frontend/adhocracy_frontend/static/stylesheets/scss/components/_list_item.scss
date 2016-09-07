@@ -145,10 +145,17 @@ $process-image-width: 210px;
     text-transform: uppercase;
     font-weight: $font-weight-extrovert;
 }
+
 .process-list-item {
     box-shadow: 8px 5px 5px $color-structure-introvert;
 
     &:hover, &:focus {
         background: $color-background-base;
     }
+}
+
+.process-image {
+    float: left;
+    width: $process-image-width;
+    margin-right: $thumbnail-margin;
 }
