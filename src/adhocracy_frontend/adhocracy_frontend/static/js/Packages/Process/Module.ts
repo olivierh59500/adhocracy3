@@ -1,3 +1,4 @@
+import * as AdhMarkdownModule from "../Markdown/Module";
 import * as AdhTopLevelStateModule from "../TopLevelState/Module";
 
 import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
@@ -10,6 +11,7 @@ export var moduleName = "adhProcess";
 export var register = (angular) => {
     angular
         .module(moduleName, [
+            AdhMarkdownModule.moduleName,
             AdhTopLevelStateModule.moduleName
         ])
         .provider("adhProcess", AdhProcess.Provider)

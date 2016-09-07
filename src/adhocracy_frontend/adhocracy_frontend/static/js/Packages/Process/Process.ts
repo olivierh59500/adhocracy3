@@ -215,7 +215,10 @@ export var listItemDirective = (
     };
 };
 
-export var listingDirective = (adhConfig : AdhConfig.IService) => {
+export var listingDirective = (
+    adhConfig : AdhConfig.IService,
+    $translate
+) => {
     return {
         restrict: "E",
         scope: {},
@@ -233,6 +236,9 @@ export var listingDirective = (adhConfig : AdhConfig.IService) => {
                 depth: "all",
                 content_type: contentType
             };
+            $translate("TR__PROCESS_LIST_INFO").then((translated) => {
+                scope.processListInfo = translated;
+            });
         }
     };
 };
