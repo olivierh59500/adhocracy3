@@ -1,20 +1,14 @@
-<a class="process-list-box process-list-item" href="{{path | adhResourceUrl}}">
+<a class="process-list-item" href="{{path | adhResourceUrl}}">
     <adh-show-image
         data-css-class="process-image"
         data-path="{{picture}}"
     ></adh-show-image>
     <div class="list-item-body">
-        <h3 class="list-item-title">{{title}}</h3>
-		<span class="list-item-text">
-	        <ul class="meta-list list-item-meta">
-	            <li class="meta-list-item">{{processName | translate}}</li><br/>
-				<li class="meta-list-item">{{ "TR__PARTICIPATION_IS_POSSIBLE" | translate }} {{ "TR__FROM" | translate }} {{participationStartDate }} {{ "TR__UNTIL" | translate }} {{ participationEndDate }}</li>
-	        </ul><br/>
-	            <li class="meta-list-item" data-ng-if="locationText"><i class="meta-list-meta-item-icon icon-pin-detail"></i> {{locationText | translate }}</li><br/>
-		</span>
-	    <span class="list-item-text">
-			<p>{{ shortDesc }}</p>
-		</span>
-	    <div class="list-item-breadcrumbs">{{"TR__GO_TO_PROCESS" | translate}}</div>
+		<div class="process-type" data-ng-if="processName">{{ processName | translate }}</div>
+		<div class="process-timespan">{{participationStartDate }} - {{participationEndDate}}</div>
+        <div class="process-text process-title">{{title}}</div>
+	    <div class="process-text">{{shortDesc}}</div>
+		<div class="process-type" data-ng-if="locationText">{{ locationText | translate }}</div>
+	    <div class="process-breadcrumbs">{{"TR__GO_TO_PROCESS" | translate}}</div>
 	</div>
 </a>
