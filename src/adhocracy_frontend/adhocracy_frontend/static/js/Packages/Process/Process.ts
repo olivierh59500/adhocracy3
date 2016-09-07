@@ -239,7 +239,11 @@ export var listingDirective = (
             $translate("TR__PROCESS_LIST_INFO").then((translated) => {
                 scope.processListInfo = translated;
             });
-            var countParams = scope.params;
+            var countParams = {
+                depth: "all",
+                content_type: contentType,
+                elements: "omit"
+            };
             adhHttp.get("/", countParams).then((res) => {
                 scope.processCount = res.data[SIPool.nick].count;
             });
