@@ -43,6 +43,7 @@ A generic list item. How a resource appears when in a list
 
 $thumbnail-margin: 11px;
 $thumbnail-width: 105px;
+$process-image-width: 210px;
 
 .list-item {
     @include container;
@@ -117,7 +118,7 @@ $thumbnail-width: 105px;
     text-transform: uppercase;
     text-decoration: none;
     font-size: $font-size-small;
-    font-weight: bold;
+    font-weight: $font-weight-extrovert;
     margin-right: 1em;
 
     &:before {
@@ -125,8 +126,7 @@ $thumbnail-width: 105px;
     }
 }
 
-.process-list-info,
-.process-list-item {
+.process-list-box {
     @include container;
     @include rem(padding, 1.25em $padding);
     @include rem(margin, 3em);
@@ -141,6 +141,10 @@ $thumbnail-width: 105px;
     }
 }
 
+.process-list-count {
+    text-transform: uppercase;
+    font-weight: $font-weight-extrovert;
+}
 .process-list-item {
     box-shadow: 8px 5px 5px $color-structure-introvert;
 
