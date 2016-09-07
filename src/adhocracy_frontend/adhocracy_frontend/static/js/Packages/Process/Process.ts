@@ -17,6 +17,7 @@ import * as SIDescription from "../../Resources_/adhocracy_core/sheets/descripti
 import * as SIImageReference from "../../Resources_/adhocracy_core/sheets/image/IImageReference";
 import * as SILocationReference from "../../Resources_/adhocracy_core/sheets/geo/ILocationReference";
 import * as SIName from "../../Resources_/adhocracy_core/sheets/name/IName";
+import * as SIPool from "../../Resources_/adhocracy_core/sheets/pool/IPool";
 import * as SIWorkflow from "../../Resources_/adhocracy_core/sheets/workflow/IWorkflowAssignment";
 import * as SITitle from "../../Resources_/adhocracy_core/sheets/title/ITitle";
 
@@ -215,6 +216,7 @@ export var listItemDirective = (
 
 export var listingDirective = (
     adhConfig : AdhConfig.IService,
+    adhHttp : AdhHttp.Service,
     $translate
 ) => {
     return {
@@ -236,6 +238,10 @@ export var listingDirective = (
             };
             $translate("TR__PROCESS_LIST_INFO").then((translated) => {
                 scope.processListInfo = translated;
+            });
+            var countParams = scope.params;
+            adhHttp.get("/", countParams).then((res) => {
+                scope.processCount = res.data[SIPool.nick].count;
             });
         }
     };

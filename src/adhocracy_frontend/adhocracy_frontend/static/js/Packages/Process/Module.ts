@@ -1,3 +1,4 @@
+import * as AdhHttpModule from "../Http/Module";
 import * as AdhMarkdownModule from "../Markdown/Module";
 import * as AdhTopLevelStateModule from "../TopLevelState/Module";
 
@@ -11,6 +12,7 @@ export var moduleName = "adhProcess";
 export var register = (angular) => {
     angular
         .module(moduleName, [
+            AdhHttpModule.moduleName,
             AdhMarkdownModule.moduleName,
             AdhTopLevelStateModule.moduleName
         ])
@@ -26,6 +28,6 @@ export var register = (angular) => {
         .directive("adhWorkflowSwitch", ["adhConfig", "adhHttp", "adhPermissions", "$window", AdhProcess.workflowSwitchDirective])
         .directive("adhProcessView", ["adhTopLevelState", "adhProcess", "$compile", AdhProcess.processViewDirective])
         .directive("adhProcessListItem", ["adhConfig", "adhHttp", AdhProcess.listItemDirective])
-        .directive("adhProcessListing", ["adhConfig", "$translate", AdhProcess.listingDirective])
+        .directive("adhProcessListing", ["adhConfig", "adhHttp", "$translate", AdhProcess.listingDirective])
         .directive("adhCurrentProcessTitle", ["adhTopLevelState", "adhHttp", AdhProcess.currentProcessTitleDirective]);
 };
