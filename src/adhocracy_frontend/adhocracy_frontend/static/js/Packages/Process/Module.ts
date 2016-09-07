@@ -26,6 +26,6 @@ export var register = (angular) => {
         .directive("adhWorkflowSwitch", ["adhConfig", "adhHttp", "adhPermissions", "$window", AdhProcess.workflowSwitchDirective])
         .directive("adhProcessView", ["adhTopLevelState", "adhProcess", "$compile", AdhProcess.processViewDirective])
         .directive("adhProcessListItem", ["adhConfig", "adhHttp", AdhProcess.listItemDirective])
-        .directive("adhProcessListing", ["adhConfig", AdhProcess.listingDirective])
+        .directive("adhProcessListing", ["adhConfig", "$translate", AdhProcess.listingDirective])
         .directive("adhCurrentProcessTitle", ["adhTopLevelState", "adhHttp", AdhProcess.currentProcessTitleDirective]);
 };

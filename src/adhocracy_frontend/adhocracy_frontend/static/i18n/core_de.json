@@ -158,6 +158,8 @@
     "TR__POLL": "Bürgerdialog",
     "TR__PREVIOUS": "zurück",
     "TR__PRINT": "drucken",
+    "TR__PROCESS_LIST_INFO": "Willkommen auf demo.adhocracy.de, einer Plattform von [Liquid Democracy e.V.](http://www.liqd.de). Auf dieser Seite befinden sich unterschiedliche Services für Online-Beteiligung. Sie können in verschiedenen Beteiligungsverfahren Vorschläge anlegen, Kommentare einholen und verfassen oder mit anderen Nutzer*innen einen Text diskutieren. Wir wünschen Ihnen dabei viel Freude!",
+    "TR__PROCESSES": "Beteiligungsverfahren",
     "TR__PROPOSAL_EMPTY_TEXT": "Noch keine Vorschläge",
     "TR__PROPOSALS": "Vorschläge",
     "TR__PUBLISH": "veröffentlichen",
