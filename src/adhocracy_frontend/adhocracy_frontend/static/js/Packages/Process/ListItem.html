@@ -5,7 +5,7 @@
     ></adh-show-image>
     <div class="list-item-body">
 		<div class="process-type" data-ng-if="processName">{{ processName | translate }}</div>
-		<div class="process-timespan">{{participationStartDate }} - {{participationEndDate}}</div>
+		<div class="process-timespan" data-ng-if="participationStartDate">{{participationStartDate}} - {{participationEndDate}}</div>
         <div class="process-text process-title">{{title}}</div>
 	    <div class="process-text">{{shortDesc}}</div>
 		<div class="process-type" data-ng-if="locationText">{{ locationText | translate }}</div>
