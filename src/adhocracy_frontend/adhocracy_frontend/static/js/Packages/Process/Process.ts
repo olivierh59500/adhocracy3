@@ -197,17 +197,19 @@ export var listItemDirective = (
         },
         link: (scope) => {
             adhHttp.get(scope.path).then((process) => {
-                scope.picture = process.data[SIImageReference.nick].picture;
+                if (process.data[SIImageReference.nick] && process.data[SIImageReference.nick].picture) {
+                    scope.picture = process.data[SIImageReference.nick].picture;
+                }
                 scope.title = process.data[SITitle.nick].title;
                 scope.processName = getName(process.content_type);
-                if (process.data[SILocationReference.nick]) {
+                if (process.data[SILocationReference.nick] && process.data[SILocationReference.nick].location) {
                     adhHttp.get(process.data[SILocationReference.nick].location).then((loc) => {
                         scope.locationText = loc.data[SITitle.nick].title;
                     });
                 }
                 var workflow = process.data[SIWorkflow.nick];
                 scope.participationStartDate = getDate(getStateData(workflow, "participate").start_date);
-                scope.participationEndDate = getDate(getStateData(workflow, "evaluate").start_date);
+                scope.participationEndDate = getDate(getStateData(workflow, "closed").start_date);
                 scope.shortDesc = process.data[SIDescription.nick].short_description;
             });
         }
