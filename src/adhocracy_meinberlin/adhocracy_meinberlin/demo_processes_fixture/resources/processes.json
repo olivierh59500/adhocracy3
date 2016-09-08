@@ -27,9 +27,9 @@
         "external_picture_url": "https://liqd.net/media/images/platform.2e16d0ba.fill-150x150.png" },
       "adhocracy_core.sheets.workflow.IWorkflowAssignment":
       { "state_data": [{"name": "participate", "description": "",
-                        "start_date": "2016-03-01T12:00:09"},
+                        "start_date": "2016-08-01T12:00:09"},
                        {"name": "closed", "description": "",
-                        "start_date": "2018-03-01T12:00:09"}
+                        "start_date": "2018-08-01T12:00:09"}
                       ]},
       "adhocracy_core.sheets.embed.IEmbed":
       {"external_url": "http://embedding-url.com"}
@@ -52,9 +52,9 @@
         "external_picture_url": "https://liqd.net/media/images/platform.2e16d0ba.fill-150x150.png" },
       "adhocracy_core.sheets.workflow.IWorkflowAssignment":
       { "state_data": [{"name": "participate", "description": "",
-                        "start_date": "2016-03-01T12:00:09"},
+                        "start_date": "2016-08-01T12:00:09"},
                        {"name": "closed", "description": "",
-                        "start_date": "2018-03-01T12:00:09"}
+                        "start_date": "2018-08-01T12:00:09"}
                       ]},
       "adhocracy_core.sheets.embed.IEmbed":
       {"external_url": "http://embedding-url.com"}
@@ -77,9 +77,9 @@
         "external_picture_url": "https://liqd.net/media/images/platform.2e16d0ba.fill-150x150.png" },
       "adhocracy_core.sheets.workflow.IWorkflowAssignment":
       { "state_data": [{"name": "participate", "description": "",
-                        "start_date": "2016-03-01T12:00:09"},
+                        "start_date": "2016-08-01T12:00:09"},
                        {"name": "closed", "description": "",
-                        "start_date": "2018-03-01T12:00:09"}
+                        "start_date": "2018-08-01T12:00:09"}
                       ]},
       "adhocracy_core.sheets.embed.IEmbed":
       {"external_url": "http://embedding-url.com"}
@@ -103,9 +103,9 @@
       "adhocracy_core.sheets.workflow.IWorkflowAssignment":
       { "state_data": [{"name": "participate",
                         "description": "",
-                        "start_date": "2016-03-01T12:00:09"},
+                        "start_date": "2016-08-01T12:00:09"},
                        {"name": "closed", "description": "",
-                        "start_date": "2018-03-01T12:00:09"}
+                        "start_date": "2018-08-01T12:00:09"}
                       ]},
       "adhocracy_core.sheets.embed.IEmbed":
       {"external_url": "http://embedding-url.com"}
@@ -128,9 +128,9 @@
         "external_picture_url": "https://liqd.net/media/images/platform.2e16d0ba.fill-150x150.png" },
       "adhocracy_core.sheets.workflow.IWorkflowAssignment":
       { "state_data": [{"name": "participate", "description": "",
-                        "start_date": "2016-03-01T12:00:09"},
+                        "start_date": "2016-08-01T12:00:09"},
                        {"name": "closed", "description": "",
-                        "start_date": "2018-03-01T12:00:09"}
+                        "start_date": "2018-08-01T12:00:09"}
                       ]},
       "adhocracy_core.sheets.embed.IEmbed":
       {"external_url": "http://embedding-url.com"}
@@ -181,9 +181,9 @@
         "external_picture_url": "https://liqd.net/media/images/platform.2e16d0ba.fill-150x150.png" },
       "adhocracy_core.sheets.workflow.IWorkflowAssignment":
       { "state_data": [{"name": "participate", "description": "",
-                        "start_date": "2016-03-01T12:00:09"},
+                        "start_date": "2016-08-01T12:00:09"},
                        {"name": "closed", "description": "",
-                        "start_date": "2018-03-01T12:00:09"}
+                        "start_date": "2018-08-01T12:00:09"}
                       ]},
       "adhocracy_core.sheets.embed.IEmbed":
       {"external_url": "http://embedding-url.com"}
@@ -206,9 +206,9 @@
         "external_picture_url": "https://liqd.net/media/images/platform.2e16d0ba.fill-150x150.png" },
       "adhocracy_core.sheets.workflow.IWorkflowAssignment":
       { "state_data": [{"name": "participate", "description": "",
-                        "start_date": "2016-03-01T12:00:09"},
+                        "start_date": "2016-08-01T12:00:09"},
                        {"name": "closed", "description": "",
-                        "start_date": "2018-03-01T12:00:09"}
+                        "start_date": "2018-08-01T12:00:09"}
                       ]},
       "adhocracy_core.sheets.embed.IEmbed":
       {"external_url": "http://embedding-url.com"}
