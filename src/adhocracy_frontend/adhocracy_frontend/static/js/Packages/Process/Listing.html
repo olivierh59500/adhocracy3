@@ -7,3 +7,6 @@
 <adh-listing data-params="params" data-path="/" data-no-create-form="true">
     <adh-process-list-item data-path="{{element}}"></adh-process-list-item>
 </adh-listing>
+<adh-listing data-ng-repeat="stadtforum in stadtforums" data-params="pollParams" data-path="{{stadtforum}}" data-no-create-form="true">
+    <adh-process-list-item data-path="{{element}}"></adh-process-list-item>
+</adh-listing>

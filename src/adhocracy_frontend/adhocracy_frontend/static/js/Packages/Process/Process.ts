@@ -11,7 +11,8 @@ import RIBuergerhaushalt from "../../Resources_/adhocracy_meinberlin/resources/b
 import RICollaborativeText from "../../Resources_/adhocracy_meinberlin/resources/collaborative_text/IProcess";
 import RIIdeaCollection from "../../Resources_/adhocracy_meinberlin/resources/idea_collection/IProcess";
 import RIKiezkasse from "../../Resources_/adhocracy_meinberlin/resources/kiezkassen/IProcess";
-import RIPoll from "../../Resources_/adhocracy_meinberlin/resources/stadtforum/IPoll";
+import RIProposalVersion from "../../Resources_/adhocracy_core/resources/proposal/IProposalVersion";
+import RIStadtforum from "../../Resources_/adhocracy_meinberlin/resources/stadtforum/IProcess";
 
 import * as SIDescription from "../../Resources_/adhocracy_core/sheets/description/IDescription";
 import * as SIImageReference from "../../Resources_/adhocracy_core/sheets/image/IImageReference";
@@ -79,7 +80,7 @@ var getName = (backendName : string) : string => {
             return "TR__IDEA_COLLECTION";
         case RIKiezkasse.content_type:
             return "TR__KIEZKASSE";
-        case RIPoll.content_type:
+        case RIProposalVersion.content_type:
             return "TR__POLL";
     }
 };
@@ -196,7 +197,8 @@ export var processViewDirective = (
 
 export var listItemDirective = (
     adhConfig : AdhConfig.IService,
-    adhHttp : AdhHttp.Service
+    adhHttp : AdhHttp.Service,
+    adhParentPath
 ) => {
     return {
         restrict: "E",
@@ -216,10 +218,18 @@ export var listItemDirective = (
                         scope.locationText = loc.data[SITitle.nick].title;
                     });
                 }
-                var workflow = process.data[SIWorkflow.nick];
-                scope.participationStartDate = getDate(getStateData(workflow, "participate").start_date);
-                scope.participationEndDate = getDate(getStateData(workflow, "closed").start_date);
                 scope.shortDesc = process.data[SIDescription.nick].short_description;
+                if (process.content_type === RIProposalVersion.content_type) {
+                    adhHttp.get(adhParentPath(scope.path)).then((poll) => {
+                        var pollWorkflow = poll.data[SIWorkflow.nick];
+                        scope.participationStartDate = getDate(getStateData(pollWorkflow, "participate").start_date);
+                        scope.participationEndDate = getDate(getStateData(pollWorkflow, "closed").start_date);
+                    });
+                } else {
+                    var workflow = process.data[SIWorkflow.nick];
+                    scope.participationStartDate = getDate(getStateData(workflow, "participate").start_date);
+                    scope.participationEndDate = getDate(getStateData(workflow, "closed").start_date);
+                }
             });
         }
     };
@@ -246,7 +256,20 @@ export var listingDirective = (
                 depth: "all",
                 content_type: contentType
             };
+
+            var stadtforumParams = {
+                depth: "all",
+                content_type: RIStadtforum.content_type
+            };
+            adhHttp.get("/", stadtforumParams). then((stadtforums) => {
+                scope.stadtforums = stadtforums.data[SIPool.nick].elements;
             });
+            scope.pollParams = {
+                depth: 2,
+                content_type: RIProposalVersion.content_type,
+                tag: "LAST"
+            };
+
             var countParams = {
                 depth: "all",
                 content_type: contentType,
