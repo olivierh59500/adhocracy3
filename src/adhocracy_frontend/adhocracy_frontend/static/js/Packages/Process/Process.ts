@@ -9,14 +9,15 @@ import * as AdhTopLevelState from "../TopLevelState/TopLevelState";
 import RIBPlan from "../../Resources_/adhocracy_meinberlin/resources/bplan/IProcess";
 import RIBuergerhaushalt from "../../Resources_/adhocracy_meinberlin/resources/burgerhaushalt/IProcess";
 import RICollaborativeText from "../../Resources_/adhocracy_meinberlin/resources/collaborative_text/IProcess";
-import RIKiezkasse from "../../Resources_/adhocracy_meinberlin/resources/kiezkassen/IProcess";
 import RIIdeaCollection from "../../Resources_/adhocracy_meinberlin/resources/idea_collection/IProcess";
+import RIKiezkasse from "../../Resources_/adhocracy_meinberlin/resources/kiezkassen/IProcess";
 import RIPoll from "../../Resources_/adhocracy_meinberlin/resources/stadtforum/IPoll";
 
 import * as SIDescription from "../../Resources_/adhocracy_core/sheets/description/IDescription";
 import * as SIImageReference from "../../Resources_/adhocracy_core/sheets/image/IImageReference";
 import * as SILocationReference from "../../Resources_/adhocracy_core/sheets/geo/ILocationReference";
 import * as SIName from "../../Resources_/adhocracy_core/sheets/name/IName";
+import * as SIPool from "../../Resources_/adhocracy_core/sheets/pool/IPool";
 import * as SIWorkflow from "../../Resources_/adhocracy_core/sheets/workflow/IWorkflowAssignment";
 import * as SITitle from "../../Resources_/adhocracy_core/sheets/title/ITitle";
 
@@ -81,6 +82,15 @@ var getName = (backendName : string) : string => {
         case RIPoll.content_type:
             return "TR__POLL";
     }
+};
+
+var queryParamWithAny = (args : any[]) : string => {
+    var res = "\[\"any\", \[\"";
+    for (var i = 0; i < args.length; i++) {
+        res += args[i] + "\", \"";
+    }
+    res += "\"\]\]";
+    return res;
 };
 
 
@@ -217,6 +227,7 @@ export var listItemDirective = (
 
 export var listingDirective = (
     adhConfig : AdhConfig.IService,
+    adhHttp : AdhHttp.Service,
     $translate
 ) => {
     return {
@@ -224,18 +235,27 @@ export var listingDirective = (
         scope: {},
         templateUrl: adhConfig.pkg_path + pkgLocation + "/Listing.html",
         link: (scope) => {
-            var contentType = "\[\"any\", \[\""
-                + RIBPlan.content_type + "\", \""
-                + RIBuergerhaushalt.content_type + "\", \""
-                + RICollaborativeText.content_type + "\", \""
-                + RIIdeaCollection.content_type + "\", \""
-                + RIKiezkasse.content_type + "\", \""
-                + RIPoll.content_type
-                + "\"\]\]";
+            var contentType = queryParamWithAny([
+                    RIBPlan.content_type,
+                    RIBuergerhaushalt.content_type,
+                    RICollaborativeText.content_type,
+                    RIIdeaCollection.content_type,
+                    RIKiezkasse.content_type,
+                    RIPoll.content_type
+                ]);
             scope.params = {
                 depth: "all",
                 content_type: contentType
             };
+            var countParams = {
+                depth: "all",
+                content_type: contentType,
+                elements: "omit"
+            };
+            adhHttp.get("/", countParams).then((res) => {
+                scope.processCount = res.data[SIPool.nick].count;
+            });
+
             $translate("TR__PROCESS_LIST_INFO").then((translated) => {
                 scope.processListInfo = translated;
             });
