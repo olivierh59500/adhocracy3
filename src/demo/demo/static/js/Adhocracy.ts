@@ -43,6 +43,7 @@ import * as AdhInjectModule from "./Packages/Inject/Module";
 import * as AdhListingModule from "./Packages/Listing/Module";
 import * as AdhLocaleModule from "./Packages/Locale/Module";
 import * as AdhMappingModule from "./Packages/Mapping/Module";
+import * as AdhMeinberlinModule from "./Packages/Meinberlin/Module";
 import * as AdhMarkdownModule from "./Packages/Markdown/Module";
 import * as AdhMetaApiModule from "./Packages/MetaApi/Module";
 import * as AdhMovingColumnsModule from "./Packages/MovingColumns/Module";
@@ -104,6 +105,7 @@ export var init = (config : AdhConfig.IService, metaApi) => {
         AdhDebateWorkbenchModule.moduleName,
         AdhEmbedModule.moduleName,
         AdhIdeaCollectionModule.moduleName,
+        AdhMeinberlinModule.moduleName,
         AdhResourceAreaModule.moduleName,
         AdhTrackingModule.moduleName,
         AdhUserViewsModule.moduleName
@@ -200,6 +202,7 @@ export var init = (config : AdhConfig.IService, metaApi) => {
     AdhLocaleModule.register(angular);
     AdhMappingModule.register(angular);
     AdhMarkdownModule.register(angular);
+    AdhMeinberlinModule.register(angular);
     AdhMetaApiModule.register(angular, metaApi);
     AdhMovingColumnsModule.register(angular);
     AdhPermissionsModule.register(angular);
