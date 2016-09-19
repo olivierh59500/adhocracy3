@@ -39,7 +39,8 @@ export var register = (angular) => {
 
             var processHeaderSlot = adhConfig.pkg_path + AdhIdeaCollectionWorkbench.pkgLocation + "/ProcessHeaderSlot.html";
             adhResourceAreaProvider.processHeaderSlots[processType] = processHeaderSlot;
-            adhResourceAreaProvider.names[RIBuergerhaushaltProposalVersion.content_type] = "TR__PROPOSALS";
+            adhResourceAreaProvider.names[RIBuergerhaushaltProcess.content_type] = "TR__RESOURCE_BUERGERHAUSHALT";
+            adhResourceAreaProvider.names[RIBuergerhaushaltProposalVersion.content_type] = "TR__RESOURCE_PROPOSAL";
         }])
         .config(["adhProcessProvider", (adhProcessProvider : AdhProcess.Provider) => {
             adhProcessProvider.templates[processType] =
