@@ -34,6 +34,8 @@ export var register = (angular) => {
         }])
         .provider("adhResourceArea", AdhResourceArea.Provider)
         .directive("adhResourceArea", ["adhResourceArea", "$compile", AdhResourceArea.directive])
+        .directive("adhProcessListItem", ["adhConfig", "adhHttp", "adhResourceArea", AdhResourceArea.processListItemDirective])
+        .directive("adhProcessListing", ["adhConfig", "adhHttp", AdhResourceArea.processListingDirective])
         .filter("adhParentPath", () => AdhUtil.parentPath)
         .filter("adhResourceUrl", ["adhConfig", AdhResourceArea.resourceUrl]);
 };
