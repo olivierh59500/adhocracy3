@@ -1,4 +1,5 @@
 import * as AdhEmbedModule from "../Embed/Module";
+import * as AdhHomeModule from "../Home/Module";
 import * as AdhHttpModule from "../Http/Module";
 import * as AdhProcessModule from "../Process/Module";
 import * as AdhTopLevelStateModule from "../TopLevelState/Module";
@@ -18,6 +19,7 @@ export var register = (angular) => {
     angular
         .module(moduleName, [
             AdhEmbedModule.moduleName,
+            AdhHomeModule.moduleName,
             AdhHttpModule.moduleName,
             AdhProcessModule.moduleName,
             AdhTopLevelStateModule.moduleName
@@ -35,8 +37,8 @@ export var register = (angular) => {
         .provider("adhResourceArea", AdhResourceArea.Provider)
         .directive("adhResourceArea", ["adhResourceArea", "$compile", AdhResourceArea.directive])
         .directive("adhProcessListItem", ["adhConfig", "adhHttp", "adhResourceArea", AdhResourceArea.processListItemDirective])
-        .directive("adhProcessListing", ["adhConfig", "adhHttp", AdhResourceArea.processListingDirective])
-	.filter("adhResourceName", ["adhResourceArea", AdhResourceArea.nameFilter])
+        .directive("adhProcessListing", ["adhConfig", AdhResourceArea.processListingDirective])
+        .filter("adhResourceName", ["adhResourceArea", AdhResourceArea.nameFilter])
         .filter("adhParentPath", () => AdhUtil.parentPath)
         .filter("adhResourceUrl", ["adhConfig", AdhResourceArea.resourceUrl]);
 };

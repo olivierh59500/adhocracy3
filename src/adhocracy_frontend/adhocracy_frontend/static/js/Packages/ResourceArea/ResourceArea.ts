@@ -502,7 +502,7 @@ export var processListItemDirective = (
     };
 };
 
-export var processListingDirective = (adhConfig : AdhConfig.IService, adhHttp : AdhHttp.Service) => {
+export var processListingDirective = (adhConfig : AdhConfig.IService) => {
     return {
         restrict: "E",
         scope: {},
@@ -512,9 +512,6 @@ export var processListingDirective = (adhConfig : AdhConfig.IService, adhHttp : 
             scope.params = {
                 depth: "all"
             };
-            adhHttp.get("/").then((root) => {
-                scope.overviewDesc = root.data[SIDescription.nick].description;
-            });
         }
     };
 };
