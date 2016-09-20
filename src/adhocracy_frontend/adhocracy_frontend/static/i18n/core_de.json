@@ -194,7 +194,7 @@
     "TR__RESOURCE_PROCESS_PLURAL": "Beteiligungsverfahren",
     "TR__RESOURCE_PROPOSAL": "Vorschlag",
     "TR__RESOURCE_PROPOSAL_PLURAL": "Vorschläge",
-    "TR__RESOURCE_USER": "",
+    "TR__RESOURCE_USER": "Nutzer",
     "TR__SAVE": "speichern",
     "TR__SAVE_TITLE": "{{ title }} speichern",
     "TR__SETTINGS": "Einstellungen",
