@@ -316,8 +316,14 @@ export class Service implements AdhTopLevelState.IAreaInput {
         });
     }
 
-    public getName(resourceType : string) : string {
-        return this.provider.names[resourceType];
+    public getName(resourceType : string, plural? : boolean) : string {
+        var ret : string;
+        if (typeof this.provider.names[resourceType] !== "undefined") {
+            ret = this.provider.names[resourceType];
+        } else {
+            ret = "TR__RESOURCE";
+        }
+        return plural ? ret + "_PLURAL" : ret;
     }
 
     public getTemplate() : angular.IPromise<string> {
