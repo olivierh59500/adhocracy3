@@ -519,6 +519,6 @@ export var processListingDirective = (adhConfig : AdhConfig.IService, adhHttp : 
     };
 };
 
-export var nameFilter = (adhResourceArea : Service) => (contentType : string) : string => {
-    return adhResourceArea.getName(contentType);
+export var nameFilter = (adhResourceArea : Service) => (contentType : string, plural? : boolean) : string => {
+    return adhResourceArea.getName(contentType, plural);
 };
