@@ -58,7 +58,7 @@ export interface ListingScope<Container> extends angular.IScope {
     showSort : boolean;
     container : Container;
     poolPath : string;
-    poolOptions : AdhHttp.IOptions;
+    poolOptions : AdhHttp.IOptions; // plus loggedIn (cf. AdhPermissions)
     createPath? : string;
     elements : string[];
     update : (boolean?) => angular.IPromise<void>;
