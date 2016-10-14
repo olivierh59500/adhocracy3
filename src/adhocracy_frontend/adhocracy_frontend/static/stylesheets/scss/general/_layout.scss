@@ -16,6 +16,12 @@ body {
     padding: 1px 0;
 }
 
+.l-box {
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100%;
+}
+
 .l-content {
     flex-grow: 1;
     overflow: auto;
