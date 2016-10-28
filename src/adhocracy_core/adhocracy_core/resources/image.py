@@ -47,9 +47,12 @@ class ImageDownload(File, AssetDownload):
         """
         if self._is_resized():
             return self._get_response()
-        elif self.dimensions:
+        elif self.dimensions or self.dimensions is None:
             original = self._get_asset_file_in_lineage(registry)
-            self._upload_crop_and_resize(original)
+            if self.dimensions is None:
+                self._upload(original)
+            else:
+                self._upload_crop_and_resize(original)
             transaction.commit()  # to avoid BlobError: Uncommitted changes
             return self._get_response()
         else:
@@ -64,6 +67,31 @@ class ImageDownload(File, AssetDownload):
 
     def _get_response(self) -> FileResponse:
         return File.get_response(self)
+
+    def _upload(self, original: File):
+        with original.blob.open('r') as blobdata:
+            image = Image.open(blobdata)
+            bytestream = io.BytesIO()
+            if image.format == 'PNG':
+                reduced_colors = image.convert('P',
+                                               colors=128,
+                                               palette=Image.ADAPTIVE)
+                reduced_colors.save(bytestream,
+                                    image.format,
+                                    bits=7,
+                                    optimize=True)
+            elif image.format == 'JPEG':
+                image.save(bytestream,
+                           'JPEG',
+                           progressive=True,
+                           quality=80,
+                           optimize=True)
+            else:
+                image.save(bytestream,
+                           image.format)
+            bytestream.seek(0)
+        self.upload(bytestream)
+        self.mimetype = original.mimetype
 
     def _upload_crop_and_resize(self, original: File):
         with original.blob.open('r') as blobdata:
