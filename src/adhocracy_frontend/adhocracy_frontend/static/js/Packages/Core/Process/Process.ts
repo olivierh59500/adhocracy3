@@ -27,13 +27,14 @@ export interface IStateData {
 
 export interface IProcessProperties {
     detailSlot : string;
+    document? : boolean;
+    hasAuthorInListItem? : boolean;
     hasCommentColumn? : boolean;
     hasCreatorParticipate? : boolean;
     hasDescription? : boolean;
     hasImage? : boolean;
     hasLocation? : boolean;
     hasLocationText? : boolean;
-    hasAuthorInListItem? : boolean;
     // if a process has a proposal budget, but no max budget, then set maxBudget = Infinity.
     maxBudget? : number;
     proposalClass;
