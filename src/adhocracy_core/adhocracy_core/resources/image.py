@@ -78,9 +78,12 @@ class ImageDownload(File, AssetDownload):
                 resized = cropped.resize(self.dimensions, Image.ANTIALIAS)
             else:
                 if image.size[0] * image.size[1] > 1000000:
-                    ratio = image.size[1] / image.size[0]
-                    dimensions = (1000, int(1000 * ratio))
-                    resized = image.resize(dimensions, Image.ANTIALIAS)
+                    if image.size[0] < 10 or image.size[1] < 10:
+                        raise ValueError('Image is too slim!')
+                    else:
+                        ratio = image.size[1] / image.size[0]
+                        dimensions = (1000, int(1000 * ratio))
+                        resized = image.resize(dimensions, Image.ANTIALIAS)
                 else:
                     resized = image
             bytestream = io.BytesIO()
