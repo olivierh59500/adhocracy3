@@ -32,8 +32,8 @@ export var register = (angular) => {
                     proposalColumn: adhConfig.pkg_path + AdhDocument.pkgLocation + "/DetailSlot.html",
                     document: true,
                     hasCommentColumn: true,
-                    proposalClass: RIDocument,
-                    proposalVersionClass: RIDocumentVersion
+                    item: RIDocument,
+                    version: RIDocumentVersion
                 });
             });
         }])

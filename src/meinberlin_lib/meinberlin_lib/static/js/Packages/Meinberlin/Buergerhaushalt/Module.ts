@@ -51,11 +51,11 @@ export var register = (angular) => {
                 hasDescription: true,
                 hasLocation: true,
                 hasLocationText: true,
+                item: RIBuergerhaushaltProposal,
                 maxBudget: Infinity,
-                proposalClass: RIBuergerhaushaltProposal,
                 proposalColumn: adhConfig.pkg_path + AdhIdeaCollectionWorkbench.pkgLocation + "/ProposalColumn.html",
                 proposalSheet: SIBuergerhaushaltProposal,
-                proposalVersionClass: RIBuergerhaushaltProposalVersion
+                version: RIBuergerhaushaltProposalVersion
             });
         }])
         .config(["adhNamesProvider", (adhNamesProvider : AdhNames.Provider) => {

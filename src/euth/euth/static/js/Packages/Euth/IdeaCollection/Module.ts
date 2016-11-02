@@ -49,8 +49,8 @@ export var register = (angular) => {
                     hasCommentColumn: true,
                     hasDescription: true,
                     hasImage: true,
-                    proposalClass: RIProposal,
-                    proposalVersionClass: RIProposalVersion
+                    item: RIProposal,
+                    version: RIProposalVersion
                 });
             });
         }]);
