@@ -35,13 +35,13 @@ export interface IProcessProperties {
     hasImage? : boolean;
     hasLocation? : boolean;
     hasLocationText? : boolean;
+    item;
     // if a process has a proposal budget, but no max budget, then set maxBudget = Infinity.
     maxBudget? : number;
-    proposalClass;
     // WARNING: proposalSheet is not a regular feature of adhocracy,
     // but a hack of Buergerhaushalt and Kiezkasse.
     proposalSheet?;
-    proposalVersionClass;
+    version;
 }
 
 export var getStateData = (sheet : SIWorkflow.ISheet, name : string) : IStateData => {
