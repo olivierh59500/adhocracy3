@@ -47,12 +47,14 @@ class ImageDownload(File, AssetDownload):
         """
         if self._is_resized():
             return self._get_response()
-        elif self.dimensions or self.dimensions is None:
+        elif self.name != '0000002':
             original = self._get_asset_file_in_lineage(registry)
-            if self.dimensions is None:
-                self._upload(original)
-            else:
-                self._upload_crop_and_resize(original)
+            self._upload_crop_and_resize(original)
+            transaction.commit()  # to avoid BlobError: Uncommitted changes
+            return self._get_response()
+        elif self.name == '0000002':
+            original = self._get_asset_file_in_lineage(registry)
+            self._upload(original)
             transaction.commit()  # to avoid BlobError: Uncommitted changes
             return self._get_response()
         else:
