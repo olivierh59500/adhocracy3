@@ -56,8 +56,8 @@ export var register = (angular) => {
                 hasCommentColumn: true,
                 hasDescription: true,
                 hasLocation: true,
-                proposalClass: RIGeoProposal,
-                proposalVersionClass: RIGeoProposalVersion
+                itemClass: RIGeoProposal,
+                versionClass: RIGeoProposalVersion
             });
         }])
         .config(["adhNamesProvider", (adhNamesProvider : AdhNames.Provider) => {
