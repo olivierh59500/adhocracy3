@@ -49,12 +49,12 @@ class ImageDownload(File, AssetDownload):
             return self._get_response()
         elif self.name != '0000002':
             original = self._get_asset_file_in_lineage(registry)
-            self._upload_crop_and_resize(original)
+            self._upload(original)
             transaction.commit()  # to avoid BlobError: Uncommitted changes
             return self._get_response()
         elif self.name == '0000002':
             original = self._get_asset_file_in_lineage(registry)
-            self._upload(original)
+            self._upload(original, False)
             transaction.commit()  # to avoid BlobError: Uncommitted changes
             return self._get_response()
         else:
@@ -70,36 +70,14 @@ class ImageDownload(File, AssetDownload):
     def _get_response(self) -> FileResponse:
         return File.get_response(self)
 
-    def _upload(self, original: File):
+    def _upload(self, original: File, crop_and_resize: bool = True):
         with original.blob.open('r') as blobdata:
             image = Image.open(blobdata)
-            bytestream = io.BytesIO()
-            if image.format == 'PNG':
-                reduced_colors = image.convert('P',
-                                               colors=128,
-                                               palette=Image.ADAPTIVE)
-                reduced_colors.save(bytestream,
-                                    image.format,
-                                    bits=7,
-                                    optimize=True)
-            elif image.format == 'JPEG':
-                image.save(bytestream,
-                           'JPEG',
-                           progressive=True,
-                           quality=80,
-                           optimize=True)
+            if crop_and_resize:
+                cropped = crop(image, self.dimensions)
+                resized = cropped.resize(self.dimensions, Image.ANTIALIAS)
             else:
-                image.save(bytestream,
-                           image.format)
-            bytestream.seek(0)
-        self.upload(bytestream)
-        self.mimetype = original.mimetype
-
-    def _upload_crop_and_resize(self, original: File):
-        with original.blob.open('r') as blobdata:
-            image = Image.open(blobdata)
-            cropped = crop(image, self.dimensions)
-            resized = cropped.resize(self.dimensions, Image.ANTIALIAS)
+                resized = image
             bytestream = io.BytesIO()
             if image.format == 'PNG':
                 reduced_colors = resized.convert('P',
