@@ -77,7 +77,12 @@ class ImageDownload(File, AssetDownload):
                 cropped = crop(image, self.dimensions)
                 resized = cropped.resize(self.dimensions, Image.ANTIALIAS)
             else:
-                resized = image
+                if image.size[0] * image.size[1] > 1000000:
+                    ratio = image.size[1] / image.size[0]
+                    dimensions = (1000, int(1000 * ratio))
+                    resized = image.resize(dimensions, Image.ANTIALIAS)
+                else:
+                    resized = image
             bytestream = io.BytesIO()
             if image.format == 'PNG':
                 reduced_colors = resized.convert('P',
