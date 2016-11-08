@@ -39,8 +39,12 @@ export var register = (angular) => {
                 .registerDirective("meinberlin-proposal-list");
         }])
         .config(["adhResourceAreaProvider", "adhConfig", (adhResourceAreaProvider: AdhResourceArea.Provider, adhConfig) => {
-            var registerRoutes = AdhIdeaCollectionWorkbench.registerRoutesFactory(
-                RIIdeaCollectionProcess, RIGeoProposal, RIGeoProposalVersion, true);
+            var registerRoutes = (context? : string) => (provider) => {
+                AdhIdeaCollectionWorkbench.registerCommonRoutesFactory(
+                    RIIdeaCollectionProcess, RIGeoProposal, RIGeoProposalVersion)(context)(provider);
+                AdhIdeaCollectionWorkbench.registerProposalRoutesFactory(
+                    RIIdeaCollectionProcess, RIGeoProposal, RIGeoProposalVersion, true)(context)(provider);
+            };
             registerRoutes()(adhResourceAreaProvider);
 
             var processHeaderSlot = adhConfig.pkg_path + AdhIdeaCollectionWorkbench.pkgLocation + "/ProcessHeaderSlot.html";

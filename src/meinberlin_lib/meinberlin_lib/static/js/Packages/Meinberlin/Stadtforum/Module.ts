@@ -53,8 +53,12 @@ export var register = (angular) => {
             "$q",
             AdhIdeaCollectionProposal.detailDirective])
         .config(["adhResourceAreaProvider", "adhConfig", (adhResourceAreaProvider : AdhResourceArea.Provider, adhConfig) => {
-            var registerRoutes = AdhIdeaCollectionWorkbench.registerRoutesFactory(
-                RIStadtforumProcess, RIPoll, RIProposalVersion, false);
+            var registerRoutes = (context? : string) => (provider) => {
+                AdhIdeaCollectionWorkbench.registerCommonRoutesFactory(
+                    RIStadtforumProcess, RIPoll, RIProposalVersion)(context)(provider);
+                AdhIdeaCollectionWorkbench.registerProposalRoutesFactory(
+                    RIStadtforumProcess, RIPoll, RIProposalVersion, false)(context)(provider);
+            };
             registerRoutes()(adhResourceAreaProvider);
 
             var processHeaderSlot = adhConfig.pkg_path + AdhIdeaCollectionWorkbench.pkgLocation + "/ProcessHeaderSlot.html";
