@@ -259,6 +259,7 @@ export var detailDirective = (
     adhConfig : AdhConfig.IService,
     adhHttp : AdhHttp.Service,
     adhPermissions : AdhPermissions.Service,
+    adhProcess : AdhProcess.Service,
     adhRate : AdhRate.Service,
     adhTopLevelState : AdhTopLevelState.Service,
     adhGetBadges : AdhBadge.IGetBadgeAssignments,
