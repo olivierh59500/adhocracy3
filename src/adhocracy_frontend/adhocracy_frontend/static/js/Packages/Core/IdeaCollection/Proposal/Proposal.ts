@@ -256,6 +256,8 @@ var postEdit = (
 };
 
 export var detailDirective = (
+    processType? : string
+) => (
     adhConfig : AdhConfig.IService,
     adhHttp : AdhHttp.Service,
     adhPermissions : AdhPermissions.Service,
@@ -270,9 +272,13 @@ export var detailDirective = (
         templateUrl: adhConfig.pkg_path + pkgLocation + "/Detail.html",
         scope: {
             path: "@",
-            processProperties: "="
+            processProperties: "=?"
         },
         link: (scope : IScope) => {
+            if (!scope.processProperties && processType) {
+                scope.processProperties = adhProcess.getProperties(processType);
+            }
+
             bindPath(adhConfig, adhHttp, adhPermissions, adhRate, adhTopLevelState, adhGetBadges, $q)(
                 scope, undefined);
             scope.commentType = RICommentVersion.content_type;

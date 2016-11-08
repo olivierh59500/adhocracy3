@@ -52,7 +52,7 @@ export var register = (angular) => {
             "adhTopLevelState",
             "adhGetBadges",
             "$q",
-            AdhIdeaCollectionProposal.detailDirective])
+            AdhIdeaCollectionProposal.detailDirective(processType)])
         .config(["adhResourceAreaProvider", "adhConfig", (adhResourceAreaProvider : AdhResourceArea.Provider, adhConfig) => {
             var registerRoutes = AdhIdeaCollectionWorkbench.registerRoutesFactory(
                 RIStadtforumProcess, RIPoll, RIProposalVersion, false);
