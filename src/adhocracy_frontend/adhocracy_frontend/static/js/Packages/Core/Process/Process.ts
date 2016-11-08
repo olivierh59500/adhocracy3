@@ -33,7 +33,6 @@ export interface IProcessProperties {
     hasCommentColumn? : boolean;
     hasCreatorParticipate? : boolean;
     hasDescription? : boolean;
-    hasImage? : boolean;
     hasLocation? : boolean;
     hasLocationText? : boolean;
     imageSlot? : string;

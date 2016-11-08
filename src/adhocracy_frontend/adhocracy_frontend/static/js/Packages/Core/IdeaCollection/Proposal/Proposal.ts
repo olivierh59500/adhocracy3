@@ -138,7 +138,7 @@ export var bindPath = (
                         scope.data.lat = pointSheet.coordinates[1];
                         scope.data.polygon = polygon;
                     }
-                    if (scope.processProperties.hasImage) {
+                    if (scope.processProperties.imageSlot) {
                         scope.data.picture = SIImageReference.get(resource).picture;
                     }
                     // WARNING: proposalSheet is not a regular feature of adhocracy,
