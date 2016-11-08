@@ -36,7 +36,7 @@ export var register = (angular) => {
             "adhTopLevelState",
             "adhGetBadges",
             "$q",
-            Proposal.detailDirective])
+            Proposal.detailDirective()])
         .directive("adhIdeaCollectionProposalListItem", [
             "adhConfig", "adhHttp", "adhPermissions", "adhRate", "adhTopLevelState", "adhGetBadges", "$q", Proposal.listItemDirective])
         .directive("adhIdeaCollectionProposalMapListItem", [
