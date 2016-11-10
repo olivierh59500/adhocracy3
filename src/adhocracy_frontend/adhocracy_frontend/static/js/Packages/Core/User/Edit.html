@@ -23,16 +23,6 @@
                 name="name"
                 class="user-edit-form-field"
                 data-ng-model="data.name" />
-            <span class="label-text">{{ "TR__PASSWORD" | translate }}</span>
-            <input
-                type="password"
-                name="password_old"
-                class="user-edit-form-field"
-                data-ng-required="userEditForm.name.$dirty"
-                data-ng-model="data.passwordOld" />
-            <span class="input-error" data-ng-show="showError(userNameEditForm, userNameEditForm.password_old, 'required')">
-                {{ "TR__ERROR_REQUIRED_PASSWORD" | translate }}
-            </span>
             <button
                 type="button"
                 class="button-cta"
