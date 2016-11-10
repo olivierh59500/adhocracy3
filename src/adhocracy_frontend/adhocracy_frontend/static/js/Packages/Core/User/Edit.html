@@ -7,7 +7,7 @@
     novalidate="novalidate"
     data-ng-submit="submitName()">
     <p>
-        <span class="label-text">{{ "TR__USERNAME" | translate }}</span>
+        <h4>{{ "TR__USERNAME" | translate }}</h4>
         <div data-ng-if="!data.editingName">
             <span class="user-edit-form-field">{{data.name}}</span>
             <button
@@ -50,8 +50,7 @@
     novalidate="novalidate"
     data-ng-submit="submitEmail()">
     <p>
-        <span class="label-text">{{ "TR__EMAIL" | translate }}
-        </span>
+        <h4>{{ "TR__EMAIL" | translate }}</h4>
         <div data-ng-if="!data.editingEmail">
             <span class="user-edit-form-field">{{data.email}}</span>
             <button
@@ -94,7 +93,7 @@
     data-ng-submit="submitPassword()">
     <p>
         <div data-ng-if="!data.editingPassword">
-            <span class="label-text">{{ "TR__PASSWORD" | translate }}</span>
+            <h4>{{ "TR__PASSWORD" | translate }}</h4>
             <button
                 type="button"
                 class="button-cta"
