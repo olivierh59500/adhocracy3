@@ -206,3 +206,41 @@ parent: button
         border-radius: 50%;
     }
 }
+
+/*doc
+---
+title: Feedback button
+name: feedback-button
+parent: button
+---
+
+```html_example
+<a href="#" class="feedback-button" title="Feedback">Feedback</a>
+```
+*/
+
+.feedback-button {
+    @include button-base;
+    @include rem(border-radius, 0 0 25px 25px);
+    @include rem(margin-top, 5rem);
+    border: 2px solid #fff;
+    border-width: 0 2px 2px 2px;
+    position: fixed;
+    background: $color-brand-one-normal;
+    color: #fff;
+    right: 0;
+    transform: rotate(90deg);
+    transform-origin: 100% 30%;
+    top: 40%;
+    z-index: 100;
+
+    &:hover,
+    &:focus {
+        background-color: darken($color-brand-one-normal, 10%);
+        color: $color-structure-normal;
+    }
+
+    @media (max-width: $breakpoint-small-device) {
+        display: none;
+    }
+}
