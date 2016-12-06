@@ -1,17 +1,17 @@
-import * as AdhAngularHelpersModule from "../AngularHelpers/Module";
-import * as AdhAnonymizeModule from "../Anonymize/Module";
-import * as AdhBadgeModule from "../Badge/Module";
-import * as AdhHttpModule from "../Http/Module";
-import * as AdhMappingModule from "../Mapping/Module";
-import * as AdhPermissionsModule from "../Permissions/Module";
-import * as AdhPreliminaryNamesModule from "../PreliminaryNames/Module";
-import * as AdhRateModule from "../Rate/Module";
-import * as AdhResourceAreaModule from "../ResourceArea/Module";
-import * as AdhTopLevelStateModule from "../TopLevelState/Module";
+import * as AdhAngularHelpersModule from "../../AngularHelpers/Module";
+import * as AdhAnonymizeModule from "../../Anonymize/Module";
+import * as AdhBadgeModule from "../../Badge/Module";
+import * as AdhHttpModule from "../../Http/Module";
+import * as AdhMappingModule from "../../Mapping/Module";
+import * as AdhPermissionsModule from "../../Permissions/Module";
+import * as AdhPreliminaryNamesModule from "../../PreliminaryNames/Module";
+import * as AdhRateModule from "../../Rate/Module";
+import * as AdhResourceAreaModule from "../../ResourceArea/Module";
+import * as AdhTopLevelStateModule from "../../TopLevelState/Module";
 
 import * as Proposal from "./Proposal";
 
-export var moduleName = "adhProposal";
+export var moduleName = "adhIdeaCollectionProposal";
 
 export var register = (angular) => {
     angular
@@ -27,13 +27,13 @@ export var register = (angular) => {
             AdhResourceAreaModule.moduleName,
             AdhTopLevelStateModule.moduleName
         ])
-        .directive("adhProposalDetail", [
+        .directive("adhIdeaCollectionProposalDetail", [
             "adhConfig", "adhHttp", "adhPermissions", "adhRate", "adhTopLevelState", "adhGetBadges", "$q", Proposal.detailDirective])
-        .directive("adhProposalListItem", [
+        .directive("adhIdeaCollectionProposalListItem", [
             "adhConfig", "adhHttp", "adhPermissions", "adhRate", "adhTopLevelState", "adhGetBadges", "$q", Proposal.listItemDirective])
-        .directive("adhProposalMapListItem", [
+        .directive("adhIdeaCollectionProposalMapListItem", [
             "adhConfig", "adhHttp", "adhPermissions", "adhRate", "adhTopLevelState", "adhGetBadges", "$q", Proposal.mapListItemDirective])
-        .directive("adhProposalCreate", [
+        .directive("adhIdeaCollectionProposalCreate", [
             "adhConfig",
             "adhHttp",
             "adhPreliminaryNames",
@@ -44,7 +44,7 @@ export var register = (angular) => {
             "$location",
             Proposal.createDirective
         ])
-        .directive("adhProposalEdit", [
+        .directive("adhIdeaCollectionProposalEdit", [
             "adhConfig",
             "adhHttp",
             "adhPermissions",

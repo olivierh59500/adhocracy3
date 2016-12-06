@@ -1,8 +1,6 @@
 <div data-ng-switch="transclusionId">
     <div data-ng-switch-when="menu">
-        <div class="moving-column-tab">
-            <i class="icon-list moving-column-icon"></i>
-        </div>
+        <i class="icon-list moving-column-icon"></i>
     </div>
 
     <a class="moving-column-expand" data-ng-switch-when="collapsed" data-ng-href="{{ processUrl | adhResourceUrl }}">
@@ -11,10 +9,9 @@
         </div>
     </a>
 
-    <adh-process-detail
+    <adh-debate-process-detail-announce
         data-ng-switch-when="body"
         data-ng-if="processUrl"
-        data-path="{{processUrl}}"
-        data-process-properties="processProperties">
-    </adh-process-detail>
+        data-path="{{processUrl}}">
+    </adh-debate-process-detail-announce>
 </div>
